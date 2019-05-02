@@ -10,3 +10,10 @@ attributes:
   - name: bucket_name
     required: true
     type: string
+  - name: instance_name
+    required: true
+    type: string
+  - name: region
+    required: true
+    type: string
+    

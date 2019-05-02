@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-variable "project_id" {
-  description = "The project ID to deploy to"
+output "instance_gcp_sap_hana_name" {
+ value = "${google_compute_instance.gcp_sap_hana.name}"
 }
 
-variable "bucket_name" {
-  description = "The name of the bucket to create"
+output "instance_zone" {
+ value = "${google_compute_instance.gcp_sap_hana.zone}"
+}
+
+output "gcp_sap_hana_instance_machine_type" {
+  value = "${google_compute_instance.gcp_sap_hana.machine_type}"
 }

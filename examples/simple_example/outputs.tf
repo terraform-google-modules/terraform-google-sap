@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-output "bucket_name" {
-  description = "The name of the bucket."
-  value       = "${module.sap.bucket_name}"
+output "sap_hana_sid" {
+  description = "SAP Hana SID user"
+  value       = "${var.sap_hana_sid}"
+}
+
+output "instance_name" {
+  description = "Name of instance"
+  value = "${var.instance_name}"
 }

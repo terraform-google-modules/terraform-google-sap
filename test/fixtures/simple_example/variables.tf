@@ -15,6 +15,19 @@
  */
 
 variable "project_id" {
-  description = "The ID of the project in which to provision resources."
-  type        = "string"
+  description = "Project name to deploy the resources"
+}
+
+variable "service_account" {
+  description = "Service to run the terraform"
+}
+
+variable "instance_type" {
+  description = "Compute Engine instance Type"
+  # Should add minimal instance type here if possible.
+}
+
+variable "region" {
+  description = "Region where to deploy resources"
+  default = "us-central1"
 }

@@ -14,19 +14,29 @@
  * limitations under the License.
  */
 
-provider "random" {
-  version = "~> 2.0"
+resource "random_id" "random_suffix" {
+  byte_length = 4
 }
 
-resource "random_pet" "main" {
-  length    = 1
-  prefix    = "simple-example"
-  separator = "-"
+locals {
+  gcs_bucket_name = "deployment-bucket-${random_id.random_suffix.hex}"
+}
+
+#TODO: Add creation of a network that's similar to app2 
+resource "google_storage_bucket" "deployment_bucket" {
+  name          = "${local.gcs_bucket_name}"
+  force_destroy = true
+  location      = "${var.region}"
+  storage_class = "REGIONAL"
+  project       = "${var.project_id}"
 }
 
 module "example" {
   source = "../../../examples/simple_example"
-
-  project_id  = "${var.project_id}"
-  bucket_name = "${random_pet.main.id}"
+  project_id                = "${var.project_id}"
+  service_account        = "${var.service_account}"
+  instance_type = "${var.instance_type}"
+  sap_hana_deployment_bucket = "${google_storage_bucket.deployment_bucket.name}"
+  subnetwork = "default"
+  network_tags=["foo"]
 }
