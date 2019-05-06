@@ -7,6 +7,7 @@ source startup.sh
 # Verifying HANA deployment
 df -h
 
+# sudo su -
 #su - [SID]adm
 
 HDB info

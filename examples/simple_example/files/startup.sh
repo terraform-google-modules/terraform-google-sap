@@ -5,8 +5,8 @@ chmod +x startup.sh
 source startup.sh
 
 # Verifying HANA deployment
-#df -h
+df -h
 
 #su - [SID]adm
 
-#HDB info
+HDB info

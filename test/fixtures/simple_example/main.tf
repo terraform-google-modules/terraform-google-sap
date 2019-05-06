@@ -20,6 +20,10 @@ resource "random_id" "random_suffix" {
 
 locals {
   gcs_bucket_name = "deployment-bucket-${random_id.random_suffix.hex}"
+
+  # TODO: Add requirements of downloading sotware in README.md of module.
+  #gcs_bucket_static_name = "deployment-bucket-static/hana20sps03"
+  gcs_bucket_static_name = "hana-gcp-20/hana20sps03"
 }
 
 #TODO: Add creation of a network that's similar to app2 
@@ -36,7 +40,7 @@ module "example" {
   project_id                = "${var.project_id}"
   service_account        = "${var.service_account}"
   instance_type = "${var.instance_type}"
-  sap_hana_deployment_bucket = "${google_storage_bucket.deployment_bucket.name}"
+  sap_hana_deployment_bucket = "${local.gcs_bucket_static_name}"
   subnetwork = "default"
   network_tags=["foo"]
 }

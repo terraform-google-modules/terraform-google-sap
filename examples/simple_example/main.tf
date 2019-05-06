@@ -38,8 +38,8 @@ module "gcp_sap_hana" {
   boot_disk_type="pd-ssd"
   boot_disk_size=64
   autodelete_disk="true"
-  pd_ssd_size=50
-  pd_standard_size=50
+  pd_ssd_size=300
+  pd_standard_size=300
 
   # sap_instance_name_prefix   = "${var.sap_instance_name_prefix}"
   
