@@ -26,36 +26,34 @@ module "gcp_sap_hana" {
   source                 = "../../modules/sap-hana"
   post_deployment_script = "${var.post_deployment_script}"
   subnetwork             = "${var.subnetwork}"
-  linux_image_family="sles-12-sp3-sap"
-  linux_image_project="suse-sap-cloud"
-  instance_name="${var.instance_name}"
-  instance_type="n1-highmem-16"
-  zone="us-central1-b"
+  linux_image_family     = "sles-12-sp3-sap"
+  linux_image_project    = "suse-sap-cloud"
+  instance_name          = "${var.instance_name}"
+  instance_type          = "n1-highmem-16"
+  zone                   = "us-central1-b"
 
-  project_id                = "${var.project_id}"
-  region                 = "${var.region}"
-  service_account        = "${var.service_account}"
-  boot_disk_type="pd-ssd"
-  boot_disk_size=64
-  autodelete_disk="true"
-  pd_ssd_size=300
-  pd_standard_size=300
+  project_id       = "${var.project_id}"
+  region           = "${var.region}"
+  service_account  = "${var.service_account}"
+  boot_disk_type   = "pd-ssd"
+  boot_disk_size   = 64
+  autodelete_disk  = "true"
+  pd_ssd_size      = 300
+  pd_standard_size = 300
 
   # sap_instance_name_prefix   = "${var.sap_instance_name_prefix}"
-  
+
   sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
-  
   # TODO: Set as default
   sap_deployment_debug = "false"
-  
+
   #Erase line because default is  empty string
   # post_deployment_script     = "${var.post_deployment_script}"
-  
-  sap_hana_sid = "D10"
+
+  sap_hana_sid             = "D10"
   sap_hana_instance_number = 10
   sap_hana_sidadm_password = "Google123"
   sap_hana_system_password = "Google123"
-
   sap_hana_sidadm_uid = 900
   sap_hana_sapsys_gid = 900
 }

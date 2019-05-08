@@ -26,5 +26,5 @@ output "project_id" {
 
 output "instance_name" {
   description = "Name of the instance"
-  value = "${module.example.instance_name}"
+  value       = "${module.example.instance_name}"
 }

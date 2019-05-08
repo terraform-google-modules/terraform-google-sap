@@ -21,5 +21,5 @@ output "sap_hana_sid" {
 
 output "instance_name" {
   description = "Name of instance"
-  value = "${var.instance_name}"
+  value       = "${var.instance_name}"
 }

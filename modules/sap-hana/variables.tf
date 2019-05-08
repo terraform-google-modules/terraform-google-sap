@@ -57,6 +57,7 @@ variable "sap_deployment_debug" {
 
 variable "post_deployment_script" {
   description = "SAP post deployment script"
+  default = ""
 }
 
 variable "sap_hana_sid" {
@@ -81,7 +82,6 @@ variable "sap_hana_sidadm_uid" {
 variable "sap_hana_sapsys_gid" {
   description = "SAP hana sap system gid"
 }
-
 
 variable "autodelete_disk" {
   description = "Delete backend disk along with instance"
@@ -113,5 +113,14 @@ variable "service_account" {
 variable "network_tags" {
   type        = "list"
   description = "List of network tags"
-  default = [""]
+  default = []
+}
+
+variable "startup_script" {
+  description = ""
+}
+
+variable "startup_script_custom" {
+  description = "Custom startup script. This should only be used with the terraform-google-startup-scripts module."
+  default     = ""
 }

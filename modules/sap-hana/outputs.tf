@@ -15,11 +15,11 @@
  */
 
 output "instance_gcp_sap_hana_name" {
- value = "${google_compute_instance.gcp_sap_hana.name}"
+  value = "${google_compute_instance.gcp_sap_hana.name}"
 }
 
 output "instance_zone" {
- value = "${google_compute_instance.gcp_sap_hana.zone}"
+  value = "${google_compute_instance.gcp_sap_hana.zone}"
 }
 
 output "gcp_sap_hana_instance_machine_type" {

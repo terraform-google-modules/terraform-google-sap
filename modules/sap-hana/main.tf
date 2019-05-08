@@ -38,9 +38,10 @@ resource "google_compute_disk" "gcp_sap_hana_sd_1" {
 }
 
 resource "google_compute_instance" "gcp_sap_hana" {
-  name           = "${var.instance_name}"
-  machine_type   = "${var.instance_type}"
-  zone           = "${var.zone}"
+  name         = "${var.instance_name}"
+  machine_type = "${var.instance_type}"
+  zone         = "${var.zone}"
+
   #tags           = "${var.network_tags}"
   can_ip_forward = true
 
@@ -86,13 +87,16 @@ resource "google_compute_instance" "gcp_sap_hana" {
     sap_hana_sidadm_uid        = "${var.sap_hana_sidadm_uid}"
     sap_hana_sapsys_gid        = "${var.sap_hana_sapsys_gid}"
 
+    # Needed for startup-scripts module
+    startup-script        = "${var.startup-script}"
+    startup-script-custom = "${var.startup-script-custom}"
   }
 
-  metadata_startup_script = "${file("${path.module}/files/startup.sh")}"
+  # Removed this argument since it cannot be used with the startup-script metadata key that's needed for startup-scripts module.
+  #metadata_startup_script = "${file("${path.module}/files/startup.sh")}"
 
   service_account {
     email  = "${var.service_account}"
     scopes = ["cloud-platform"]
   }
 }
-

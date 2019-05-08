@@ -24,10 +24,11 @@ variable "service_account" {
 
 variable "instance_type" {
   description = "Compute Engine instance Type"
+
   # Should add minimal instance type here if possible.
 }
 
 variable "region" {
   description = "Region where to deploy resources"
-  default = "us-central1"
+  default     = "us-central1"
 }
