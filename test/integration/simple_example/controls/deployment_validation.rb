@@ -29,31 +29,14 @@
 require 'retriable'
 
 control 'deployment_validation' do
-  describe 'console output of startup script' do
-    # Avoid racing against the instance boot sequence
-    before :all do
-      Retriable.retriable(tries: 2) do
-        get_serial_port_output = "gcloud compute instances get-serial-port-output #{attribute('instance_name')}"
-        @cmd = command("#{get_serial_port_output} --project #{attribute('project_id')}")
-        if not %r{Startup finished}.match(@cmd.stdout)
-          raise StandardError, "Not found: 'systemd: Startup finished' in console output, cannot proceed"
-        end
-      end
-    end
 
-    subject do
-      @cmd
-    end
+    describe command("gcloud compute instances get-serial-port-output #{attribute('instance_name')} --project=#{attribute('project_id')} --zone=#{attribute('zone')}") do
+      its(:exit_status) { should eq 0 }
 
-    describe "Verify /hana directories" do
-      its('exit_status') { should be 0 }
+      # Validate `df -h` command output
       its('stdout') { should match('/hana/data & /hana/log') }
+
+      # Validate `HDB info` command output
+      its('stdout') { should match('hdbnameserver') }
     end
-
-    #describe "Verify HANA services are running" do
-      #its('stdout') { should match('TEST UUID E62A3897-AAA0-4577-A564-F00B4B54869B') }
-      #its('stdout') { should match('Finished with startup-script-custom example 3FF02EC9-BFFE-4B47-BEE7-C98A07818251') }
-    #end
-
-  end
 end

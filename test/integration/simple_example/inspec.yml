@@ -7,13 +7,10 @@ attributes:
   - name: project_id
     required: true
     type: string
-  - name: bucket_name
-    required: true
-    type: string
   - name: instance_name
     required: true
     type: string
-  - name: region
+  - name: zone
     required: true
     type: string
-    
+

@@ -28,3 +28,8 @@ output "instance_name" {
   description = "Name of the instance"
   value       = "${module.example.instance_name}"
 }
+
+output "zone" {
+  description = "Compute Engine instance deployment zone"
+  value       = "${module.example.zone}"
+}

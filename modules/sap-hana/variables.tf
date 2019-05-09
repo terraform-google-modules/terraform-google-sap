@@ -45,6 +45,7 @@ variable "linux_image_family" {
 variable "linux_image_project" {
   description = "Project name containing the linux image"
 }
+
 variable "sap_hana_deployment_bucket" {
   description = "SAP hana deployment bucket"
 }
@@ -52,12 +53,12 @@ variable "sap_hana_deployment_bucket" {
 # Mod to SCR
 variable "sap_deployment_debug" {
   description = "SAP hana deployment debug"
-  default = "false"
+  default     = "false"
 }
 
 variable "post_deployment_script" {
   description = "SAP post deployment script"
-  default = ""
+  default     = ""
 }
 
 variable "sap_hana_sid" {
@@ -71,6 +72,7 @@ variable "sap_hana_instance_number" {
 variable "sap_hana_sidadm_password" {
   description = "SAP hana SID admin password"
 }
+
 variable "sap_hana_system_password" {
   description = "SAP hana system password"
 }
@@ -113,11 +115,11 @@ variable "service_account" {
 variable "network_tags" {
   type        = "list"
   description = "List of network tags"
-  default = []
+  default     = []
 }
 
 variable "startup_script" {
-  description = ""
+  description = "Startup script for VM running SAP HANA."
 }
 
 variable "startup_script_custom" {

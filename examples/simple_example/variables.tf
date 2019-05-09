@@ -21,40 +21,43 @@ variable "project_id" {
 
 variable "instance_name" {
   description = "Compute Engine instance name"
-  default = "sap-hana-simple-example"
+  default     = "sap-hana-simple-example"
 }
 
 variable "instance_type" {
   description = "Compute Engine instance Type"
+
   # Should add minimal instance type here if possible.
 }
 
 variable "zone" {
   description = "Compute Engine instance deployment zone"
-  default = "us-central1-b"
+  default     = "us-central1-b"
 }
 
 variable "subnetwork" {
   description = "Compute Engine instance name"
-  default = ""
+  default     = ""
 }
 
 variable "region" {
   description = "Region to deploy the resources"
-  default = "us-central1"
+  default     = "us-central1"
 }
 
 variable "linux_image_family" {
   description = "Compute Engine image name"
-  default = "sles-12-sp3-sap"
+  default     = "sles-12-sp3-sap"
 }
 
 variable "linux_image_project" {
   description = "Project name containing the linux image"
-  default = "suse-sap-cloud"
+  default     = "suse-sap-cloud"
 }
+
 variable "sap_hana_deployment_bucket" {
   description = "SAP hana deployment bucket"
+
   # Can default be ignored here
   default = ""
 }
@@ -62,43 +65,43 @@ variable "sap_hana_deployment_bucket" {
 # Mod to SCR
 variable "sap_deployment_debug" {
   description = "SAP hana deployment debug"
-  default = "false"
+  default     = "false"
 }
 
 variable "post_deployment_script" {
   description = "SAP post deployment script"
-  default = ""
+  default     = ""
 }
 
 variable "sap_hana_sid" {
   description = "SAP hana SID"
-  default = "D10"
+  default     = "D10"
 }
 
 variable "sap_hana_instance_number" {
   description = "SAP hana instance number"
-  default = 10
+  default     = 10
 }
 
 variable "sap_hana_sidadm_password" {
   description = "SAP hana SID admin password"
-  default = "Google123"
+  default     = "Google123"
 }
+
 variable "sap_hana_system_password" {
   description = "SAP hana system password"
-  default = "Google123"
+  default     = "Google123"
 }
 
 variable "sap_hana_sidadm_uid" {
   description = "SAP hana sid adm password"
-  default = 900
+  default     = 900
 }
 
 variable "sap_hana_sapsys_gid" {
   description = "SAP hana sap system gid"
-  default = 900
+  default     = 900
 }
-
 
 variable "autodelete_disk" {
   description = "Delete backend disk along with instance"
@@ -114,17 +117,17 @@ variable "boot_disk_size" {
 
 variable "boot_disk_type" {
   description = "The type of data disk: PD_SSD or PD_HDD."
-  default = "pd-ssd"
+  default     = "pd-ssd"
 }
 
 variable "pd_ssd_size" {
   description = "Persistent disk size in GB"
-  default = 50
+  default     = 50
 }
 
 variable "pd_standard_size" {
   description = "Persistent disk size in GB"
-  default = 50
+  default     = 50
 }
 
 variable "service_account" {
@@ -135,6 +138,15 @@ variable "service_account" {
 variable "network_tags" {
   type        = "list"
   description = "List of network tags"
-  default = [""]
+  default     = [""]
+}
+
+variable "startup_script" {
+  description = "Startup script for VM running SAP HANA."
+}
+
+variable "startup_script_custom" {
+  description = "Custom startup script. This should only be used with the terraform-google-startup-scripts module."
+  default     = ""
 }
 

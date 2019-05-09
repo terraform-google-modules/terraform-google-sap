@@ -52,6 +52,7 @@ resource "google_compute_instance" "gcp_sap_hana" {
 
   boot_disk {
     auto_delete = "${var.autodelete_disk}"
+    #device_name = "${var.instance_name}-boot"
 
     initialize_params {
       image = "projects/${var.linux_image_project}/global/images/family/${var.linux_image_family}"
@@ -88,12 +89,12 @@ resource "google_compute_instance" "gcp_sap_hana" {
     sap_hana_sapsys_gid        = "${var.sap_hana_sapsys_gid}"
 
     # Needed for startup-scripts module
-    startup-script        = "${var.startup-script}"
-    startup-script-custom = "${var.startup-script-custom}"
+    startup-script        = "${var.startup_script}"
+    startup-script-custom = "${var.startup_script_custom}"
   }
 
   # Removed this argument since it cannot be used with the startup-script metadata key that's needed for startup-scripts module.
-  #metadata_startup_script = "${file("${path.module}/files/startup.sh")}"
+   #metadata_startup_script = "${file("${path.module}/files/startup.sh")}"
 
   service_account {
     email  = "${var.service_account}"
