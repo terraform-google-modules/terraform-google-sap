@@ -14,7 +14,17 @@
  * limitations under the License.
  */
 
-variable "project_id" {
-  description = "The ID of the project in which to provision resources."
-  type        = "string"
+output "sap_hana_sid" {
+  description = "SAP Hana SID user"
+  value       = "${var.sap_hana_sid}"
+}
+
+output "sap_primary_instance_name" {
+  description = "Name of sap primary instance"
+  value       = "${var.sap_primary_instance}"
+}
+
+output "sap_secondary_instance_name" {
+  description = "Name of sap secondary instance"
+  value       = "${var.sap_secondary_instance}"
 }

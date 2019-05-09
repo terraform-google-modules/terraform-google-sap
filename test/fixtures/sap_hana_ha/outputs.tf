@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-provider "google" {
-  version = "~> 2.0"
+output "sap_hana_sid" {
+  description = "SAP Hana SID user"
+  value       = "${var.sap_hana_sid}"
 }
 
-module "sap" {
-  source = "../.."
+output "sap_primary_instance_name" {
+  description = "Name of sap primary instance"
+  value       = "${var.sap_primary_instance}"
+}
 
-  project_id  = "${var.project_id}"
-  bucket_name = "${var.bucket_name}"
+output "sap_secondary_instance_name" {
+  description = "Name of sap secondary instance"
+  value       = "${var.sap_secondary_instance}"
 }
