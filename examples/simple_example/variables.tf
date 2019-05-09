@@ -26,7 +26,7 @@ variable "instance_name" {
 
 variable "instance_type" {
   description = "Compute Engine instance Type"
-
+  # TODO:
   # Should add minimal instance type here if possible.
 }
 
@@ -57,12 +57,8 @@ variable "linux_image_project" {
 
 variable "sap_hana_deployment_bucket" {
   description = "SAP hana deployment bucket"
-
-  # Can default be ignored here
-  default = ""
 }
 
-# Mod to SCR
 variable "sap_deployment_debug" {
   description = "SAP hana deployment debug"
   default     = "false"
@@ -110,7 +106,6 @@ variable "autodelete_disk" {
 
 variable "boot_disk_size" {
   description = "Root disk size in GB"
-
   # TODO: Make smaller boot disk size if possible.
   default = 64
 }
@@ -122,23 +117,18 @@ variable "boot_disk_type" {
 
 variable "pd_ssd_size" {
   description = "Persistent disk size in GB"
-  default     = 50
+  default     = 450
 }
 
-variable "pd_standard_size" {
-  description = "Persistent disk size in GB"
-  default     = 50
-}
 
 variable "service_account" {
   description = "Service to run terraform"
 }
 
-## Mod to SCR
 variable "network_tags" {
   type        = "list"
   description = "List of network tags"
-  default     = [""]
+  default     = []
 }
 
 variable "startup_script" {
@@ -146,7 +136,6 @@ variable "startup_script" {
 }
 
 variable "startup_script_custom" {
-  description = "Custom startup script. This should only be used with the terraform-google-startup-scripts module."
+  description = "Custom startup script to be loaded as metadata. This should only be used with the terraform-google-startup-scripts module."
   default     = ""
 }
-

@@ -50,7 +50,6 @@ variable "sap_hana_deployment_bucket" {
   description = "SAP hana deployment bucket"
 }
 
-# Mod to SCR
 variable "sap_deployment_debug" {
   description = "SAP hana deployment debug"
   default     = "false"
@@ -90,6 +89,20 @@ variable "autodelete_disk" {
   default     = true
 }
 
+variable "disk_name_0" {
+  description = "Name of first disk"
+  default = "sap-hana-pd-sd-0"
+}
+
+variable "disk_name_1" {
+  description = "Name of second disk"
+  default = "sap-hana-pd-sd-1"
+}
+
+variable "disk_type" {
+  description = "The type of data disk: PD_SSD or PD_HDD."
+}
+
 variable "boot_disk_size" {
   description = "Root disk size in GB"
 }
@@ -102,27 +115,27 @@ variable "pd_ssd_size" {
   description = "Persistent disk size in GB"
 }
 
-variable "pd_standard_size" {
-  description = "Persistent disk size in GB"
-}
-
-# TODO: The service account to run Terraform should be different the one associated with the VM.
 variable "service_account" {
   description = "Service to run the terrform"
 }
 
-## Mod to SCR
 variable "network_tags" {
   type        = "list"
   description = "List of network tags"
   default     = []
 }
 
+variable "address_name" {
+  description = "Name of adress to add to the instance's access config"
+  default = "gcp-sap-hana-ip"
+}
+
 variable "startup_script" {
   description = "Startup script for VM running SAP HANA."
 }
 
+# TODO: Delete if not necessary
 variable "startup_script_custom" {
-  description = "Custom startup script. This should only be used with the terraform-google-startup-scripts module."
+  description = "Custom startup script to be loaded as metadata. This should only be used with the terraform-google-startup-scripts module."
   default     = ""
 }

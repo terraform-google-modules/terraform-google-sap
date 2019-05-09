@@ -19,22 +19,22 @@ terraform {
 }
 
 resource "google_compute_disk" "gcp_sap_hana_sd_0" {
-  name = "sap-hana-pd-sd-0"
-  type = "pd-standard"
+  name = "${var.disk_name_0}"
+  type = "${var.disk_type}"
   zone = "${var.zone}"
-  size = "${var.pd_standard_size}"
+  size = "${var.pd_ssd_size}"
 }
 
 resource "google_compute_address" "gcp_sap_hana_ip" {
-  name   = "gcp-sap-hana-ip"
+  name   = "${var.address_name}"
   region = "${var.region}"
 }
 
 resource "google_compute_disk" "gcp_sap_hana_sd_1" {
-  name = "sap-hana-pd-sd-1"
-  type = "pd-standard"
+  name = "${var.disk_name_1}"
+  type = "${var.disk_type}"
   zone = "${var.zone}"
-  size = "${var.pd_standard_size}"
+  size = "${var.pd_ssd_size}"
 }
 
 resource "google_compute_instance" "gcp_sap_hana" {
@@ -52,7 +52,6 @@ resource "google_compute_instance" "gcp_sap_hana" {
 
   boot_disk {
     auto_delete = "${var.autodelete_disk}"
-    #device_name = "${var.instance_name}-boot"
 
     initialize_params {
       image = "projects/${var.linux_image_project}/global/images/family/${var.linux_image_family}"
@@ -94,7 +93,7 @@ resource "google_compute_instance" "gcp_sap_hana" {
   }
 
   # Removed this argument since it cannot be used with the startup-script metadata key that's needed for startup-scripts module.
-   #metadata_startup_script = "${file("${path.module}/files/startup.sh")}"
+  #metadata_startup_script = "${file("${path.module}/files/startup.sh")}"
 
   service_account {
     email  = "${var.service_account}"

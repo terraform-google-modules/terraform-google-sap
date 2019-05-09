@@ -30,32 +30,23 @@ module "gcp_sap_hana" {
   linux_image_project    = "suse-sap-cloud"
   instance_name          = "${var.instance_name}"
   instance_type          = "n1-highmem-16"
-  #instance_type = "n1-standard-16"
-
-  #TODO: Add Arvind's changes here.
-  #instance_type          = "n1-standard-16"
   zone                   = "us-central1-b"
-
-  project_id       = "${var.project_id}"
-  region           = "${var.region}"
-  service_account  = "${var.service_account}"
-  boot_disk_type   = "pd-ssd"
-  boot_disk_size   = 64
-  autodelete_disk  = "true"
-  pd_ssd_size      = 300
-  pd_standard_size = 300
-
-  # sap_instance_name_prefix   = "${var.sap_instance_name_prefix}"
+  disk_type              = "pd-ssd"
+  project_id             = "${var.project_id}"
+  region                 = "${var.region}"
+  service_account        = "${var.service_account}"
+  boot_disk_type         = "pd-ssd"
+  boot_disk_size         = 64
+  autodelete_disk        = "true"
+  pd_ssd_size            = 450
 
   sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
-  # TODO: Set as default
-  sap_deployment_debug = "false"
+  sap_deployment_debug       = "false"
 
-  #Erase line because default is  empty string
-  post_deployment_script     = "${var.post_deployment_script}"
+  post_deployment_script = "${var.post_deployment_script}"
 
-  startup_script        = "${var.startup_script}"
-  startup_script_custom = "${var.startup_script_custom}"
+  startup_script           = "${var.startup_script}"
+  startup_script_custom    = "${var.startup_script_custom}"
   sap_hana_sid             = "D10"
   sap_hana_instance_number = 10
   sap_hana_sidadm_password = "Google123"

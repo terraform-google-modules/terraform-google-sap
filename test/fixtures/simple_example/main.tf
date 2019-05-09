@@ -19,10 +19,9 @@ resource "random_id" "random_suffix" {
 }
 
 locals {
-  gcs_bucket_name = "deployment-bucket-${random_id.random_suffix.hex}"
+  gcs_bucket_name = "post-deployment-bucket-${random_id.random_suffix.hex}"
 
-  # TODO: Add requirements of downloading sotware in README.md of module.
-  #gcs_bucket_static_name = "deployment-bucket-static/hana20sps03"
+  # TODO: Add requirements of downloading sotware in README.md of module
   gcs_bucket_static_name = "hana-gcp-20/hana20sps03"
 }
 
@@ -35,28 +34,30 @@ resource "google_storage_bucket" "deployment_bucket" {
   project       = "${var.project_id}"
 }
 
-
+/*
 module "startup_scripts" {
   source  = "terraform-google-modules/startup-scripts/google"
   version = "0.1.0"
 }
+*/
 
 data "template_file" "post_deployment_script" {
   template = "${file("${path.cwd}/files/templates/post_deployment_script.tpl")}"
 
   vars = {
-
-    #sap_hana_id (SID) needs to be lower case logging in with the [SID]adm
+    # sap_hana_id (SID) needs to be lower case to work with `su -[SID]adm` command
     sap_hana_sid = "${lower(module.example.sap_hana_sid)}"
   }
 }
 
+
 data "template_file" "startup_sap_hana" {
-  template = "${file("${path.module}/files/startup_sap_hana.tpl")}"
+  template = "${file("${path.module}/files/startup_sap_hana.sh")}"
 }
 
+
 resource "google_storage_bucket_object" "post_deployment_script" {
-  name    = "post_deployment_script"
+  name    = "post_deployment_script.sh"
   content = "${data.template_file.post_deployment_script.rendered}"
   bucket  = "${google_storage_bucket.deployment_bucket.name}"
 }
@@ -69,7 +70,8 @@ module "example" {
   sap_hana_deployment_bucket = "${local.gcs_bucket_static_name}"
   subnetwork                 = "default"
   network_tags               = ["foo"]
-  startup_script             = "${module.startup_scripts.content}"
-  post_deployment_script     = "gs://deployment-bucket-static/post_deployment_test.sh"
-  startup_script_custom      = "${data.template_file.startup_sap_hana.rendered}"
+  #startup_script             = "${module.startup_scripts.content}"
+  startup_script             = "${data.template_file.startup_sap_hana.rendered}"
+  post_deployment_script     = "${google_storage_bucket.deployment_bucket.url}/${google_storage_bucket_object.post_deployment_script.name}"
+  # startup_script_custom      = "${data.template_file.startup_sap_hana.rendered}"
 }

@@ -34,9 +34,11 @@ control 'deployment_validation' do
       its(:exit_status) { should eq 0 }
 
       # Validate `df -h` command output
-      its('stdout') { should match('/hana/data & /hana/log') }
+      its('stdout') { should match('/dev/mapper/vg_hana-data') }
+      its('stdout') { should match('/dev/mapper/vg_hana-log') }
 
-      # Validate `HDB info` command output
+      # Validate `HDB info` command output.
+      # TODO: Refine output verification once HDB info works on post deployment script
       its('stdout') { should match('hdbnameserver') }
     end
 end

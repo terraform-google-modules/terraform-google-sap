@@ -4,10 +4,3 @@ curl -s https://storage.googleapis.com/sapdeploy/dm-templates/sap_hana/startup.s
 chmod +x startup.sh
 source startup.sh
 
-# Verifying HANA deployment
-df -h
-
-# sudo su -
-#su - [SID]adm
-
-HDB info
