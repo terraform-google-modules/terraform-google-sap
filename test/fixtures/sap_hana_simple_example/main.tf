@@ -34,13 +34,6 @@ resource "google_storage_bucket" "deployment_bucket" {
   project       = "${var.project_id}"
 }
 
-/*
-module "startup_scripts" {
-  source  = "terraform-google-modules/startup-scripts/google"
-  version = "0.1.0"
-}
-*/
-
 data "template_file" "post_deployment_script" {
   template = "${file("${path.cwd}/files/templates/post_deployment_script.tpl")}"
 
@@ -63,15 +56,13 @@ resource "google_storage_bucket_object" "post_deployment_script" {
 }
 
 module "example" {
-  source                     = "../../../examples/simple_example"
+  source                     = "../../../examples/sap_hana_simple_example"
   project_id                 = "${var.project_id}"
   service_account            = "${var.service_account}"
   instance_type              = "${var.instance_type}"
   sap_hana_deployment_bucket = "${local.gcs_bucket_static_name}"
   subnetwork                 = "default"
   network_tags               = ["foo"]
-  #startup_script             = "${module.startup_scripts.content}"
   startup_script             = "${data.template_file.startup_sap_hana.rendered}"
   post_deployment_script     = "${google_storage_bucket.deployment_bucket.url}/${google_storage_bucket_object.post_deployment_script.name}"
-  # startup_script_custom      = "${data.template_file.startup_sap_hana.rendered}"
 }

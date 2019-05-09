@@ -26,14 +26,14 @@ platforms:
   - name: default
 
 suites:
-  - name: simple_example
+  - name: sap_hana_simple_example
     driver:
-      root_module_directory: test/fixtures/simple_example/
+      root_module_directory: test/fixtures/sap_hana_simple_example/
       command_timeout: 1800
     verifier:
       color: false
       systems:
-        - name: simple_example local
+        - name: sap_hana_simple_example local
           backend: local
           controls:
             - deployment_validation
