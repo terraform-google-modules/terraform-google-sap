@@ -53,4 +53,7 @@ module "gcp_sap_hana_ha" {
   sap_hana_sapsys_gid        = "${var.sap_hana_sapsys_gid}"
   sap_vip                    = "${var.sap_vip}"
   sap_vip_secondary_range    = "${var.sap_vip_secondary_range}"
+  gcp_primary_instance_ip    = "${var.gcp_primary_instance_ip}"
+  gcp_secondary_instance_ip  = "${var.gcp_secondary_instance_ip}"
+  sap_vip_internal_address   = "${var.sap_vip_internal_address}"
 }

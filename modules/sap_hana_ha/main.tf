@@ -16,20 +16,22 @@
 
 terraform {
   required_version = "~> 0.11.0"
+  project          = "${var.project_id}"
+  region           = "${var.region}"
 }
 
 resource "google_compute_address" "gcp-primary-instance-ip" {
-  name   = "gcp-primary-instance-ip"
+  name   = "${var.gcp_primary_instance_ip}"
   region = "${var.region}"
 }
 
 resource "google_compute_address" "gcp-secondary-instance-ip" {
-  name   = "gcp-secondary-instance-ip"
+  name   = "${var.gcp_secondary_instance_ip}"
   region = "${var.region}"
 }
 
 resource "google_compute_address" "internal_sap_vip" {
-  name         = "sap-vip-internal-address"
+  name         = "${var.sap_vip_internal_address}"
   subnetwork   = "${var.subnetwork}"
   address_type = "INTERNAL"
   address      = "${var.sap_vip}"
