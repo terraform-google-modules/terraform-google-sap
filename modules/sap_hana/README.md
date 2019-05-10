@@ -20,7 +20,7 @@ provider "google" {
 }
 
 module "gcp_sap_hana" {
-  source                 = "terraform-google-modules/sap/google/modules/sap-hana"
+  source                 = "terraform-google-modules/sap/google/modules/sap_hana"
   subnetwork             = "${var.subnetwork}"
   linux_image_family     = "sles-12-sp3-sap"
   linux_image_project    = "suse-sap-cloud"
@@ -29,7 +29,7 @@ module "gcp_sap_hana" {
   disk_type              = "pd-ssd"
   project_id             = "${var.project_id}"
   region                 = "${var.region}"
-  service_account        = "${var.service_account}"
+  service_account_email        = "${var.service_account_email}"
   boot_disk_type         = "pd-ssd"
   boot_disk_size         = 64
   autodelete_disk        = "true"
@@ -67,7 +67,7 @@ The compute instance created by this submodule will need to download SAP HANA fr
  You may use the following gcloud commands:
    `gcloud projects add-iam-policy-binding <project-id> --member=serviceAccount:<service-account-email> --role=roles/storage.objectViewer`
 
-3. When configuring the module, use this newly created service account's email, to set the `service_account` input variable.
+3. When configuring the module, use this newly created service account's email, to set the `service_account_email` input variable.
 
 [^]: (autogen_docs_start)
 

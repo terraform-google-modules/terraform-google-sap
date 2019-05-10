@@ -23,22 +23,20 @@ provider "google" {
 }
 
 module "gcp_sap_hana" {
-  source                 = "../../modules/sap-hana"
-  post_deployment_script = "${var.post_deployment_script}"
+  source                 = "../../modules/sap_hana"
   subnetwork             = "${var.subnetwork}"
-  linux_image_family     = "sles-12-sp3-sap"
-  linux_image_project    = "suse-sap-cloud"
+  linux_image_family     = "${var.linux_image_family}"
+  linux_image_project    = "${var.linux_image_project}"
   instance_name          = "${var.instance_name}"
-  instance_type          = "n1-highmem-16"
-  zone                   = "us-central1-b"
-  disk_type              = "pd-ssd"
+  instance_type          = "${var.instance_type}"
+  disk_type              = "${var.disk_type}"
   project_id             = "${var.project_id}"
   region                 = "${var.region}"
-  service_account        = "${var.service_account}"
-  boot_disk_type         = "pd-ssd"
-  boot_disk_size         = 64
+  service_account_email        = "${var.service_account_email}"
+  boot_disk_type         = "${var.boot_disk_type}"
+  boot_disk_size         = "${var.boot_disk_size}"
   autodelete_disk        = "true"
-  pd_ssd_size            = 450
+  pd_ssd_size            = "${var.pd_ssd_size}"
 
   sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
   sap_deployment_debug       = "false"
@@ -46,7 +44,6 @@ module "gcp_sap_hana" {
   post_deployment_script = "${var.post_deployment_script}"
 
   startup_script           = "${var.startup_script}"
-  startup_script_custom    = "${var.startup_script_custom}"
   sap_hana_sid             = "D10"
   sap_hana_instance_number = 10
   sap_hana_sidadm_password = "Google123"

@@ -1,6 +1,9 @@
-# Simple Example
+# SAP HANA Simple Example
 
-This example illustrates how to use the `sap` module.
+This example illustrates how to use the `SAP HANA` submodule to deploy SAP HANA on GCP.
+
+## Requirements
+Make sure you go through this [Requirements section](../../modules/sap_hana/README.md#requirements) for the SAP HANA Submodule
 
 [^]: (autogen_docs_start)
 
@@ -47,3 +50,18 @@ To provision this example, run the following from within this directory:
 - `terraform plan` to see the infrastructure plan
 - `terraform apply` to apply the infrastructure build
 - `terraform destroy` to destroy the built infrastructure
+
+
+## Integration Tests
+
+### Additional Service Account Permissions
+If you need to run integration tests, the service for deploying resources needs the follwoing additional permissions:
+
+- roles/storage.admin
+
+ You may use the following gcloud commands:
+   `gcloud projects add-iam-policy-binding <project-id> --member=serviceAccount:<service-account-email> --role=roles/storage.admin`
+
+### Running integration tests
+
+Refer to the [contributing guidelines' Integration Testing Section](../../CONTRIBUTING.md#integration-test) for running integration tests for this example.

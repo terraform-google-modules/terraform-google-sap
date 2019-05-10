@@ -32,12 +32,11 @@ variable "instance_type" {
 
 variable "zone" {
   description = "Compute Engine instance deployment zone"
-  default     = "us-central1-b"
+  default     = "us-central1-a"
 }
 
 variable "subnetwork" {
   description = "Compute Engine instance name"
-  default     = ""
 }
 
 variable "region" {
@@ -47,12 +46,10 @@ variable "region" {
 
 variable "linux_image_family" {
   description = "Compute Engine image name"
-  default     = "sles-12-sp3-sap"
 }
 
 variable "linux_image_project" {
   description = "Project name containing the linux image"
-  default     = "suse-sap-cloud"
 }
 
 variable "sap_hana_deployment_bucket" {
@@ -104,6 +101,10 @@ variable "autodelete_disk" {
   default     = true
 }
 
+variable "disk_type" {
+  description = "The type of data disk: PD_SSD or PD_HDD."
+}
+
 variable "boot_disk_size" {
   description = "Root disk size in GB"
   # TODO: Make smaller boot disk size if possible.
@@ -121,7 +122,7 @@ variable "pd_ssd_size" {
 }
 
 
-variable "service_account" {
+variable "service_account_email" {
   description = "Service to run terraform"
 }
 
@@ -132,10 +133,5 @@ variable "network_tags" {
 }
 
 variable "startup_script" {
-  description = "Startup script for VM running SAP HANA."
-}
-
-variable "startup_script_custom" {
-  description = "Custom startup script to be loaded as metadata. This should only be used with the terraform-google-startup-scripts module."
-  default     = ""
+  description = "Path to startup script for VM running to install SAP HANA."
 }

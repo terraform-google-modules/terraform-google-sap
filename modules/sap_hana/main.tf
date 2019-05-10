@@ -42,7 +42,8 @@ resource "google_compute_instance" "gcp_sap_hana" {
   machine_type = "${var.instance_type}"
   zone         = "${var.zone}"
 
-  #tags           = "${var.network_tags}"
+  # TODO: Make sure this works with empty network tags
+  tags           = "${var.network_tags}"
   can_ip_forward = true
 
   scheduling {
@@ -89,14 +90,16 @@ resource "google_compute_instance" "gcp_sap_hana" {
 
     # Needed for startup-scripts module
     startup-script        = "${var.startup_script}"
-    startup-script-custom = "${var.startup_script_custom}"
   }
 
-  # Removed this argument since it cannot be used with the startup-script metadata key that's needed for startup-scripts module.
+  # Removed this argument since it cannot be used with the startup-script metadata key.
+  # Startup-script meta data key is favorable to re run the startup scrpt when the instance changes.
+  # This favorable to disturb HAN installation and let the user decide when to re run the startup script.
+  #TODO: Validate this decision
   #metadata_startup_script = "${file("${path.module}/files/startup.sh")}"
 
   service_account {
-    email  = "${var.service_account}"
+    email  = "${var.service_account_email}"
     scopes = ["cloud-platform"]
   }
 }

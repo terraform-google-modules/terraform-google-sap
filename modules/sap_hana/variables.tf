@@ -14,28 +14,26 @@
  * limitations under the License.
  */
 
+variable "project_id" {
+  description = "Project id to deploy the resources"
+}
+
+variable "zone" {
+  description = "Compute Engine instance deployment zone"
+  default = "us-central1-a"
+}
+
+variable "region" {
+  description = "Region to deploy the resources"
+  default = "us-central1"
+}
+
 variable "instance_name" {
   description = "Compute Engine instance name"
 }
 
 variable "instance_type" {
   description = "Compute Engine instance Type"
-}
-
-variable "zone" {
-  description = "Compute Engine instance deployment zone"
-}
-
-variable "subnetwork" {
-  description = "Compute Engine instance name"
-}
-
-variable "project_id" {
-  description = "Project id to deploy the resources"
-}
-
-variable "region" {
-  description = "Region to deploy the resources"
 }
 
 variable "linux_image_family" {
@@ -46,46 +44,9 @@ variable "linux_image_project" {
   description = "Project name containing the linux image"
 }
 
-variable "sap_hana_deployment_bucket" {
-  description = "SAP hana deployment bucket"
-}
-
-variable "sap_deployment_debug" {
-  description = "SAP hana deployment debug"
-  default     = "false"
-}
-
-variable "post_deployment_script" {
-  description = "SAP post deployment script"
-  default     = ""
-}
-
-variable "sap_hana_sid" {
-  description = "SAP hana SID"
-}
-
-variable "sap_hana_instance_number" {
-  description = "SAP hana instance number"
-}
-
-variable "sap_hana_sidadm_password" {
-  description = "SAP hana SID admin password"
-}
-
-variable "sap_hana_system_password" {
-  description = "SAP hana system password"
-}
-
-variable "sap_hana_sidadm_uid" {
-  description = "SAP hana sid adm password"
-}
-
-variable "sap_hana_sapsys_gid" {
-  description = "SAP hana sap system gid"
-}
-
 variable "autodelete_disk" {
   description = "Delete backend disk along with instance"
+  # TODO: Double check if this should be true as default.
   default     = true
 }
 
@@ -115,8 +76,12 @@ variable "pd_ssd_size" {
   description = "Persistent disk size in GB"
 }
 
-variable "service_account" {
-  description = "Service to run the terrform"
+variable "service_account_email" {
+  description = "Service account email to run the terrform"
+}
+
+variable "subnetwork" {
+  description = "Compute Engine instance name"
 }
 
 variable "network_tags" {
@@ -130,12 +95,44 @@ variable "address_name" {
   default = "gcp-sap-hana-ip"
 }
 
+variable "sap_hana_deployment_bucket" {
+  description = "SAP hana deployment bucket"
+}
+
+variable "sap_deployment_debug" {
+  description = "SAP hana deployment debug"
+  default     = "false"
+}
+
+variable "post_deployment_script" {
+  description = "SAP post deployment script"
+  default     = ""
+}
+
 variable "startup_script" {
   description = "Startup script for VM running SAP HANA."
 }
 
-# TODO: Delete if not necessary
-variable "startup_script_custom" {
-  description = "Custom startup script to be loaded as metadata. This should only be used with the terraform-google-startup-scripts module."
-  default     = ""
+variable "sap_hana_sid" {
+  description = "SAP hana SID"
+}
+
+variable "sap_hana_instance_number" {
+  description = "SAP hana instance number"
+}
+
+variable "sap_hana_sidadm_password" {
+  description = "SAP hana SID admin password"
+}
+
+variable "sap_hana_system_password" {
+  description = "SAP hana system password"
+}
+
+variable "sap_hana_sidadm_uid" {
+  description = "SAP hana sid adm password"
+}
+
+variable "sap_hana_sapsys_gid" {
+  description = "SAP hana sap system gid"
 }

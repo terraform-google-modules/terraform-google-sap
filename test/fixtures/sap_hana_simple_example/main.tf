@@ -20,12 +20,11 @@ resource "random_id" "random_suffix" {
 
 locals {
   gcs_bucket_name = "post-deployment-bucket-${random_id.random_suffix.hex}"
-
-  # TODO: Add requirements of downloading sotware in README.md of module
   gcs_bucket_static_name = "hana-gcp-20/hana20sps03"
 }
 
 #TODO: Add creation of a network that's similar to app2 
+
 resource "google_storage_bucket" "deployment_bucket" {
   name          = "${local.gcs_bucket_name}"
   force_destroy = true
@@ -38,7 +37,7 @@ data "template_file" "post_deployment_script" {
   template = "${file("${path.cwd}/files/templates/post_deployment_script.tpl")}"
 
   vars = {
-    # sap_hana_id (SID) needs to be lower case to work with `su -[SID]adm` command
+    # sap_hana_sid needs to be lower case to work with `su -[SID]adm` command
     sap_hana_sid = "${lower(module.example.sap_hana_sid)}"
   }
 }
@@ -58,11 +57,21 @@ resource "google_storage_bucket_object" "post_deployment_script" {
 module "example" {
   source                     = "../../../examples/sap_hana_simple_example"
   project_id                 = "${var.project_id}"
-  service_account            = "${var.service_account}"
+  service_account_email            = "${var.service_account_email}"
+
   instance_type              = "${var.instance_type}"
-  sap_hana_deployment_bucket = "${local.gcs_bucket_static_name}"
+  linux_image_family     = "${var.linux_image_family}"
+  linux_image_project    = "${var.linux_image_project}"
+  instance_name          = "${var.instance_name}"
+  disk_type              = "${var.disk_type}"
+  boot_disk_type         = "${var.boot_disk_type}"
+  boot_disk_size         = "${var.boot_disk_size}"
+  pd_ssd_size            = "${var.pd_ssd_size}"
+
   subnetwork                 = "default"
-  network_tags               = ["foo"]
+  #network_tags               = ["foo"]
+
   startup_script             = "${data.template_file.startup_sap_hana.rendered}"
+  sap_hana_deployment_bucket = "${local.gcs_bucket_static_name}"
   post_deployment_script     = "${google_storage_bucket.deployment_bucket.url}/${google_storage_bucket_object.post_deployment_script.name}"
 }
