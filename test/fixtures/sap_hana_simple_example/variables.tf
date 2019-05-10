@@ -38,7 +38,6 @@ variable "instance_name" {
   default     = "sap-hana-simple-example"
 }
 
-
 variable "linux_image_family" {
   description = "Compute Engine image name"
 }
@@ -53,6 +52,7 @@ variable "disk_type" {
 
 variable "boot_disk_size" {
   description = "Root disk size in GB"
+
   # TODO: Make smaller boot disk size if possible.
   default = 64
 }

@@ -89,7 +89,7 @@ resource "google_compute_instance" "gcp_sap_hana" {
     sap_hana_sapsys_gid        = "${var.sap_hana_sapsys_gid}"
 
     # Needed for startup-scripts module
-    startup-script        = "${var.startup_script}"
+    startup-script = "${var.startup_script}"
   }
 
   # Removed this argument since it cannot be used with the startup-script metadata key.

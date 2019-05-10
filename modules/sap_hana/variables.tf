@@ -20,12 +20,12 @@ variable "project_id" {
 
 variable "zone" {
   description = "Compute Engine instance deployment zone"
-  default = "us-central1-a"
+  default     = "us-central1-a"
 }
 
 variable "region" {
   description = "Region to deploy the resources"
-  default = "us-central1"
+  default     = "us-central1"
 }
 
 variable "instance_name" {
@@ -46,18 +46,19 @@ variable "linux_image_project" {
 
 variable "autodelete_disk" {
   description = "Delete backend disk along with instance"
+
   # TODO: Double check if this should be true as default.
-  default     = true
+  default = true
 }
 
 variable "disk_name_0" {
   description = "Name of first disk"
-  default = "sap-hana-pd-sd-0"
+  default     = "sap-hana-pd-sd-0"
 }
 
 variable "disk_name_1" {
   description = "Name of second disk"
-  default = "sap-hana-pd-sd-1"
+  default     = "sap-hana-pd-sd-1"
 }
 
 variable "disk_type" {
@@ -92,7 +93,7 @@ variable "network_tags" {
 
 variable "address_name" {
   description = "Name of adress to add to the instance's access config"
-  default = "gcp-sap-hana-ip"
+  default     = "gcp-sap-hana-ip"
 }
 
 variable "sap_hana_deployment_bucket" {
