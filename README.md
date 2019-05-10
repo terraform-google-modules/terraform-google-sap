@@ -41,9 +41,11 @@ The following dependencies must be available:
 ### Service Account
 
 A service account with the following roles must be used to provision
-the resources of this module:
+the resources of each submodule:
 
-- Storage Admin: `roles/storage.admin`
+- Compute Admin: `roles/compute.admin`
+
+Please refer to the documentation of specific submodules located in the [modules](./modules/) folder for additional requirements for the service account.
 
 The [Project Factory module][project-factory-module] and the
 [IAM module][iam-module] may be used in combination to provision a
@@ -54,7 +56,7 @@ service account with the necessary roles applied.
 A project with the following APIs enabled must be used to host the
 resources of this module:
 
-- Google Cloud Storage JSON API: `storage-api.googleapis.com`
+- Google Cloud Storage JSON API: `compute.googleapis.com`
 
 The [Project Factory module][project-factory-module] can be used to
 provision a project with the necessary APIs enabled.
