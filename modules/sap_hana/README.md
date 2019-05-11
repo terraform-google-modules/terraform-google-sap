@@ -69,6 +69,17 @@ The compute instance created by this submodule will need to download SAP HANA fr
 
 3. When configuring the module, use this newly created service account's email, to set the `service_account_email` input variable.
 
+### Post deployment script
+If you need to run a post deployment script, the script needs to be accessible via https:// or gs:// URl. Hence, the recommended way is to:
+
+1. Upload the to a GCS bucket.
+2. Make sure the service account attached to the instance has the following permissions on the bucket:
+ - roles/storage.objectViewer
+ (This permission should already be granted if the bucket is in the same project as the one you created the service account previously.)
+
+3. Set the post_deployment_script input to the gs:// link to your script. (i.e gs://<bucket_name>/<my_script>)
+
+
 [^]: (autogen_docs_start)
 
 ## Inputs

@@ -58,7 +58,7 @@ To provision this example, run the following from within this directory:
 ## Integration Tests
 
 ### Additional Service Account Permissions
-If you need to run integration tests, the service for deploying resources needs the follwoing additional permissions:
+If you need to run integration tests, the service for deploying resources needs the following additional permissions:
 
 - roles/storage.admin
 

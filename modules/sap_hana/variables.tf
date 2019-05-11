@@ -108,7 +108,7 @@ variable "sap_deployment_debug" {
 }
 
 variable "post_deployment_script" {
-  description = "SAP HANA post deployment script"
+  description = "SAP HANA post deployment script. Must be a gs:// or https:// link to the script."
   default     = ""
 }
 

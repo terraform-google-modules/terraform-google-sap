@@ -75,6 +75,7 @@ resource "google_compute_instance" "gcp_sap_hana" {
 
   network_interface {
     subnetwork = "${var.subnetwork}"
+    subnetwork_project = "${var.project_id}"
 
     access_config {
       nat_ip = "${element(google_compute_address.gcp_sap_hana_ip.*.address, count.index)}"
