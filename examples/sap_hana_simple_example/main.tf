@@ -16,9 +16,6 @@
 
 provider "google" {
   version = "~> 1.18.0"
-
-  # TODO: Take out project if not needed
-  project = "${var.project_id}"
   region  = "${var.region}"
 }
 
