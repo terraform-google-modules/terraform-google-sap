@@ -99,7 +99,7 @@ If you need to run a post deployment script, the script needs to be accessible v
 | linux\_image\_project | Project name containing the linux image. | string | n/a | yes |
 | network\_tags | List of network tags to attach to the instance. | list | `<list>` | no |
 | pd\_ssd\_size | Persistent disk size in GB. | string | n/a | yes |
-| post\_deployment\_script | SAP HANA post deployment script | string | `""` | no |
+| post\_deployment\_script | SAP HANA post deployment script. Must be a gs:// or https:// link to the script. | string | `""` | no |
 | project\_id | The ID of the project in which the resources will be deployed. | string | n/a | yes |
 | region | Region to deploy the resources. Should be in the same region as the zone. | string | `"us-central1"` | no |
 | sap\_deployment\_debug | Debug flag for SAP HANA deployment. | string | `"false"` | no |
