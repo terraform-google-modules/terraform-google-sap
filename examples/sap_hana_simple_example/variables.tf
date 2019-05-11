@@ -16,94 +16,46 @@
 
 # Changed from SCR
 variable "project_id" {
-  description = "Project name to deploy the resources"
+  description = "The ID of the project in which the resources will be deployed."
+}
+
+variable "zone" {
+  description = "The zone that the instance should be created in."
+  default     = "us-central1-a"
+}
+
+variable "region" {
+  description = "Region to deploy the resources. Should be in the same region as the zone."
+  default     = "us-central1"
 }
 
 variable "instance_name" {
-  description = "Compute Engine instance name"
+  description = "A unique name for the resource, required by GCE. Changing this forces a new resource to be created."
   default     = "sap-hana-simple-example"
 }
 
 variable "instance_type" {
-  description = "Compute Engine instance Type"
+  description = "The GCE instance/machine type."
 
   # TODO:
   # Should add minimal instance type here if possible.
 }
 
-variable "zone" {
-  description = "Compute Engine instance deployment zone"
-  default     = "us-central1-a"
-}
-
-variable "subnetwork" {
-  description = "Compute Engine instance name"
-}
-
-variable "region" {
-  description = "Region to deploy the resources"
-  default     = "us-central1"
-}
-
 variable "linux_image_family" {
-  description = "Compute Engine image name"
+  description = "GCE linux image family."
 }
 
 variable "linux_image_project" {
-  description = "Project name containing the linux image"
-}
-
-variable "sap_hana_deployment_bucket" {
-  description = "SAP hana deployment bucket"
-}
-
-variable "sap_deployment_debug" {
-  description = "SAP hana deployment debug"
-  default     = "false"
-}
-
-variable "post_deployment_script" {
-  description = "SAP post deployment script"
-  default     = ""
-}
-
-variable "sap_hana_sid" {
-  description = "SAP hana SID"
-  default     = "D10"
-}
-
-variable "sap_hana_instance_number" {
-  description = "SAP hana instance number"
-  default     = 10
-}
-
-variable "sap_hana_sidadm_password" {
-  description = "SAP hana SID admin password"
-  default     = "Google123"
-}
-
-variable "sap_hana_system_password" {
-  description = "SAP hana system password"
-  default     = "Google123"
-}
-
-variable "sap_hana_sidadm_uid" {
-  description = "SAP hana sid adm password"
-  default     = 900
-}
-
-variable "sap_hana_sapsys_gid" {
-  description = "SAP hana sap system gid"
-  default     = 900
+  description = "Project name containing the linux image."
 }
 
 variable "autodelete_disk" {
-  description = "Delete backend disk along with instance"
+  description = "Whether the disk will be auto-deleted when the instance is deleted."
   default     = true
 }
 
 variable "disk_type" {
-  description = "The type of data disk: PD_SSD or PD_HDD."
+  description = "The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
 }
 
 variable "boot_disk_size" {
@@ -114,7 +66,7 @@ variable "boot_disk_size" {
 }
 
 variable "boot_disk_type" {
-  description = "The type of data disk: PD_SSD or PD_HDD."
+  description = "The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
   default     = "pd-ssd"
 }
 
@@ -124,15 +76,68 @@ variable "pd_ssd_size" {
 }
 
 variable "service_account_email" {
-  description = "Service to run terraform"
+  description = "Email of service account to attach to the instance."
+}
+
+variable "subnetwork" {
+  description = "The name or self_link of the subnetwork where the isntance will be deployed. The subnetwork must exist in the same region this instance will be created in."
 }
 
 variable "network_tags" {
   type        = "list"
-  description = "List of network tags"
+  description = "List of network tags to attach to the instance."
   default     = []
 }
 
+variable "address_name" {
+  description = "Name of static IP adress to add to the instance's access config."
+  default     = "gcp-sap-hana-ip"
+}
+
+variable "sap_hana_deployment_bucket" {
+  description = "SAP hana deployment bucket."
+}
+
+variable "sap_deployment_debug" {
+  description = "Debug flag for SAP HANA deployment."
+  default     = "false"
+}
+
+variable "post_deployment_script" {
+  description = "SAP HANA post deployment script"
+  default     = ""
+}
+
 variable "startup_script" {
-  description = "Path to startup script for VM running to install SAP HANA."
+  description = "Startup script to install SAP HANA."
+}
+
+variable "sap_hana_sid" {
+  description = "SAP HANA System Identifier"
+  default     = "D10"
+}
+
+variable "sap_hana_instance_number" {
+  description = "SAP HANA instance number"
+  default     = 10
+}
+
+variable "sap_hana_sidadm_password" {
+  description = "SAP HANA System Identifier Admin password"
+  default     = "Google123"
+}
+
+variable "sap_hana_system_password" {
+  description = "SAP HANA system password"
+  default     = "Google123"
+}
+
+variable "sap_hana_sidadm_uid" {
+  description = "SAP HANA System Identifier Admin UID"
+  default     = 900
+}
+
+variable "sap_hana_sapsys_gid" {
+  description = "SAP HANA SAP System GID"
+  default     = 900
 }

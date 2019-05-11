@@ -19,25 +19,29 @@ terraform {
 }
 
 resource "google_compute_disk" "gcp_sap_hana_sd_0" {
-  name = "${var.disk_name_0}"
-  type = "${var.disk_type}"
-  zone = "${var.zone}"
-  size = "${var.pd_ssd_size}"
-}
-
-resource "google_compute_address" "gcp_sap_hana_ip" {
-  name   = "${var.address_name}"
-  region = "${var.region}"
+  project = "${var.project_id}"
+  name    = "${var.disk_name_0}"
+  type    = "${var.disk_type}"
+  zone    = "${var.zone}"
+  size    = "${var.pd_ssd_size}"
 }
 
 resource "google_compute_disk" "gcp_sap_hana_sd_1" {
-  name = "${var.disk_name_1}"
-  type = "${var.disk_type}"
-  zone = "${var.zone}"
-  size = "${var.pd_ssd_size}"
+  project = "${var.project_id}"
+  name    = "${var.disk_name_1}"
+  type    = "${var.disk_type}"
+  zone    = "${var.zone}"
+  size    = "${var.pd_ssd_size}"
+}
+
+resource "google_compute_address" "gcp_sap_hana_ip" {
+  project = "${var.project_id}"
+  name    = "${var.address_name}"
+  region  = "${var.region}"
 }
 
 resource "google_compute_instance" "gcp_sap_hana" {
+  project      = "${var.project_id}"
   name         = "${var.instance_name}"
   machine_type = "${var.instance_type}"
   zone         = "${var.zone}"

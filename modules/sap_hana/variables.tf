@@ -15,125 +15,127 @@
  */
 
 variable "project_id" {
-  description = "Project id to deploy the resources"
+  description = "The ID of the project in which the resources will be deployed."
 }
 
 variable "zone" {
-  description = "Compute Engine instance deployment zone"
+  description = "The zone that the instance should be created in."
   default     = "us-central1-a"
 }
 
 variable "region" {
-  description = "Region to deploy the resources"
+  description = "Region to deploy the resources. Should be in the same region as the zone."
   default     = "us-central1"
 }
 
 variable "instance_name" {
-  description = "Compute Engine instance name"
+  description = "A unique name for the resource, required by GCE. Changing this forces a new resource to be created."
 }
 
 variable "instance_type" {
-  description = "Compute Engine instance Type"
+  description = "The GCE instance/machine type."
 }
 
+# TODO: Take out linux prefix if same SAP HANA module can be used with other OS types
 variable "linux_image_family" {
-  description = "Compute Engine image name"
+  description = "GCE image family."
 }
 
+# TODO: Take out linux prefix if same SAP HANA module can be used with other OS types
 variable "linux_image_project" {
-  description = "Project name containing the linux image"
+  description = "Project name containing the linux image."
 }
 
 variable "autodelete_disk" {
-  description = "Delete backend disk along with instance"
+  description = "Whether the disk will be auto-deleted when the instance is deleted."
 
   # TODO: Double check if this should be true as default.
   default = true
 }
 
 variable "disk_name_0" {
-  description = "Name of first disk"
+  description = "Name of first disk."
   default     = "sap-hana-pd-sd-0"
 }
 
 variable "disk_name_1" {
-  description = "Name of second disk"
+  description = "Name of second disk."
   default     = "sap-hana-pd-sd-1"
 }
 
 variable "disk_type" {
-  description = "The type of data disk: PD_SSD or PD_HDD."
+  description = "The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
 }
 
 variable "boot_disk_size" {
-  description = "Root disk size in GB"
+  description = "Root disk size in GB."
 }
 
 variable "boot_disk_type" {
-  description = "The type of data disk: PD_SSD or PD_HDD."
+  description = "The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
 }
 
 variable "pd_ssd_size" {
-  description = "Persistent disk size in GB"
+  description = "Persistent disk size in GB."
 }
 
 variable "service_account_email" {
-  description = "Service account email to run the terrform"
+  description = "Email of service account to attach to the instance."
 }
 
 variable "subnetwork" {
-  description = "Compute Engine instance name"
+  description = "The name or self_link of the subnetwork where the isntance will be deployed. The subnetwork must exist in the same region this instance will be created in."
 }
 
 variable "network_tags" {
   type        = "list"
-  description = "List of network tags"
+  description = "List of network tags to attach to the instance."
   default     = []
 }
 
 variable "address_name" {
-  description = "Name of adress to add to the instance's access config"
+  description = "Name of static IP adress to add to the instance's access config."
   default     = "gcp-sap-hana-ip"
 }
 
 variable "sap_hana_deployment_bucket" {
-  description = "SAP hana deployment bucket"
+  description = "SAP hana deployment bucket."
 }
 
 variable "sap_deployment_debug" {
-  description = "SAP hana deployment debug"
+  description = "Debug flag for SAP HANA deployment."
   default     = "false"
 }
 
 variable "post_deployment_script" {
-  description = "SAP post deployment script"
+  description = "SAP HANA post deployment script"
   default     = ""
 }
 
 variable "startup_script" {
-  description = "Startup script for VM running SAP HANA."
+  description = "Startup script to install SAP HANA."
 }
 
 variable "sap_hana_sid" {
-  description = "SAP hana SID"
+  description = "SAP HANA System Identifier"
 }
 
 variable "sap_hana_instance_number" {
-  description = "SAP hana instance number"
+  description = "SAP HANA instance number"
 }
 
 variable "sap_hana_sidadm_password" {
-  description = "SAP hana SID admin password"
+  description = "SAP HANA System Identifier Admin password"
 }
 
 variable "sap_hana_system_password" {
-  description = "SAP hana system password"
+  description = "SAP HANA system password"
 }
 
 variable "sap_hana_sidadm_uid" {
-  description = "SAP hana sid adm password"
+  description = "SAP HANA System Identifier Admin UID"
 }
 
 variable "sap_hana_sapsys_gid" {
-  description = "SAP hana sap system gid"
+  description = "SAP HANA SAP System GID"
 }
