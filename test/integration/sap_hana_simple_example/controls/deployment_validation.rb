@@ -33,12 +33,19 @@ control 'deployment_validation' do
     describe command("gcloud compute instances get-serial-port-output #{attribute('instance_name')} --project=#{attribute('project_id')} --zone=#{attribute('zone')}") do
       its(:exit_status) { should eq 0 }
 
-      # Validate `df -h` command output
-      its('stdout') { should match('/dev/mapper/vg_hana-data') }
-      its('stdout') { should match('/dev/mapper/vg_hana-log') }
+      context "output of df -h command" do
+        its('stdout') { should match('/dev/mapper/vg_hana-data') }
+        its('stdout') { should match('/dev/mapper/vg_hana-log') }
+      end
 
-      # Validate `HDB info` command output.
-      # TODO: Refine output verification once HDB info works on post deployment script
-      its('stdout') { should match('hdbnameserver') }
+      context "output of HDB info command" do
+        its('stdout') { should match('\_ hdbnameserver') }
+        its('stdout') { should match('\_ hdbcompileserver') }
+        its('stdout') { should match('\_ hdbpreprocessor') }
+        its('stdout') { should match('\_ hdbindexserver') }
+        its('stdout') { should match('\_ hdbxsengine') }
+        its('stdout') { should match('\_ hdbwebdispatcher') }
+        its('stdout') { should match('\_ \(sd-pam\)') }
+      end
     end
 end
