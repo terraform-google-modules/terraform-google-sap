@@ -23,16 +23,16 @@ variable "sap_secondary_instance" {
   description = "Compute Engine instance name"
 }
 
+variable "instance_type" {
+  description = "Compute Engine instance Type"
+}
+
 variable "sap_primary_zone" {
   description = "Primary Compute Engine instance deployment zone"
 }
 
 variable "sap_secondary_zone" {
   description = "Secondary Compute Engine instance deployment zone"
-}
-
-variable "instance_type" {
-  description = "Compute Engine instance Type"
 }
 
 variable "subnetwork" {

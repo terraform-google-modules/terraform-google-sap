@@ -120,9 +120,11 @@ resource "google_compute_instance" "primary" {
     sap_hana_sapsys_gid        = "${var.sap_hana_sapsys_gid}"
     sap_vip                    = "${var.sap_vip}"
     sap_vip_secondary_range    = "${var.sap_vip_secondary_range}"
-  }
 
-  metadata_startup_script = "${file("${path.module}/files/startup.sh")}"
+    # Needed for startup-scripts module
+    startup_script_1      = "${var.startup_script_1}"
+    startup_script_custom = "${var.startup_script_custom}"
+  }
 
   service_account {
     email  = "${var.service_account}"
@@ -184,9 +186,11 @@ resource "google_compute_instance" "secondary" {
     sap_hana_sapsys_gid        = "${var.sap_hana_sapsys_gid}"
     sap_vip                    = "${var.sap_vip}"
     sap_vip_secondary_range    = "${var.sap_vip_secondary_range}"
-  }
 
-  metadata_startup_script = "${file("${path.module}/files/startup_secondary.sh")}"
+    # Needed for startup-scripts module
+    startup_script_2      = "${var.startup_script_2}"
+    startup_script_custom = "${var.startup_script_custom}"
+  }
 
   service_account {
     email  = "${var.service_account}"

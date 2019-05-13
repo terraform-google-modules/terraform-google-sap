@@ -14,6 +14,49 @@
  * limitations under the License.
  */
 
+resource "random_id" "random_suffix" {
+  byte_length = 4
+}
+
+locals {
+  gcs_bucket_name = "post-deployment-bucket-${random_id.random_suffix.hex}"
+
+  # TODO: Add requirements of downloading sotware in README.md of module
+  gcs_bucket_static_name = "hana-gcp-20/hana20sps03"
+}
+
+#TODO: Add creation of a network that's similar to app2
+resource "google_storage_bucket" "deployment_bucket" {
+  name          = "${local.gcs_bucket_name}"
+  force_destroy = true
+  location      = "${var.region}"
+  storage_class = "REGIONAL"
+  project       = "${var.project_id}"
+}
+
+data "template_file" "post_deployment_script" {
+  template = "${file("${path.cwd}/files/templates/post_deployment_script.tpl")}"
+
+  vars = {
+    # sap_hana_id (SID) needs to be lower case to work with `su -[SID]adm` command
+    sap_hana_sid = "${lower(module.example.sap_hana_sid)}"
+  }
+}
+
+data "template_file" "startup_sap_hana_1" {
+  template = "${file("${path.module}/files/startup.sh")}"
+}
+
+data "template_file" "startup_sap_hana_2" {
+  template = "${file("${path.module}/files/startup_secondary.sh")}"
+}
+
+resource "google_storage_bucket_object" "post_deployment_script" {
+  name    = "post_deployment_script.sh"
+  content = "${data.template_file.post_deployment_script.rendered}"
+  bucket  = "${google_storage_bucket.deployment_bucket.name}"
+}
+
 module "example" {
   source                     = "../../../examples/sap_hana_ha"
   post_deployment_script     = "${var.post_deployment_script}"
@@ -48,4 +91,8 @@ module "example" {
   gcp_primary_instance_ip    = "${var.gcp_primary_instance_ip}"
   gcp_secondary_instance_ip  = "${var.gcp_secondary_instance_ip}"
   sap_vip_internal_address   = "${var.sap_vip_internal_address}"
+  sap_hana_deployment_bucket = "${local.gcs_bucket_static_name}"
+  startup_script_1           = "${data.template_file.startup_sap_hana_1.rendered}"
+  startup_script_2           = "${data.template_file.startup_sap_hana_2.rendered}"
+  post_deployment_script     = "${google_storage_bucket.deployment_bucket.url}/${google_storage_bucket_object.post_deployment_script.name}"
 }

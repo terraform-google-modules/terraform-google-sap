@@ -139,3 +139,17 @@ variable "gcp_secondary_instance_ip" {
 variable "sap_vip_internal_address" {
   description = "sap virtual ip internal address"
 }
+
+variable "startup_script_1" {
+  description = "Startup script for VM running SAP HANA."
+}
+
+variable "startup_script_2" {
+  description = "Startup script for VM running SAP HANA."
+}
+
+# TODO: Delete if not necessary
+variable "startup_script_custom" {
+  description = "Custom startup script to be loaded as metadata. This should only be used with the terraform-google-startup-scripts module."
+  default     = ""
+}
