@@ -122,7 +122,7 @@ resource "google_compute_instance" "primary" {
     sap_vip_secondary_range    = "${var.sap_vip_secondary_range}"
 
     # Needed for startup-scripts module
-    startup_script_1      = "${var.startup_script_1}"
+    startup-script        = "${var.startup_script_1}"
     startup_script_custom = "${var.startup_script_custom}"
   }
 
@@ -188,7 +188,7 @@ resource "google_compute_instance" "secondary" {
     sap_vip_secondary_range    = "${var.sap_vip_secondary_range}"
 
     # Needed for startup-scripts module
-    startup_script_2      = "${var.startup_script_2}"
+    startup-script        = "${var.startup_script_2}"
     startup_script_custom = "${var.startup_script_custom}"
   }
 

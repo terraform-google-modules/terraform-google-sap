@@ -29,31 +29,23 @@
 require 'retriable'
 
 control 'deployment_validation' do
-  describe 'console output of startup script' do
-    # Avoid racing against the instance boot sequence
-    before :all do
-      Retriable.retriable(tries: 2) do
-        get_serial_port_output = "gcloud compute instances get-serial-port-output #{attribute('instance_name')}"
-        @cmd = command("#{get_serial_port_output} --project #{attribute('project_id')}")
-        if not %r{Startup finished}.match(@cmd.stdout)
-          raise StandardError, "Not found: 'systemd: Startup finished' in console output, cannot proceed"
-        end
+
+    describe command("gcloud compute instances get-serial-port-output #{attribute('instance_name')} --project=#{attribute('project_id')} --zone=#{attribute('zone')}") do
+      its(:exit_status) { should eq 0 }
+
+      context "output of df -h command" do
+        its('stdout') { should match('/dev/mapper/vg_hana-data') }
+        its('stdout') { should match('/dev/mapper/vg_hana-log') }
+      end
+
+      context "output of HDB info command" do
+        its('stdout') { should match('\_ hdbnameserver') }
+        its('stdout') { should match('\_ hdbcompileserver') }
+        its('stdout') { should match('\_ hdbpreprocessor') }
+        its('stdout') { should match('\_ hdbindexserver') }
+        its('stdout') { should match('\_ hdbxsengine') }
+        its('stdout') { should match('\_ hdbwebdispatcher') }
+        its('stdout') { should match('\_ \(sd-pam\)') }
       end
     end
-
-    subject do
-      @cmd
-    end
-
-    describe "Verify /hana directories" do
-      its('exit_status') { should be 0 }
-      its('stdout') { should match('/hana/data & /hana/log') }
-    end
-
-    #describe "Verify HANA services are running" do
-      #its('stdout') { should match('TEST UUID E62A3897-AAA0-4577-A564-F00B4B54869B') }
-      #its('stdout') { should match('Finished with startup-script-custom example 3FF02EC9-BFFE-4B47-BEE7-C98A07818251') }
-    #end
-
-  end
 end

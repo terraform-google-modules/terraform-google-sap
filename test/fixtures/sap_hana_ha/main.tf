@@ -44,11 +44,11 @@ data "template_file" "post_deployment_script" {
 }
 
 data "template_file" "startup_sap_hana_1" {
-  template = "${file("${path.module}/files/startup.sh")}"
+  template = "${file("${path.module}/files/sap_hana_ha.sh")}"
 }
 
 data "template_file" "startup_sap_hana_2" {
-  template = "${file("${path.module}/files/startup_secondary.sh")}"
+  template = "${file("${path.module}/files/sap_hana_ha_secondary.sh")}"
 }
 
 resource "google_storage_bucket_object" "post_deployment_script" {
@@ -59,7 +59,6 @@ resource "google_storage_bucket_object" "post_deployment_script" {
 
 module "example" {
   source                     = "../../../examples/sap_hana_ha"
-  post_deployment_script     = "${var.post_deployment_script}"
   subnetwork                 = "${var.subnetwork}"
   linux_image_family         = "${var.linux_image_family}"
   linux_image_project        = "${var.linux_image_project}"
@@ -73,9 +72,7 @@ module "example" {
   autodelete_disk            = "${var.autodelete_disk}"
   pd_ssd_size                = "${var.pd_ssd_size}"
   pd_standard_size           = "${var.pd_standard_size}"
-  sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
   sap_deployment_debug       = "${var.sap_deployment_debug}"
-  post_deployment_script     = "${var.post_deployment_script}"
   sap_hana_sid               = "${var.sap_hana_sid}"
   sap_primary_instance       = "${var.sap_primary_instance}"
   sap_secondary_instance     = "${var.sap_secondary_instance}"

@@ -141,11 +141,11 @@ variable "sap_vip_internal_address" {
 }
 
 variable "startup_script_1" {
-  description = "Startup script for VM running SAP HANA."
+  description = "Startup script for VM running SAP HANA HA."
 }
 
 variable "startup_script_2" {
-  description = "Startup script for VM running SAP HANA."
+  description = "Startup script for VM running SAP HANA HA."
 }
 
 # TODO: Delete if not necessary
