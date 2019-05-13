@@ -36,4 +36,5 @@ suites:
         - name: sap_hana_ha local
           backend: local
           controls:
-            - deployment_validation
+            - deployment_validation_primary
+            - deployment_validation_secondary
