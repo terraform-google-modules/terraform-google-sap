@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-# Changed from SCR
 variable "project_id" {
   description = "The ID of the project in which the resources will be deployed."
 }

@@ -15,7 +15,7 @@ pd_ssd_size                = 450
 sap_hana_deployment_bucket = "<my_sap_hana_deployment_bucket_name>"
 sap_deployment_debug       = "false"
 
-startup_script             = "${path.root}/files/startup.sh"
+startup_script             = "../../modules/sap_hana/files/startup.sh"
 sap_hana_sid               = "D10"
 sap_hana_instance_number   = 10
 sap_hana_sidadm_password   = "Google123"

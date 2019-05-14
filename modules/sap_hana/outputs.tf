@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-output "instance_gcp_sap_hana_name" {
+output "instance_name" {
   value = "${google_compute_instance.gcp_sap_hana.name}"
 }
 
-output "instance_zone" {
+output "zone" {
   value = "${google_compute_instance.gcp_sap_hana.zone}"
 }
 
-output "gcp_sap_hana_instance_machine_type" {
+output "machine_type" {
   value = "${google_compute_instance.gcp_sap_hana.machine_type}"
 }
