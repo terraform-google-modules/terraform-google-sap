@@ -2,7 +2,7 @@
 #
 #
 #
-
+sudo su -
 df -h
-su - ${sap_hana_sid}adm
+sudo su - ${sap_hana_sid}adm
 HDB info
