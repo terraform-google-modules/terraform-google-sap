@@ -15,17 +15,15 @@
  */
 
 variable "project_id" {
-  description = "Project name to deploy the resources"
+  description = "The ID of the project in which the resources will be deployed."
 }
 
 variable "service_account_email" {
-  description = "Service to run the terraform"
+  description = "Email of service account to attach to the instance."
 }
 
 variable "instance_type" {
-  description = "Compute Engine instance Type"
-
-  # Should add minimal instance type here if possible.
+  description = "The GCE instance/machine type."
 }
 
 variable "region" {
@@ -34,7 +32,7 @@ variable "region" {
 }
 
 variable "instance_name" {
-  description = "Compute Engine instance name"
+  description = "A unique name for the resource, required by GCE. Changing this forces a new resource to be created."
   default     = "sap-hana-simple-example"
 }
 
@@ -47,22 +45,18 @@ variable "linux_image_project" {
 }
 
 variable "disk_type" {
-  description = "The type of data disk: PD_SSD or PD_HDD."
+  description = "The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
 }
 
 variable "boot_disk_size" {
   description = "Root disk size in GB"
-
-  # TODO: Make smaller boot disk size if possible.
-  default = 64
 }
 
 variable "boot_disk_type" {
-  description = "The type of data disk: PD_SSD or PD_HDD."
+  description = "The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
   default     = "pd-ssd"
 }
 
 variable "pd_ssd_size" {
   description = "Persistent disk size in GB"
-  default     = 450
 }

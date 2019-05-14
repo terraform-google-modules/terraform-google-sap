@@ -97,12 +97,6 @@ resource "google_compute_instance" "gcp_sap_hana" {
     startup-script = "${var.startup_script}"
   }
 
-  # Removed this argument since it cannot be used with the startup-script metadata key.
-  # Startup-script meta data key is favorable to re run the startup scrpt when the instance changes.
-  # This favorable to disturb HAN installation and let the user decide when to re run the startup script.
-  #TODO: Validate this decision
-  #metadata_startup_script = "${file("${path.module}/files/startup.sh")}"
-
   service_account {
     email  = "${var.service_account_email}"
     scopes = ["cloud-platform"]

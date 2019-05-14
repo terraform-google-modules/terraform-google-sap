@@ -36,21 +36,17 @@ variable "instance_type" {
   description = "The GCE instance/machine type."
 }
 
-# TODO: Take out linux prefix if same SAP HANA module can be used with other OS types
 variable "linux_image_family" {
   description = "GCE image family."
 }
 
-# TODO: Take out linux prefix if same SAP HANA module can be used with other OS types
 variable "linux_image_project" {
   description = "Project name containing the linux image."
 }
 
 variable "autodelete_disk" {
   description = "Whether the disk will be auto-deleted when the instance is deleted."
-
-  # TODO: Double check if this should be true as default.
-  default = true
+  default = "true"
 }
 
 variable "disk_name_0" {

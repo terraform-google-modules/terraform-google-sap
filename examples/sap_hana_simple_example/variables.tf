@@ -36,9 +36,6 @@ variable "instance_name" {
 
 variable "instance_type" {
   description = "The GCE instance/machine type."
-
-  # TODO:
-  # Should add minimal instance type here if possible.
 }
 
 variable "linux_image_family" {
@@ -60,9 +57,6 @@ variable "disk_type" {
 
 variable "boot_disk_size" {
   description = "Root disk size in GB"
-
-  # TODO: Make smaller boot disk size if possible.
-  default = 64
 }
 
 variable "boot_disk_type" {
@@ -72,7 +66,6 @@ variable "boot_disk_type" {
 
 variable "pd_ssd_size" {
   description = "Persistent disk size in GB"
-  default     = 450
 }
 
 variable "service_account_email" {
