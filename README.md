@@ -1,24 +1,14 @@
 # terraform-google-sap
 
-This module was generated from [terraform-google-module-template](https://github.com/terraform-google-modules/terraform-google-module-template/), which by default generates a module that simply creates a GCS bucket. As the module develops, this README should be updated.
+This module is a collection of multiple opinionated submodules to deploy SAP Products.
+Below is the list of available submodules:
 
-The resources/services/activations/deletions that this module will create/trigger are:
-
-- Create a GCS bucket with the provided name
+- [SAP HANA](./modules/sap_hana/README.md)
 
 ## Usage
 
-Basic usage of this module is as follows:
-
-```hcl
-module "sap" {
-  source  = "terraform-google-modules/sap/google"
-  version = "~> 0.1"
-
-  project_id  = "<PROJECT ID>"
-  bucket_name = "gcs-test-bucket"
-}
-```
+Each submodules have their own usage documented in the [modules](./modules) folder.
+For example, see the [SAP HANA Usage Section](./modules/sap_hana/README.md#Usage).
 
 Functional examples are included in the
 [examples](./examples/) directory.

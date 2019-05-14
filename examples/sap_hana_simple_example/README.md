@@ -57,6 +57,14 @@ To provision this example, run the following from within this directory:
 
 ## Integration Tests
 
+### Additional APIs
+
+A project with the additional following APIs enabled must be used to host the
+resources of this module:
+
+- Google Cloud Storage JSON API: `storage.googleapis.com`
+
+
 ### Additional Service Account Permissions
 If you need to run integration tests, the service for deploying resources needs the following additional permissions:
 
