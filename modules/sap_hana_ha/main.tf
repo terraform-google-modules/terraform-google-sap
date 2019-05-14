@@ -103,7 +103,8 @@ resource "google_compute_instance" "primary" {
   }
 
   network_interface {
-    subnetwork = "${var.subnetwork}"
+    subnetwork         = "${var.subnetwork}"
+    subnetwork_project = "${var.project_id}"
 
     access_config {
       nat_ip = "${google_compute_address.gcp-primary-instance-ip.address}"
@@ -170,7 +171,8 @@ resource "google_compute_instance" "secondary" {
   }
 
   network_interface {
-    subnetwork = "${var.subnetwork}"
+    subnetwork         = "${var.subnetwork}"
+    subnetwork_project = "${var.project_id}"
 
     access_config {
       nat_ip = "${google_compute_address.gcp-secondary-instance-ip.address}"
