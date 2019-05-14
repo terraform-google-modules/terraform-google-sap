@@ -43,7 +43,7 @@ resource "google_compute_disk" "pd-ssd-primary" {
   project = "${var.project_id}"
   name    = "pd-ssd-disk-primary"
   type    = "pd-ssd"
-  zone    = "${var.sap_primary_zone}"
+  zone    = "${var.primary_zone}"
   size    = "${var.pd_ssd_size}"
 }
 
@@ -51,7 +51,7 @@ resource "google_compute_disk" "pd-standard-primary" {
   project = "${var.project_id}"
   name    = "pd-standard-disk-primary"
   type    = "pd-standard"
-  zone    = "${var.sap_primary_zone}"
+  zone    = "${var.primary_zone}"
   size    = "${var.pd_standard_size}"
 }
 
@@ -59,7 +59,7 @@ resource "google_compute_disk" "pd-ssd-secondary" {
   project = "${var.project_id}"
   name    = "pd-ssd-disk-secondary"
   type    = "pd-ssd"
-  zone    = "${var.sap_secondary_zone}"
+  zone    = "${var.secondary_zone}"
   size    = "${var.pd_ssd_size}"
 }
 
@@ -67,15 +67,15 @@ resource "google_compute_disk" "pd-standard-secondary" {
   project = "${var.project_id}"
   name    = "pd-standard-disk-secondary"
   type    = "pd-standard"
-  zone    = "${var.sap_secondary_zone}"
+  zone    = "${var.secondary_zone}"
   size    = "${var.pd_standard_size}"
 }
 
 resource "google_compute_instance" "primary" {
   project        = "${var.project_id}"
-  name           = "${var.sap_primary_instance}"
+  name           = "${var.primary_instance}"
   machine_type   = "${var.instance_type}"
-  zone           = "${var.sap_primary_zone}"
+  zone           = "${var.primary_zone}"
   tags           = "${var.network_tags}"
   can_ip_forward = true
 
@@ -116,10 +116,10 @@ resource "google_compute_instance" "primary" {
     sap_deployment_debug       = "${var.sap_deployment_debug}"
     post_deployment_script     = "${var.post_deployment_script}"
     sap_hana_sid               = "${var.sap_hana_sid}"
-    sap_primary_instance       = "${var.sap_primary_instance}"
-    sap_secondary_instance     = "${var.sap_secondary_instance}"
-    sap_primary_zone           = "${var.sap_primary_zone}"
-    sap_secondary_zone         = "${var.sap_secondary_zone}"
+    primary_instance           = "${var.primary_instance}"
+    secondary_instance         = "${var.secondary_instance}"
+    primary_zone               = "${var.primary_zone}"
+    secondary_zone             = "${var.secondary_zone}"
     sap_hana_instance_number   = "${var.sap_hana_instance_number}"
     sap_hana_sidadm_password   = "${var.sap_hana_sidadm_password}"
     sap_hana_system_password   = "${var.sap_hana_system_password}"
@@ -141,9 +141,9 @@ resource "google_compute_instance" "primary" {
 
 resource "google_compute_instance" "secondary" {
   project        = "${var.project_id}"
-  name           = "${var.sap_secondary_instance}"
+  name           = "${var.secondary_instance}"
   machine_type   = "${var.instance_type}"
-  zone           = "${var.sap_secondary_zone}"
+  zone           = "${var.secondary_zone}"
   tags           = "${var.network_tags}"
   can_ip_forward = true
 
@@ -184,10 +184,10 @@ resource "google_compute_instance" "secondary" {
     sap_deployment_debug       = "${var.sap_deployment_debug}"
     post_deployment_script     = "${var.post_deployment_script}"
     sap_hana_sid               = "${var.sap_hana_sid}"
-    sap_primary_instance       = "${var.sap_primary_instance}"
-    sap_secondary_instance     = "${var.sap_secondary_instance}"
-    sap_primary_zone           = "${var.sap_primary_zone}"
-    sap_secondary_zone         = "${var.sap_secondary_zone}"
+    primary_instance           = "${var.primary_instance}"
+    secondary_instance         = "${var.secondary_instance}"
+    primary_zone               = "${var.primary_zone}"
+    secondary_zone             = "${var.secondary_zone}"
     sap_hana_instance_number   = "${var.sap_hana_instance_number}"
     sap_hana_sidadm_password   = "${var.sap_hana_sidadm_password}"
     sap_hana_system_password   = "${var.sap_hana_system_password}"

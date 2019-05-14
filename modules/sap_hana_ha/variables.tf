@@ -15,19 +15,19 @@
  */
 # Changed from SCR
 
-variable "sap_primary_instance" {
+variable "primary_instance" {
   description = "Compute Engine instance name"
 }
 
-variable "sap_secondary_instance" {
+variable "secondary_instance" {
   description = "Compute Engine instance name"
 }
 
-variable "sap_primary_zone" {
+variable "primary_zone" {
   description = "Primary Compute Engine instance deployment zone"
 }
 
-variable "sap_secondary_zone" {
+variable "secondary_zone" {
   description = "Secondary Compute Engine instance deployment zone"
 }
 

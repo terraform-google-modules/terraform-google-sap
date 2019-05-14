@@ -26,20 +26,20 @@ output "project_id" {
 
 output "primary_instance" {
   description = "Name of sap primary instance"
-  value       = "${var.sap_primary_instance}"
+  value       = "${var.primary_instance}"
 }
 
 output "secondary_instance" {
   description = "Name of sap secondary instance"
-  value       = "${var.sap_secondary_instance}"
+  value       = "${var.primary_instance}"
 }
 
 output "primary_zone" {
   description = "Compute Engine primary instance deployment zone"
-  value       = "${var.sap_primary_zone}"
+  value       = "${var.primary_zone}"
 }
 
 output "secondary_zone" {
   description = "Compute Engine primary instance deployment zone"
-  value       = "${var.sap_secondary_zone}"
+  value       = "${var.secondary_zone}"
 }
