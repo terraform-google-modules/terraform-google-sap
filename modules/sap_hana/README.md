@@ -58,11 +58,11 @@ Make sure you've gone through the root [Requirement Section](../../README.md#req
 
 
 ### Configure Service Account for identifying the Compute instance
-The compute instance created by this submodule will need to download SAP HANA from a GCS bucket in order install. Follow the instructions below to ensure a successful installation:
+The compute instance created by this submodule will need to download SAP HANA from a GCS bucket in order install it. Follow the instructions below to ensure a successful installation:
 
- 1. Create a new service account
- 2. Grant the new service account the following permissions on the bucket where you uploaded SAP HANA installation file:
- - roles/storage.objectViewer
+ 1. [Create a new service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts)
+ 2. Grant this new service account the following permissions on the bucket where you uploaded SAP HANA installation file:
+    - roles/storage.objectViewer
 
  You may use the following gcloud commands:
    `gcloud projects add-iam-policy-binding <project-id> --member=serviceAccount:<service-account-email> --role=roles/storage.objectViewer`
@@ -70,12 +70,13 @@ The compute instance created by this submodule will need to download SAP HANA fr
 3. When configuring the module, use this newly created service account's email, to set the `service_account_email` input variable.
 
 ### Post deployment script
-If you need to run a post deployment script, the script needs to be accessible via https:// or gs:// URl. Hence, the recommended way is to:
+If you need to run a post deployment script, the script needs to be accessible via a **https:// or gs:// URl**.
+It is the recommended way is to use a GCS Bucket in the following way.:
 
 1. Upload the to a GCS bucket.
 2. Make sure the service account attached to the instance has the following permissions on the bucket:
- - roles/storage.objectViewer
- (This permission should already be granted if the bucket is in the same project as the one you created the service account previously.)
+   - roles/storage.objectViewer
+     - Note that this permission should already be granted if the bucket is in the same project as the one where you created the service account previously.
 
 3. Set the post_deployment_script input to the gs:// link to your script. (i.e gs://<bucket_name>/<my_script>)
 

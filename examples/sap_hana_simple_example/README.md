@@ -3,7 +3,13 @@
 This example illustrates how to use the `SAP HANA` submodule to deploy SAP HANA on GCP.
 
 ## Requirements
-Make sure you go through this [Requirements section](../../modules/sap_hana/README.md#requirements) for the SAP HANA Submodule
+Make sure you go through this [Requirements section](../../modules/sap_hana/README.md#requirements) for the SAP HANA Submodule.
+
+## Setup
+
+1. Create a terraform.tfvars in this directory or the directory where you're running this example.
+2. Copy terraform.tfvars.example to terraform.tfvars and update the contents to match your environment.
+
 
 [^]: (autogen_docs_start)
 
@@ -48,6 +54,8 @@ Make sure you go through this [Requirements section](../../modules/sap_hana/READ
 
 [^]: (autogen_docs_end)
 
+## Running the example
+
 To provision this example, run the following from within this directory:
 - `terraform init` to get the plugins
 - `terraform plan` to see the infrastructure plan
@@ -57,9 +65,11 @@ To provision this example, run the following from within this directory:
 
 ## Integration Tests
 
-### Additional APIs
+If you need to run integration tests make sure to go through these additional setup steps.
 
-A project with the additional following APIs enabled must be used to host the
+
+### Additional APIs
+ a project with the additional following APIs enabled must be used to host the
 resources of this module:
 
 - Google Cloud Storage JSON API: `storage.googleapis.com`
