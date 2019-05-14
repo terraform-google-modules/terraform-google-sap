@@ -16,21 +16,22 @@
 
 terraform {
   required_version = "~> 0.11.0"
-  project          = "${var.project_id}"
-  region           = "${var.region}"
 }
 
 resource "google_compute_address" "gcp-primary-instance-ip" {
-  name   = "${var.gcp_primary_instance_ip}"
-  region = "${var.region}"
+  project = "${var.project_id}"
+  name    = "${var.gcp_primary_instance_ip}"
+  region  = "${var.region}"
 }
 
 resource "google_compute_address" "gcp-secondary-instance-ip" {
-  name   = "${var.gcp_secondary_instance_ip}"
-  region = "${var.region}"
+  project = "${var.project_id}"
+  name    = "${var.gcp_secondary_instance_ip}"
+  region  = "${var.region}"
 }
 
 resource "google_compute_address" "internal_sap_vip" {
+  project      = "${var.project_id}"
   name         = "${var.sap_vip_internal_address}"
   subnetwork   = "${var.subnetwork}"
   address_type = "INTERNAL"
@@ -39,34 +40,39 @@ resource "google_compute_address" "internal_sap_vip" {
 }
 
 resource "google_compute_disk" "pd-ssd-primary" {
-  name = "pd-ssd-disk-primary"
-  type = "pd-ssd"
-  zone = "${var.sap_primary_zone}"
-  size = "${var.pd_ssd_size}"
+  project = "${var.project_id}"
+  name    = "pd-ssd-disk-primary"
+  type    = "pd-ssd"
+  zone    = "${var.sap_primary_zone}"
+  size    = "${var.pd_ssd_size}"
 }
 
 resource "google_compute_disk" "pd-standard-primary" {
-  name = "pd-standard-disk-primary"
-  type = "pd-standard"
-  zone = "${var.sap_primary_zone}"
-  size = "${var.pd_standard_size}"
+  project = "${var.project_id}"
+  name    = "pd-standard-disk-primary"
+  type    = "pd-standard"
+  zone    = "${var.sap_primary_zone}"
+  size    = "${var.pd_standard_size}"
 }
 
 resource "google_compute_disk" "pd-ssd-secondary" {
-  name = "pd-ssd-disk-secondary"
-  type = "pd-ssd"
-  zone = "${var.sap_secondary_zone}"
-  size = "${var.pd_ssd_size}"
+  project = "${var.project_id}"
+  name    = "pd-ssd-disk-secondary"
+  type    = "pd-ssd"
+  zone    = "${var.sap_secondary_zone}"
+  size    = "${var.pd_ssd_size}"
 }
 
 resource "google_compute_disk" "pd-standard-secondary" {
-  name = "pd-standard-disk-secondary"
-  type = "pd-standard"
-  zone = "${var.sap_secondary_zone}"
-  size = "${var.pd_standard_size}"
+  project = "${var.project_id}"
+  name    = "pd-standard-disk-secondary"
+  type    = "pd-standard"
+  zone    = "${var.sap_secondary_zone}"
+  size    = "${var.pd_standard_size}"
 }
 
 resource "google_compute_instance" "primary" {
+  project        = "${var.project_id}"
   name           = "${var.sap_primary_instance}"
   machine_type   = "${var.instance_type}"
   zone           = "${var.sap_primary_zone}"
@@ -133,6 +139,7 @@ resource "google_compute_instance" "primary" {
 }
 
 resource "google_compute_instance" "secondary" {
+  project        = "${var.project_id}"
   name           = "${var.sap_secondary_instance}"
   machine_type   = "${var.instance_type}"
   zone           = "${var.sap_secondary_zone}"
