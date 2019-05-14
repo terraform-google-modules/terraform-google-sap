@@ -26,8 +26,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'retriable'
-
 control 'deployment_validation' do
 
     describe command("gcloud compute instances get-serial-port-output #{attribute('instance_name')} --project=#{attribute('project_id')} --zone=#{attribute('zone')}") do
