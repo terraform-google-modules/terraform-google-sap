@@ -19,7 +19,7 @@ Make sure you go through this [Requirements section](../../modules/sap_hana/READ
 |------|-------------|:----:|:-----:|:-----:|
 | address\_name | Name of static IP adress to add to the instance's access config. | string | `"gcp-sap-hana-ip"` | no |
 | autodelete\_disk | Whether the disk will be auto-deleted when the instance is deleted. | string | `"true"` | no |
-| boot\_disk\_size | Root disk size in GB | string | `"64"` | no |
+| boot\_disk\_size | Root disk size in GB | string | n/a | yes |
 | boot\_disk\_type | The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | `"pd-ssd"` | no |
 | disk\_type | The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | n/a | yes |
 | instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | `"sap-hana-simple-example"` | no |
@@ -27,7 +27,7 @@ Make sure you go through this [Requirements section](../../modules/sap_hana/READ
 | linux\_image\_family | GCE linux image family. | string | n/a | yes |
 | linux\_image\_project | Project name containing the linux image. | string | n/a | yes |
 | network\_tags | List of network tags to attach to the instance. | list | `<list>` | no |
-| pd\_ssd\_size | Persistent disk size in GB | string | `"450"` | no |
+| pd\_ssd\_size | Persistent disk size in GB | string | n/a | yes |
 | post\_deployment\_script | SAP HANA post deployment script. Must be a gs:// or https:// link to the script. | string | `""` | no |
 | project\_id | The ID of the project in which the resources will be deployed. | string | n/a | yes |
 | region | Region to deploy the resources. Should be in the same region as the zone. | string | `"us-central1"` | no |
