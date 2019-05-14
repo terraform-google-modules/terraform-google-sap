@@ -31,7 +31,7 @@ output "primary_instance" {
 
 output "secondary_instance" {
   description = "Name of sap secondary instance"
-  value       = "${var.primary_instance}"
+  value       = "${var.secondary_instance}"
 }
 
 output "primary_zone" {
