@@ -15,7 +15,7 @@
  */
 
 output "instance_primary_address" {
-  value = "${google_compute_disk.pd-ssd-primary.name}"
+  value = "${google_compute_disk.pd_ssd_primary.name}"
 }
 
 output "instance_primary__name" {
@@ -31,7 +31,7 @@ output "primary_instance_machine_type" {
 }
 
 output "instance_secondary_address" {
-  value = "${google_compute_disk.pd-ssd-secondary.name}"
+  value = "${google_compute_disk.pd_ssd_secondary.name}"
 }
 
 output "instance_secondary_name" {

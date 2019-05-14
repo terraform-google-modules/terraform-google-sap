@@ -18,13 +18,13 @@ terraform {
   required_version = "~> 0.11.0"
 }
 
-resource "google_compute_address" "gcp-primary-instance-ip" {
+resource "google_compute_address" "gcp_primary_instance_ip" {
   project = "${var.project_id}"
   name    = "${var.gcp_primary_instance_ip}"
   region  = "${var.region}"
 }
 
-resource "google_compute_address" "gcp-secondary-instance-ip" {
+resource "google_compute_address" "gcp_secondary_instance_ip" {
   project = "${var.project_id}"
   name    = "${var.gcp_secondary_instance_ip}"
   region  = "${var.region}"
@@ -39,7 +39,7 @@ resource "google_compute_address" "internal_sap_vip" {
   region       = "us-central1"
 }
 
-resource "google_compute_disk" "pd-ssd-primary" {
+resource "google_compute_disk" "pd_ssd_primary" {
   project = "${var.project_id}"
   name    = "pd-ssd-disk-primary"
   type    = "pd-ssd"
@@ -47,7 +47,7 @@ resource "google_compute_disk" "pd-ssd-primary" {
   size    = "${var.pd_ssd_size}"
 }
 
-resource "google_compute_disk" "pd-standard-primary" {
+resource "google_compute_disk" "pd_standard_primary" {
   project = "${var.project_id}"
   name    = "pd-standard-disk-primary"
   type    = "pd-standard"
@@ -55,7 +55,7 @@ resource "google_compute_disk" "pd-standard-primary" {
   size    = "${var.pd_standard_size}"
 }
 
-resource "google_compute_disk" "pd-ssd-secondary" {
+resource "google_compute_disk" "pd_ssd_secondary" {
   project = "${var.project_id}"
   name    = "pd-ssd-disk-secondary"
   type    = "pd-ssd"
@@ -63,7 +63,7 @@ resource "google_compute_disk" "pd-ssd-secondary" {
   size    = "${var.pd_ssd_size}"
 }
 
-resource "google_compute_disk" "pd-standard-secondary" {
+resource "google_compute_disk" "pd_standard_secondary" {
   project = "${var.project_id}"
   name    = "pd-standard-disk-secondary"
   type    = "pd-standard"
@@ -95,11 +95,11 @@ resource "google_compute_instance" "primary" {
   }
 
   attached_disk {
-    source = "${google_compute_disk.pd-ssd-primary.self_link}"
+    source = "${google_compute_disk.pd_ssd_primary.self_link}"
   }
 
   attached_disk {
-    source = "${google_compute_disk.pd-standard-primary.self_link}"
+    source = "${google_compute_disk.pd_standard_primary.self_link}"
   }
 
   network_interface {
@@ -107,7 +107,7 @@ resource "google_compute_instance" "primary" {
     subnetwork_project = "${var.project_id}"
 
     access_config {
-      nat_ip = "${google_compute_address.gcp-primary-instance-ip.address}"
+      nat_ip = "${google_compute_address.gcp_primary_instance_ip.address}"
     }
   }
 
@@ -163,11 +163,11 @@ resource "google_compute_instance" "secondary" {
   }
 
   attached_disk {
-    source = "${google_compute_disk.pd-ssd-secondary.self_link}"
+    source = "${google_compute_disk.pd_ssd_secondary.self_link}"
   }
 
   attached_disk {
-    source = "${google_compute_disk.pd-standard-secondary.self_link}"
+    source = "${google_compute_disk.pd_standard_secondary.self_link}"
   }
 
   network_interface {
@@ -175,7 +175,7 @@ resource "google_compute_instance" "secondary" {
     subnetwork_project = "${var.project_id}"
 
     access_config {
-      nat_ip = "${google_compute_address.gcp-secondary-instance-ip.address}"
+      nat_ip = "${google_compute_address.gcp_secondary_instance_ip.address}"
     }
   }
 
