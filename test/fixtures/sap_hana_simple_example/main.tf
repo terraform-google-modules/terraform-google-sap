@@ -68,7 +68,7 @@ module "example" {
 
   subnetwork = "default"
 
-  network_tags               = ["foo"]
+  network_tags = ["foo"]
 
   startup_script             = "${data.template_file.startup_sap_hana.rendered}"
   sap_hana_deployment_bucket = "${local.gcs_bucket_static_name}"

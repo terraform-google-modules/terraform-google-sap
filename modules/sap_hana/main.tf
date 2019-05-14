@@ -74,7 +74,7 @@ resource "google_compute_instance" "gcp_sap_hana" {
   }
 
   network_interface {
-    subnetwork = "${var.subnetwork}"
+    subnetwork         = "${var.subnetwork}"
     subnetwork_project = "${var.project_id}"
 
     access_config {
