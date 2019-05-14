@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-# Changed from SCR
 
 variable "sap_primary_instance" {
   description = "Compute Engine instance name"

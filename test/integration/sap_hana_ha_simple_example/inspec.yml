@@ -10,21 +10,21 @@ attributes:
   - name: bucket_name
     required: true
     type: string
-  - name: sap_primary_instance
+  - name: primary_instance
     required: true
     type: string
   - name: region
     required: true
     type: string
-  - name: sap_primary_zone
+  - name: primary_zone
     required: true
     type: string
-  - name: sap_secondary_instance
+  - name: secondary_instance
     required: true
     type: string
   - name: region
     required: true
     type: string
-  - name: sap_secondary_zone
+  - name: secondary_zone
     required: true
     type: string

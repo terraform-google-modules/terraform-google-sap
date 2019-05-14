@@ -21,7 +21,6 @@ resource "random_id" "random_suffix" {
 locals {
   gcs_bucket_name = "post-deployment-bucket-${random_id.random_suffix.hex}"
 
-  # TODO: Add requirements of downloading sotware in README.md of module
   gcs_bucket_static_name = "hana-gcp-20/hana20sps03"
 }
 
