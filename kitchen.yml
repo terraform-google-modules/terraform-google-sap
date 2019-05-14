@@ -28,7 +28,7 @@ platforms:
 suites:
   - name: sap_hana_ha
     driver:
-      root_module_directory: test/fixtures/sap_hana_ha/
+      root_module_directory: test/fixtures/sap_hana_ha_simple_example/
       command_timeout: 1800
     verifier:
       color: false

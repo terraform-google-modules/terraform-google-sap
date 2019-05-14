@@ -58,7 +58,7 @@ resource "google_storage_bucket_object" "post_deployment_script" {
 }
 
 module "example" {
-  source                     = "../../../examples/sap_hana_ha"
+  source                     = "../../../examples/sap_hana_ha_simple_example"
   subnetwork                 = "${var.subnetwork}"
   linux_image_family         = "${var.linux_image_family}"
   linux_image_project        = "${var.linux_image_project}"

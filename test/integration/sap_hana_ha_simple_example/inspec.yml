@@ -1,4 +1,4 @@
-name: sap_hana_ha
+name: sap_hana_ha_simple_example
 depends:
   - name: inspec-gcp
     git: https://github.com/inspec/inspec-gcp.git

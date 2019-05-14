@@ -23,7 +23,7 @@ provider "google" {
 }
 
 module "gcp_sap_hana_ha" {
-  source                     = "../../modules/sap_hana_ha"
+  source                     = "../../modules/sap_hana_ha_simple_example"
   post_deployment_script     = "${var.post_deployment_script}"
   subnetwork                 = "${var.subnetwork}"
   linux_image_family         = "${var.linux_image_family}"
