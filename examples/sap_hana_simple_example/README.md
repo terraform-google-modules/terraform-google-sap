@@ -7,8 +7,8 @@ Make sure you go through this [Requirements section](../../modules/sap_hana/READ
 
 ## Setup
 
-1. Create a terraform.tfvars in this directory or the directory where you're running this example.
-2. Copy terraform.tfvars.example to terraform.tfvars and update the contents to match your environment.
+1. Create a `terraform.tfvars` in this directory or the directory where you're running this example.
+2. Copy `terraform.tfvars.example` content into the `terraform.tfvars` file and update the contents to match your environment.
 
 
 [^]: (autogen_docs_start)
