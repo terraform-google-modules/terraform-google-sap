@@ -8,8 +8,8 @@ This module is handles opinionated SAP HANA HA configuration and deployment.
 The resources/services/activations/deletions that this module will create/trigger are:
 
 - Create Primary and Secondary Compute Instance that will host SAP HANA
-- Create a Static IP Adresse for the Compute Instance
-- Create a 2 Persitent Disks to host SAP HANA's File systems
+- Create a Static IP Address for the two Compute Instance's
+- Create a 2 Persistent Disks to host SAP HANA's File systems
 
 You can go in the [examples](../../examples) folder complete working example. However, here's an example of how to use the module in a main.tf file.
 
@@ -19,17 +19,18 @@ provider "google" {
   region  = "${var.region}"
 }
 
-module "gcp_sap_hana" {
+module "gcp_sap_hana_ha" {
   source                 = "terraform-google-modules/sap/google/modules/sap_hana_ha"
   subnetwork             = "${var.subnetwork}"
   linux_image_family     = "sles-12-sp3-sap"
   linux_image_project    = "suse-sap-cloud"
-  instance_name          = "${var.instance_name}"
+  primary_instance       = "${var.primary_instance}"
+  secondary_instance     = "${var.secondary_instance}"
   instance_type          = "n1-highmem-16"
   disk_type              = "pd-ssd"
   project_id             = "${var.project_id}"
   region                 = "${var.region}"
-  service_account_email        = "${var.service_account_email}"
+  service_account_email  = "${var.service_account_email}"
   boot_disk_type         = "pd-ssd"
   boot_disk_size         = 64
   autodelete_disk        = "true"
