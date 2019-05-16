@@ -69,18 +69,21 @@ If you need to run integration tests make sure to go through these additional se
 
 
 ### Additional APIs
- a project with the additional following APIs enabled must be used to host the
+ A project with the additional following APIs enabled must be used to host the
 resources of this module:
 
-- Google Cloud Storage JSON API: `storage.googleapis.com`
+- Google Cloud Storage JSON API: `storage-api.googleapis.com`
 
 
 ### Additional Service Account Permissions
 If you need to run integration tests, the service for deploying resources needs the following additional permissions:
 
-- roles/storage.admin
+- Storage Admin: `roles/storage.admin`
 
- You may use the following gcloud commands:
+The [IAM module][iam-module] may be used in to provision a
+service account with the necessary roles applied.
+
+ However, for a quick setup, you can use the following gcloud commands:
    `gcloud projects add-iam-policy-binding <project-id> --member=serviceAccount:<service-account-email> --role=roles/storage.admin`
 
 ### Running integration tests

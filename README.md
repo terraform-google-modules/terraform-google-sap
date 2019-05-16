@@ -46,7 +46,7 @@ service account with the necessary roles applied.
 A project with the following APIs enabled must be used to host the
 resources of this module:
 
-- Google Cloud Storage JSON API: `compute.googleapis.com`
+- Compute Engine API: `compute.googleapis.com`
 
 The [Project Factory module][project-factory-module] can be used to
 provision a project with the necessary APIs enabled.
