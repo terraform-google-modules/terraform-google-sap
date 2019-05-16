@@ -78,6 +78,7 @@ function check_terraform() {
     | compat_xargs -0 -n1 dirname \
     | sort -u \
     | compat_xargs -t -n1 terraform validate --check-variables=false
+  echo "Running terraform fmt"
 }
 
 # This function runs 'go fmt' and 'go vet' on every file
