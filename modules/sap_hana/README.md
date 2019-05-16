@@ -16,31 +16,28 @@ You can go in the [examples](../../examples) folder complete working example. Ho
 ```hcl
 provider "google" {
   version = "~> 1.18.0"
-  region  = "${var.region}"
 }
 
 module "gcp_sap_hana" {
   source                 = "terraform-google-modules/sap/google/modules/sap_hana"
-  subnetwork             = "${var.subnetwork}"
+  subnetwork             = "default"
   linux_image_family     = "sles-12-sp3-sap"
   linux_image_project    = "suse-sap-cloud"
-  instance_name          = "${var.instance_name}"
+  instance_name          = "my-sap-hana-instance"
   instance_type          = "n1-highmem-16"
   disk_type              = "pd-ssd"
-  project_id             = "${var.project_id}"
-  region                 = "${var.region}"
-  service_account_email        = "${var.service_account_email}"
+  project_id             = "<my_project_id>"
+  region                 = "us-central1"
+  service_account_email  = "<my_service_account_email>"
   boot_disk_type         = "pd-ssd"
   boot_disk_size         = 64
   autodelete_disk        = "true"
   pd_ssd_size            = 450
 
-  sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
+  sap_hana_deployment_bucket = "<my_bucket_name>/<my_bucket_folder>"
   sap_deployment_debug       = "false"
-  post_deployment_script = "${var.post_deployment_script}"
 
-  startup_script           = "${var.startup_script}"
-  startup_script_custom    = "${var.startup_script_custom}"
+  startup_script           = "${path.root}/files/startup.sh"
   sap_hana_sid             = "D10"
   sap_hana_instance_number = 10
   sap_hana_sidadm_password = "Google123"
@@ -62,23 +59,22 @@ The compute instance created by this submodule will need to download SAP HANA fr
 
  1. [Create a new service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts)
  2. Grant this new service account the following permissions on the bucket where you uploaded SAP HANA installation file:
-    - roles/storage.objectViewer
+    - Storage Object Viewer: `roles/storage.objectViewer`
 
- You may use the following gcloud commands:
-   `gcloud projects add-iam-policy-binding <project-id> --member=serviceAccount:<service-account-email> --role=roles/storage.objectViewer`
+  You may use the following gcloud command:
+  `gcloud projects add-iam-policy-binding <project-id> --member=serviceAccount:<service-account-email> --role=roles/storage.objectViewer`
 
 3. When configuring the module, use this newly created service account's email, to set the `service_account_email` input variable.
 
 ### Post deployment script
 If you need to run a post deployment script, the script needs to be accessible via a **https:// or gs:// URl**.
-It is the recommended way is to use a GCS Bucket in the following way.:
+The recommended way is to use a GCS Bucket in the following way.:
 
-1. Upload the to a GCS bucket.
-2. Make sure the service account attached to the instance has the following permissions on the bucket:
-   - roles/storage.objectViewer
-     - Note that this permission should already be granted if the bucket is in the same project as the one where you created the service account previously.
+1. Upload the post-deployment-script to a GCS bucket.
+2. Grant the following role on the bucket to the service account attached to the instance if the bucket is not in the same project as the service account:
+   - Storage Object Viewer: `roles/storage.objectViewer`
 
-3. Set the post_deployment_script input to the gs:// link to your script. (i.e gs://<bucket_name>/<my_script>)
+ 3. Set the value of the `post_deployment_script` input to the URI of the post-deployment script storage bucket object, like `gs://<bucket_name>/<script_name>`.
 
 
 [^]: (autogen_docs_start)
