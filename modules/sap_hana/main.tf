@@ -46,7 +46,6 @@ resource "google_compute_instance" "gcp_sap_hana" {
   machine_type = "${var.instance_type}"
   zone         = "${var.zone}"
 
-  # TODO: Make sure this works with empty network tags
   tags           = "${var.network_tags}"
   can_ip_forward = true
 

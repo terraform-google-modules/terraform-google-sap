@@ -23,8 +23,6 @@ locals {
   gcs_bucket_static_name = "hana-gcp-20/hana20sps03"
 }
 
-#TODO: Add creation of a network that's similar to app2 
-
 resource "google_storage_bucket" "deployment_bucket" {
   name          = "${local.gcs_bucket_name}"
   force_destroy = true
@@ -67,8 +65,6 @@ module "example" {
   pd_ssd_size         = "${var.pd_ssd_size}"
 
   subnetwork = "default"
-
-  network_tags = ["foo"]
 
   startup_script             = "${data.template_file.startup_sap_hana.rendered}"
   sap_hana_deployment_bucket = "${local.gcs_bucket_static_name}"
