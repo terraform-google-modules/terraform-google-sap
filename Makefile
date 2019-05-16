@@ -25,6 +25,7 @@ DOCKER_TAG_BASE_KITCHEN_TERRAFORM 	?= 1.0.1
 DOCKER_REPO_BASE_KITCHEN_TERRAFORM 	:= ${DOCKER_ORG}/cft/kitchen-terraform:${DOCKER_TAG_BASE_KITCHEN_TERRAFORM}
 
 # All is the first target in the file so it will get picked up when you just run 'make' on its own
+.PHONY: all
 all: check generate_docs
 
 # Run all available linters
