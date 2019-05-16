@@ -55,5 +55,4 @@ module "gcp_sap_hana_ha" {
   sap_vip_internal_address   = "${var.sap_vip_internal_address}"
   startup_script_1           = "${var.startup_script_1}"
   startup_script_2           = "${var.startup_script_2}"
-  startup_script_custom      = "${var.startup_script_custom}"
 }
