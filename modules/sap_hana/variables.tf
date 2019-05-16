@@ -112,7 +112,7 @@ variable "startup_script" {
 }
 
 variable "sap_hana_sid" {
-  description = "SAP HANA System Identifier"
+  description = "SAP HANA System Identifier. When using the SID to enter a user session, like this for example, `su - [SID]adm`, make sure that [SID] is in lower case."
 }
 
 variable "sap_hana_instance_number" {
