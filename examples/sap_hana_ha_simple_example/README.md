@@ -3,7 +3,7 @@
 This example illustrates how to use the `SAP HANA HA` submodule to deploy SAP HANA on GCP.
 
 ## Requirements
-Make sure you go through this [Requirements section](../../modules/sap_hana/README.md#requirements) for the SAP HANA Submodule.
+Make sure you go through this [Requirements section](../../modules/sap_hana_ha/README.md#requirements) for the SAP HANA HA Submodule.
 
 ## Setup
 
