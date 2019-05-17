@@ -1,7 +1,7 @@
 # terraform-google-sap
 
-This module is a collection of multiple opinionated submodules to deploy SAP Products.
-Below is the list of available submodules:
+This module is a collection of submodules to deploy SAP Products.
+Below is list of one of the available submodules:
 
 - [SAP HANA HA](./modules/sap_hana_ha/README.md)
 
