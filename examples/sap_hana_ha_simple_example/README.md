@@ -1,4 +1,4 @@
-# SAP HANA Simple Example
+# SAP HANA HA Simple Example
 
 This example illustrates how to use the `SAP HANA` submodule to deploy SAP HANA on GCP.
 
