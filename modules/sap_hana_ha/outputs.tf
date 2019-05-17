@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-output "instance_primary_address" {
+output "primary_instance_address" {
   value = "${google_compute_disk.pd_ssd_primary.name}"
 }
 
-output "instance_primary__name" {
+output "primary_instance" {
   value = "${google_compute_instance.primary.name}"
 }
 
-output "primary_instance_zone" {
+output "primary_zone" {
   value = "${google_compute_instance.primary.zone}"
 }
 
@@ -30,15 +30,15 @@ output "primary_instance_machine_type" {
   value = "${google_compute_instance.primary.machine_type}"
 }
 
-output "instance_secondary_address" {
+output "secondary_instance_address" {
   value = "${google_compute_disk.pd_ssd_secondary.name}"
 }
 
-output "instance_secondary_name" {
+output "secondary_instance" {
   value = "${google_compute_instance.secondary.name}"
 }
 
-output "secondary_instance_zone" {
+output "secondary_zone" {
   value = "${google_compute_instance.secondary.zone}"
 }
 
