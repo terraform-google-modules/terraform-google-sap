@@ -82,3 +82,7 @@ pd_standard_size = 350
 service_account = "terraform-google-sap@ajayarvind-sap-hana-standalone.iam.gserviceaccount.com"
 
 network_tags = ["foo"]
+
+startup_script_1             = "../../modules/sap_hana_ha/files/startup.sh"
+
+startup_script_2             = "../../modules/sap_hana_ha/files/startup_secondary.sh"
