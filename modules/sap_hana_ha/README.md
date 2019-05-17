@@ -86,12 +86,12 @@ It is the recommended way is to use a GCS Bucket in the following way.:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| address\_name | Name of static IP adress to add to the instance's access config. | string | `"gcp-sap-hana-ip"` | no |
-| autodelete\_disk | Whether the disk will be auto-deleted when the instance is deleted. | string | `"true"` | no |
+| address\_name | Name of static IP adress to add to the instance's access config. | string | n/a | yes |
+| autodelete\_disk | Whether the disk will be auto-deleted when the instance is deleted. | string | n/a | yes |
 | boot\_disk\_size | Root disk size in GB. | string | n/a | yes |
 | boot\_disk\_type | The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | n/a | yes |
-| disk\_name\_0 | Name of first disk. | string | `"sap-hana-pd-sd-0"` | no |
-| disk\_name\_1 | Name of second disk. | string | `"sap-hana-pd-sd-1"` | no |
+| disk\_name\_0 | Name of first disk. | string | n/a | yes |
+| disk\_name\_1 | Name of second disk. | string | n/a | yes |
 | disk\_type | The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | n/a | yes |
 | instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | n/a | yes |
 | instance\_type | The GCE instance/machine type. | string | n/a | yes |
@@ -101,8 +101,8 @@ It is the recommended way is to use a GCS Bucket in the following way.:
 | pd\_ssd\_size | Persistent disk size in GB. | string | n/a | yes |
 | post\_deployment\_script | SAP HANA post deployment script. Must be a gs:// or https:// link to the script. | string | `""` | no |
 | project\_id | The ID of the project in which the resources will be deployed. | string | n/a | yes |
-| region | Region to deploy the resources. Should be in the same region as the zone. | string | `"us-central1"` | no |
-| sap\_deployment\_debug | Debug flag for SAP HANA deployment. | string | `"false"` | no |
+| region | Region to deploy the resources. Should be in the same region as the zone. | string | n/a | yes |
+| sap\_deployment\_debug | Debug flag for SAP HANA deployment. | string | n/a | yes |
 | sap\_hana\_deployment\_bucket | SAP hana deployment bucket. | string | n/a | yes |
 | sap\_hana\_instance\_number | SAP HANA instance number | string | n/a | yes |
 | sap\_hana\_sapsys\_gid | SAP HANA SAP System GID | string | n/a | yes |
@@ -113,14 +113,17 @@ It is the recommended way is to use a GCS Bucket in the following way.:
 | service\_account\_email | Email of service account to attach to the instance. | string | n/a | yes |
 | startup\_script |  Primary and Secondary startup script's to install SAP HANA. | string | n/a | yes |
 | subnetwork | The name or self_link of the subnetwork where the isntance will be deployed. The subnetwork must exist in the same region this instance will be created in. | string | n/a | yes |
-| zone | The two zone's that the instance's should be created in. | string | `"us-central1-b"` and `"us-central1-c"` | no |
+| zone | The two zone's that the instance's should be created in. | string | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| gcp\_sap\_hana\_instance\_machine\_type |  |
-| instance\_gcp\_sap\_hana\_name |  |
-| instance\_zone |  |
+| sap\_hana\_id | SAP Hana SID user |
+| project\_id | The ID of the project in which resources are provisioned. |
+| primary\_instance | Name of sap primary instance |
+| secondary\_instance | Name of sap secondary instance  |
+| primary\_zone | Compute Engine primary instance deployment zone  |
+| secondary\_zone | Compute Engine primary instance deployment zone |
 
 [^]: (autogen_docs_end)
