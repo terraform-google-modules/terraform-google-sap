@@ -21,32 +21,31 @@ provider "google" {
 
 module "gcp_sap_hana_ha" {
   source                 = "terraform-google-modules/sap/google/modules/sap_hana_ha"
-  subnetwork             = "${var.subnetwork}"
-  linux_image_family     = "sles-12-sp3-sap"
-  linux_image_project    = "suse-sap-cloud"
-  primary_instance       = "${var.primary_instance}"
-  secondary_instance     = "${var.secondary_instance}"
-  instance_type          = "n1-highmem-16"
-  disk_type              = "pd-ssd"
-  project_id             = "${var.project_id}"
-  region                 = "${var.region}"
-  service_account_email  = "${var.service_account_email}"
-  boot_disk_type         = "pd-ssd"
-  boot_disk_size         = 64
-  autodelete_disk        = "true"
-  pd_ssd_size            = 450
+  subnetwork                 = "${var.subnetwork}"
+  linux_image_family         = "${var.linux_image_family}"
+  linux_image_project        = "${var.linux_image_project}"
+  instance_name              = "${var.instance_name}"
+  instance_type              = "${var.instance_type}"
+  disk_type                  = "${var.boot_disk_type}"
+  project_id                 = "${var.project_id}"
+  region                     = "${var.region}"
+  service_account_email      = "${var.service_account_email}"
+  boot_disk_type             = "pd-ssd"
+  boot_disk_size             = "${var.boot_disk_size}"
+  autodelete_disk            = "${var.autodelete_disk}"
+  pd_ssd_size                = "${var.pd_ssd_size}"
   sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
   sap_deployment_debug       = "false"
-  post_deployment_script = "${var.post_deployment_script}"
-  startup_script           = "${var.startup_script_1}"
-  startup_script           = "${var.startup_script_2}"
-  sap_hana_sid             = "D10"
-  sap_hana_instance_number = 10
-  sap_hana_sidadm_password = "Google123"
-  sap_hana_system_password = "Google123"
-  sap_hana_sidadm_uid      = 900
-  sap_hana_sapsys_gid      = 900
-}
+  post_deployment_script     = "${var.post_deployment_script}"
+  startup_script_1           = "${var.startup_script_1}"
+  startup_script_2           = "${var.startup_script_2}"
+  sap_hana_sid               = "${var.sap_hana_sid}"
+  sap_hana_instance_number   = "${var.sap_hana_instance_number}"
+  sap_hana_sidadm_password   = "${var.sap_hana_sidadm_password}"
+  sap_hana_system_password   = "${var.sap_hana_system_password}"
+  sap_hana_sidadm_uid        = "${var.sap_hana_sidadm_uid}"
+  sap_hana_sapsys_gid        = "${var.sap_hana_sapsys_gid}"
+  }
 ```
 ## Requirements
 
