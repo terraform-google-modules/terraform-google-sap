@@ -76,7 +76,7 @@ pd_ssd_size = 500
 
 pd_standard_size = 350
 
-service_account = "terraform-google-sap@ajayarvind-sap-hana-standalone.iam.gserviceaccount.com"
+service_account = "<gcp service account>"
 
 network_tags = ["foo"]
 
