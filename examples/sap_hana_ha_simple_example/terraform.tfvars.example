@@ -24,7 +24,7 @@ primary_zone = "us-central1-c"
 
 secondary_zone = "us-central1-b"
 
-subnetwork = "sap-dev-demo"
+subnetwork = "default"
 
 project_id = "ajayarvind-sap-hana-standalone"
 
