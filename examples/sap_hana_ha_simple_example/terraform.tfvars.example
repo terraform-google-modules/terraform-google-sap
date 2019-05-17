@@ -16,10 +16,6 @@
 
 primary_instance = "sap-hana-ha-terra-1"
 
-gcp_primary_instance_ip = "gcp-primary-instance-ip"
-
-gcp_secondary_instance_ip = "gcp-secondary-instance-ip"
-
 sap_vip_internal_address = "sap-vip-internal-address"
 
 secondary_instance = "sap-hana-ha-terra-2"
@@ -45,6 +41,10 @@ sap_hana_deployment_bucket = "hana-gcp-20/hana20sps03"
 sap_deployment_debug = "false"
 
 post_deployment_script = ""
+
+gcp_primary_instance_ip = "gcp-primary-instance-ip"
+
+gcp_secondary_instance_ip = "gcp-secondary-instance-ip"
 
 sap_hana_sid = "D01"
 
@@ -80,6 +80,6 @@ service_account = "terraform-google-sap@ajayarvind-sap-hana-standalone.iam.gserv
 
 network_tags = ["foo"]
 
-startup_script_1             = "../../modules/sap_hana_ha/files/startup.sh"
+startup_script_1 = "../../modules/sap_hana_ha/files/startup.sh"
 
-startup_script_2             = "../../modules/sap_hana_ha/files/startup_secondary.sh"
+startup_script_2 = "../../modules/sap_hana_ha/files/startup_secondary.sh"
