@@ -9,7 +9,7 @@ The resources/services/activations/deletions that this module will create/trigge
 
 - Create Primary and Secondary Compute Instance that will host SAP HANA.
 - Create a Static IP Address for the two Compute Instance's.
-- Create a 2 Persistent Disks to host SAP HANA's File systems on primary and secondary nodes.
+- Create 2 Persistent Disks to host SAP HANA's File systems on primary and secondary nodes.
 
 You can go in the [examples](../../examples) folder complete working example. However, here's an example of how to use the module in a main.tf file.
 
@@ -112,7 +112,7 @@ It is the recommended way is to use a GCS Bucket in the following way.:
 | service\_account\_email | Email of service account to attach to the instance. | string | n/a | yes |
 | startup\_script |  Primary and Secondary startup script's to install SAP HANA. | string | n/a | yes |
 | subnetwork | The name or self_link of the subnetwork where the isntance will be deployed. The subnetwork must exist in the same region this instance will be created in. | string | n/a | yes |
-| zone(primary & Secondary) | The two zone's that the instance's should be created in. | string | n/a | yes |
+| zone(primary & secondary) | The two zone's that the instance's should be created in. | string | n/a | yes |
 
 ## Outputs
 
