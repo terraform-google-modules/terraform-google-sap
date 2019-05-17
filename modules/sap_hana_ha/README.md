@@ -9,7 +9,7 @@ The resources/services/activations/deletions that this module will create/trigge
 
 - Create Primary and Secondary Compute Instance that will host SAP HANA.
 - Create a Static IP Address for the two Compute Instance's.
-- Create a 2 Persistent Disks to host SAP HANA's File systems.
+- Create a 2 Persistent Disks to host SAP HANA's File systems on primary and secondary nodes.
 
 You can go in the [examples](../../examples) folder complete working example. However, here's an example of how to use the module in a main.tf file.
 
@@ -35,11 +35,9 @@ module "gcp_sap_hana_ha" {
   boot_disk_size         = 64
   autodelete_disk        = "true"
   pd_ssd_size            = 450
-
   sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
   sap_deployment_debug       = "false"
   post_deployment_script = "${var.post_deployment_script}"
-
   startup_script           = "${var.startup_script_1}"
   startup_script           = "${var.startup_script_2}"
   sap_hana_sid             = "D10"
