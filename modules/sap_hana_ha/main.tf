@@ -20,13 +20,13 @@ terraform {
 
 resource "google_compute_address" "gcp_primary_instance_ip" {
   project = "${var.project_id}"
-  name    = "${var.gcp_primary_instance_ip}"
+  name    = "${var.primary_instance_ip}"
   region  = "${var.region}"
 }
 
 resource "google_compute_address" "gcp_secondary_instance_ip" {
   project = "${var.project_id}"
-  name    = "${var.gcp_secondary_instance_ip}"
+  name    = "${var.secondary_instance_ip}"
   region  = "${var.region}"
 }
 

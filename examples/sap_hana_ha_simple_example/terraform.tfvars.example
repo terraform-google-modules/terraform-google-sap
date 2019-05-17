@@ -40,9 +40,9 @@ sap_deployment_debug = "false"
 
 post_deployment_script = ""
 
-gcp_primary_instance_ip = "gcp-primary-instance-ip"
+primary_instance_ip = "primary-instance-ip"
 
-gcp_secondary_instance_ip = "gcp-secondary-instance-ip"
+secondary_instance_ip = "secondary-instance-ip"
 
 sap_hana_sid = "D01"
 

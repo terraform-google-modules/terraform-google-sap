@@ -127,12 +127,12 @@ variable "network_tags" {
   description = "List of network tags"
 }
 
-variable "gcp_primary_instance_ip" {
-  description = "gcp primary instance ip address"
+variable "primary_instance_ip" {
+  description = "primary instance ip address"
 }
 
-variable "gcp_secondary_instance_ip" {
-  description = "gcp secondary instance ip address"
+variable "secondary_instance_ip" {
+  description = "secondary instance ip address"
 }
 
 variable "sap_vip_internal_address" {
