@@ -16,8 +16,6 @@
 
 primary_instance = "sap-hana-ha-terra-1"
 
-sap_vip_internal_address = "sap-vip-internal-address"
-
 secondary_instance = "sap-hana-ha-terra-2"
 
 instance_type = "n1-highmem-16"
@@ -63,6 +61,8 @@ sap_vip = "10.1.0.24"
 sap_vip_secondary_range = ""
 
 sap_hana_scaleout_nodes = 0
+
+sap_vip_internal_address = "sap-vip-internal-address"
 
 instance_count_master = 1
 
