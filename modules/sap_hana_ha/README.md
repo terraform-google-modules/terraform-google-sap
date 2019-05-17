@@ -15,7 +15,7 @@ You can go in the [examples](../../examples) folder complete working example. Ho
 
 ```hcl
 provider "google" {
-  version = "~> 1.18.0"
+  version = "~> 2.6.0"
   region  = "${var.region}"
 }
 
