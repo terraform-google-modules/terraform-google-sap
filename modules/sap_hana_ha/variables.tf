@@ -127,11 +127,11 @@ variable "network_tags" {
   description = "List of network tags"
 }
 
-variable "gcp_primary_instance_ip" {
+variable "primary_instance_ip" {
   description = "gcp primary instance ip address"
 }
 
-variable "gcp_secondary_instance_ip" {
+variable "secondary_instance_ip" {
   description = "gcp secondary instance ip address"
 }
 

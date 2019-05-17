@@ -18,13 +18,13 @@ terraform {
   required_version = "~> 0.11.0"
 }
 
-resource "google_compute_address" "gcp_primary_instance_ip" {
+resource "google_compute_address" "primary_instance_ip" {
   project = "${var.project_id}"
   name    = "${var.primary_instance_ip}"
   region  = "${var.region}"
 }
 
-resource "google_compute_address" "gcp_secondary_instance_ip" {
+resource "google_compute_address" "secondary_instance_ip" {
   project = "${var.project_id}"
   name    = "${var.secondary_instance_ip}"
   region  = "${var.region}"
@@ -107,7 +107,7 @@ resource "google_compute_instance" "primary" {
     subnetwork_project = "${var.project_id}"
 
     access_config {
-      nat_ip = "${google_compute_address.gcp_primary_instance_ip.address}"
+      nat_ip = "${google_compute_address.primary_instance_ip.address}"
     }
   }
 
@@ -174,7 +174,7 @@ resource "google_compute_instance" "secondary" {
     subnetwork_project = "${var.project_id}"
 
     access_config {
-      nat_ip = "${google_compute_address.gcp_secondary_instance_ip.address}"
+      nat_ip = "${google_compute_address.secondary_instance_ip.address}"
     }
   }
 
