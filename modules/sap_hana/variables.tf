@@ -45,7 +45,7 @@ variable "linux_image_project" {
 
 variable "autodelete_disk" {
   description = "Whether the disk will be auto-deleted when the instance is deleted."
-  default = "true"
+  default = "false"
 }
 
 variable "disk_name_0" {
