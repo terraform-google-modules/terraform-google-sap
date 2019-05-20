@@ -34,7 +34,7 @@ linux_image_family = "sles-12-sp2-sap"
 
 linux_image_project = "suse-sap-cloud"
 
-sap_hana_deployment_bucket = "hana-gcp-20/hana20sps03"
+sap_hana_deployment_bucket = "<sap_deployment_bucket_name>"
 
 sap_deployment_debug = "false"
 
