@@ -120,8 +120,8 @@ It is the recommended way is to use a GCS Bucket in the following way.:
 |------|-------------|
 | sap\_hana\_id | SAP Hana SID user |
 | project\_id | The ID of the project in which resources are provisioned. |
-| primary\_instance | Name of sap primary instance |
-| secondary\_instance | Name of sap secondary instance  |
+| primary\_instance | Name of primary instance |
+| secondary\_instance | Name of secondary instance  |
 | primary\_zone | Compute Engine primary instance deployment zone  |
 | secondary\_zone | Compute Engine primary instance deployment zone |
 
