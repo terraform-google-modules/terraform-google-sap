@@ -40,8 +40,8 @@ module "gcp_sap_hana" {
   startup_script             = "${var.startup_script}"
   sap_hana_sid               = "D10"
   sap_hana_instance_number   = 10
-  sap_hana_sidadm_password   = "Google123"
-  sap_hana_system_password   = "Google123"
+  sap_hana_sidadm_password   = "${var.sap_hana_sidadm_password}"
+  sap_hana_system_password   = "${var.sap_hana_system_password}"
   sap_hana_sidadm_uid        = 900
   sap_hana_sapsys_gid        = 900
 }

@@ -116,12 +116,10 @@ variable "sap_hana_instance_number" {
 
 variable "sap_hana_sidadm_password" {
   description = "SAP HANA System Identifier Admin password"
-  default     = "Google123"
 }
 
 variable "sap_hana_system_password" {
   description = "SAP HANA system password"
-  default     = "Google123"
 }
 
 variable "sap_hana_sidadm_uid" {
