@@ -65,17 +65,19 @@ To provision this example, run the following from within this directory:
 
 ## Integration Tests
 
+
+### Additonal setup
 If you need to run integration tests make sure to go through these additional setup steps.
 
 
-### Additional APIs
+#### Additional APIs
  A project with the additional following APIs enabled must be used to host the
 resources of this module:
 
 - Google Cloud Storage JSON API: `storage-api.googleapis.com`
 
 
-### Additional Service Account Permissions
+#### Additional Service Account Permissions
 If you need to run integration tests, the service for deploying resources needs the following additional permissions:
 
 - Storage Admin: `roles/storage.admin`
