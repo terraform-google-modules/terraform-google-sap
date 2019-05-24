@@ -123,13 +123,13 @@ It is the recommended way is to use a GCS Bucket in the following way.:
 
 | Name | Description |
 |------|-------------|
-| primary\_instance\_address |  |
-| primary\_instance\_machine\_type |  |
-| primary\_instance\_name |  |
-| primary\_zone |  |
-| secondary\_instance\_address |  |
-| secondary\_instance\_machine\_type |  |
-| secondary\_instance\_name |  |
-| secondary\_zone |  |
+| primary\_instance\_address | Name of sap primary instance address |
+| primary\_instance\_machine\_type | primary_instance_machine_type |
+| primary\_instance\_name | Name of sap primary instance |
+| primary\_zone | Compute Engine primary instance deployment zone |
+| secondary\_instance\_address | Name of sap secondary instance address |
+| secondary\_instance\_machine\_type | secondary_instance_machine_type |
+| secondary\_instance\_name | Name of sap secondary instance |
+| secondary\_zone | Compute Engine secondary instance deployment zone |
 
 [^]: (autogen_docs_end)
