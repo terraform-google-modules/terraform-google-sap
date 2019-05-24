@@ -17,46 +17,47 @@ Make sure you go through this [Requirements section](../../modules/sap_hana_ha/R
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| address\_name | Name of static IP adress to add to the instance's access config. | string | n/a | yes |
 | autodelete\_disk | Whether the disk will be auto-deleted when the instance is deleted. | string | n/a | yes |
-| boot\_disk\_size | Root disk size in GB. | string | n/a | yes |
-| boot\_disk\_type | The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | n/a | yes |
-| disk\_name\_0 | Name of first disk. | string | n/a | yes |
-| disk\_name\_1 | Name of second disk. | string | n/a | yes |
-| disk\_type | The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | n/a | yes |
-| instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | n/a | yes |
+| boot\_disk\_size | Root disk size in GB | string | n/a | yes |
+| boot\_disk\_type | The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | n/a | yes |
 | instance\_type | The GCE instance/machine type. | string | n/a | yes |
 | linux\_image\_family | GCE image family. | string | n/a | yes |
 | linux\_image\_project | Project name containing the linux image. | string | n/a | yes |
-| network\_tags | List of network tags to attach to the instance. | list | `<list>` | no |
-| pd\_ssd\_size | Persistent disk size in GB. | string | n/a | yes |
-| post\_deployment\_script | SAP HANA post deployment script. Must be a gs:// or https:// link to the script. | string | `""` | no |
+| network\_tags | List of network tags to attach to the instance. | list | n/a | yes |
+| pd\_ssd\_size | Persistent disk size in GB | string | n/a | yes |
+| pd\_standard\_size | Persistent disk size in GB | string | n/a | yes |
+| post\_deployment\_script | SAP post deployment script | string | n/a | yes |
+| primary\_instance\_ip | gcp primary instance ip address | string | n/a | yes |
+| primary\_instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | n/a | yes |
+| primary\_zone | The primary zone that the instance should be created in. | string | n/a | yes |
 | project\_id | The ID of the project in which the resources will be deployed. | string | n/a | yes |
 | region | Region to deploy the resources. Should be in the same region as the zone. | string | n/a | yes |
 | sap\_deployment\_debug | Debug flag for SAP HANA deployment. | string | n/a | yes |
-| sap\_hana\_deployment\_bucket | SAP hana deployment bucket. | string | n/a | yes |
+| sap\_hana\_deployment\_bucket | SAP HANA post deployment script. Must be a gs:// or https:// link to the script. | string | n/a | yes |
 | sap\_hana\_instance\_number | SAP HANA instance number | string | n/a | yes |
 | sap\_hana\_sapsys\_gid | SAP HANA SAP System GID | string | n/a | yes |
-| sap\_hana\_sid | SAP HANA System Identifier | string | n/a | yes |
+| sap\_hana\_sid | SAP HANA System Identifier. When using the SID to enter a user session, like this for example, `su - [SID]adm`, make sure that [SID] is in lower case. | string | n/a | yes |
 | sap\_hana\_sidadm\_password | SAP HANA System Identifier Admin password | string | n/a | yes |
 | sap\_hana\_sidadm\_uid | SAP HANA System Identifier Admin UID | string | n/a | yes |
 | sap\_hana\_system\_password | SAP HANA system password | string | n/a | yes |
+| sap\_vip | SAP VIP | string | n/a | yes |
+| sap\_vip\_internal\_address | Name of static IP adress to add to the instance's access config. | string | n/a | yes |
+| sap\_vip\_secondary\_range | SAP seconday VIP range | string | n/a | yes |
+| secondary\_instance\_ip | gcp secondary instance ip address | string | n/a | yes |
+| secondary\_instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | n/a | yes |
+| secondary\_zone | The secondary zone that the instance should be created in. | string | n/a | yes |
 | service\_account\_email | Email of service account to attach to the instance. | string | n/a | yes |
-| startup\_script |  Primary and Secondary startup script's to install SAP HANA. | string | n/a | yes |
-| subnetwork | The name or self_link of the subnetwork where the isntance will be deployed. The subnetwork must exist in the same region this instance will be created in. | string | n/a | yes |
-| zone(primary & secondary) | The two zone's that the instance's should be created in. | string | n/a | yes |
+| startup\_script\_1 | Startup script to install SAP HANA. | string | n/a | yes |
+| startup\_script\_2 | Startup script to install SAP HANA. | string | n/a | yes |
+| subnetwork | Compute Engine instance name | string | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| sap\_hana\_id | SAP Hana SID user |
-| project\_id | The ID of the project in which resources are provisioned. |
-| primary\_instance | Name of sap primary instance |
-| secondary\_instance | Name of sap secondary instance  |
-| primary\_zone | Compute Engine primary instance deployment zone  |
-| secondary\_zone | Compute Engine primary instance deployment zone |
-
+| primary\_instance\_name | Name of sap primary instance |
+| sap\_hana\_sid | SAP Hana SID user |
+| secondary\_instance\_name | Name of sap secondary instance |
 
 [^]: (autogen_docs_end)
 

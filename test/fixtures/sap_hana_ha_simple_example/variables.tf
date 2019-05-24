@@ -138,11 +138,3 @@ variable "secondary_instance_ip" {
 variable "sap_vip_internal_address" {
   description = "Name of static IP adress to add to the instance's access config."
 }
-
-variable "startup_script_1" {
-  description = "Startup script to install SAP HANA."
-}
-
-variable "startup_script_2" {
-  description = "Startup script to install SAP HANA."
-}
