@@ -14,9 +14,9 @@
   * limitations under the License.
   */
 
-primary_instance = "sap-hana-ha-terra-1"
+primary_instance_name = "sap-hana-ha-terra-1"
 
-secondary_instance = "sap-hana-ha-terra-2"
+secondary_instance_name = "sap-hana-ha-terra-2"
 
 instance_type = "n1-highmem-16"
 
