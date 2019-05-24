@@ -52,7 +52,7 @@ module "gcp_sap_hana_ha" {
 Make sure you've gone through the root [Requirement Section](../../README.md#requirements)
 
 ### SAP HANA Software
- Follow instructions [here](https://cloud.google.com/solutions/sap/docs/sap-hana/sap-hana-ha-deployment-guide#creating_a_cloud_storage_bucket_for_the_sap_hana_installation_files) to properly Download SAP HANA from the SAP Marketplace, and upload it to a GCS bucket.
+ Follow instructions [here](https://cloud.google.com/solutions/sap/docs/sap-hana-ha-deployment-guide#creating_a_cloud_storage_bucket_for_the_sap_hana_ha_installation_files) to properly Download SAP HANA from the SAP Marketplace, and upload it to a GCS bucket.
 
 
 ### Configure Service Account for identifying the Compute instance
