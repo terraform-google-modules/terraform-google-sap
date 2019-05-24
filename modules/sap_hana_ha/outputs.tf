@@ -15,33 +15,41 @@
  */
 
 output "primary_instance_address" {
-  value = "${google_compute_disk.pd_ssd_primary.name}"
+  description = "Name of sap primary instance address"
+  value       = "${google_compute_disk.pd_ssd_primary.name}"
 }
 
 output "primary_instance_name" {
-  value = "${google_compute_instance.primary.name}"
+  description = "Name of sap primary instance"
+  value       = "${google_compute_instance.primary.name}"
 }
 
 output "primary_zone" {
-  value = "${google_compute_instance.primary.zone}"
+  description = "Compute Engine primary instance deployment zone"
+  value       = "${google_compute_instance.primary.zone}"
 }
 
 output "primary_instance_machine_type" {
-  value = "${google_compute_instance.primary.machine_type}"
+  description = "primary_instance_machine_type"
+  value       = "${google_compute_instance.primary.machine_type}"
 }
 
 output "secondary_instance_address" {
-  value = "${google_compute_disk.pd_ssd_secondary.name}"
+  description = "Name of sap secondary instance address"
+  value       = "${google_compute_disk.pd_ssd_secondary.name}"
 }
 
 output "secondary_instance_name" {
-  value = "${google_compute_instance.secondary.name}"
+  description = "Name of sap secondary instance"
+  value       = "${google_compute_instance.secondary.name}"
 }
 
 output "secondary_zone" {
-  value = "${google_compute_instance.secondary.zone}"
+  description = "Compute Engine secondary instance deployment zone"
+  value       = "${google_compute_instance.secondary.zone}"
 }
 
 output "secondary_instance_machine_type" {
-  value = "${google_compute_instance.secondary.machine_type}"
+  description = "secondary_instance_machine_type"
+  value       = "${google_compute_instance.secondary.machine_type}"
 }

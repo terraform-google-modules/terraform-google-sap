@@ -40,6 +40,6 @@ output "primary_zone" {
 }
 
 output "secondary_zone" {
-  description = "Compute Engine primary instance deployment zone"
+  description = "Compute Engine secondary instance deployment zone"
   value       = "${var.secondary_zone}"
 }
