@@ -133,7 +133,7 @@ resource "google_compute_instance" "primary" {
   }
 
   service_account {
-    email  = "${var.service_account}"
+    email  = "${var.service_account_email}"
     scopes = ["cloud-platform"]
   }
 }
@@ -200,7 +200,7 @@ resource "google_compute_instance" "secondary" {
   }
 
   service_account {
-    email  = "${var.service_account}"
+    email  = "${var.service_account_email}"
     scopes = ["cloud-platform"]
   }
 }

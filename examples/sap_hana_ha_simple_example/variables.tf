@@ -118,7 +118,7 @@ variable "pd_standard_size" {
   description = "Persistent disk size in GB"
 }
 
-variable "service_account" {
+variable "service_account_email" {
   description = "Service to run the terrform"
 }
 

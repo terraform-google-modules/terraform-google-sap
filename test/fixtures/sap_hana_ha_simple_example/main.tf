@@ -65,7 +65,7 @@ module "example" {
   network_tags               = "${var.network_tags}"
   project_id                 = "${var.project_id}"
   region                     = "${var.region}"
-  service_account            = "${var.service_account}"
+  service_account_email      = "${var.service_account_email}"
   boot_disk_size             = "${var.boot_disk_size}"
   boot_disk_type             = "${var.boot_disk_type}"
   autodelete_disk            = "${var.autodelete_disk}"
