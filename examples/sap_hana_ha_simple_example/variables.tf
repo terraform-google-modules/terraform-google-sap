@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-variable "primary_instance" {
+variable "primary_instance_name" {
   description = "Compute Engine instance name"
 }
 
-variable "secondary_instance" {
+variable "secondary_instance_name" {
   description = "Compute Engine instance name"
 }
 

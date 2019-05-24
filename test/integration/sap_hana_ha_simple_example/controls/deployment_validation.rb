@@ -28,7 +28,7 @@
 
 control 'deployment_validation_primary' do
 
-  describe command("gcloud compute instances get-serial-port-output #{attribute('primary_instance')} --project=#{attribute('project_id')} --zone=#{attribute('primary_zone')}") do
+  describe command("gcloud compute instances get-serial-port-output #{attribute('primary_instance_name')} --project=#{attribute('project_id')} --zone=#{attribute('primary_zone')}") do
       its(:exit_status) { should eq 0 }
 
       context "output of df -h command" do
@@ -50,7 +50,7 @@ end
 
 control 'deployment_validation_secondary' do
 
-  describe command("gcloud compute instances get-serial-port-output #{attribute('secondary_instance')} --project=#{attribute('project_id')} --zone=#{attribute('secondary_zone')}") do
+  describe command("gcloud compute instances get-serial-port-output #{attribute('secondary_instance_name')} --project=#{attribute('project_id')} --zone=#{attribute('secondary_zone')}") do
       its(:exit_status) { should eq 0 }
 
       context "output of df -h command" do

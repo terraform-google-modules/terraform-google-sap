@@ -73,7 +73,7 @@ resource "google_compute_disk" "pd_standard_secondary" {
 
 resource "google_compute_instance" "primary" {
   project        = "${var.project_id}"
-  name           = "${var.primary_instance}"
+  name           = "${var.primary_instance_name}"
   machine_type   = "${var.instance_type}"
   zone           = "${var.primary_zone}"
   tags           = "${var.network_tags}"
@@ -116,8 +116,8 @@ resource "google_compute_instance" "primary" {
     sap_deployment_debug       = "${var.sap_deployment_debug}"
     post_deployment_script     = "${var.post_deployment_script}"
     sap_hana_sid               = "${var.sap_hana_sid}"
-    primary_instance           = "${var.primary_instance}"
-    secondary_instance         = "${var.secondary_instance}"
+    primary_instance           = "${var.primary_instance_name}"
+    secondary_instance         = "${var.secondary_instance_name}"
     primary_zone               = "${var.primary_zone}"
     secondary_zone             = "${var.secondary_zone}"
     sap_hana_instance_number   = "${var.sap_hana_instance_number}"
@@ -140,7 +140,7 @@ resource "google_compute_instance" "primary" {
 
 resource "google_compute_instance" "secondary" {
   project        = "${var.project_id}"
-  name           = "${var.secondary_instance}"
+  name           = "${var.secondary_instance_name}"
   machine_type   = "${var.instance_type}"
   zone           = "${var.secondary_zone}"
   tags           = "${var.network_tags}"
@@ -183,8 +183,8 @@ resource "google_compute_instance" "secondary" {
     sap_deployment_debug       = "${var.sap_deployment_debug}"
     post_deployment_script     = "${var.post_deployment_script}"
     sap_hana_sid               = "${var.sap_hana_sid}"
-    primary_instance           = "${var.primary_instance}"
-    secondary_instance         = "${var.secondary_instance}"
+    primary_instance           = "${var.primary_instance_name}"
+    secondary_instance         = "${var.secondary_instance_name}"
     primary_zone               = "${var.primary_zone}"
     secondary_zone             = "${var.secondary_zone}"
     sap_hana_instance_number   = "${var.sap_hana_instance_number}"
