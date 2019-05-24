@@ -1,24 +1,14 @@
 # terraform-google-sap
 
-This module was generated from [terraform-google-module-template](https://github.com/terraform-google-modules/terraform-google-module-template/), which by default generates a module that simply creates a GCS bucket. As the module develops, this README should be updated.
+This module is a collection of multiple opinionated submodules to deploy SAP Products.
+Below is the list of available submodules:
 
-The resources/services/activations/deletions that this module will create/trigger are:
-
-- Create a GCS bucket with the provided name
+- [SAP HANA](./modules/sap_hana/README.md)
 
 ## Usage
 
-Basic usage of this module is as follows:
-
-```hcl
-module "sap" {
-  source  = "terraform-google-modules/sap/google"
-  version = "~> 0.1"
-
-  project_id  = "<PROJECT ID>"
-  bucket_name = "gcs-test-bucket"
-}
-```
+Each submodules have their own usage documented in the [modules](./modules) folder.
+For example, see the [SAP HANA Usage Section](./modules/sap_hana/README.md#Usage).
 
 Functional examples are included in the
 [examples](./examples/) directory.
@@ -41,9 +31,11 @@ The following dependencies must be available:
 ### Service Account
 
 A service account with the following roles must be used to provision
-the resources of this module:
+the resources of each submodule:
 
-- Storage Admin: `roles/storage.admin`
+- Compute Admin: `roles/compute.admin`
+
+Please refer to the documentation of specific submodules located in the [modules](./modules/) folder for additional requirements for the service account.
 
 The [Project Factory module][project-factory-module] and the
 [IAM module][iam-module] may be used in combination to provision a
@@ -54,7 +46,7 @@ service account with the necessary roles applied.
 A project with the following APIs enabled must be used to host the
 resources of this module:
 
-- Google Cloud Storage JSON API: `storage-api.googleapis.com`
+- Compute Engine API: `compute.googleapis.com`
 
 The [Project Factory module][project-factory-module] can be used to
 provision a project with the necessary APIs enabled.

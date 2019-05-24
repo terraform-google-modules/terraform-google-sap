@@ -1,4 +1,4 @@
-name: simple_example
+name: sap_hana_simple_example
 depends:
   - name: inspec-gcp
     git: https://github.com/inspec/inspec-gcp.git
@@ -7,6 +7,10 @@ attributes:
   - name: project_id
     required: true
     type: string
-  - name: bucket_name
+  - name: instance_name
     required: true
     type: string
+  - name: zone
+    required: true
+    type: string
+

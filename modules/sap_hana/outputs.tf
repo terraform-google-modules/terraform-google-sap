@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-provider "google" {
-  version = "~> 2.0"
+output "instance_name" {
+  value = "${google_compute_instance.gcp_sap_hana.name}"
 }
 
-module "sap" {
-  source = "../.."
+output "zone" {
+  value = "${google_compute_instance.gcp_sap_hana.zone}"
+}
 
-  project_id  = "${var.project_id}"
-  bucket_name = "${var.bucket_name}"
+output "machine_type" {
+  value = "${google_compute_instance.gcp_sap_hana.machine_type}"
 }

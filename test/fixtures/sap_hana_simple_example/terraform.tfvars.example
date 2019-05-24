@@ -1,0 +1,15 @@
+service_account_email="<my_service_account_email>"
+project_id="<my_project_id>"
+
+instance_type="n1-highmem-16"
+
+linux_image_family     = "sles-12-sp3-sap"
+linux_image_project    = "suse-sap-cloud"
+disk_type              = "pd-ssd"
+boot_disk_type         = "pd-ssd"
+boot_disk_size         = 64
+autodelete_disk        = "true"
+pd_ssd_size            = 450
+
+subnetwork                 = "default"
+network_tags               = ["foo"]
