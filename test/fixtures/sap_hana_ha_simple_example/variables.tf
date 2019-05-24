@@ -15,23 +15,23 @@
  */
 
 variable "primary_instance_name" {
-  description = "Compute Engine instance name"
+  description = "A unique name for the resource, required by GCE. Changing this forces a new resource to be created."
 }
 
 variable "secondary_instance_name" {
-  description = "Compute Engine instance name"
-}
-
-variable "instance_type" {
-  description = "Compute Engine instance Type"
+  description = "A unique name for the resource, required by GCE. Changing this forces a new resource to be created."
 }
 
 variable "primary_zone" {
-  description = "Primary Compute Engine instance deployment zone"
+  description = "The primary zone that the instance should be created in."
 }
 
 variable "secondary_zone" {
-  description = "Secondary Compute Engine instance deployment zone"
+  description = "The secondary zone that the instance should be created in."
+}
+
+variable "instance_type" {
+  description = "The GCE instance/machine type."
 }
 
 variable "subnetwork" {
@@ -39,27 +39,27 @@ variable "subnetwork" {
 }
 
 variable "project_id" {
-  description = "Project name to deploy the resources"
+  description = "The ID of the project in which the resources will be deployed."
 }
 
 variable "region" {
-  description = "Region to deploy the resources"
+  description = "Region to deploy the resources. Should be in the same region as the zone."
 }
 
 variable "linux_image_family" {
-  description = "Compute Engine image name"
+  description = "GCE image family."
 }
 
 variable "linux_image_project" {
-  description = "Project name containing the linux image"
+  description = "Project name containing the linux image."
 }
 
 variable "sap_hana_deployment_bucket" {
-  description = "SAP hana deployment bucket"
+  description = "SAP HANA post deployment script. Must be a gs:// or https:// link to the script."
 }
 
 variable "sap_deployment_debug" {
-  description = "SAP hana deployment debug"
+  description = "Debug flag for SAP HANA deployment."
 }
 
 variable "post_deployment_script" {
@@ -67,27 +67,27 @@ variable "post_deployment_script" {
 }
 
 variable "sap_hana_sid" {
-  description = "SAP hana SID"
+  description = "SAP HANA System Identifier. When using the SID to enter a user session, like this for example, `su - [SID]adm`, make sure that [SID] is in lower case."
 }
 
 variable "sap_hana_instance_number" {
-  description = "SAP hana instance number"
+  description = "SAP HANA instance number"
 }
 
 variable "sap_hana_sidadm_password" {
-  description = "SAP hana SID admin password"
+  description = "SAP HANA System Identifier Admin password"
 }
 
 variable "sap_hana_system_password" {
-  description = "SAP hana system password"
+  description = "SAP HANA system password"
 }
 
 variable "sap_hana_sidadm_uid" {
-  description = "SAP hana sid adm password"
+  description = "SAP HANA System Identifier Admin UID"
 }
 
 variable "sap_hana_sapsys_gid" {
-  description = "SAP hana sap system gid"
+  description = "SAP HANA SAP System GID"
 }
 
 variable "sap_vip" {
@@ -99,7 +99,7 @@ variable "sap_vip_secondary_range" {
 }
 
 variable "autodelete_disk" {
-  description = "Delete backend disk along with instance"
+  description = "Whether the disk will be auto-deleted when the instance is deleted."
 }
 
 variable "boot_disk_size" {
@@ -107,7 +107,7 @@ variable "boot_disk_size" {
 }
 
 variable "boot_disk_type" {
-  description = "The type of data disk: PD_SSD or PD_HDD."
+  description = "The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
 }
 
 variable "pd_ssd_size" {
@@ -119,12 +119,12 @@ variable "pd_standard_size" {
 }
 
 variable "service_account_email" {
-  description = "Service to run the terrform"
+  description = "Email of service account to attach to the instance."
 }
 
 variable "network_tags" {
   type        = "list"
-  description = "List of network tags"
+  description = "List of network tags to attach to the instance."
 }
 
 variable "primary_instance_ip" {
@@ -136,5 +136,13 @@ variable "secondary_instance_ip" {
 }
 
 variable "sap_vip_internal_address" {
-  description = "sap virtual ip internal address"
+  description = "Name of static IP adress to add to the instance's access config."
+}
+
+variable "startup_script_1" {
+  description = "Startup script to install SAP HANA."
+}
+
+variable "startup_script_2" {
+  description = "Startup script to install SAP HANA."
 }
