@@ -123,12 +123,12 @@ It is the recommended way is to use a GCS Bucket in the following way.:
 
 | Name | Description |
 |------|-------------|
-| primary\_instance\_address | Name of sap primary instance address |
-| primary\_instance\_machine\_type | primary_instance_machine_type |
+| primary\_instance\_address | Name of static IP adress to add to primary instance's access config. |
+| primary\_instance\_machine\_type | Primary GCE instance/machine type. |
 | primary\_instance\_name | Name of sap primary instance |
 | primary\_zone | Compute Engine primary instance deployment zone |
-| secondary\_instance\_address | Name of sap secondary instance address |
-| secondary\_instance\_machine\_type | secondary_instance_machine_type |
+| secondary\_instance\_address | Name of static IP adress to add to secondary instance's access config. |
+| secondary\_instance\_machine\_type | Secondary GCE instance/machine type. |
 | secondary\_instance\_name | Name of sap secondary instance |
 | secondary\_zone | Compute Engine secondary instance deployment zone |
 

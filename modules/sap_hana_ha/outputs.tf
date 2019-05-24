@@ -15,7 +15,7 @@
  */
 
 output "primary_instance_address" {
-  description = "Name of sap primary instance address"
+  description = "Name of static IP adress to add to primary instance's access config."
   value       = "${google_compute_disk.pd_ssd_primary.name}"
 }
 
@@ -30,12 +30,12 @@ output "primary_zone" {
 }
 
 output "primary_instance_machine_type" {
-  description = "primary_instance_machine_type"
+  description = "Primary GCE instance/machine type."
   value       = "${google_compute_instance.primary.machine_type}"
 }
 
 output "secondary_instance_address" {
-  description = "Name of sap secondary instance address"
+  description = "Name of static IP adress to add to secondary instance's access config."
   value       = "${google_compute_disk.pd_ssd_secondary.name}"
 }
 
@@ -50,6 +50,6 @@ output "secondary_zone" {
 }
 
 output "secondary_instance_machine_type" {
-  description = "secondary_instance_machine_type"
+  description = "Secondary GCE instance/machine type."
   value       = "${google_compute_instance.secondary.machine_type}"
 }
