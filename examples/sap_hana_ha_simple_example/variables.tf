@@ -128,11 +128,11 @@ variable "network_tags" {
 }
 
 variable "primary_instance_ip" {
-  description = "gcp primary instance ip address"
+  description = "Primary instance ip address"
 }
 
 variable "secondary_instance_ip" {
-  description = "gcp secondary instance ip address"
+  description = "Secondary instance ip address"
 }
 
 variable "sap_vip_internal_address" {

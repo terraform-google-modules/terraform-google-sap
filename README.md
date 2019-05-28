@@ -8,7 +8,7 @@ Below is list of one of the available submodules:
 ## Usage
 
 Each submodules have their own usage documented in the [modules](./modules) folder.
-For example, see the [SAP HANA HA Usage Section](./modules/sap_hana_ha/README.md#Usage).
+For example, see the [SAP HANA Usage Section](./modules/sap_hana/README.md#Usage).
 
 Functional examples are included in the
 [examples](./examples/) directory.
