@@ -16,9 +16,11 @@
 
 variable "primary_instance_name" {
   description = "A unique name for the resource, required by GCE. Changing this forces a new resource to be created."
+  default     = "sap-hana-ha-terra-1"
 }
 
 variable "secondary_instance_name" {
+  default     = "sap-hana-ha-terra-2"
   description = "A unique name for the resource, required by GCE. Changing this forces a new resource to be created."
 }
 
@@ -113,8 +115,8 @@ variable "pd_ssd_size" {
   description = "Persistent disk size in GB"
 }
 
-variable "pd_standard_size" {
-  description = "Persistent disk size in GB"
+variable "disk_type" {
+  description = "The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
 }
 
 variable "service_account_email" {

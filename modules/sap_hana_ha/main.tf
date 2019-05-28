@@ -42,33 +42,17 @@ resource "google_compute_address" "internal_sap_vip" {
 resource "google_compute_disk" "pd_ssd_primary" {
   project = "${var.project_id}"
   name    = "pd-ssd-disk-primary"
-  type    = "pd-ssd"
+  type    = "${var.disk_type}"
   zone    = "${var.primary_zone}"
   size    = "${var.pd_ssd_size}"
-}
-
-resource "google_compute_disk" "pd_standard_primary" {
-  project = "${var.project_id}"
-  name    = "pd-standard-disk-primary"
-  type    = "pd-standard"
-  zone    = "${var.primary_zone}"
-  size    = "${var.pd_standard_size}"
 }
 
 resource "google_compute_disk" "pd_ssd_secondary" {
   project = "${var.project_id}"
   name    = "pd-ssd-disk-secondary"
-  type    = "pd-ssd"
+  type    = "${var.disk_type}"
   zone    = "${var.secondary_zone}"
   size    = "${var.pd_ssd_size}"
-}
-
-resource "google_compute_disk" "pd_standard_secondary" {
-  project = "${var.project_id}"
-  name    = "pd-standard-disk-secondary"
-  type    = "pd-standard"
-  zone    = "${var.secondary_zone}"
-  size    = "${var.pd_standard_size}"
 }
 
 resource "google_compute_instance" "primary" {
@@ -96,10 +80,6 @@ resource "google_compute_instance" "primary" {
 
   attached_disk {
     source = "${google_compute_disk.pd_ssd_primary.self_link}"
-  }
-
-  attached_disk {
-    source = "${google_compute_disk.pd_standard_primary.self_link}"
   }
 
   network_interface {
@@ -163,10 +143,6 @@ resource "google_compute_instance" "secondary" {
 
   attached_disk {
     source = "${google_compute_disk.pd_ssd_secondary.self_link}"
-  }
-
-  attached_disk {
-    source = "${google_compute_disk.pd_standard_secondary.self_link}"
   }
 
   network_interface {
