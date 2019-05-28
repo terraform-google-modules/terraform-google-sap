@@ -24,10 +24,12 @@ variable "secondary_instance_name" {
 
 variable "primary_zone" {
   description = "The primary zone that the instance should be created in."
+  default     = "us-central1-a"
 }
 
 variable "secondary_zone" {
   description = "The secondary zone that the instance should be created in."
+  default     = "us-central1-b"
 }
 
 variable "instance_type" {
@@ -60,6 +62,7 @@ variable "sap_hana_deployment_bucket" {
 
 variable "sap_deployment_debug" {
   description = "Debug flag for SAP HANA deployment."
+  default     = "false"
 }
 
 variable "post_deployment_script" {
@@ -100,6 +103,7 @@ variable "sap_vip_secondary_range" {
 
 variable "autodelete_disk" {
   description = "Whether the disk will be auto-deleted when the instance is deleted."
+  default     = "false"
 }
 
 variable "boot_disk_size" {
@@ -125,6 +129,7 @@ variable "service_account_email" {
 variable "network_tags" {
   type        = "list"
   description = "List of network tags to attach to the instance."
+  default     = []
 }
 
 variable "primary_instance_ip" {
