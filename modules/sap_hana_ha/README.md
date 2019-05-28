@@ -98,12 +98,16 @@ It is the recommended way is to use a GCS Bucket in the following way.:
 | autodelete\_disk | Whether the disk will be auto-deleted when the instance is deleted. | string | `"false"` | no |
 | boot\_disk\_size | Root disk size in GB | string | n/a | yes |
 | boot\_disk\_type | The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | n/a | yes |
+| disk\_name\_0 | Name of first disk. | string | `"sap-hana-pd-sd-0"` | no |
+| disk\_name\_1 | Name of second disk. | string | `"sap-hana-pd-sd-1"` | no |
+| disk\_name\_2 | Name of third disk. | string | `"sap-hana-pd-sd-2"` | no |
+| disk\_name\_3 | Name of fourth disk. | string | `"sap-hana-pd-sd-3"` | no |
+| disk\_type | The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | n/a | yes |
 | instance\_type | The GCE instance/machine type. | string | n/a | yes |
 | linux\_image\_family | GCE image family. | string | n/a | yes |
 | linux\_image\_project | Project name containing the linux image. | string | n/a | yes |
 | network\_tags | List of network tags to attach to the instance. | list | `<list>` | no |
 | pd\_ssd\_size | Persistent disk size in GB | string | n/a | yes |
-| pd\_standard\_size | Persistent disk size in GB | string | n/a | yes |
 | post\_deployment\_script | SAP post deployment script | string | n/a | yes |
 | primary\_instance\_ip | Primary instance ip address | string | n/a | yes |
 | primary\_instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | n/a | yes |
@@ -133,11 +137,9 @@ It is the recommended way is to use a GCS Bucket in the following way.:
 
 | Name | Description |
 |------|-------------|
-| primary\_instance\_address | Name of static IP adress to add to primary instance's access config. |
 | primary\_instance\_machine\_type | Primary GCE instance/machine type. |
 | primary\_instance\_name | Name of sap primary instance |
 | primary\_zone | Compute Engine primary instance deployment zone |
-| secondary\_instance\_address | Name of static IP adress to add to secondary instance's access config. |
 | secondary\_instance\_machine\_type | Secondary GCE instance/machine type. |
 | secondary\_instance\_name | Name of sap secondary instance |
 | secondary\_zone | Compute Engine secondary instance deployment zone |
