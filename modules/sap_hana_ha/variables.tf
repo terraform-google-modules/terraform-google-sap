@@ -122,6 +122,26 @@ variable "pd_ssd_size" {
   description = "Persistent disk size in GB"
 }
 
+variable "disk_name_0" {
+  description = "Name of first disk."
+  default     = "sap-hana-pd-sd-0"
+}
+
+variable "disk_name_1" {
+  description = "Name of second disk."
+  default     = "sap-hana-pd-sd-1"
+}
+
+variable "disk_name_2" {
+  description = "Name of third disk."
+  default     = "sap-hana-pd-sd-2"
+}
+
+variable "disk_name_3" {
+  description = "Name of fourth disk."
+  default     = "sap-hana-pd-sd-3"
+}
+
 variable "service_account_email" {
   description = "Email of service account to attach to the instance."
 }

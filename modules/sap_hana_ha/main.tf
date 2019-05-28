@@ -36,20 +36,36 @@ resource "google_compute_address" "internal_sap_vip" {
   subnetwork   = "${var.subnetwork}"
   address_type = "INTERNAL"
   address      = "${var.sap_vip}"
-  region       = "us-central1"
+  region       = "${var.region}"
 }
 
-resource "google_compute_disk" "pd_ssd_primary" {
+resource "google_compute_disk" "gcp_sap_hana_sd_0" {
   project = "${var.project_id}"
-  name    = "pd-ssd-disk-primary"
+  name    = "${var.disk_name_0}"
   type    = "${var.disk_type}"
   zone    = "${var.primary_zone}"
   size    = "${var.pd_ssd_size}"
 }
 
-resource "google_compute_disk" "pd_ssd_secondary" {
+resource "google_compute_disk" "gcp_sap_hana_sd_1" {
   project = "${var.project_id}"
-  name    = "pd-ssd-disk-secondary"
+  name    = "${var.disk_name_1}"
+  type    = "${var.disk_type}"
+  zone    = "${var.primary_zone}"
+  size    = "${var.pd_ssd_size}"
+}
+
+resource "google_compute_disk" "gcp_sap_hana_sd_2" {
+  project = "${var.project_id}"
+  name    = "${var.disk_name_2}"
+  type    = "${var.disk_type}"
+  zone    = "${var.secondary_zone}"
+  size    = "${var.pd_ssd_size}"
+}
+
+resource "google_compute_disk" "gcp_sap_hana_sd_3" {
+  project = "${var.project_id}"
+  name    = "${var.disk_name_3}"
   type    = "${var.disk_type}"
   zone    = "${var.secondary_zone}"
   size    = "${var.pd_ssd_size}"
@@ -79,7 +95,11 @@ resource "google_compute_instance" "primary" {
   }
 
   attached_disk {
-    source = "${google_compute_disk.pd_ssd_primary.self_link}"
+    source = "${google_compute_disk.gcp_sap_hana_sd_0.self_link}"
+  }
+
+  attached_disk {
+    source = "${google_compute_disk.gcp_sap_hana_sd_1.self_link}"
   }
 
   network_interface {
@@ -142,7 +162,11 @@ resource "google_compute_instance" "secondary" {
   }
 
   attached_disk {
-    source = "${google_compute_disk.pd_ssd_secondary.self_link}"
+    source = "${google_compute_disk.gcp_sap_hana_sd_2.self_link}"
+  }
+
+  attached_disk {
+    source = "${google_compute_disk.gcp_sap_hana_sd_3.self_link}"
   }
 
   network_interface {
