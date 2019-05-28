@@ -14,71 +14,67 @@
   * limitations under the License.
   */
 
-primary_instance_name = "sap-hana-ha-terra-1"
+  primary_instance_name = "sap-hana-ha-terra-1"
 
-secondary_instance_name = "sap-hana-ha-terra-2"
+  primary_instance_ip = "gcp-primary-instance-ip"
 
-instance_type = "n1-highmem-16"
+  secondary_instance_ip = "gcp-secondary-instance-ip"
 
-primary_zone = "us-central1-c"
+  sap_vip_internal_address = "sap-vip-internal-address"
 
-secondary_zone = "us-central1-b"
+  secondary_instance_name = "sap-hana-ha-terra-2"
 
-subnetwork = "default"
+  instance_type = "n1-highmem-16"
 
-project_id = "<gcp-project>"
+  primary_zone = "us-central1-c"
 
-region = "us-central1"
+  secondary_zone = "us-central1-b"
 
-linux_image_family = "sles-12-sp2-sap"
+  subnetwork = "default"
 
-linux_image_project = "suse-sap-cloud"
+  project_id = <project_id>
 
-sap_hana_deployment_bucket = "<sap_deployment_bucket_name>"
+  region = "us-central1"
 
-sap_deployment_debug = "false"
+  linux_image_family = "sles-12-sp2-sap"
 
-post_deployment_script = ""
+  linux_image_project = "suse-sap-cloud"
 
-primary_instance_ip = "primary-instance-ip"
+  sap_hana_deployment_bucket = "hana-gcp-20/hana20sps03"
 
-secondary_instance_ip = "secondary-instance-ip"
+  post_deployment_script = ""
 
-sap_hana_sid = "D01"
+  sap_hana_sid = "D01"
 
-sap_hana_instance_number = 10
+  sap_hana_instance_number = 10
 
-sap_hana_sidadm_password = "<password>"
+  sap_hana_sidadm_password = <password>
 
-sap_hana_system_password = "<password>"
+  sap_hana_system_password = <password>
 
-sap_hana_sidadm_uid = 900
+  sap_hana_sidadm_uid = 900
 
-sap_hana_sapsys_gid = 900
+  sap_hana_sapsys_gid = 900
 
-sap_vip = "10.1.0.24"
+  sap_vip = "10.1.0.24"
 
-sap_vip_secondary_range = ""
+  sap_vip_secondary_range = ""
 
-sap_hana_scaleout_nodes = 0
+  sap_hana_scaleout_nodes = 0
 
-sap_vip_internal_address = "sap-vip-internal-address"
+  instance_count_master = 1
 
-instance_count_master = 1
+  boot_disk_size = 300
 
-autodelete_disk = "true"
+  boot_disk_type = "pd-ssd"
 
-boot_disk_size = 300
+  disk_type = "pd-ssd"
 
-boot_disk_type = "pd-ssd"
+  pd_ssd_size = 500
 
-pd_ssd_size = 500
+  service_account_email = <service_account>
 
-pd_standard_size = 350
-
-service_account = "<gcp service account>"
-
-network_tags = ["foo"]
+  network_tags = ["foo"]
 
 startup_script_1 = "../../modules/sap_hana_ha/files/startup.sh"
 
