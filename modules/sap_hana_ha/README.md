@@ -20,7 +20,7 @@ provider "google" {
 }
 
 module "gcp_sap_hana_ha" {
-  source                     = "terraform-google-modules/sap/google/modules/   post_deployment_script     = "${var.post_deployment_script}"
+source                      = "terraform-google-modules/sap/google/modules/                                                             post_deployment_script       = "${var.post_deployment_script}"
     subnetwork                 = "${var.subnetwork}"
     linux_image_family         = "${var.linux_image_family}"
     linux_image_project        = "${var.linux_image_project}"
@@ -54,7 +54,7 @@ module "gcp_sap_hana_ha" {
     sap_vip_internal_address   = "${var.sap_vip_internal_address}"
     startup_script_1           = "${var.startup_script_1}"
     startup_script_2           = "${var.startup_script_2}"
-  }
+    }
 
 ```
 ## Requirements
