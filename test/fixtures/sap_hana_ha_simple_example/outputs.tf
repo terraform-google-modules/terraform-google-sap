@@ -16,7 +16,7 @@
 
 output "sap_hana_sid" {
   description = "SAP Hana SID user"
-  value       = "${var.sap_hana_sid}"
+  value       = "${module.example.sap_hana_sid}"
 }
 
 output "project_id" {

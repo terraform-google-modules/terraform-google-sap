@@ -58,20 +58,8 @@ variable "sap_hana_deployment_bucket" {
   description = "SAP HANA post deployment script. Must be a gs:// or https:// link to the script."
 }
 
-variable "sap_deployment_debug" {
-  description = "Debug flag for SAP HANA deployment."
-}
-
 variable "post_deployment_script" {
   description = "SAP post deployment script"
-}
-
-variable "sap_hana_sid" {
-  description = "SAP HANA System Identifier. When using the SID to enter a user session, like this for example, `su - [SID]adm`, make sure that [SID] is in lower case."
-}
-
-variable "sap_hana_instance_number" {
-  description = "SAP HANA instance number"
 }
 
 variable "sap_hana_sidadm_password" {
@@ -96,10 +84,6 @@ variable "sap_vip" {
 
 variable "sap_vip_secondary_range" {
   description = "SAP seconday VIP range"
-}
-
-variable "autodelete_disk" {
-  description = "Whether the disk will be auto-deleted when the instance is deleted."
 }
 
 variable "boot_disk_size" {

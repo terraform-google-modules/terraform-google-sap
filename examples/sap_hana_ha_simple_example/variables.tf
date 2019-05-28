@@ -61,7 +61,13 @@ variable "sap_hana_deployment_bucket" {
 }
 
 variable "post_deployment_script" {
-  description = "SAP post deployment script"
+  description = "SAP HANA post deployment script. Must be a gs:// or https:// link to the script."
+  default     = ""
+}
+
+variable "sap_hana_sid" {
+  description = "SAP HANA System Identifier"
+  default     = "D10"
 }
 
 variable "sap_hana_sidadm_password" {
@@ -74,14 +80,21 @@ variable "sap_hana_system_password" {
 
 variable "sap_hana_sidadm_uid" {
   description = "SAP HANA System Identifier Admin UID"
+  default     = 900
 }
 
 variable "sap_hana_sapsys_gid" {
   description = "SAP HANA SAP System GID"
+  default     = 900
 }
 
 variable "sap_vip" {
   description = "SAP VIP"
+}
+
+variable "sap_hana_instance_number" {
+  description = "SAP HANA instance number"
+  default     = 10
 }
 
 variable "sap_vip_secondary_range" {
