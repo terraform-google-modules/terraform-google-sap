@@ -65,8 +65,8 @@ Make sure you've gone through the root [Requirement Section](../../README.md#req
  Follow instructions [here](https://cloud.google.com/solutions/sap/docs/sap-hana-ha-deployment-guide#creating_a_cloud_storage_bucket_for_the_sap_hana_ha_installation_files) to properly Download SAP HANA from the SAP Marketplace, and upload it to a GCS bucket.
 
 
-### Configure Service Account for identifying the Compute instance
-The compute instance created by this submodule will need to download SAP HANA from a GCS bucket in order install it. Follow the instructions below to ensure a successful installation:
+### Configure Service Account for identifying the Compute instances
+The compute instances created by this submodule will need to download SAP HANA from a GCS bucket in order install it. Follow the instructions below to ensure a successful installation:
 
  1. [Create a new service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts)
  2. Grant this new service account the following permissions on the bucket where you uploaded SAP HANA installation file:
