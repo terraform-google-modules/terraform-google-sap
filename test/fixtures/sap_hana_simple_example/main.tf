@@ -51,21 +51,20 @@ resource "google_storage_bucket_object" "post_deployment_script" {
 }
 
 module "example" {
-  source                = "../../../examples/sap_hana_simple_example"
-  project_id            = "${var.project_id}"
-  service_account_email = "${var.service_account_email}"
-
-  instance_type       = "${var.instance_type}"
-  linux_image_family  = "${var.linux_image_family}"
-  linux_image_project = "${var.linux_image_project}"
-  instance_name       = "${var.instance_name}"
-  disk_type           = "${var.disk_type}"
-  boot_disk_type      = "${var.boot_disk_type}"
-  boot_disk_size      = "${var.boot_disk_size}"
-  pd_ssd_size         = "${var.pd_ssd_size}"
-
-  subnetwork = "default"
-
+  source                     = "../../../examples/sap_hana_simple_example"
+  project_id                 = "${var.project_id}"
+  service_account_email      = "${var.service_account_email}"
+  instance_type              = "${var.instance_type}"
+  linux_image_family         = "${var.linux_image_family}"
+  linux_image_project        = "${var.linux_image_project}"
+  instance_name              = "${var.instance_name}"
+  disk_type                  = "${var.disk_type}"
+  boot_disk_type             = "${var.boot_disk_type}"
+  boot_disk_size             = "${var.boot_disk_size}"
+  pd_ssd_size                = "${var.pd_ssd_size}"
+  sap_hana_sidadm_password   = "${var.sap_hana_sidadm_password}"
+  sap_hana_system_password   = "${var.sap_hana_system_password}"
+  subnetwork                 = "default"
   startup_script             = "${data.template_file.startup_sap_hana.rendered}"
   sap_hana_deployment_bucket = "${local.gcs_bucket_static_name}"
   post_deployment_script     = "${google_storage_bucket.deployment_bucket.url}/${google_storage_bucket_object.post_deployment_script.name}"
