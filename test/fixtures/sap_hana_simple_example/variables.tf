@@ -60,3 +60,11 @@ variable "boot_disk_type" {
 variable "pd_ssd_size" {
   description = "Persistent disk size in GB"
 }
+
+variable "sap_hana_sidadm_password" {
+  description = "SAP HANA System Identifier Admin password"
+}
+
+variable "sap_hana_system_password" {
+  description = "SAP HANA system password"
+}
