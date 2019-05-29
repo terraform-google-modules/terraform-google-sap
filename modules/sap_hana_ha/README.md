@@ -20,7 +20,7 @@ provider "google" {
 }
 
 module "gcp_sap_hana_ha" {
-source                      = "terraform-google-modules/sap/google/modules/                                                             post_deployment_script       = "${var.post_deployment_script}"
+source                      = "terraform-google-modules/sap/google/modules/                                                             
     subnetwork                 = "${var.subnetwork}"
     linux_image_family         = "${var.linux_image_family}"
     linux_image_project        = "${var.linux_image_project}"
