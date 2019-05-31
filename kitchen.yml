@@ -37,6 +37,7 @@ suites:
           backend: local
           controls:
             - deployment_validation
+
   - name: sap_hana_ha_simple_example
     driver:
       root_module_directory: test/fixtures/sap_hana_ha_simple_example/
