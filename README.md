@@ -3,6 +3,7 @@
 This module is a collection of submodules to deploy SAP Products.
 Below is list of one of the available submodules:
 
+- [SAP HANA](./modules/sap_hana/README.md)
 - [SAP HANA HA](./modules/sap_hana_ha/README.md)
 
 ## Usage
@@ -46,7 +47,7 @@ service account with the necessary roles applied.
 A project with the following APIs enabled must be used to host the
 resources of this module:
 
-- Google Cloud Storage JSON API: `compute.googleapis.com`
+- Compute Engine API: `compute.googleapis.com`
 
 The [Project Factory module][project-factory-module] can be used to
 provision a project with the necessary APIs enabled.
