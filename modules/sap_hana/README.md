@@ -7,7 +7,7 @@ This module handles opinionated SAP HANA configuration and deployment.
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
-- Create a Compute Instance that whill host SAP HANA
+- Create a Compute Instance that will host SAP HANA
 - Create a Static IP Adresse for the Compute Instance
 - Create a 2 Persistent Disks to host SAP HANA's File systems
 
@@ -20,30 +20,32 @@ provider "google" {
 
 module "gcp_sap_hana" {
   source                 = "terraform-google-modules/sap/google/modules/sap_hana"
-  subnetwork             = "${var.subnetwork}"
-  network_tags           = "${var.network_tags}"
-  linux_image_family     = "sles-12-sp3-sap"
-  linux_image_project    = "suse-sap-cloud"
-  instance_name          = "my-sap-hana-instance"
-  instance_type          = "n1-highmem-16"
-  disk_type              = "pd-ssd"
-  project_id             = "<my_project_id>"
-  region                 = "us-central1"
-  service_account_email  = "<my_service_account_email>"
-  boot_disk_type         = "pd-ssd"
-  boot_disk_size         = 64
-  autodelete_disk        = "true"
-  disk_type              = "${var.disk_type}"
-  disk_type_1            = "${var.disk_type_1}"
-  sap_hana_deployment_bucket = "<my_bucket_name>/<my_bucket_folder>"
-  sap_deployment_debug     = "false"
-  startup_script           = "${path.root}/files/startup.sh"
-  sap_hana_sid             = "${var.sap_hana_sid}"
-  sap_hana_instance_number = "${var.sap_hana_instance_number}"
-  sap_hana_sidadm_password = "<password>"
-  sap_hana_system_password = "<password>"
-  sap_hana_sidadm_uid      = 900
-  sap_hana_sapsys_gid      = 900
+  subnetwork                 = "${var.subnetwork}"
+  linux_image_family         = "${var.linux_image_family}"
+  linux_image_project        = "${var.linux_image_project}"
+  instance_name              = "${var.instance_name}"
+  instance_type              = "${var.instance_type}"
+  project_id                 = "${var.project_id}"
+  region                     = "${var.region}"
+  zone                       = "${var.zone}"
+  service_account_email      = "${var.service_account_email}"
+  boot_disk_type             = "${var.boot_disk_type}"
+  boot_disk_size             = "${var.boot_disk_size}"
+  autodelete_disk            = "true"
+  pd_ssd_size                = "${var.pd_ssd_size}"
+  pd_hdd_size                = "${var.pd_hdd_size}"
+  sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
+  sap_deployment_debug       = "false"
+  post_deployment_script     = "${var.post_deployment_script}"
+  startup_script             = "${var.startup_script}"
+  sap_hana_sid               = "${var.sap_hana_sid}"
+  sap_hana_instance_number   = "${var.sap_hana_instance_number}"
+  sap_hana_sidadm_password   = "${var.sap_hana_sidadm_password}"
+  sap_hana_system_password   = "${var.sap_hana_system_password}"
+  network_tags               = "${var.network_tags}"
+  sap_hana_sidadm_uid        = 900
+  sap_hana_sapsys_gid        = 900
+  address_name               = "${var.address_name}"
 }
 ```
 ## Requirements
