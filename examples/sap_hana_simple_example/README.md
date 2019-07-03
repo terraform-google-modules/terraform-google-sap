@@ -31,7 +31,7 @@ Make sure you go through this [Requirements section](../../modules/sap_hana/READ
 | pd\_ssd\_size | Persistent disk size in GB | string | `""` | no |
 | post\_deployment\_script | SAP HANA post deployment script. Must be a gs:// or https:// link to the script. | string | `""` | no |
 | project\_id | The ID of the project in which the resources will be deployed. | string | n/a | yes |
-| region | Region to deploy the resources. Should be in the same region as the zone. | string | `"us-central1"` | no |
+| region | Region to deploy the resources. Should be in the same region as the zone. | string | n/a | yes |
 | sap\_deployment\_debug | Debug flag for SAP HANA deployment. | string | `"false"` | no |
 | sap\_hana\_deployment\_bucket | SAP hana deployment bucket. | string | n/a | yes |
 | sap\_hana\_instance\_number | SAP HANA instance number | string | n/a | yes |
@@ -43,7 +43,7 @@ Make sure you go through this [Requirements section](../../modules/sap_hana/READ
 | service\_account\_email | Email of service account to attach to the instance. | string | n/a | yes |
 | startup\_script | Startup script to install SAP HANA. | string | n/a | yes |
 | subnetwork | The name or self_link of the subnetwork where the isntance will be deployed. The subnetwork must exist in the same region this instance will be created in. | string | n/a | yes |
-| zone | The zone that the instance should be created in. | string | `"us-central1-a"` | no |
+| zone | The zone that the instance should be created in. | string | n/a | yes |
 
 ## Outputs
 

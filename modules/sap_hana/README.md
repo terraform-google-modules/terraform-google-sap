@@ -113,7 +113,7 @@ The recommended way is to use a GCS Bucket in the following way.:
 | service\_account\_email | Email of service account to attach to the instance. | string | n/a | yes |
 | startup\_script | Startup script to install SAP HANA. | string | n/a | yes |
 | subnetwork | The name or self_link of the subnetwork where the isntance will be deployed. The subnetwork must exist in the same region this instance will be created in. | string | n/a | yes |
-| zone | The zone that the instance should be created in. | string | `"us-central1-a"` | no |
+| zone | The zone that the instance should be created in. | string | n/a | yes |
 
 ## Outputs
 
