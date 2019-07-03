@@ -57,12 +57,14 @@ variable "disk_name_1" {
   default     = "sap-hana-pd-sd-1"
 }
 
-variable "disk_type" {
+variable "disk_type_0" {
   description = "The GCE data disk type. May be set to pd-ssd."
+  default     = "pd-ssd"
 }
 
 variable "disk_type_1" {
   description = "The GCE data disk type. May be set to pd-standard (for PD HDD)."
+  default     = "pd-standard"
 }
 
 variable "boot_disk_size" {
@@ -74,6 +76,11 @@ variable "boot_disk_type" {
 }
 
 variable "pd_ssd_size" {
+  description = "Persistent disk size in GB."
+  default     = ""
+}
+
+variable "pd_hdd_size" {
   description = "Persistent disk size in GB."
   default     = ""
 }

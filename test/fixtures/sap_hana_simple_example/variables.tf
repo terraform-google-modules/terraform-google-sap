@@ -28,12 +28,14 @@ variable "instance_type" {
 
 variable "region" {
   description = "Region where to deploy resources"
-  default     = "us-central1"
+}
+
+variable "zone" {
+  description = "The zone that the instance should be created in."
 }
 
 variable "instance_name" {
   description = "A unique name for the resource, required by GCE. Changing this forces a new resource to be created."
-  default     = "sap-hana-simple-example"
 }
 
 variable "linux_image_family" {
@@ -44,25 +46,21 @@ variable "linux_image_project" {
   description = "Project name containing the linux image"
 }
 
-variable "disk_type" {
-  description = "The GCE data disk type.Set to pd-ssd."
-}
-
-variable "disk_type_1" {
-  description = "The GCE data disk type. Set to pd-standard (for PD HDD)."
-}
-
 variable "boot_disk_size" {
   description = "Root disk size in GB"
 }
 
 variable "boot_disk_type" {
   description = "The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
-  default     = "pd-ssd"
 }
 
 variable "pd_ssd_size" {
   description = "Persistent disk size in GB"
+  default     = ""
+}
+
+variable "pd_hdd_size" {
+  description = "Persistent disk size in GB."
   default     = ""
 }
 

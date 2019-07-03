@@ -48,14 +48,6 @@ variable "autodelete_disk" {
   default     = true
 }
 
-variable "disk_type" {
-  description = "The GCE data disk type. May be set to pd-ssd."
-}
-
-variable "disk_type_1" {
-  description = "The GCE data disk type. Set to pd-ssd."
-}
-
 variable "boot_disk_size" {
   description = "Root disk size in GB"
 }
@@ -67,6 +59,11 @@ variable "boot_disk_type" {
 
 variable "pd_ssd_size" {
   description = "Persistent disk size in GB"
+  default     = ""
+}
+
+variable "pd_hdd_size" {
+  description = "Persistent disk size in GB."
   default     = ""
 }
 

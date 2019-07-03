@@ -26,7 +26,7 @@ module "sap_hana" {
 resource "google_compute_disk" "gcp_sap_hana_sd_0" {
   project = "${var.project_id}"
   name    = "${var.disk_name_0}-${var.device_name_pd_ssd}"
-  type    = "${var.disk_type}"
+  type    = "${var.disk_type_0}"
   zone    = "${var.zone}"
   size    = "${var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize}"
 }
@@ -36,7 +36,7 @@ resource "google_compute_disk" "gcp_sap_hana_sd_1" {
   name    = "${var.disk_name_1}-${var.device_name_pd_hdd}"
   type    = "${var.disk_type_1}"
   zone    = "${var.zone}"
-  size    = "${var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize}"
+  size    = "${var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize}"
 }
 
 resource "google_compute_address" "gcp_sap_hana_ip" {
