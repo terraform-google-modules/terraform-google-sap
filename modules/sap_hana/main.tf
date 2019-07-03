@@ -18,20 +18,25 @@ terraform {
   required_version = "~> 0.11.0"
 }
 
+module "sap_hana" {
+  source        = "./sap_hana_python"
+  instance-type = "${var.instance_type}"
+}
+
 resource "google_compute_disk" "gcp_sap_hana_sd_0" {
   project = "${var.project_id}"
-  name    = "${var.disk_name_0}"
+  name    = "${var.disk_name_0}-${var.device_name_pd_ssd}"
   type    = "${var.disk_type}"
   zone    = "${var.zone}"
-  size    = "${var.pd_ssd_size}"
+  size    = "${var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize}"
 }
 
 resource "google_compute_disk" "gcp_sap_hana_sd_1" {
   project = "${var.project_id}"
-  name    = "${var.disk_name_1}"
-  type    = "${var.disk_type}"
+  name    = "${var.disk_name_1}-${var.device_name_pd_hdd}"
+  type    = "${var.disk_type_1}"
   zone    = "${var.zone}"
-  size    = "${var.pd_ssd_size}"
+  size    = "${var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize}"
 }
 
 resource "google_compute_address" "gcp_sap_hana_ip" {
@@ -41,11 +46,10 @@ resource "google_compute_address" "gcp_sap_hana_ip" {
 }
 
 resource "google_compute_instance" "gcp_sap_hana" {
-  project      = "${var.project_id}"
-  name         = "${var.instance_name}"
-  machine_type = "${var.instance_type}"
-  zone         = "${var.zone}"
-
+  project        = "${var.project_id}"
+  name           = "${var.instance_name}"
+  machine_type   = "${var.instance_type}"
+  zone           = "${var.zone}"
   tags           = "${var.network_tags}"
   can_ip_forward = true
 

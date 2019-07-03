@@ -45,7 +45,11 @@ variable "linux_image_project" {
 }
 
 variable "disk_type" {
-  description = "The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
+  description = "The GCE data disk type.Set to pd-ssd."
+}
+
+variable "disk_type_1" {
+  description = "The GCE data disk type. Set to pd-standard (for PD HDD)."
 }
 
 variable "boot_disk_size" {
@@ -59,6 +63,11 @@ variable "boot_disk_type" {
 
 variable "pd_ssd_size" {
   description = "Persistent disk size in GB"
+  default     = ""
+}
+
+variable "subnetwork" {
+  description = "Compute Engine instance name"
 }
 
 variable "sap_hana_sidadm_password" {
@@ -67,4 +76,25 @@ variable "sap_hana_sidadm_password" {
 
 variable "sap_hana_system_password" {
   description = "SAP HANA system password"
+}
+
+variable "sap_hana_deployment_bucket" {
+  description = "SAP hana deployment bucket."
+}
+
+variable "sap_hana_sid" {
+  description = "SAP HANA System Identifier"
+}
+
+variable "sap_hana_instance_number" {
+  description = "SAP HANA instance number"
+}
+
+variable "address_name" {
+  description = "Name of static IP adress to add to the instance's access config."
+}
+
+variable "network_tags" {
+  type        = "list"
+  description = "List of network tags to attach to the instance."
 }

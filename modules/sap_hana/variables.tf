@@ -20,7 +20,6 @@ variable "project_id" {
 
 variable "zone" {
   description = "The zone that the instance should be created in."
-  default     = "us-central1-a"
 }
 
 variable "region" {
@@ -45,7 +44,7 @@ variable "linux_image_project" {
 
 variable "autodelete_disk" {
   description = "Whether the disk will be auto-deleted when the instance is deleted."
-  default = "false"
+  default     = "false"
 }
 
 variable "disk_name_0" {
@@ -59,7 +58,11 @@ variable "disk_name_1" {
 }
 
 variable "disk_type" {
-  description = "The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
+  description = "The GCE data disk type. May be set to pd-ssd."
+}
+
+variable "disk_type_1" {
+  description = "The GCE data disk type. May be set to pd-standard (for PD HDD)."
 }
 
 variable "boot_disk_size" {
@@ -72,6 +75,17 @@ variable "boot_disk_type" {
 
 variable "pd_ssd_size" {
   description = "Persistent disk size in GB."
+  default     = ""
+}
+
+variable "device_name_pd_ssd" {
+  description = "device name for ssd persistant disk"
+  default     = "pdssd"
+}
+
+variable "device_name_pd_hdd" {
+  description = "device name for standard persistant disk"
+  default     = "backup"
 }
 
 variable "service_account_email" {
@@ -85,12 +99,10 @@ variable "subnetwork" {
 variable "network_tags" {
   type        = "list"
   description = "List of network tags to attach to the instance."
-  default     = []
 }
 
 variable "address_name" {
   description = "Name of static IP adress to add to the instance's access config."
-  default     = "gcp-sap-hana-ip"
 }
 
 variable "sap_hana_deployment_bucket" {

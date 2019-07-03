@@ -1,7 +1,7 @@
 
 # SAP HANA Submodule
 
-This module is handles opinionated SAP HANA configuration and deployment.
+This module handles opinionated SAP HANA configuration and deployment.
 
 ## Usage
 
@@ -9,7 +9,7 @@ The resources/services/activations/deletions that this module will create/trigge
 
 - Create a Compute Instance that whill host SAP HANA
 - Create a Static IP Adresse for the Compute Instance
-- Create a 2 Persitent Disks to host SAP HANA's File systems
+- Create a 2 Persistent Disks to host SAP HANA's File systems
 
 You can go in the [examples](../../examples) folder complete working example. However, here's an example of how to use the module in a main.tf file.
 
@@ -20,7 +20,8 @@ provider "google" {
 
 module "gcp_sap_hana" {
   source                 = "terraform-google-modules/sap/google/modules/sap_hana"
-  subnetwork             = "default"
+  subnetwork             = "${var.subnetwork}"
+  network_tags           = "${var.network_tags}"
   linux_image_family     = "sles-12-sp3-sap"
   linux_image_project    = "suse-sap-cloud"
   instance_name          = "my-sap-hana-instance"
@@ -32,16 +33,15 @@ module "gcp_sap_hana" {
   boot_disk_type         = "pd-ssd"
   boot_disk_size         = 64
   autodelete_disk        = "true"
-  pd_ssd_size            = 450
-
+  disk_type              = "${var.disk_type}"
+  disk_type_1            = "${var.disk_type_1}"
   sap_hana_deployment_bucket = "<my_bucket_name>/<my_bucket_folder>"
-  sap_deployment_debug       = "false"
-
+  sap_deployment_debug     = "false"
   startup_script           = "${path.root}/files/startup.sh"
-  sap_hana_sid             = "D10"
-  sap_hana_instance_number = 10
-  sap_hana_sidadm_password = "Google123"
-  sap_hana_system_password = "Google123"
+  sap_hana_sid             = "${var.sap_hana_sid}"
+  sap_hana_instance_number = "${var.sap_hana_instance_number}"
+  sap_hana_sidadm_password = "<password>"
+  sap_hana_system_password = "<password>"
   sap_hana_sidadm_uid      = 900
   sap_hana_sapsys_gid      = 900
 }
@@ -83,27 +83,30 @@ The recommended way is to use a GCS Bucket in the following way.:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| address\_name | Name of static IP adress to add to the instance's access config. | string | `"gcp-sap-hana-ip"` | no |
-| autodelete\_disk | Whether the disk will be auto-deleted when the instance is deleted. | string | `"true"` | no |
+| address\_name | Name of static IP adress to add to the instance's access config. | string | n/a | yes |
+| autodelete\_disk | Whether the disk will be auto-deleted when the instance is deleted. | string | `"false"` | no |
 | boot\_disk\_size | Root disk size in GB. | string | n/a | yes |
 | boot\_disk\_type | The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | n/a | yes |
+| device\_name\_pd\_hdd | device name for standard persistant disk | string | `"backup"` | no |
+| device\_name\_pd\_ssd | device name for ssd persistant disk | string | `"pdssd"` | no |
 | disk\_name\_0 | Name of first disk. | string | `"sap-hana-pd-sd-0"` | no |
 | disk\_name\_1 | Name of second disk. | string | `"sap-hana-pd-sd-1"` | no |
-| disk\_type | The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | n/a | yes |
+| disk\_type | The GCE data disk type. May be set to pd-ssd. | string | n/a | yes |
+| disk\_type\_1 | The GCE data disk type. May be set to pd-standard (for PD HDD). | string | n/a | yes |
 | instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | n/a | yes |
 | instance\_type | The GCE instance/machine type. | string | n/a | yes |
 | linux\_image\_family | GCE image family. | string | n/a | yes |
 | linux\_image\_project | Project name containing the linux image. | string | n/a | yes |
-| network\_tags | List of network tags to attach to the instance. | list | `<list>` | no |
-| pd\_ssd\_size | Persistent disk size in GB. | string | n/a | yes |
+| network\_tags | List of network tags to attach to the instance. | list | n/a | yes |
+| pd\_ssd\_size | Persistent disk size in GB. | string | `""` | no |
 | post\_deployment\_script | SAP HANA post deployment script. Must be a gs:// or https:// link to the script. | string | `""` | no |
 | project\_id | The ID of the project in which the resources will be deployed. | string | n/a | yes |
-| region | Region to deploy the resources. Should be in the same region as the zone. | string | `"us-central1"` | no |
+| region | Region to deploy the resources. Should be in the same region as the zone. | string | n/a | yes |
 | sap\_deployment\_debug | Debug flag for SAP HANA deployment. | string | `"false"` | no |
 | sap\_hana\_deployment\_bucket | SAP hana deployment bucket. | string | n/a | yes |
 | sap\_hana\_instance\_number | SAP HANA instance number | string | n/a | yes |
 | sap\_hana\_sapsys\_gid | SAP HANA SAP System GID | string | n/a | yes |
-| sap\_hana\_sid | SAP HANA System Identifier | string | n/a | yes |
+| sap\_hana\_sid | SAP HANA System Identifier. When using the SID to enter a user session, like this for example, `su - [SID]adm`, make sure that [SID] is in lower case. | string | n/a | yes |
 | sap\_hana\_sidadm\_password | SAP HANA System Identifier Admin password | string | n/a | yes |
 | sap\_hana\_sidadm\_uid | SAP HANA System Identifier Admin UID | string | n/a | yes |
 | sap\_hana\_system\_password | SAP HANA system password | string | n/a | yes |
@@ -116,8 +119,8 @@ The recommended way is to use a GCS Bucket in the following way.:
 
 | Name | Description |
 |------|-------------|
-| gcp\_sap\_hana\_instance\_machine\_type |  |
-| instance\_gcp\_sap\_hana\_name |  |
-| instance\_zone |  |
+| instance\_name |  |
+| machine\_type |  |
+| zone |  |
 
 [^]: (autogen_docs_end)

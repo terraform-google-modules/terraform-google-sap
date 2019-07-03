@@ -9,7 +9,7 @@ The resources/services/activations/deletions that this module will create/trigge
 
 - Create Primary and Secondary Compute Instance that will host SAP HANA.
 - Create a Static IP Address for the two Compute Instance's.
-- Create 2 Persistent Disks to host SAP HANA's File systems on primary and secondary nodes.
+- Create 2 Persistent Disks to host SAP HANA HA's File systems on primary and secondary nodes.
 
 You can go in the [examples](../../examples) folder complete working example. However, here's an example of how to use the module in a main.tf file.
 
@@ -20,7 +20,7 @@ provider "google" {
 }
 
 module "gcp_sap_hana_ha" {
-source                      = "terraform-google-modules/sap/google/modules/"                                                             
+source                      = "terraform-google-modules/sap/google/modules/sap_hana_ha"
     subnetwork                 = "${var.subnetwork}"
     linux_image_family         = "${var.linux_image_family}"
     linux_image_project        = "${var.linux_image_project}"
@@ -32,6 +32,7 @@ source                      = "terraform-google-modules/sap/google/modules/"
     boot_disk_size             = "${var.boot_disk_size}"
     boot_disk_type             = "${var.boot_disk_type}"
     disk_type                  = "${var.disk_type}"
+    disk_type_1                = "${var.disk_type_1}"
     autodelete_disk            = "true"
     pd_ssd_size                = "${var.pd_ssd_size}"
     sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
@@ -102,12 +103,13 @@ It is the recommended way is to use a GCS Bucket in the following way.:
 | disk\_name\_1 | Name of second disk. | string | `"sap-hana-pd-sd-1"` | no |
 | disk\_name\_2 | Name of third disk. | string | `"sap-hana-pd-sd-2"` | no |
 | disk\_name\_3 | Name of fourth disk. | string | `"sap-hana-pd-sd-3"` | no |
-| disk\_type | The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | n/a | yes |
+| disk\_type | The GCE data disk type. May be set to pd-ssd. | string | n/a | yes |
+| disk\_type\_1 | The GCE data disk type. May be set to pd-standard (for PD HDD). | string | n/a | yes |
 | instance\_type | The GCE instance/machine type. | string | n/a | yes |
 | linux\_image\_family | GCE image family. | string | n/a | yes |
 | linux\_image\_project | Project name containing the linux image. | string | n/a | yes |
 | network\_tags | List of network tags to attach to the instance. | list | `<list>` | no |
-| pd\_ssd\_size | Persistent disk size in GB | string | n/a | yes |
+| pd\_ssd\_size | Persistent disk size in GB | string | `""` | no |
 | post\_deployment\_script | SAP post deployment script | string | n/a | yes |
 | primary\_instance\_ip | Primary instance ip address | string | n/a | yes |
 | primary\_instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | n/a | yes |

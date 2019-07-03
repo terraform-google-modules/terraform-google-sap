@@ -24,12 +24,10 @@ variable "secondary_instance_name" {
 
 variable "primary_zone" {
   description = "The primary zone that the instance should be created in."
-  default     = "us-central1-a"
 }
 
 variable "secondary_zone" {
   description = "The secondary zone that the instance should be created in."
-  default     = "us-central1-b"
 }
 
 variable "instance_type" {
@@ -115,11 +113,16 @@ variable "boot_disk_type" {
 }
 
 variable "disk_type" {
-  description = "The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
+  description = "The GCE data disk type. May be set to pd-ssd."
+}
+
+variable "disk_type_1" {
+  description = "The GCE data disk type. May be set to pd-standard (for PD HDD). "
 }
 
 variable "pd_ssd_size" {
   description = "Persistent disk size in GB"
+  default     = ""
 }
 
 variable "disk_name_0" {

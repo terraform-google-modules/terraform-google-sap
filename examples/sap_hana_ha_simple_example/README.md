@@ -19,12 +19,13 @@ Make sure you go through this [Requirements section](../../modules/sap_hana_ha/R
 |------|-------------|:----:|:-----:|:-----:|
 | boot\_disk\_size | Root disk size in GB | string | n/a | yes |
 | boot\_disk\_type | The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | n/a | yes |
-| disk\_type | The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | n/a | yes |
+| disk\_type | The GCE data disk type. May be set to pd-ssd. | string | n/a | yes |
+| disk\_type\_1 | The GCE data disk type. May be set to pd-standard (for PD HDD). | string | n/a | yes |
 | instance\_type | The GCE instance/machine type. | string | n/a | yes |
 | linux\_image\_family | GCE image family. | string | n/a | yes |
 | linux\_image\_project | Project name containing the linux image. | string | n/a | yes |
 | network\_tags | List of network tags to attach to the instance. | list | `<list>` | no |
-| pd\_ssd\_size | Persistent disk size in GB | string | n/a | yes |
+| pd\_ssd\_size | Persistent disk size in GB | string | `""` | no |
 | post\_deployment\_script | SAP HANA post deployment script. Must be a gs:// or https:// link to the script. | string | `""` | no |
 | primary\_instance\_ip | Primary instance ip address | string | n/a | yes |
 | primary\_instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | `"sap-hana-ha-terra-1"` | no |

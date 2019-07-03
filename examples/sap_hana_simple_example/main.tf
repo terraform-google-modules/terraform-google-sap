@@ -27,6 +27,7 @@ module "gcp_sap_hana" {
   instance_name              = "${var.instance_name}"
   instance_type              = "${var.instance_type}"
   disk_type                  = "${var.disk_type}"
+  disk_type_1                = "${var.disk_type_1}"
   project_id                 = "${var.project_id}"
   region                     = "${var.region}"
   service_account_email      = "${var.service_account_email}"
@@ -38,10 +39,12 @@ module "gcp_sap_hana" {
   sap_deployment_debug       = "false"
   post_deployment_script     = "${var.post_deployment_script}"
   startup_script             = "${var.startup_script}"
-  sap_hana_sid               = "D10"
-  sap_hana_instance_number   = 10
+  sap_hana_sid               = "${var.sap_hana_sid}"
+  sap_hana_instance_number   = "${var.sap_hana_instance_number}"
   sap_hana_sidadm_password   = "${var.sap_hana_sidadm_password}"
   sap_hana_system_password   = "${var.sap_hana_system_password}"
+  network_tags               = "${var.network_tags}"
   sap_hana_sidadm_uid        = 900
   sap_hana_sapsys_gid        = 900
+  address_name               = "${var.address_name}"
 }

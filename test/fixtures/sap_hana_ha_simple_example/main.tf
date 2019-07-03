@@ -21,7 +21,7 @@ resource "random_id" "random_suffix" {
 locals {
   gcs_bucket_name = "post-deployment-bucket-${random_id.random_suffix.hex}"
 
-  gcs_bucket_static_name = "hana-gcp-20/hana20sps03"
+  gcs_bucket_static_name = "${var.sap_hana_deployment_bucket}"
 }
 
 #TODO: Add creation of a network that's similar to app2
@@ -69,6 +69,7 @@ module "example" {
   boot_disk_size             = "${var.boot_disk_size}"
   boot_disk_type             = "${var.boot_disk_type}"
   disk_type                  = "${var.disk_type}"
+  disk_type_1                = "${var.disk_type_1}"
   pd_ssd_size                = "${var.pd_ssd_size}"
   sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
   post_deployment_script     = "${var.post_deployment_script}"

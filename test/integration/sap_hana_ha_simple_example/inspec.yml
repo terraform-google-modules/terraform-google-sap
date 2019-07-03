@@ -7,9 +7,6 @@ attributes:
   - name: project_id
     required: true
     type: string
-  - name: bucket_name
-    required: true
-    type: string
   - name: primary_instance_name
     required: true
     type: string
@@ -17,14 +14,5 @@ attributes:
     required: true
     type: string
   - name: primary_zone
-    required: true
-    type: string
-  - name: secondary_instance_name
-    required: true
-    type: string
-  - name: region
-    required: true
-    type: string
-  - name: secondary_zone
     required: true
     type: string

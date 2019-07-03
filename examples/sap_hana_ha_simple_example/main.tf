@@ -33,6 +33,7 @@ module "gcp_sap_hana_ha" {
   boot_disk_size             = "${var.boot_disk_size}"
   boot_disk_type             = "${var.boot_disk_type}"
   disk_type                  = "${var.disk_type}"
+  disk_type_1                = "${var.disk_type_1}"
   autodelete_disk            = "true"
   pd_ssd_size                = "${var.pd_ssd_size}"
   sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
