@@ -16,11 +16,9 @@
 
 variable "primary_instance_name" {
   description = "A unique name for the resource, required by GCE. Changing this forces a new resource to be created."
-  default     = "sap-hana-ha-terra-1"
 }
 
 variable "secondary_instance_name" {
-  default     = "sap-hana-ha-terra-2"
   description = "A unique name for the resource, required by GCE. Changing this forces a new resource to be created."
 }
 
@@ -69,22 +67,20 @@ variable "sap_hana_sid" {
   description = "SAP HANA System Identifier"
 }
 
+variable "sap_hana_sidadm_uid" {
+  description = "SAP HANA System Identifier Admin UID"
+}
+
+variable "sap_hana_sapsys_gid" {
+  description = "SAP HANA SAP System GID"
+}
+
 variable "sap_hana_sidadm_password" {
   description = "SAP HANA System Identifier Admin password"
 }
 
 variable "sap_hana_system_password" {
   description = "SAP HANA system password"
-}
-
-variable "sap_hana_sidadm_uid" {
-  description = "SAP HANA System Identifier Admin UID"
-  default     = 900
-}
-
-variable "sap_hana_sapsys_gid" {
-  description = "SAP HANA SAP System GID"
-  default     = 900
 }
 
 variable "sap_vip" {
@@ -112,12 +108,9 @@ variable "pd_ssd_size" {
   default     = ""
 }
 
-variable "disk_type" {
-  description = "The GCE data disk type. May be set to pd-ssd."
-}
-
-variable "disk_type_1" {
-  description = "The GCE data disk type. May be set to pd-standard (for PD HDD). "
+variable "pd_hdd_size" {
+  description = "Persistent disk size in GB."
+  default     = ""
 }
 
 variable "service_account_email" {
@@ -127,7 +120,6 @@ variable "service_account_email" {
 variable "network_tags" {
   type        = "list"
   description = "List of network tags to attach to the instance."
-  default     = []
 }
 
 variable "primary_instance_ip" {

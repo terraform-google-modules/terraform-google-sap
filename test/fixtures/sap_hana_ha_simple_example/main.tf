@@ -68,8 +68,7 @@ module "example" {
   service_account_email      = "${var.service_account_email}"
   boot_disk_size             = "${var.boot_disk_size}"
   boot_disk_type             = "${var.boot_disk_type}"
-  disk_type                  = "${var.disk_type}"
-  disk_type_1                = "${var.disk_type_1}"
+  pd_hdd_size                = "${var.pd_hdd_size}"
   pd_ssd_size                = "${var.pd_ssd_size}"
   sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
   post_deployment_script     = "${var.post_deployment_script}"
@@ -77,6 +76,10 @@ module "example" {
   secondary_instance_name    = "${var.secondary_instance_name}"
   primary_zone               = "${var.primary_zone}"
   secondary_zone             = "${var.secondary_zone}"
+  sap_hana_sid               = "${var.sap_hana_sid}"
+  sap_hana_sidadm_uid        = 900
+  sap_hana_sapsys_gid        = 900
+  sap_hana_instance_number   = "${var.sap_hana_instance_number}"
   sap_hana_sidadm_password   = "${var.sap_hana_sidadm_password}"
   sap_hana_system_password   = "${var.sap_hana_system_password}"
   sap_vip                    = "${var.sap_vip}"

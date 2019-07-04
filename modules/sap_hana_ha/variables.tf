@@ -112,15 +112,22 @@ variable "boot_disk_type" {
   description = "The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
 }
 
-variable "disk_type" {
+variable "disk_type_0" {
   description = "The GCE data disk type. May be set to pd-ssd."
+  default     = "pd-ssd"
 }
 
 variable "disk_type_1" {
-  description = "The GCE data disk type. May be set to pd-standard (for PD HDD). "
+  description = "The GCE data disk type. May be set to pd-standard (for PD HDD)."
+  default     = "pd-standard"
 }
 
 variable "pd_ssd_size" {
+  description = "Persistent disk size in GB"
+  default     = ""
+}
+
+variable "pd_hdd_size" {
   description = "Persistent disk size in GB"
   default     = ""
 }
@@ -152,7 +159,6 @@ variable "service_account_email" {
 variable "network_tags" {
   type        = "list"
   description = "List of network tags to attach to the instance."
-  default     = []
 }
 
 variable "primary_instance_ip" {

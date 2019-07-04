@@ -7,7 +7,7 @@ This module deals with SAP HANA HA configuration and deployment.
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
-- Create Primary and Secondary Compute Instance that will host SAP HANA.
+- Create Primary and Secondary Compute Instance that will host SAP HANA HA.
 - Create a Static IP Address for the two Compute Instance's.
 - Create 2 Persistent Disks to host SAP HANA HA's File systems on primary and secondary nodes.
 
@@ -21,40 +21,39 @@ provider "google" {
 
 module "gcp_sap_hana_ha" {
 source                      = "terraform-google-modules/sap/google/modules/sap_hana_ha"
-    subnetwork                 = "${var.subnetwork}"
-    linux_image_family         = "${var.linux_image_family}"
-    linux_image_project        = "${var.linux_image_project}"
-    instance_type              = "${var.instance_type}"
-    network_tags               = "${var.network_tags}"
-    project_id                 = "${var.project_id}"
-    region                     = "${var.region}"
-    service_account_email      = "${var.service_account_email}"
-    boot_disk_size             = "${var.boot_disk_size}"
-    boot_disk_type             = "${var.boot_disk_type}"
-    disk_type                  = "${var.disk_type}"
-    disk_type_1                = "${var.disk_type_1}"
-    autodelete_disk            = "true"
-    pd_ssd_size                = "${var.pd_ssd_size}"
-    sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
-    sap_deployment_debug       = "false"
-    post_deployment_script     = "${var.post_deployment_script}"
-    sap_hana_sid               = "D10"
-    primary_instance_name      = "${var.primary_instance_name}"
-    secondary_instance_name    = "${var.secondary_instance_name}"
-    primary_zone               = "${var.primary_zone}"
-    secondary_zone             = "${var.secondary_zone}"
-    sap_hana_instance_number   = 10
-    sap_hana_sidadm_password   = "${var.sap_hana_sidadm_password}"
-    sap_hana_system_password   = "${var.sap_hana_system_password}"
-    sap_hana_sidadm_uid        = 900
-    sap_hana_sapsys_gid        = 900
-    sap_vip                    = "${var.sap_vip}"
-    sap_vip_secondary_range    = "${var.sap_vip_secondary_range}"
-    primary_instance_ip        = "${var.primary_instance_ip}"
-    secondary_instance_ip      = "${var.secondary_instance_ip}"
-    sap_vip_internal_address   = "${var.sap_vip_internal_address}"
-    startup_script_1           = "${var.startup_script_1}"
-    startup_script_2           = "${var.startup_script_2}"
+subnetwork                 = "${var.subnetwork}"
+linux_image_family         = "${var.linux_image_family}"
+linux_image_project        = "${var.linux_image_project}"
+instance_type              = "${var.instance_type}"
+network_tags               = "${var.network_tags}"
+project_id                 = "${var.project_id}"
+region                     = "${var.region}"
+service_account_email      = "${var.service_account_email}"
+boot_disk_size             = "${var.boot_disk_size}"
+boot_disk_type             = "${var.boot_disk_type}"
+autodelete_disk            = "true"
+pd_ssd_size                = "${var.pd_ssd_size}"
+pd_hdd_size                = "${var.pd_hdd_size}"
+sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
+sap_deployment_debug       = "false"
+post_deployment_script     = "${var.post_deployment_script}"
+sap_hana_sid               = "${var.sap_hana_sid}"
+primary_instance_name      = "${var.primary_instance_name}"
+secondary_instance_name    = "${var.secondary_instance_name}"
+primary_zone               = "${var.primary_zone}"
+secondary_zone             = "${var.secondary_zone}"
+sap_hana_instance_number   = "${var.sap_hana_instance_number}"
+sap_hana_sidadm_password   = "${var.sap_hana_sidadm_password}"
+sap_hana_system_password   = "${var.sap_hana_system_password}"
+sap_hana_sidadm_uid        = 900
+sap_hana_sapsys_gid        = 900
+sap_vip                    = "${var.sap_vip}"
+sap_vip_secondary_range    = "${var.sap_vip_secondary_range}"
+primary_instance_ip        = "${var.primary_instance_ip}"
+secondary_instance_ip      = "${var.secondary_instance_ip}"
+sap_vip_internal_address   = "${var.sap_vip_internal_address}"
+startup_script_1           = "${var.startup_script_1}"
+startup_script_2           = "${var.startup_script_2}"
     }
 
 ```
@@ -103,12 +102,13 @@ It is the recommended way is to use a GCS Bucket in the following way.:
 | disk\_name\_1 | Name of second disk. | string | `"sap-hana-pd-sd-1"` | no |
 | disk\_name\_2 | Name of third disk. | string | `"sap-hana-pd-sd-2"` | no |
 | disk\_name\_3 | Name of fourth disk. | string | `"sap-hana-pd-sd-3"` | no |
-| disk\_type | The GCE data disk type. May be set to pd-ssd. | string | n/a | yes |
-| disk\_type\_1 | The GCE data disk type. May be set to pd-standard (for PD HDD). | string | n/a | yes |
+| disk\_type\_0 | The GCE data disk type. May be set to pd-ssd. | string | `"pd-ssd"` | no |
+| disk\_type\_1 | The GCE data disk type. May be set to pd-standard (for PD HDD). | string | `"pd-standard"` | no |
 | instance\_type | The GCE instance/machine type. | string | n/a | yes |
 | linux\_image\_family | GCE image family. | string | n/a | yes |
 | linux\_image\_project | Project name containing the linux image. | string | n/a | yes |
-| network\_tags | List of network tags to attach to the instance. | list | `<list>` | no |
+| network\_tags | List of network tags to attach to the instance. | list | n/a | yes |
+| pd\_hdd\_size | Persistent disk size in GB | string | `""` | no |
 | pd\_ssd\_size | Persistent disk size in GB | string | `""` | no |
 | post\_deployment\_script | SAP post deployment script | string | n/a | yes |
 | primary\_instance\_ip | Primary instance ip address | string | n/a | yes |

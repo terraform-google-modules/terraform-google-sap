@@ -50,10 +50,6 @@
 
   sap_hana_system_password = "<password>"
 
-  sap_hana_sidadm_uid = 900
-
-  sap_hana_sapsys_gid = 900
-
   sap_vip = "10.1.0.24"
 
   sap_vip_secondary_range = ""
@@ -65,10 +61,6 @@
   boot_disk_size = 300
 
   boot_disk_type = "pd-ssd"
-
-  disk_type = "pd-ssd"
-
-  disk_type_1 = "pd-standard"
 
   service_account_email = <service-account-email>
 

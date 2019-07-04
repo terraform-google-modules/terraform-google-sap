@@ -21,7 +21,7 @@ Make sure you go through this [Requirements section](../../modules/sap_hana/READ
 | autodelete\_disk | Whether the disk will be auto-deleted when the instance is deleted. | string | `"true"` | no |
 | boot\_disk\_size | Root disk size in GB | string | n/a | yes |
 | boot\_disk\_type | The GCE boot disk type.Set to pd-standard (for PD HDD). | string | `"pd-ssd"` | no |
-| instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | `"sap-hana-simple-example"` | no |
+| instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | n/a | yes |
 | instance\_type | The GCE instance/machine type. | string | n/a | yes |
 | linux\_image\_family | GCE linux image family. | string | n/a | yes |
 | linux\_image\_project | Project name containing the linux image. | string | n/a | yes |
