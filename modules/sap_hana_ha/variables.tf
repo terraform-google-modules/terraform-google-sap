@@ -24,12 +24,10 @@ variable "secondary_instance_name" {
 
 variable "primary_zone" {
   description = "The primary zone that the instance should be created in."
-  default     = "us-central1-a"
 }
 
 variable "secondary_zone" {
   description = "The secondary zone that the instance should be created in."
-  default     = "us-central1-b"
 }
 
 variable "instance_type" {
@@ -114,12 +112,24 @@ variable "boot_disk_type" {
   description = "The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
 }
 
-variable "disk_type" {
-  description = "The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
+variable "disk_type_0" {
+  description = "The GCE data disk type. May be set to pd-ssd."
+  default     = "pd-ssd"
+}
+
+variable "disk_type_1" {
+  description = "The GCE data disk type. May be set to pd-standard (for PD HDD)."
+  default     = "pd-standard"
 }
 
 variable "pd_ssd_size" {
   description = "Persistent disk size in GB"
+  default     = ""
+}
+
+variable "pd_hdd_size" {
+  description = "Persistent disk size in GB"
+  default     = ""
 }
 
 variable "disk_name_0" {
@@ -149,7 +159,6 @@ variable "service_account_email" {
 variable "network_tags" {
   type        = "list"
   description = "List of network tags to attach to the instance."
-  default     = []
 }
 
 variable "primary_instance_ip" {

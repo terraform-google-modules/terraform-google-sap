@@ -19,31 +19,31 @@ Make sure you go through this [Requirements section](../../modules/sap_hana_ha/R
 |------|-------------|:----:|:-----:|:-----:|
 | boot\_disk\_size | Root disk size in GB | string | n/a | yes |
 | boot\_disk\_type | The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | n/a | yes |
-| disk\_type | The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | n/a | yes |
 | instance\_type | The GCE instance/machine type. | string | n/a | yes |
 | linux\_image\_family | GCE image family. | string | n/a | yes |
 | linux\_image\_project | Project name containing the linux image. | string | n/a | yes |
-| network\_tags | List of network tags to attach to the instance. | list | `<list>` | no |
-| pd\_ssd\_size | Persistent disk size in GB | string | n/a | yes |
+| network\_tags | List of network tags to attach to the instance. | list | n/a | yes |
+| pd\_hdd\_size | Persistent disk size in GB. | string | `""` | no |
+| pd\_ssd\_size | Persistent disk size in GB | string | `""` | no |
 | post\_deployment\_script | SAP HANA post deployment script. Must be a gs:// or https:// link to the script. | string | `""` | no |
 | primary\_instance\_ip | Primary instance ip address | string | n/a | yes |
-| primary\_instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | `"sap-hana-ha-terra-1"` | no |
-| primary\_zone | The primary zone that the instance should be created in. | string | `"us-central1-a"` | no |
+| primary\_instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | n/a | yes |
+| primary\_zone | The primary zone that the instance should be created in. | string | n/a | yes |
 | project\_id | The ID of the project in which the resources will be deployed. | string | n/a | yes |
 | region | Region to deploy the resources. Should be in the same region as the zone. | string | n/a | yes |
 | sap\_hana\_deployment\_bucket | SAP HANA post deployment script. Must be a gs:// or https:// link to the script. | string | n/a | yes |
-| sap\_hana\_instance\_number | SAP HANA instance number | string | `"10"` | no |
-| sap\_hana\_sapsys\_gid | SAP HANA SAP System GID | string | `"900"` | no |
-| sap\_hana\_sid | SAP HANA System Identifier | string | `"D10"` | no |
+| sap\_hana\_instance\_number | SAP HANA instance number | string | n/a | yes |
+| sap\_hana\_sapsys\_gid | SAP HANA SAP System GID | string | n/a | yes |
+| sap\_hana\_sid | SAP HANA System Identifier | string | n/a | yes |
 | sap\_hana\_sidadm\_password | SAP HANA System Identifier Admin password | string | n/a | yes |
-| sap\_hana\_sidadm\_uid | SAP HANA System Identifier Admin UID | string | `"900"` | no |
+| sap\_hana\_sidadm\_uid | SAP HANA System Identifier Admin UID | string | n/a | yes |
 | sap\_hana\_system\_password | SAP HANA system password | string | n/a | yes |
 | sap\_vip | SAP VIP | string | n/a | yes |
 | sap\_vip\_internal\_address | Name of static IP adress to add to the instance's access config. | string | n/a | yes |
 | sap\_vip\_secondary\_range | SAP seconday VIP range | string | n/a | yes |
 | secondary\_instance\_ip | Secondary instance ip address | string | n/a | yes |
-| secondary\_instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | `"sap-hana-ha-terra-2"` | no |
-| secondary\_zone | The secondary zone that the instance should be created in. | string | `"us-central1-b"` | no |
+| secondary\_instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | n/a | yes |
+| secondary\_zone | The secondary zone that the instance should be created in. | string | n/a | yes |
 | service\_account\_email | Email of service account to attach to the instance. | string | n/a | yes |
 | startup\_script\_1 | Startup script to install SAP HANA. | string | n/a | yes |
 | startup\_script\_2 | Startup script to install SAP HANA. | string | n/a | yes |

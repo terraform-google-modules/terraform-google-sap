@@ -20,17 +20,14 @@ variable "project_id" {
 
 variable "zone" {
   description = "The zone that the instance should be created in."
-  default     = "us-central1-a"
 }
 
 variable "region" {
   description = "Region to deploy the resources. Should be in the same region as the zone."
-  default     = "us-central1"
 }
 
 variable "instance_name" {
   description = "A unique name for the resource, required by GCE. Changing this forces a new resource to be created."
-  default     = "sap-hana-simple-example"
 }
 
 variable "instance_type" {
@@ -50,21 +47,23 @@ variable "autodelete_disk" {
   default     = true
 }
 
-variable "disk_type" {
-  description = "The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
-}
-
 variable "boot_disk_size" {
   description = "Root disk size in GB"
 }
 
 variable "boot_disk_type" {
-  description = "The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
+  description = "The GCE boot disk type.Set to pd-standard (for PD HDD)."
   default     = "pd-ssd"
 }
 
 variable "pd_ssd_size" {
   description = "Persistent disk size in GB"
+  default     = ""
+}
+
+variable "pd_hdd_size" {
+  description = "Persistent disk size in GB."
+  default     = ""
 }
 
 variable "service_account_email" {
@@ -78,12 +77,6 @@ variable "subnetwork" {
 variable "network_tags" {
   type        = "list"
   description = "List of network tags to attach to the instance."
-  default     = []
-}
-
-variable "address_name" {
-  description = "Name of static IP adress to add to the instance's access config."
-  default     = "gcp-sap-hana-ip"
 }
 
 variable "sap_hana_deployment_bucket" {
@@ -106,12 +99,10 @@ variable "startup_script" {
 
 variable "sap_hana_sid" {
   description = "SAP HANA System Identifier"
-  default     = "D10"
 }
 
 variable "sap_hana_instance_number" {
   description = "SAP HANA instance number"
-  default     = 10
 }
 
 variable "sap_hana_sidadm_password" {
@@ -130,4 +121,8 @@ variable "sap_hana_sidadm_uid" {
 variable "sap_hana_sapsys_gid" {
   description = "SAP HANA SAP System GID"
   default     = 900
+}
+
+variable "address_name" {
+  description = "Name of static IP adress to add to the instance's access config."
 }

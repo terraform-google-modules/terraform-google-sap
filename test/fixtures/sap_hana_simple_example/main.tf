@@ -20,7 +20,7 @@ resource "random_id" "random_suffix" {
 
 locals {
   gcs_bucket_name        = "post-deployment-bucket-${random_id.random_suffix.hex}"
-  gcs_bucket_static_name = "hana-gcp-20/hana20sps03"
+  gcs_bucket_static_name = "${var.sap_hana_deployment_bucket}"
 }
 
 resource "google_storage_bucket" "deployment_bucket" {
@@ -57,14 +57,20 @@ module "example" {
   instance_type              = "${var.instance_type}"
   linux_image_family         = "${var.linux_image_family}"
   linux_image_project        = "${var.linux_image_project}"
+  region                     = "${var.region}"
+  zone                       = "${var.zone}"
   instance_name              = "${var.instance_name}"
-  disk_type                  = "${var.disk_type}"
+  address_name               = "${var.address_name}"
+  network_tags               = "${var.network_tags}"
   boot_disk_type             = "${var.boot_disk_type}"
   boot_disk_size             = "${var.boot_disk_size}"
   pd_ssd_size                = "${var.pd_ssd_size}"
+  pd_hdd_size                = "${var.pd_hdd_size}"
   sap_hana_sidadm_password   = "${var.sap_hana_sidadm_password}"
   sap_hana_system_password   = "${var.sap_hana_system_password}"
-  subnetwork                 = "default"
+  sap_hana_sid               = "${var.sap_hana_sid}"
+  sap_hana_instance_number   = "${var.sap_hana_instance_number}"
+  subnetwork                 = "${var.subnetwork}"
   startup_script             = "${data.template_file.startup_sap_hana.rendered}"
   sap_hana_deployment_bucket = "${local.gcs_bucket_static_name}"
   post_deployment_script     = "${google_storage_bucket.deployment_bucket.url}/${google_storage_bucket_object.post_deployment_script.name}"

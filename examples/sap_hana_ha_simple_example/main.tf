@@ -21,7 +21,6 @@ provider "google" {
 
 module "gcp_sap_hana_ha" {
   source                     = "../../modules/sap_hana_ha"
-  post_deployment_script     = "${var.post_deployment_script}"
   subnetwork                 = "${var.subnetwork}"
   linux_image_family         = "${var.linux_image_family}"
   linux_image_project        = "${var.linux_image_project}"
@@ -32,18 +31,18 @@ module "gcp_sap_hana_ha" {
   service_account_email      = "${var.service_account_email}"
   boot_disk_size             = "${var.boot_disk_size}"
   boot_disk_type             = "${var.boot_disk_type}"
-  disk_type                  = "${var.disk_type}"
   autodelete_disk            = "true"
   pd_ssd_size                = "${var.pd_ssd_size}"
+  pd_hdd_size                = "${var.pd_hdd_size}"
   sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
   sap_deployment_debug       = "false"
   post_deployment_script     = "${var.post_deployment_script}"
-  sap_hana_sid               = "D10"
+  sap_hana_sid               = "${var.sap_hana_sid}"
   primary_instance_name      = "${var.primary_instance_name}"
   secondary_instance_name    = "${var.secondary_instance_name}"
   primary_zone               = "${var.primary_zone}"
   secondary_zone             = "${var.secondary_zone}"
-  sap_hana_instance_number   = 10
+  sap_hana_instance_number   = "${var.sap_hana_instance_number}"
   sap_hana_sidadm_password   = "${var.sap_hana_sidadm_password}"
   sap_hana_system_password   = "${var.sap_hana_system_password}"
   sap_hana_sidadm_uid        = 900

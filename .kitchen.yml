@@ -49,6 +49,4 @@ suites:
           backend: local
           controls:
             - deployment_validation_primary
-            - deployment_validation_secondary
-
-
+            
