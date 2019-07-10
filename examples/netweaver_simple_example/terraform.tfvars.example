@@ -41,9 +41,11 @@ service_account_email = "<service-account-email>"
 
 boot_disk_type = "pd-ssd"
 
-pd_ssd_size = 450
+pd_standard_size_0 = 15
 
-pd_standard_size = 450
+pd_standard_size_1 = 15
+
+pd_standard_size_2 = 24
 
 disk_type = "pd-standard"
 

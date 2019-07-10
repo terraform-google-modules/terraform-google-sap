@@ -70,12 +70,17 @@ variable "boot_disk_type" {
   description = "The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
 }
 
-variable "pd_ssd_size" {
+variable "pd_standard_size_0" {
   description = "Persistent disk size in GB."
   default     = ""
 }
 
-variable "pd_standard_size" {
+variable "pd_standard_size_1" {
+  description = "Persistent disk size in GB."
+  default     = ""
+}
+
+variable "pd_standard_size_2" {
   description = "Persistent disk size in GB."
   default     = ""
 }

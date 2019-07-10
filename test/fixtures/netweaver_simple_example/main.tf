@@ -68,8 +68,9 @@ module "example" {
   boot_disk_type         = "${var.boot_disk_type}"
   disk_type              = "${var.disk_type}"
   autodelete_disk        = "${var.autodelete_disk}"
-  pd_ssd_size            = "${var.pd_ssd_size}"
-  pd_standard_size       = "${var.pd_standard_size}"
+  pd_standard_size_0     = "${var.pd_standard_size_0}"
+  pd_standard_size_1     = "${var.pd_standard_size_1}"
+  pd_standard_size_2     = "${var.pd_standard_size_2}"
   startup_script         = "${data.template_file.netweaver.rendered}"
   post_deployment_script = "${google_storage_bucket.deployment_bucket.url}/${google_storage_bucket_object.post_deployment_script.name}"
 }
