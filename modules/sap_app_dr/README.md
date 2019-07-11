@@ -35,6 +35,12 @@ module "gcp_sap_app_dr" {
   network_tags          = "${var.network_tags}"
   disk_type             = "${var.disk_type}"
   pd_ssd_size           = "${var.pd_ssd_size}"
+  snapshot_name_0       = "${var.snapshot_name_0}"
+  snapshot_name_1       = "${var.snapshot_name_1}"
+  snapshot_name_2       = "${var.snapshot_name_2}"
+  source_disk_0         = "${var.source_disk_0}"
+  source_disk_1         = "${var.source_disk_1}"
+  source_disk_2         = "${var.source_disk_2}"
 }
 
 ```
