@@ -6,6 +6,7 @@ Below is the list of available submodules:
 - [SAP HANA](./modules/sap_hana/README.md)
 - [SAP HANA HA](./modules/sap_hana_ha/README.md)
 - [NETWEAVER](./modules/netweaver/README.md)
+- [SAP APP DR](./modules/sap_app_dr/README.md)
 
 
 ## Usage
