@@ -33,6 +33,9 @@ control 'deployment_validation_master' do
       context "output of df -h command" do
         its('stdout') { should match('/dev/mapper/vg_hana-data') }
         its('stdout') { should match('/dev/mapper/vg_hana-log') }
+        its('stdout') { should match('/dev/mapper/vg_hanabackup-backup') }
+        its('stdout') { should match('/dev/mapper/vg_hana-sap') }
+        its('stdout') { should match('/dev/mapper/vg_hana-shared') }
       end
 
       context "output of HDB info command" do
