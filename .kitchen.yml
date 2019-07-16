@@ -73,7 +73,7 @@ suites:
           backend: local
           controls:
             - deployment_validation
-            
+
   - name: sap_hana_scaleout_simple_example
     driver:
       root_module_directory: test/fixtures/sap_hana_scaleout_simple_example/
@@ -84,3 +84,15 @@ suites:
           backend: local
           controls:
             - deployment_validation_master
+            
+  - name: sap_ase_simple_example
+    driver:
+      root_module_directory: test/fixtures/sap_ase_simple_example/
+      command_timeout: 1800
+    verifier:
+      color: false
+      systems:
+        - name: sap_ase_simple_example local
+          backend: local
+          controls:
+            - deployment_validation
