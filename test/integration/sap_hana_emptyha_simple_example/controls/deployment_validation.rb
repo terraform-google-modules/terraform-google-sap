@@ -32,7 +32,6 @@ control 'deployment_validation_primary' do
       its(:exit_status) { should eq 0 }
 
       context "output of startup-script:" do
-        its('stdout') { should match('INSTANCE DEPLOYMENT COMPLETE') }
         its('stdout') { should match('/dev/sda3') }
         its('stdout') { should match('/dev/sda2') }
       end
