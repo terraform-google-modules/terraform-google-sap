@@ -10,7 +10,7 @@ Below is the list of available submodules:
 - [SAP HANA SCALEOUT](./modules/sap_hana_scaleout/README.md)
 - [SAP ASE](./modules/sap_ase/README.md)
 - [SAP MAXDB](./modules/sap_maxdb/README.md)
-
+- [SAP HANA EMPTYHA](./modules/sap_hana_emptyha/README.md)
 
 ## Usage
 
