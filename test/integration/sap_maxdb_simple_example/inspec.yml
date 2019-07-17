@@ -1,0 +1,15 @@
+name: sap_maxdb_simple_example
+depends:
+  - name: inspec-gcp
+    git: https://github.com/inspec/inspec-gcp.git
+    tag: v0.10.0
+attributes:
+  - name: project_id
+    required: true
+    type: string
+  - name: instance_name
+    required: true
+    type: string
+  - name: zone
+    required: true
+    type: string

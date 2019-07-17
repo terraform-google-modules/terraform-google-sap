@@ -7,8 +7,9 @@ Below is the list of available submodules:
 - [SAP HANA HA](./modules/sap_hana_ha/README.md)
 - [NETWEAVER](./modules/netweaver/README.md)
 - [SAP APP DR](./modules/sap_app_dr/README.md)
-- [SAP HANA Scaleout](./modules/sap_hana_scaleout/README.md)
+- [SAP HANA SCALEOUT](./modules/sap_hana_scaleout/README.md)
 - [SAP ASE](./modules/sap_ase/README.md)
+- [SAP MAXDB](./modules/sap_maxdb/README.md)
 
 
 ## Usage
