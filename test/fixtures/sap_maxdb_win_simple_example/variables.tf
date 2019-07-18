@@ -34,92 +34,17 @@ variable "instance_type" {
   description = "The GCE instance/machine type."
 }
 
-variable "linux_image_family" {
-  description = "GCE image family."
+variable "windows_image_family" {
+  description = "Compute Engine image name"
 }
 
-variable "linux_image_project" {
-  description = "Project name containing the linux image."
+variable "windows_image_project" {
+  description = "Project name containing the linux image"
 }
 
 variable "autodelete_disk" {
   description = "Whether the disk will be auto-deleted when the instance is deleted."
   default     = "false"
-}
-
-variable "disk_name_0" {
-  description = "Name of first disk."
-  default     = "sap-maxdb-pd-sd-0"
-}
-
-variable "disk_name_1" {
-  description = "Name of second disk."
-  default     = "sap-maxdb-pd-sd-1"
-}
-
-variable "disk_name_2" {
-  description = "Name of third disk."
-  default     = "sap-maxdb-pd-sd-2"
-}
-
-variable "disk_name_3" {
-  description = "Name of fourth disk."
-  default     = "sap-maxdb-pd-sd-3"
-}
-
-variable "disk_name_4" {
-  description = "Name of fifth disk."
-  default     = "sap-maxdb-pd-sd-4"
-}
-
-variable "disk_name_5" {
-  description = "Name of sixth disk."
-  default     = "sap-maxdb-pd-sd-5"
-}
-
-variable "disk_name_6" {
-  description = "Name of seventh disk."
-  default     = "sap-maxdb-pd-sd-6"
-}
-
-variable "device" {
-  description = "Device name"
-  default     = "boot"
-}
-
-variable "device_0" {
-  description = "Device name"
-  default     = "usrsap"
-}
-
-variable "device_1" {
-  description = "Device name"
-  default     = "swap"
-}
-
-variable "device_2" {
-  description = "Device name"
-  default     = "maxdbroot"
-}
-
-variable "device_3" {
-  description = "Device name"
-  default     = "maxdblog"
-}
-
-variable "device_4" {
-  description = "Device name"
-  default     = "maxdbdata"
-}
-
-variable "device_5" {
-  description = "Device name"
-  default     = "maxdbbackup"
-}
-
-variable "device_6" {
-  description = "Device name"
-  default     = "sapmnt"
 }
 
 variable "disk_type_0" {
@@ -139,7 +64,7 @@ variable "boot_disk_type" {
 }
 
 variable "pd_ssd_size" {
-  description = "Persistent ssd disk size in GB."
+  description = "Persistent  SSD disk size in GB."
   default     = ""
 }
 
@@ -174,10 +99,6 @@ variable "sap_deployment_debug" {
 variable "post_deployment_script" {
   description = "SAP Maxdb post deployment script. Must be a gs:// or https:// link to the script."
   default     = ""
-}
-
-variable "startup_script" {
-  description = "Startup script to install SAP Maxdb."
 }
 
 variable "usr_sap_size" {
@@ -218,4 +139,9 @@ variable "swapmntSize" {
 
 variable "sap_maxdb_sid" {
   description = "sap max db sid"
+}
+
+variable "sap_maxdb_deployment_bucket" {
+  description = "MAXDB deployment bucket."
+  default     = "maxdb/max-db"
 }

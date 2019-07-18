@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-provider "google" {
-  version = "~> 2.6.0"
-  region  = "${var.region}"
-}
-
-module "gcp_sap_maxdb" {
-  source                = "../../modules/sap_maxdb"
+module "example" {
+  source                = "../../../examples/sap_maxdb_win_simple_example"
   project_id            = "${var.project_id}"
   subnetwork            = "${var.subnetwork}"
-  linux_image_family    = "${var.linux_image_family}"
-  linux_image_project   = "${var.linux_image_project}"
+  windows_image_family  = "${var.windows_image_family}"
+  windows_image_project = "${var.windows_image_project}"
   instance_name         = "${var.instance_name}"
   instance_type         = "${var.instance_type}"
+  address_name          = "${var.address_name}"
   zone                  = "${var.zone}"
   network_tags          = "${var.network_tags}"
   region                = "${var.region}"
@@ -48,6 +44,4 @@ module "gcp_sap_maxdb" {
   maxdbLogSSD           = "${var.maxdbLogSSD}"
   swapmntSize           = "${var.swapmntSize}"
   sap_maxdb_sid         = "${var.sap_maxdb_sid}"
-  startup_script        = "${var.startup_script}"
-  address_name          = "${var.address_name}"
 }

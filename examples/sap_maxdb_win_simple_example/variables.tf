@@ -34,12 +34,12 @@ variable "instance_type" {
   description = "The GCE instance/machine type."
 }
 
-variable "linux_image_family" {
-  description = "GCE image family."
+variable "windows_image_family" {
+  description = "Compute Engine image name"
 }
 
-variable "linux_image_project" {
-  description = "Project name containing the linux image."
+variable "windows_image_project" {
+  description = "Project name containing the linux image"
 }
 
 variable "autodelete_disk" {
@@ -139,7 +139,7 @@ variable "boot_disk_type" {
 }
 
 variable "pd_ssd_size" {
-  description = "Persistent ssd disk size in GB."
+  description = "Persistent  ssd disk size in GB."
   default     = ""
 }
 
@@ -174,10 +174,6 @@ variable "sap_deployment_debug" {
 variable "post_deployment_script" {
   description = "SAP Maxdb post deployment script. Must be a gs:// or https:// link to the script."
   default     = ""
-}
-
-variable "startup_script" {
-  description = "Startup script to install SAP Maxdb."
 }
 
 variable "usr_sap_size" {

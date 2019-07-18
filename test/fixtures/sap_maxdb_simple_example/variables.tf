@@ -64,12 +64,12 @@ variable "boot_disk_type" {
 }
 
 variable "pd_ssd_size" {
-  description = "Persistent disk size in GB."
+  description = "Persistent ssd disk size in GB."
   default     = ""
 }
 
-variable "pd_standard_size" {
-  description = "Persistent disk size in GB"
+variable "pd_hdd_size" {
+  description = "Persistent standard disk size in GB"
   default     = ""
 }
 

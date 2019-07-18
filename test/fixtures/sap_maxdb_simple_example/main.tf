@@ -68,7 +68,7 @@ module "example" {
   disk_type_1            = "${var.disk_type_1}"
   autodelete_disk        = "${var.autodelete_disk}"
   pd_ssd_size            = "${var.pd_ssd_size}"
-  pd_standard_size       = "${var.pd_standard_size}"
+  pd_hdd_size            = "${var.pd_hdd_size}"
   usr_sap_size           = "${var.usr_sap_size}"
   swap_size              = "${var.swap_size}"
   maxdbRootSize          = "${var.maxdbRootSize}"

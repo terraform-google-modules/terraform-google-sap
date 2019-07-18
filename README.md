@@ -12,7 +12,7 @@ Below is the list of available submodules:
 - [SAP MAXDB](./modules/sap_maxdb/README.md)
 - [SAP HANA EMPTYHA](./modules/sap_hana_emptyha/README.md)
 - [SAP DB2](./modules/sap_db2/README.md)
-
+- [SAP MAXDB-WIN](./modules/sap_maxdb_win/README.md)
 ## Usage
 
 Each submodules have their own usage documented in the [modules](./modules) folder.

@@ -18,13 +18,13 @@ terraform {
   required_version = "~> 0.11.0"
 }
 
-resource "google_compute_address" "gcp_maxdb_ip" {
+resource "google_compute_address" "gcp_maxdb_win_ip" {
   project = "${var.project_id}"
   name    = "${var.address_name}"
   region  = "${var.region}"
 }
 
-resource "google_compute_disk" "gcp_maxdb_sd_0" {
+resource "google_compute_disk" "gcp_maxdb_win_sd_0" {
   project = "${var.project_id}"
   name    = "${var.instance_name}-${var.device_0}"
   type    = "${var.disk_type_1}"
@@ -32,7 +32,7 @@ resource "google_compute_disk" "gcp_maxdb_sd_0" {
   size    = "${var.pd_hdd_size}"
 }
 
-resource "google_compute_disk" "gcp_maxdb_sd_1" {
+resource "google_compute_disk" "gcp_maxdb_win_sd_1" {
   project = "${var.project_id}"
   name    = "${var.instance_name}-${var.device_1}"
   type    = "${var.disk_type_1}"
@@ -40,7 +40,7 @@ resource "google_compute_disk" "gcp_maxdb_sd_1" {
   size    = "${var.pd_hdd_size}"
 }
 
-resource "google_compute_disk" "gcp_maxdb_sd_2" {
+resource "google_compute_disk" "gcp_maxdb_win_sd_2" {
   project = "${var.project_id}"
   name    = "${var.instance_name}-${var.device_2}"
   type    = "${var.disk_type_1}"
@@ -48,7 +48,7 @@ resource "google_compute_disk" "gcp_maxdb_sd_2" {
   size    = "${var.pd_hdd_size}"
 }
 
-resource "google_compute_disk" "gcp_maxdb_sd_3" {
+resource "google_compute_disk" "gcp_maxdb_win_sd_3" {
   project = "${var.project_id}"
   name    = "${var.instance_name}-${var.device_3}"
   type    = "${var.disk_type_1}"
@@ -56,7 +56,7 @@ resource "google_compute_disk" "gcp_maxdb_sd_3" {
   size    = "${var.pd_hdd_size}"
 }
 
-resource "google_compute_disk" "gcp_maxdb_sd_4" {
+resource "google_compute_disk" "gcp_maxdb_win_sd_4" {
   project = "${var.project_id}"
   name    = "${var.instance_name}-${var.device_4}"
   type    = "${var.disk_type_0}"
@@ -64,7 +64,7 @@ resource "google_compute_disk" "gcp_maxdb_sd_4" {
   size    = "${var.pd_ssd_size}"
 }
 
-resource "google_compute_disk" "gcp_maxdb_sd_5" {
+resource "google_compute_disk" "gcp_maxdb_win_sd_5" {
   project = "${var.project_id}"
   name    = "${var.instance_name}-${var.device_5}"
   type    = "${var.disk_type_0}"
@@ -72,7 +72,7 @@ resource "google_compute_disk" "gcp_maxdb_sd_5" {
   size    = "${var.pd_ssd_size}"
 }
 
-resource "google_compute_disk" "gcp_maxdb_sd_6" {
+resource "google_compute_disk" "gcp_maxdb_win_sd_6" {
   project = "${var.project_id}"
   name    = "${var.instance_name}-${var.device_6}"
   type    = "${var.disk_type_0}"
@@ -80,56 +80,56 @@ resource "google_compute_disk" "gcp_maxdb_sd_6" {
   size    = "${var.pd_ssd_size}"
 }
 
-resource "google_compute_attached_disk" "gcp_maxdb_attached_sd_0" {
+resource "google_compute_attached_disk" "gcp_maxdb_win_attached_sd_0" {
   project     = "${var.project_id}"
   device_name = "${var.instance_name}-${var.device_0}"
-  disk        = "${google_compute_disk.gcp_maxdb_sd_0.self_link}"
-  instance    = "${google_compute_instance.gcp_maxdb.self_link}"
+  disk        = "${google_compute_disk.gcp_maxdb_win_sd_0.self_link}"
+  instance    = "${google_compute_instance.gcp_maxdb_win.self_link}"
 }
 
-resource "google_compute_attached_disk" "gcp_maxdb_attached_sd_1" {
+resource "google_compute_attached_disk" "gcp_maxdb_win_attached_sd_1" {
   project     = "${var.project_id}"
   device_name = "${var.instance_name}-${var.device_1}"
-  disk        = "${google_compute_disk.gcp_maxdb_sd_1.self_link}"
-  instance    = "${google_compute_instance.gcp_maxdb.self_link}"
+  disk        = "${google_compute_disk.gcp_maxdb_win_sd_1.self_link}"
+  instance    = "${google_compute_instance.gcp_maxdb_win.self_link}"
 }
 
-resource "google_compute_attached_disk" "gcp_maxdb_attached_sd_2" {
+resource "google_compute_attached_disk" "gcp_maxdb_win_attached_sd_2" {
   project     = "${var.project_id}"
   device_name = "${var.instance_name}-${var.device_2}"
-  disk        = "${google_compute_disk.gcp_maxdb_sd_2.self_link}"
-  instance    = "${google_compute_instance.gcp_maxdb.self_link}"
+  disk        = "${google_compute_disk.gcp_maxdb_win_sd_2.self_link}"
+  instance    = "${google_compute_instance.gcp_maxdb_win.self_link}"
 }
 
-resource "google_compute_attached_disk" "gcp_maxdb_attached_sd_3" {
+resource "google_compute_attached_disk" "gcp_maxdb_win_attached_sd_3" {
   project     = "${var.project_id}"
   device_name = "${var.instance_name}-${var.device_3}"
-  disk        = "${google_compute_disk.gcp_maxdb_sd_3.self_link}"
-  instance    = "${google_compute_instance.gcp_maxdb.self_link}"
+  disk        = "${google_compute_disk.gcp_maxdb_win_sd_3.self_link}"
+  instance    = "${google_compute_instance.gcp_maxdb_win.self_link}"
 }
 
-resource "google_compute_attached_disk" "gcp_maxdb_attached_sd_4" {
+resource "google_compute_attached_disk" "gcp_maxdb_win_attached_sd_4" {
   project     = "${var.project_id}"
   device_name = "${var.instance_name}-${var.device_4}"
-  disk        = "${google_compute_disk.gcp_maxdb_sd_4.self_link}"
-  instance    = "${google_compute_instance.gcp_maxdb.self_link}"
+  disk        = "${google_compute_disk.gcp_maxdb_win_sd_4.self_link}"
+  instance    = "${google_compute_instance.gcp_maxdb_win.self_link}"
 }
 
-resource "google_compute_attached_disk" "gcp_maxdb_attached_sd_5" {
+resource "google_compute_attached_disk" "gcp_maxdb_win_attached_sd_5" {
   project     = "${var.project_id}"
   device_name = "${var.instance_name}-${var.device_5}"
-  disk        = "${google_compute_disk.gcp_maxdb_sd_5.self_link}"
-  instance    = "${google_compute_instance.gcp_maxdb.self_link}"
+  disk        = "${google_compute_disk.gcp_maxdb_win_sd_5.self_link}"
+  instance    = "${google_compute_instance.gcp_maxdb_win.self_link}"
 }
 
-resource "google_compute_attached_disk" "gcp_maxdb_attached_sd_6" {
+resource "google_compute_attached_disk" "gcp_maxdb_win_attached_sd_6" {
   project     = "${var.project_id}"
   device_name = "${var.instance_name}-${var.device_6}"
-  disk        = "${google_compute_disk.gcp_maxdb_sd_6.self_link}"
-  instance    = "${google_compute_instance.gcp_maxdb.self_link}"
+  disk        = "${google_compute_disk.gcp_maxdb_win_sd_6.self_link}"
+  instance    = "${google_compute_instance.gcp_maxdb_win.self_link}"
 }
 
-resource "google_compute_instance" "gcp_maxdb" {
+resource "google_compute_instance" "gcp_maxdb_win" {
   project        = "${var.project_id}"
   name           = "${var.instance_name}"
   machine_type   = "${var.instance_type}"
@@ -148,7 +148,7 @@ resource "google_compute_instance" "gcp_maxdb" {
     device_name = "${var.instance_name}-${var.device}"
 
     initialize_params {
-      image = "projects/${var.linux_image_project}/global/images/family/${var.linux_image_family}"
+      image = "projects/${var.windows_image_project}/global/images/family/${var.windows_image_family}"
       size  = "${var.boot_disk_size}"
       type  = "${var.boot_disk_type}"
     }
@@ -159,7 +159,7 @@ resource "google_compute_instance" "gcp_maxdb" {
     subnetwork_project = "${var.project_id}"
 
     access_config {
-      nat_ip = "${element(google_compute_address.gcp_maxdb_ip.*.address, count.index)}"
+      nat_ip = "${element(google_compute_address.gcp_maxdb_win_ip.*.address, count.index)}"
     }
   }
 
@@ -168,9 +168,9 @@ resource "google_compute_instance" "gcp_maxdb" {
     instanceType           = "${var.instance_type}"
     zone                   = "${var.zone}"
     post_deployment_script = "${var.post_deployment_script}"
+    windowsImage           = "${var.windows_image_family}"
+    windowsImageProject    = "${var.windows_image_project}"
     subnetwork             = "${var.subnetwork}"
-    linuxImage             = "${var.linux_image_family}"
-    linuxImageProject      = "${var.linux_image_project}"
     usrsapSize             = "${var.usr_sap_size}"
     swapSize               = "${var.swap_size}"
     maxdbRootSize          = "${var.maxdbRootSize}"
@@ -181,7 +181,10 @@ resource "google_compute_instance" "gcp_maxdb" {
     maxdbLogSSD            = "${var.maxdbLogSSD}"
     swapmntSize            = "${var.swapmntSize}"
     sap_maxdb_sid          = "${var.sap_maxdb_sid}"
-    startup-script         = "${var.startup_script}"
+  }
+
+  metadata {
+    windows-startup-script-url = "https://storage.googleapis.com/sapdeploy/dm-templates/sap_maxdb-win/startup.ps1"
   }
 
   service_account {
