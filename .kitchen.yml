@@ -108,7 +108,7 @@ suites:
           backend: local
           controls:
             - deployment_validation
-            
+
   - name: sap_hana_emptyha_simple_example
     driver:
       root_module_directory: test/fixtures/sap_hana_emptyha_simple_example/
@@ -120,3 +120,16 @@ suites:
           backend: local
           controls:
             - deployment_validation_primary
+
+  - name: sap_db2_simple_example
+    driver:
+      root_module_directory: test/fixtures/sap_db2_simple_example/
+      command_timeout: 1800
+    verifier:
+      color: false
+      systems:
+        - name: sap_db2_simple_example local
+          backend: local
+          controls:
+            - deployment_validation
+            
