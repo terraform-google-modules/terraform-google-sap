@@ -11,6 +11,7 @@ Below is the list of available submodules:
 - [SAP ASE](./modules/sap_ase/README.md)
 - [SAP MAXDB](./modules/sap_maxdb/README.md)
 - [SAP HANA EMPTYHA](./modules/sap_hana_emptyha/README.md)
+- [SAP DB2](./modules/sap_db2/README.md)
 
 ## Usage
 
