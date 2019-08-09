@@ -29,6 +29,8 @@ project_id = "<project id>"
 
 region = "region"
 
+zone = "zone"
+
 instance_name = "<instance_name>"
 
 usr_sap_size = 15
