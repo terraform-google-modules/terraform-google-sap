@@ -38,6 +38,8 @@ sap_hana_sidadm_password = "<password>"
 
 sap_hana_system_password = "<password>"
 
+sap_hana_deployment_bucket = "bucket_name"
+
 sap_hana_sidadm_uid = 900
 
 sap_hana_sapsys_gid = 900
