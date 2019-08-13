@@ -60,10 +60,6 @@ service_account_email = "<service-account-email>"
 
 network_tags = []
 
-sap_hana_original_role = "master"
-
-sap_hana_orgiginal_role = "worker"
-
 sap_hana_worker_nodes = 2
 
 startup_script_1 = "../../modules/sap_hana_scaleout/files/startup.sh"

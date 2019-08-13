@@ -20,7 +20,7 @@ provider "google" {
 }
 
 module "gcp_sap_emptyha" {
-  source                   = "../../modules/sap_hana_emptyha"
+  source                   = "../../modules/sap_emptyha"
   post_deployment_script   = "${var.post_deployment_script}"
   subnetwork               = "${var.subnetwork}"
   linux_image_family       = "${var.linux_image_family}"

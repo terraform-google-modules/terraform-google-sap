@@ -20,7 +20,7 @@ provider "google" {
 }
 
 module "gcp_sap_emptyha" {
-source                      = "terraform-google-modules/sap/google/modules/sap_hana_emptyha"
+source                      = "terraform-google-modules/sap/google/modules/sap_emptyha"
     subnetwork                 = "${var.subnetwork}"
     linux_image_family         = "${var.linux_image_family}"
     linux_image_project        = "${var.linux_image_project}"
@@ -53,7 +53,7 @@ source                      = "terraform-google-modules/sap/google/modules/sap_h
 Make sure you've gone through the root [Requirement Section](../../README.md#requirements)
 
 ### SAP HANA Software
- Follow instructions [here](https://cloud.google.com/solutions/sap/docs/sap-hana-ha-deployment-guide#creating_a_cloud_storage_bucket_for_the_sap_hana_ha_installation_files) to properly Download SAP HANA from the SAP Marketplace, and upload it to a GCS bucket.
+ Follow instructions [here](https://cloud.google.com/solutions/sap/docs/sap-hana-deployment-guide#creating_a_cloud_storage_bucket_for_the_sap_hana_ha_installation_files) to properly Download SAP HANA from the SAP Marketplace, and upload it to a GCS bucket.
 
 
 ### Configure Service Account for identifying the Compute instances

@@ -1,4 +1,4 @@
-name: sap_hana_emptyha_simple_example
+name: sap_emptyha_simple_example
 depends:
   - name: inspec-gcp
     git: https://github.com/inspec/inspec-gcp.git

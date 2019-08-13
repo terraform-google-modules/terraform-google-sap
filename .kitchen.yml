@@ -109,14 +109,14 @@ suites:
           controls:
             - deployment_validation
 
-  - name: sap_hana_emptyha_simple_example
+  - name: sap_emptyha_simple_example
     driver:
-      root_module_directory: test/fixtures/sap_hana_emptyha_simple_example/
+      root_module_directory: test/fixtures/sap_emptyha_simple_example/
       command_timeout: 1800
     verifier:
       color: false
       systems:
-        - name: sap_hana_emptyha_simple_example local
+        - name: sap_emptyha_simple_example local
           backend: local
           controls:
             - deployment_validation_primary
@@ -132,7 +132,7 @@ suites:
           backend: local
           controls:
             - deployment_validation
-            
+
   - name: sap_maxdb_win_simple_example
     driver:
       root_module_directory: test/fixtures/sap_maxdb_win_simple_example/
