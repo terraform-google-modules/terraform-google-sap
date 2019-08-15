@@ -39,9 +39,6 @@ module "gcp_netweaver" {
   boot_disk_size         = "${var.boot_disk_size}"
   boot_disk_type         = "${var.boot_disk_type}"
   disk_type              = "${var.disk_type}"
-  pd_standard_size_0     = "${var.pd_standard_size_0}"
-  pd_standard_size_1     = "${var.pd_standard_size_1}"
-  pd_standard_size_2     = "${var.pd_standard_size_2}"
   startup_script         = "${var.startup_script}"
 }
 
@@ -93,9 +90,6 @@ The recommended way is to use a GCS Bucket in the following way.:
 | linux\_image\_family | GCE image family. | string | n/a | yes |
 | linux\_image\_project | Project name containing the linux image. | string | n/a | yes |
 | network\_tags | List of network tags to attach to the instance. | list | n/a | yes |
-| pd\_standard\_size\_0 | Persistent disk size in GB. | string | `""` | no |
-| pd\_standard\_size\_1 | Persistent disk size in GB. | string | `""` | no |
-| pd\_standard\_size\_2 | Persistent disk size in GB. | string | `""` | no |
 | post\_deployment\_script | Netweaver post deployment script. Must be a gs:// or https:// link to the script. | string | `""` | no |
 | project\_id | The ID of the project in which the resources will be deployed. | string | n/a | yes |
 | public\_ip | Determines whether a public IP address is added to your VM instance. | string | `"true"` | no |
