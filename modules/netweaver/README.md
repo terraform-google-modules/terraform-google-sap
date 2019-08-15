@@ -8,7 +8,7 @@ This module is handles opinionated Netweaver configuration and deployment.
 The resources/services/activations/deletions that this module will create/trigger are:
 
 - Create a Compute Instance that will host Netweaver
-- Create a Static IP Adresse for the Compute Instance
+- Create a Static IP Addresses for the Compute Instance
 - Create a 2 Persitent Disks to host Netweaver's File systems
 
 You can go in the [examples](../../examples) folder complete working example. However, here's an example of how to use the module in a main.tf file.

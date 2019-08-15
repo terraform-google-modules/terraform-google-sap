@@ -41,8 +41,5 @@ module "gcp_netweaver" {
   boot_disk_size         = "${var.boot_disk_size}"
   boot_disk_type         = "${var.boot_disk_type}"
   disk_type              = "${var.disk_type}"
-  pd_standard_size_0     = "${var.pd_standard_size_0}"
-  pd_standard_size_1     = "${var.pd_standard_size_1}"
-  pd_standard_size_2     = "${var.pd_standard_size_2}"
   startup_script         = "${var.startup_script}"
 }

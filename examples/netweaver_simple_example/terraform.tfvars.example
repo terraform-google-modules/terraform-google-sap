@@ -43,12 +43,6 @@ service_account_email = "<service-account-email>"
 
 boot_disk_type = "pd-ssd"
 
-pd_standard_size_0 = 15
-
-pd_standard_size_1 = 15
-
-pd_standard_size_2 = 24
-
 disk_type = "pd-standard"
 
 sap_deployment_debug = "false"
