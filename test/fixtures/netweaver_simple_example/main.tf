@@ -22,7 +22,6 @@ locals {
   gcs_bucket_static_name = "${var.nw_deployment_bucket}"
 }
 
-#TODO: Add creation of a network that's similar to app2
 
 resource "google_storage_bucket" "deployment_bucket" {
   name          = "${local.gcs_bucket_name}"
@@ -33,7 +32,7 @@ resource "google_storage_bucket" "deployment_bucket" {
 }
 
 data "template_file" "post_deployment_script" {
-  template = "${file("${path.cwd}/files/templates/post_deployment_script.tpl")}"
+  template = "${file("${path.module}/files/templates/post_deployment_script.tpl")}"
 }
 
 data "template_file" "netweaver" {
@@ -47,28 +46,27 @@ resource "google_storage_bucket_object" "post_deployment_script" {
 }
 
 module "example" {
-  source                = "../../../examples/netweaver_simple_example"
-  subnetwork            = "${var.subnetwork}"
-  linux_image_family    = "${var.linux_image_family}"
-  linux_image_project   = "${var.linux_image_project}"
-  autodelete_disk       = "true"
-  public_ip             = "${var.public_ip}"
-  sap_deployment_debug  = "${var.sap_deployment_debug}"
-  usr_sap_size          = "${var.usr_sap_size}"
-  sap_mnt_size          = "${var.sap_mnt_size}"
-  swap_size             = "${var.swap_size}"
-  instance_name         = "${var.instance_name}"
-  instance_type         = "${var.instance_type}"
-  network_tags          = "${var.network_tags}"
-  project_id            = "${var.project_id}"
-  region                = "${var.region}"
-  zone                  = "${var.zone}"
-  service_account_email = "${var.service_account_email}"
-  boot_disk_size        = "${var.boot_disk_size}"
-  boot_disk_type        = "${var.boot_disk_type}"
-  disk_type             = "${var.disk_type}"
-  autodelete_disk       = "${var.autodelete_disk}"
-  startup_script        = "${data.template_file.netweaver.rendered}"
-
+  source                 = "../../../examples/netweaver_simple_example"
+  subnetwork             = "${var.subnetwork}"
+  linux_image_family     = "${var.linux_image_family}"
+  linux_image_project    = "${var.linux_image_project}"
+  autodelete_disk        = "true"
+  public_ip              = "${var.public_ip}"
+  sap_deployment_debug   = "${var.sap_deployment_debug}"
+  usr_sap_size           = "${var.usr_sap_size}"
+  sap_mnt_size           = "${var.sap_mnt_size}"
+  swap_size              = "${var.swap_size}"
+  instance_name          = "${var.instance_name}"
+  instance_type          = "${var.instance_type}"
+  network_tags           = "${var.network_tags}"
+  project_id             = "${var.project_id}"
+  region                 = "${var.region}"
+  zone                   = "${var.zone}"
+  service_account_email  = "${var.service_account_email}"
+  boot_disk_size         = "${var.boot_disk_size}"
+  boot_disk_type         = "${var.boot_disk_type}"
+  disk_type              = "${var.disk_type}"
+  autodelete_disk        = "${var.autodelete_disk}"
+  startup_script         = "${data.template_file.netweaver.rendered}"
   post_deployment_script = "${google_storage_bucket.deployment_bucket.url}/${google_storage_bucket_object.post_deployment_script.name}"
 }

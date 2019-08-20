@@ -47,20 +47,24 @@ variable "autodelete_disk" {
   default     = "false"
 }
 
-variable "usr_sap_size" {
-  description = "USR SAP size"
+variable "disk_name_0" {
+  description = "Name of first disk."
+  default     = "sap-hana-pd-sd-0"
 }
 
-variable "sap_mnt_size" {
-  description = "SAP mount size"
+variable "disk_name_1" {
+  description = "Name of second disk."
+  default     = "sap-hana-pd-sd-1"
 }
 
-variable "swap_size" {
-  description = "SWAP Size"
+variable "disk_type_0" {
+  description = "The GCE data disk type. May be set to pd-ssd."
+  default     = "pd-ssd"
 }
 
-variable "disk_type" {
-  description = "The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
+variable "disk_type_1" {
+  description = "The GCE data disk type. May be set to pd-standard (for PD HDD)."
+  default     = "pd-standard"
 }
 
 variable "boot_disk_size" {
@@ -69,6 +73,26 @@ variable "boot_disk_size" {
 
 variable "boot_disk_type" {
   description = "The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
+}
+
+variable "pd_ssd_size" {
+  description = "Persistent disk size in GB."
+  default     = ""
+}
+
+variable "pd_hdd_size" {
+  description = "Persistent disk size in GB."
+  default     = ""
+}
+
+variable "device_name_pd_ssd" {
+  description = "device name for ssd persistant disk"
+  default     = "pdssd"
+}
+
+variable "device_name_pd_hdd" {
+  description = "device name for standard persistant disk"
+  default     = "backup"
 }
 
 variable "service_account_email" {
@@ -84,40 +108,48 @@ variable "network_tags" {
   description = "List of network tags to attach to the instance."
 }
 
-variable "public_ip" {
-  description = "Determines whether a public IP address is added to your VM instance."
-  default     = true
+variable "address_name" {
+  description = "Name of static IP adress to add to the instance's access config."
 }
 
-variable "device_0" {
-  description = "Device name"
-  default     = "boot"
-}
-
-variable "device_1" {
-  description = "Device name"
-  default     = "usrsap"
-}
-
-variable "device_2" {
-  description = "Device name"
-  default     = "sapmnt"
-}
-
-variable "device_3" {
-  description = "Device name"
-  default     = "swap"
-}
-
-variable "startup_script" {
-  description = "Startup script to install netweaver."
-}
-
-variable "post_deployment_script" {
-  description = "Netweaver post deployment script. Must be a gs:// or https:// link to the script."
-  default     = ""
+variable "sap_hana_deployment_bucket" {
+  description = "SAP hana deployment bucket."
 }
 
 variable "sap_deployment_debug" {
-  description = "Debug flag for Netweaver deployment."
+  description = "Debug flag for SAP HANA deployment."
+  default     = "false"
+}
+
+variable "post_deployment_script" {
+  description = "SAP HANA post deployment script. Must be a gs:// or https:// link to the script."
+  default     = ""
+}
+
+variable "startup_script" {
+  description = "Startup script to install SAP HANA."
+}
+
+variable "sap_hana_sid" {
+  description = "SAP HANA System Identifier. When using the SID to enter a user session, like this for example, `su - [SID]adm`, make sure that [SID] is in lower case."
+}
+
+variable "sap_hana_instance_number" {
+  description = "SAP HANA instance number"
+}
+
+variable "sap_hana_sidadm_password" {
+  description = "SAP HANA System Identifier Admin password"
+}
+
+variable "sap_hana_system_password" {
+  description = "SAP HANA system password"
+}
+
+variable "sap_hana_sidadm_uid" {
+  description = "SAP HANA System Identifier Admin UID"
+}
+
+variable "sap_hana_sapsys_gid" {
+  description = "SAP HANA SAP System GID"
 }

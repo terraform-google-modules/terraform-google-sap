@@ -35,7 +35,7 @@ variable "instance_type" {
 }
 
 variable "linux_image_family" {
-  description = "GCE image family."
+  description = "GCE linux image family."
 }
 
 variable "linux_image_project" {
@@ -44,31 +44,26 @@ variable "linux_image_project" {
 
 variable "autodelete_disk" {
   description = "Whether the disk will be auto-deleted when the instance is deleted."
-  default     = "false"
-}
-
-variable "usr_sap_size" {
-  description = "USR SAP size"
-}
-
-variable "sap_mnt_size" {
-  description = "SAP mount size"
-}
-
-variable "swap_size" {
-  description = "SWAP Size"
-}
-
-variable "disk_type" {
-  description = "The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
+  default     = true
 }
 
 variable "boot_disk_size" {
-  description = "Root disk size in GB."
+  description = "Root disk size in GB"
 }
 
 variable "boot_disk_type" {
-  description = "The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
+  description = "The GCE boot disk type.Set to pd-standard (for PD HDD)."
+  default     = "pd-ssd"
+}
+
+variable "pd_ssd_size" {
+  description = "Persistent disk size in GB"
+  default     = ""
+}
+
+variable "pd_hdd_size" {
+  description = "Persistent disk size in GB."
+  default     = ""
 }
 
 variable "service_account_email" {
@@ -84,40 +79,50 @@ variable "network_tags" {
   description = "List of network tags to attach to the instance."
 }
 
-variable "public_ip" {
-  description = "Determines whether a public IP address is added to your VM instance."
-  default     = true
-}
-
-variable "device_0" {
-  description = "Device name"
-  default     = "boot"
-}
-
-variable "device_1" {
-  description = "Device name"
-  default     = "usrsap"
-}
-
-variable "device_2" {
-  description = "Device name"
-  default     = "sapmnt"
-}
-
-variable "device_3" {
-  description = "Device name"
-  default     = "swap"
-}
-
-variable "startup_script" {
-  description = "Startup script to install netweaver."
-}
-
-variable "post_deployment_script" {
-  description = "Netweaver post deployment script. Must be a gs:// or https:// link to the script."
-  default     = ""
+variable "sap_hana_deployment_bucket" {
+  description = "SAP hana deployment bucket."
 }
 
 variable "sap_deployment_debug" {
-  description = "Debug flag for Netweaver deployment."
+  description = "Debug flag for SAP HANA deployment."
+  default     = "false"
+}
+
+variable "post_deployment_script" {
+  description = "SAP HANA post deployment script. Must be a gs:// or https:// link to the script."
+  default     = ""
+}
+
+variable "startup_script" {
+  description = "Startup script to install SAP HANA."
+}
+
+variable "sap_hana_sid" {
+  description = "SAP HANA System Identifier"
+}
+
+variable "sap_hana_instance_number" {
+  description = "SAP HANA instance number"
+}
+
+variable "sap_hana_sidadm_password" {
+  description = "SAP HANA System Identifier Admin password"
+}
+
+variable "sap_hana_system_password" {
+  description = "SAP HANA system password"
+}
+
+variable "sap_hana_sidadm_uid" {
+  description = "SAP HANA System Identifier Admin UID"
+  default     = 900
+}
+
+variable "sap_hana_sapsys_gid" {
+  description = "SAP HANA SAP System GID"
+  default     = 900
+}
+
+variable "address_name" {
+  description = "Name of static IP adress to add to the instance's access config."
 }

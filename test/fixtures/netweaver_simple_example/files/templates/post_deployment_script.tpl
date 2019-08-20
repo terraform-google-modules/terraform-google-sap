@@ -1,4 +1,3 @@
-#! /bin/bash
-sudo su -
+#!/bin/bash
 df -h
 cat /proc/meminfo | grep Swap
