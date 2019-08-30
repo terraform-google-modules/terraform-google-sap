@@ -110,7 +110,7 @@ variable "device_3" {
 }
 
 variable "startup_script" {
-  description = "Startup script to install netweaver."
+  description = "This will reference the startup.sh script files in the files folder for netweaver set up in the instance"
 }
 
 variable "post_deployment_script" {
