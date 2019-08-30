@@ -42,13 +42,6 @@ data "template_file" "post_deployment_script" {
   }
 }
 
-data "template_file" "startup_sap_hana_1" {
-  template = "${file("${path.module}/files/sap_hana_ha.sh")}"
-}
-
-data "template_file" "startup_sap_hana_2" {
-  template = "${file("${path.module}/files/sap_hana_ha_secondary.sh")}"
-}
 
 resource "google_storage_bucket_object" "post_deployment_script" {
   name    = "post_deployment_script.sh"
@@ -88,7 +81,7 @@ module "example" {
   secondary_instance_ip      = "${var.secondary_instance_ip}"
   sap_vip_internal_address   = "${var.sap_vip_internal_address}"
   sap_hana_deployment_bucket = "${local.gcs_bucket_static_name}"
-  startup_script_1           = "${data.template_file.startup_sap_hana_1.rendered}"
-  startup_script_2           = "${data.template_file.startup_sap_hana_2.rendered}"
+  startup_script_1           = "${path.module}/files/sap_hana_ha.sh"
+  startup_script_2           = "${path.module}/files/sap_hana_ha_secondary.sh"
   post_deployment_script     = "${google_storage_bucket.deployment_bucket.url}/${google_storage_bucket_object.post_deployment_script.name}"
 }

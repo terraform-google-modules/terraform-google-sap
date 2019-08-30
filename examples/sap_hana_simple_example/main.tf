@@ -38,7 +38,7 @@ module "gcp_sap_hana" {
   sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
   sap_deployment_debug       = "false"
   post_deployment_script     = "${var.post_deployment_script}"
-  startup_script             = "${var.startup_script}"
+  startup_script             = "${file(var.startup_script)}"
   sap_hana_sid               = "${var.sap_hana_sid}"
   sap_hana_instance_number   = "${var.sap_hana_instance_number}"
   sap_hana_sidadm_password   = "${var.sap_hana_sidadm_password}"
