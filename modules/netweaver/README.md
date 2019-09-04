@@ -53,8 +53,9 @@ The compute instance created by this submodule will need to download SAP HANA fr
 
  1. [Create a new service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts)
  2. Grant this new service account the following permissions on the bucket where you uploaded netweaver file:
-    - Storage Admin: `roles/compute.storageAdmin`
-    -
+
+  - Storage Admin: `roles/compute.storageAdmin`
+
   You may use the following gcloud command:
   `gcloud projects add-iam-policy-binding <project-id> --member=serviceAccount:<service-account-email> --role=roles/compute.storageAdmin`
 
