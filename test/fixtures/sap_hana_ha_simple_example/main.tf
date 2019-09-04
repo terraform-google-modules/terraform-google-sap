@@ -34,7 +34,7 @@ resource "google_storage_bucket" "deployment_bucket" {
 }
 
 data "template_file" "post_deployment_script" {
-  template = "${file("${path.cwd}/files/templates/post_deployment_script.tpl")}"
+  template = "${file("${path.cwd}/files/post_deployment_script.tpl")}"
 
   vars = {
     # sap_hana_id (SID) needs to be lower case to work with `su -[SID]adm` command
@@ -81,7 +81,7 @@ module "example" {
   secondary_instance_ip      = "${var.secondary_instance_ip}"
   sap_vip_internal_address   = "${var.sap_vip_internal_address}"
   sap_hana_deployment_bucket = "${local.gcs_bucket_static_name}"
-  startup_script_1           = "${path.module}/files/sap_hana_ha.sh"
-  startup_script_2           = "${path.module}/files/sap_hana_ha_secondary.sh"
+  startup_script_1           = "../../../modules/sap_hana_ha/files/startup.sh"
+  startup_script_2           = "../../../modules/sap_hana_ha/files/startup_secondary.sh"
   post_deployment_script     = "${google_storage_bucket.deployment_bucket.url}/${google_storage_bucket_object.post_deployment_script.name}"
 }
