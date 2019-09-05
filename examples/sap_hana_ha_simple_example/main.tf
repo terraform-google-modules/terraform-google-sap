@@ -52,6 +52,6 @@ module "gcp_sap_hana_ha" {
   primary_instance_ip        = "${var.primary_instance_ip}"
   secondary_instance_ip      = "${var.secondary_instance_ip}"
   sap_vip_internal_address   = "${var.sap_vip_internal_address}"
-  startup_script_1           = "${var.startup_script_1}"
-  startup_script_2           = "${var.startup_script_2}"
+  startup_script_1           = "${file(var.startup_script_1)}"
+  startup_script_2           = "${file(var.startup_script_2)}"
 }
