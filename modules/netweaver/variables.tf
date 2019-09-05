@@ -86,7 +86,7 @@ variable "network_tags" {
 
 variable "public_ip" {
   description = "Determines whether a public IP address is added to your VM instance."
-  default     = "true"
+  default     = 1
 }
 
 variable "device_0" {

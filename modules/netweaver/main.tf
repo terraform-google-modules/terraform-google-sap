@@ -24,8 +24,8 @@ locals {
   device_name_3 = "${var.instance_name}-${var.device_3}"
 
   access_config = {
-    "false" = []
-    "true"  = [{}]
+    "0" = []
+    "1" = [{}]
   }
 }
 

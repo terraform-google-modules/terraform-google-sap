@@ -15,15 +15,15 @@
  */
 output "instance_name" {
   description = "Name of Netweaver instance"
-  value       = "${element(google_compute_instance.gcp_nw.*.name)}"
+  value       = "${google_compute_instance.gcp_nw.name}"
 }
 
 output "zone" {
   description = "Compute Engine instance deployment zone"
-  value       = "${element(google_compute_instance.gcp_nw.*.zone)}"
+  value       = "${google_compute_instance.gcp_nw.zone}"
 }
 
 output "instance_machine_type" {
   description = "Primary GCE instance/machine type."
-  value       = "${element(google_compute_instance.gcp_nw.*.machine_type)}"
+  value       = "${google_compute_instance.gcp_nw.machine_type}"
 }
