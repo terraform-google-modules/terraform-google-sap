@@ -55,21 +55,24 @@ resource "google_compute_disk" "gcp_nw_pd_2" {
 
 resource "google_compute_attached_disk" "gcp_nw_attached_pd_0" {
   project     = "${var.project_id}"
-  device_name = "${var.usr_sap_size > 0 ? local.device_name_1 : ""}"
+  count       = "${var.usr_sap_size > 0 ? 1 : 0}"
+  device_name = "${local.device_name_1}"
   disk        = "${google_compute_disk.gcp_nw_pd_0.self_link}"
   instance    = "${google_compute_instance.gcp_nw.self_link}"
 }
 
 resource "google_compute_attached_disk" "gcp_nw_attached_pd_1" {
   project     = "${var.project_id}"
-  device_name = "${var.sap_mnt_size > 0 ? local.device_name_2 : ""}"
+  count       = "${var.sap_mnt_size > 0 ? 1 : 0}"
+  device_name = "${local.device_name_2}"
   disk        = "${google_compute_disk.gcp_nw_pd_1.self_link}"
   instance    = "${google_compute_instance.gcp_nw.self_link}"
 }
 
 resource "google_compute_attached_disk" "gcp_nw_attached_pd_2" {
   project     = "${var.project_id}"
-  device_name = "${var.swap_size > 0 ? local.device_name_3 : ""}"
+  count       = "${var.swap_size > 0 ? 1 : 0}"
+  device_name = "${local.device_name_3}"
   disk        = "${google_compute_disk.gcp_nw_pd_2.self_link}"
   instance    = "${google_compute_instance.gcp_nw.self_link}"
 }
