@@ -34,6 +34,7 @@ resource "google_compute_disk" "gcp_nw_pd_0" {
   name    = "${var.instance_name}-nw-0"
   type    = "${var.disk_type}"
   zone    = "${var.zone}"
+  count   = "${var.usr_sap_size > 0 ? 1 : 0}"
   size    = "${var.usr_sap_size}"
 }
 
@@ -42,6 +43,7 @@ resource "google_compute_disk" "gcp_nw_pd_1" {
   name    = "${var.instance_name}-nw-1"
   type    = "${var.disk_type}"
   zone    = "${var.zone}"
+  count   = "${var.sap_mnt_size > 0 ? 1 : 0}"
   size    = "${var.sap_mnt_size}"
 }
 
@@ -50,6 +52,7 @@ resource "google_compute_disk" "gcp_nw_pd_2" {
   name    = "${var.instance_name}-nw-2"
   type    = "${var.disk_type}"
   zone    = "${var.zone}"
+  count   = "${var.swap_size > 0 ? 1 : 0}"
   size    = "${var.swap_size}"
 }
 
