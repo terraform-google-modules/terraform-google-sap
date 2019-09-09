@@ -127,6 +127,6 @@ resource "google_compute_instance" "gcp_nw" {
 
   service_account {
     email  = "${var.service_account_email}"
-    scopes = []
+    scopes = ["cloud-platform"]
   }
 }
