@@ -35,6 +35,10 @@ The following dependencies must be available:
 A service account with the following roles must be used to provision
 the resources of each submodule:
 
+- Compute Admin: `roles/compute.admin`
+
+A service account with the following roles must be used in variable `service_account_email`:
+
 - Stackdriver Metadata writer: `roles/stackdriver.resourceMetadata.writer`
 - Compute Network admin: `roles/compute.networkAdmin`
 - Log writer: `roles/logging.logWriter`
