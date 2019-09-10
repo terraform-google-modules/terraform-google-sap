@@ -37,13 +37,6 @@ the resources of each submodule:
 
 - Compute Admin: `roles/compute.admin`
 
-A service account with the following roles must be used in variable `service_account_email`:
-
-- Stackdriver Metadata writer: `roles/stackdriver.resourceMetadata.writer`
-- Compute Network admin: `roles/compute.networkAdmin`
-- Log writer: `roles/logging.logWriter`
-- Storage viewer: `roles/storage.objectViewer`
-
 Please refer to the documentation of specific submodules located in the [modules](./modules/) folder for additional requirements for the service account.
 
 The [Project Factory module][project-factory-module] and the

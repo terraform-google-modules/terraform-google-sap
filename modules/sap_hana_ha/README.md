@@ -70,10 +70,20 @@ The compute instances created by this submodule will need to download SAP HANA f
 
  1. [Create a new service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts)
  2. Grant this new service account the following permissions on the bucket where you uploaded SAP HANA installation file:
-    - roles/storage.objectViewer
+    - Stackdriver Metadata writer: `roles/stackdriver.resourceMetadata.writer`
+    - Compute Network admin: `roles/compute.networkAdmin`
+    - Log writer: `roles/logging.logWriter`
+    - Storage viewer: `roles/storage.objectViewer`
 
- You may use the following gcloud commands:
-   `gcloud projects add-iam-policy-binding <project-id> --member=serviceAccount:<service-account-email> --role=roles/storage.objectViewer`
+  You may use the following gcloud command:
+
+```shell
+ROLES=("roles/stackdriver.resourceMetadata.writer", "roles/compute.networkAdmin", "roles/logging.logWriter", "roles/storage.objectViewer")
+for ROLE in ${ROLES[*]}; do
+  gcloud projects add-iam-policy-binding <project-id> \
+    --member=serviceAccount:<service-account-email> --role=${ROLE}
+done
+```
 
 3. When configuring the module, use this newly created service account's email, to set the `service_account_email` input variable.
 
