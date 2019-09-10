@@ -9,6 +9,8 @@ and this project adheres to
 
 ## [Unreleased]
 
+## [0.2.0] - 2019-09-10
+
 ### Added
 
 - Submodule to deploy NetWeaver. [#2]
@@ -23,7 +25,8 @@ and this project adheres to
 
 - Initial release
 
-[Unreleased]: https://github.com/terraform-google-modules/terraform-google-sap/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/terraform-google-modules/terraform-google-sap/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/terraform-google-modules/terraform-google-sap/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/terraform-google-modules/terraform-google-sap/releases/tag/v0.1.0
 [#2]: https://github.com/terraform-google-modules/terraform-google-sap/pull/2
 [#4]: https://github.com/terraform-google-modules/terraform-google-sap/issues/4
