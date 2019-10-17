@@ -15,12 +15,16 @@
  */
 
 terraform {
-  required_version = "~> 0.11.0"
+  required_version = "~> 0.12.3"
 }
 
 module "sap_hana" {
   source        = "./sap_hana_python"
   instance-type = "${var.instance_type}"
+}
+
+data "template_file" "startup_sap_hana" {
+  template = "${file("${path.module}/files/startup.sh")}"
 }
 
 resource "google_compute_disk" "gcp_sap_hana_sd_0" {
@@ -37,12 +41,6 @@ resource "google_compute_disk" "gcp_sap_hana_sd_1" {
   type    = "${var.disk_type_1}"
   zone    = "${var.zone}"
   size    = "${var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize}"
-}
-
-resource "google_compute_address" "gcp_sap_hana_ip" {
-  project = "${var.project_id}"
-  name    = "${var.address_name}"
-  region  = "${var.region}"
 }
 
 resource "google_compute_instance" "gcp_sap_hana" {
@@ -80,12 +78,15 @@ resource "google_compute_instance" "gcp_sap_hana" {
     subnetwork         = "${var.subnetwork}"
     subnetwork_project = "${var.project_id}"
 
-    access_config {
-      nat_ip = "${element(google_compute_address.gcp_sap_hana_ip.*.address, count.index)}"
+    dynamic "access_config" {
+      for_each = [for i in [""] : i if var.public_ip]
+      content {}
+
     }
+
   }
 
-  metadata {
+  metadata = {
     sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
     sap_deployment_debug       = "${var.sap_deployment_debug}"
     post_deployment_script     = "${var.post_deployment_script}"
@@ -95,8 +96,9 @@ resource "google_compute_instance" "gcp_sap_hana" {
     sap_hana_system_password   = "${var.sap_hana_system_password}"
     sap_hana_sidadm_uid        = "${var.sap_hana_sidadm_uid}"
     sap_hana_sapsys_gid        = "${var.sap_hana_sapsys_gid}"
+    publicIP                   = "${var.public_ip}"
+    startup-script             = "${data.template_file.startup_sap_hana.rendered}"
 
-    startup-script = "${var.startup_script}"
   }
 
   service_account {

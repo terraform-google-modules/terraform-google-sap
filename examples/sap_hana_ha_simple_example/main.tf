@@ -15,8 +15,8 @@
  */
 
 provider "google" {
-  version = "~> 2.6.0"
-  region  = "${var.region}"
+  version     = "~> 2.6.0"
+  credentials = "${file("credentials.json")}"
 }
 
 module "gcp_sap_hana_ha" {
@@ -49,9 +49,7 @@ module "gcp_sap_hana_ha" {
   sap_hana_sapsys_gid        = 900
   sap_vip                    = "${var.sap_vip}"
   sap_vip_secondary_range    = "${var.sap_vip_secondary_range}"
-  primary_instance_ip        = "${var.primary_instance_ip}"
-  secondary_instance_ip      = "${var.secondary_instance_ip}"
   sap_vip_internal_address   = "${var.sap_vip_internal_address}"
-  startup_script_1           = "${file(var.startup_script_1)}"
-  startup_script_2           = "${file(var.startup_script_2)}"
+  ip_cidr_range              = "${var.ip_cidr_range}"
+  public_ip                  = "${var.public_ip}"
 }

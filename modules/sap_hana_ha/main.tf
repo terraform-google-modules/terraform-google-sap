@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 terraform {
-  required_version = "~> 0.11.0"
+  required_version = "~> 0.12.3"
 }
 
 module "sap_hana" {
@@ -23,16 +22,12 @@ module "sap_hana" {
   instance-type = "${var.instance_type}"
 }
 
-resource "google_compute_address" "primary_instance_ip" {
-  project = "${var.project_id}"
-  name    = "${var.primary_instance_ip}"
-  region  = "${var.region}"
+data "template_file" "startup_sap_hana_1" {
+  template = "${file("${path.module}/files/startup.sh")}"
 }
 
-resource "google_compute_address" "secondary_instance_ip" {
-  project = "${var.project_id}"
-  name    = "${var.secondary_instance_ip}"
-  region  = "${var.region}"
+data "template_file" "startup_sap_hana_2" {
+  template = "${file("${path.module}/files/startup_secondary.sh")}"
 }
 
 resource "google_compute_address" "internal_sap_vip" {
@@ -91,6 +86,7 @@ resource "google_compute_instance" "primary" {
 
   boot_disk {
     auto_delete = "${var.autodelete_disk}"
+    device_name = "${var.device_0}"
 
     initialize_params {
       image = "projects/${var.linux_image_project}/global/images/family/${var.linux_image_family}"
@@ -100,23 +96,33 @@ resource "google_compute_instance" "primary" {
   }
 
   attached_disk {
-    source = "${google_compute_disk.gcp_sap_hana_sd_0.self_link}"
+    source      = "${google_compute_disk.gcp_sap_hana_sd_0.self_link}"
+    device_name = "${var.primary_instance_name}-${var.device_1}"
   }
 
   attached_disk {
-    source = "${google_compute_disk.gcp_sap_hana_sd_1.self_link}"
+    source      = "${google_compute_disk.gcp_sap_hana_sd_1.self_link}"
+    device_name = "${var.primary_instance_name}-${var.device_2}"
   }
 
   network_interface {
     subnetwork         = "${var.subnetwork}"
     subnetwork_project = "${var.project_id}"
 
-    access_config {
-      nat_ip = "${google_compute_address.primary_instance_ip.address}"
+    alias_ip_range {
+      ip_cidr_range         = "${var.ip_cidr_range}"
+      subnetwork_range_name = "${var.sap_vip_secondary_range}"
     }
+
+    dynamic "access_config" {
+      for_each = [for i in [""] : i if var.public_ip]
+      content {}
+
+    }
+
   }
 
-  metadata {
+  metadata = {
     sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
     sap_deployment_debug       = "${var.sap_deployment_debug}"
     post_deployment_script     = "${var.post_deployment_script}"
@@ -131,9 +137,10 @@ resource "google_compute_instance" "primary" {
     sap_hana_sidadm_uid        = "${var.sap_hana_sidadm_uid}"
     sap_hana_sapsys_gid        = "${var.sap_hana_sapsys_gid}"
     sap_vip                    = "${var.sap_vip}"
+    sap_hana_scaleout_nodes    = 0
     sap_vip_secondary_range    = "${var.sap_vip_secondary_range}"
-
-    startup-script = "${var.startup_script_1}"
+    publicIP                   = "${var.public_ip}"
+    startup-script             = "${data.template_file.startup_sap_hana_1.rendered}"
   }
 
   service_account {
@@ -157,6 +164,7 @@ resource "google_compute_instance" "secondary" {
 
   boot_disk {
     auto_delete = "${var.autodelete_disk}"
+    device_name = "${var.device_0}"
 
     initialize_params {
       image = "projects/${var.linux_image_project}/global/images/family/${var.linux_image_family}"
@@ -166,23 +174,28 @@ resource "google_compute_instance" "secondary" {
   }
 
   attached_disk {
-    source = "${google_compute_disk.gcp_sap_hana_sd_2.self_link}"
+    source      = "${google_compute_disk.gcp_sap_hana_sd_2.self_link}"
+    device_name = "${var.secondary_instance_name}-${var.device_1}"
   }
 
   attached_disk {
-    source = "${google_compute_disk.gcp_sap_hana_sd_3.self_link}"
+    source      = "${google_compute_disk.gcp_sap_hana_sd_3.self_link}"
+    device_name = "${var.secondary_instance_name}-${var.device_2}"
   }
 
   network_interface {
     subnetwork         = "${var.subnetwork}"
     subnetwork_project = "${var.project_id}"
 
-    access_config {
-      nat_ip = "${google_compute_address.secondary_instance_ip.address}"
+    dynamic "access_config" {
+      for_each = [for i in [""] : i if var.public_ip]
+      content {}
+
     }
+
   }
 
-  metadata {
+  metadata = {
     sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
     sap_deployment_debug       = "${var.sap_deployment_debug}"
     post_deployment_script     = "${var.post_deployment_script}"
@@ -197,9 +210,10 @@ resource "google_compute_instance" "secondary" {
     sap_hana_sidadm_uid        = "${var.sap_hana_sidadm_uid}"
     sap_hana_sapsys_gid        = "${var.sap_hana_sapsys_gid}"
     sap_vip                    = "${var.sap_vip}"
+    sap_hana_scaleout_nodes    = 0
     sap_vip_secondary_range    = "${var.sap_vip_secondary_range}"
-
-    startup-script = "${var.startup_script_2}"
+    publicIP                   = "${var.public_ip}"
+    startup-script             = "${data.template_file.startup_sap_hana_2.rendered}"
   }
 
   service_account {

@@ -4,8 +4,13 @@ This module is a collection of multiple opinionated submodules to deploy SAP Pro
 Below is the list of available submodules:
 
 - [SAP HANA](./modules/sap_hana/README.md)
+- [SAP HANA SVPC](./modules/sap_hana_svpc/README.md)
 - [SAP HANA HA](./modules/sap_hana_ha/README.md)
+- [SAP HANA HA SVPC](./modules/sap_hana_ha_svpc/README.md)
+- [SAP EMPTYHA](./modules/sap_emptyha/README.md)
+- [SAP EMPTYHA SVPC](./modules/sap_emptyha_svpc/README.md)
 - [NETWEAVER](./modules/netweaver/README.md)
+- [NETWEAVER SVPC](./modules/netweaver_svpc/README.md)
 
 ## Usage
 

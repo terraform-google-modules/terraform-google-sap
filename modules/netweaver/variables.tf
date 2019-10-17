@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 variable "project_id" {
   description = "The ID of the project in which the resources will be deployed."
 }
@@ -86,7 +85,8 @@ variable "network_tags" {
 
 variable "public_ip" {
   description = "Determines whether a public IP address is added to your VM instance."
-  default     = 1
+  default     = false
+  type        = bool
 }
 
 variable "device_0" {
@@ -107,10 +107,6 @@ variable "device_2" {
 variable "device_3" {
   description = "Device name"
   default     = "swap"
-}
-
-variable "startup_script" {
-  description = "This will reference the startup.sh script files in the files folder for netweaver set up in the instance"
 }
 
 variable "post_deployment_script" {

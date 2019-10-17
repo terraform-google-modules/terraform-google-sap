@@ -15,7 +15,8 @@
  */
 
 provider "google" {
-  version = "~> 2.6.0"
+  version     = "~> 2.6.0"
+  credentials = "${file("credentials.json")}"
 }
 
 module "gcp_netweaver" {
@@ -40,5 +41,4 @@ module "gcp_netweaver" {
   boot_disk_size         = "${var.boot_disk_size}"
   boot_disk_type         = "${var.boot_disk_type}"
   disk_type              = "${var.disk_type}"
-  startup_script         = "${var.startup_script}"
 }

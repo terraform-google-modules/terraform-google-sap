@@ -34,10 +34,11 @@ module "gcp_sap_hana" {
   autodelete_disk            = "true"
   pd_ssd_size                = "${var.pd_ssd_size}"
   pd_hdd_size                = "${var.pd_hdd_size}"
+  disk_name_0                = "${var.disk_name_0}"
+  disk_name_1                = "${var.disk_name_1}"
   sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
   sap_deployment_debug       = "false"
   post_deployment_script     = "${var.post_deployment_script}"
-  startup_script             = "${var.startup_script}"
   sap_hana_sid               = "${var.sap_hana_sid}"
   sap_hana_instance_number   = "${var.sap_hana_instance_number}"
   sap_hana_sidadm_password   = "${var.sap_hana_sidadm_password}"
@@ -45,7 +46,7 @@ module "gcp_sap_hana" {
   network_tags               = "${var.network_tags}"
   sap_hana_sidadm_uid        = 900
   sap_hana_sapsys_gid        = 900
-  address_name               = "${var.address_name}"
+  public_ip                  = "${var.public_ip}"
 }
 ```
 ## Requirements
@@ -61,20 +62,10 @@ The compute instance created by this submodule will need to download SAP HANA fr
 
  1. [Create a new service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts)
  2. Grant this new service account the following permissions on the bucket where you uploaded SAP HANA installation file:
-    - Stackdriver Metadata writer: `roles/stackdriver.resourceMetadata.writer`
-    - Compute Network admin: `roles/compute.networkAdmin`
-    - Log writer: `roles/logging.logWriter`
-    - Storage viewer: `roles/storage.objectViewer`
+    - Storage Object Viewer: `roles/storage.objectViewer`
 
   You may use the following gcloud command:
-
-```shell
-ROLES=("roles/stackdriver.resourceMetadata.writer", "roles/compute.networkAdmin", "roles/logging.logWriter", "roles/storage.objectViewer")
-for ROLE in ${ROLES[*]}; do
-  gcloud projects add-iam-policy-binding <project-id> \
-    --member=serviceAccount:<service-account-email> --role=${ROLE}
-done
-```
+  `gcloud projects add-iam-policy-binding <project-id> --member=serviceAccount:<service-account-email> --role=roles/storage.objectViewer`
 
 3. When configuring the module, use this newly created service account's email, to set the `service_account_email` input variable.
 

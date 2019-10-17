@@ -49,15 +49,106 @@ sap_hana_sidadm_uid        = 900
 sap_hana_sapsys_gid        = 900
 sap_vip                    = "${var.sap_vip}"
 sap_vip_secondary_range    = "${var.sap_vip_secondary_range}"
-primary_instance_ip        = "${var.primary_instance_ip}"
-secondary_instance_ip      = "${var.secondary_instance_ip}"
 sap_vip_internal_address   = "${var.sap_vip_internal_address}"
-startup_script_1           = "${var.startup_script_1}"
-startup_script_2           = "${var.startup_script_2}"
-    }
+public_ip                = "${var.public_ip}"
+ip_cidr_range            = "${var.ip_cidr_range}"
+}
 
 ```
 ## Requirements
+## Use Case 1: When only private Ip is the need , with no secondary ip ranges in subnetwork .
+
+Do the following in the code :  in the modules/sap_hana_ha
+
+## (A) main.tf :
+
+Comment the following :
+
+/*
+alias_ip_range {
+  ip_cidr_range         = "${var.ip_cidr_range}"
+  subnetwork_range_name = "${var.sap_vip_secondary_range}"
+}
+*/
+
+## (B) variables.tf
+
+Comment the following :
+/*
+variable "ip_cidr_range" {
+  description = "ip cidr range for secondary ip ranges"
+}
+*/
+
+## (C) in the examples/sap_hana_ha_simple_example :
+
+(1) main.tf
+Comment the following :
+
+#ip_cidr_range = "${var.ip_cidr_range}"
+
+(2) variables.tf
+
+Comment the following :
+/*
+variable "ip_cidr_range" {
+  description = "ip cidr range for secondary ip ranges"
+}
+*/
+
+(3) terraform.tfvars file :
+
+Comment the following :
+
+#ip_cidr_range = "<secondary_ip_cidr_range>"
+
+Keep   public_ip = false
+
+## Use Case 2: When only public Ip is the need , with secondary ip ranges in subnetwork . (This is the default settings of the current code)
+
+Do the following in the code :  in the modules/sap_hana_ha
+
+(A) main.tf :
+
+Comment the following :
+
+alias_ip_range {
+  ip_cidr_range         = "${var.ip_cidr_range}"
+  subnetwork_range_name = "${var.sap_vip_secondary_range}"
+}
+
+(B) variables.tf
+
+Comment the following :
+
+variable "ip_cidr_range" {
+  description = "ip cidr range for secondary ip ranges"
+}
+
+## (C) in the examples/sap_hana_ha_simple_example :
+
+(1) main.tf
+Comment the following :
+
+#ip_cidr_range = "${var.ip_cidr_range}"
+
+(2) variables.tf
+
+Comment the following :
+/*
+variable "ip_cidr_range" {
+  description = "ip cidr range for secondary ip ranges"
+}
+*/
+
+(3) terraform.tfvars file :
+
+Comment the following :
+
+ #ip_cidr_range = "secondary_ip_cidr_range"
+
+Keep public_ip = true
+
 
 Make sure you've gone through the root [Requirement Section](../../README.md#requirements)
 
@@ -70,20 +161,10 @@ The compute instances created by this submodule will need to download SAP HANA f
 
  1. [Create a new service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts)
  2. Grant this new service account the following permissions on the bucket where you uploaded SAP HANA installation file:
-    - Stackdriver Metadata writer: `roles/stackdriver.resourceMetadata.writer`
-    - Compute Network admin: `roles/compute.networkAdmin`
-    - Log writer: `roles/logging.logWriter`
-    - Storage viewer: `roles/storage.objectViewer`
+    - roles/storage.objectViewer
 
-  You may use the following gcloud command:
-
-```shell
-ROLES=("roles/stackdriver.resourceMetadata.writer", "roles/compute.networkAdmin", "roles/logging.logWriter", "roles/storage.objectViewer")
-for ROLE in ${ROLES[*]}; do
-  gcloud projects add-iam-policy-binding <project-id> \
-    --member=serviceAccount:<service-account-email> --role=${ROLE}
-done
-```
+ You may use the following gcloud commands:
+   `gcloud projects add-iam-policy-binding <project-id> --member=serviceAccount:<service-account-email> --role=roles/storage.objectViewer`
 
 3. When configuring the module, use this newly created service account's email, to set the `service_account_email` input variable.
 

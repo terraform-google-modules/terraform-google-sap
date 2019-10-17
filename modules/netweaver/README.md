@@ -53,36 +53,10 @@ The compute instance created by this submodule will need to download SAP HANA fr
 
  1. [Create a new service account](https://cloud.google.com/iam/docs/creating-managing-service-accounts)
  2. Grant this new service account the following permissions on the bucket where you uploaded netweaver file:
-
-  - Storage Admin: `roles/compute.storageAdmin`
-
-  You may use the following gcloud command:
-  `gcloud projects add-iam-policy-binding <project-id> --member=serviceAccount:<service-account-email> --role=roles/compute.storageAdmin`
-
-  - Compute Instance Admin (v1) : `roles/compute.instanceAdmin.v1`
+    - Storage Object Viewer: `roles/storage.objectViewer`
 
   You may use the following gcloud command:
-  `gcloud projects add-iam-policy-binding <project-id> --member=serviceAccount:<service-account-email> --role=roles/compute.instanceAdmin.v1`
-
-  - Compute Network Admin : `roles/compute.networkAdmin`
-
-  You may use the following gcloud command:
-  `gcloud projects add-iam-policy-binding <project-id> --member=serviceAccount:<service-account-email> --role=roles/compute.networkAdmin`
-
-  - Compute Security Admin : `rolescompute.securityAdmin`
-
-  You may use the following gcloud command:
-  `gcloud projects add-iam-policy-binding <project-id> --member=serviceAccount:<service-account-email> --role=rolescompute.securityAdmin`
-
-  - Service Account User :`roles/iam.serviceAccountUser`
-
- You may use the following gcloud command:
-`gcloud projects add-iam-policy-binding <project-id> --member=serviceAccount:<service-account-email> --role=roles/iam.serviceAccountUser`
-
-  - Logs Writer : `roles/logging.logWriter`
-
-  You may use the following gcloud command:
-`gcloud projects add-iam-policy-binding <project-id> --member=serviceAccount:<service-account-email> --role=roles/logging.logWriter`
+  `gcloud projects add-iam-policy-binding <project-id> --member=serviceAccount:<service-account-email> --role=roles/storage.objectViewer`
 
 3. When configuring the module, use this newly created service account's email, to set the `service_account_email` input variable.
 

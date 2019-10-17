@@ -15,8 +15,9 @@
  */
 
 provider "google" {
-  version = "~> 2.6.0"
-  region  = "${var.region}"
+  version     = "~> 2.6.0"
+  credentials = "${file("credentials.json")}"
+  region      = "${var.region}"
 }
 
 module "gcp_sap_hana" {
@@ -35,10 +36,11 @@ module "gcp_sap_hana" {
   autodelete_disk            = "true"
   pd_ssd_size                = "${var.pd_ssd_size}"
   pd_hdd_size                = "${var.pd_hdd_size}"
+  disk_name_0                = "${var.disk_name_0}"
+  disk_name_1                = "${var.disk_name_1}"
   sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
   sap_deployment_debug       = "false"
   post_deployment_script     = "${var.post_deployment_script}"
-  startup_script             = "${file(var.startup_script)}"
   sap_hana_sid               = "${var.sap_hana_sid}"
   sap_hana_instance_number   = "${var.sap_hana_instance_number}"
   sap_hana_sidadm_password   = "${var.sap_hana_sidadm_password}"
@@ -46,5 +48,5 @@ module "gcp_sap_hana" {
   network_tags               = "${var.network_tags}"
   sap_hana_sidadm_uid        = 900
   sap_hana_sapsys_gid        = 900
-  address_name               = "${var.address_name}"
+  public_ip                  = "${var.public_ip}"
 }

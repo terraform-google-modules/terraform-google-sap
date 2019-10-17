@@ -34,6 +34,7 @@ variable "instance_type" {
   description = "The GCE instance/machine type."
 }
 
+
 variable "linux_image_family" {
   description = "GCE image family."
 }
@@ -49,12 +50,12 @@ variable "autodelete_disk" {
 
 variable "disk_name_0" {
   description = "Name of first disk."
-  default     = "sap-hana-pd-sd-0"
+
 }
 
 variable "disk_name_1" {
   description = "Name of second disk."
-  default     = "sap-hana-pd-sd-1"
+
 }
 
 variable "disk_type_0" {
@@ -108,9 +109,6 @@ variable "network_tags" {
   description = "List of network tags to attach to the instance."
 }
 
-variable "address_name" {
-  description = "Name of static IP adress to add to the instance's access config."
-}
 
 variable "sap_hana_deployment_bucket" {
   description = "SAP hana deployment bucket."
@@ -124,10 +122,6 @@ variable "sap_deployment_debug" {
 variable "post_deployment_script" {
   description = "SAP HANA post deployment script. Must be a gs:// or https:// link to the script."
   default     = ""
-}
-
-variable "startup_script" {
-  description = "Startup script to install SAP HANA."
 }
 
 variable "sap_hana_sid" {
@@ -152,4 +146,10 @@ variable "sap_hana_sidadm_uid" {
 
 variable "sap_hana_sapsys_gid" {
   description = "SAP HANA SAP System GID"
+}
+
+variable "public_ip" {
+  description = "Determines whether a public IP address is added to your VM instance."
+  default     = false
+  type        = bool
 }

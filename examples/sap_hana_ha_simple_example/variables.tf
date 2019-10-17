@@ -122,22 +122,16 @@ variable "network_tags" {
   description = "List of network tags to attach to the instance."
 }
 
-variable "primary_instance_ip" {
-  description = "Primary instance ip address"
-}
-
-variable "secondary_instance_ip" {
-  description = "Secondary instance ip address"
+variable "public_ip" {
+  description = "Determines whether a public IP address is added to your VM instance."
+  default     = false
+  type        = bool
 }
 
 variable "sap_vip_internal_address" {
   description = "Name of static IP adress to add to the instance's access config."
 }
 
-variable "startup_script_1" {
-  description = "Startup script to install SAP HANA."
-}
-
-variable "startup_script_2" {
-  description = "Startup script to install SAP HANA."
+variable "ip_cidr_range" {
+  description = "ip cidr range for secondary ip ranges"
 }

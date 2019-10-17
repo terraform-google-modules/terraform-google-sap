@@ -47,4 +47,4 @@ disk_type = "pd-standard"
 
 sap_deployment_debug = "false"
 
-public_ip              = true
+public_ip              = 1

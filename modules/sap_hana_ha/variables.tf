@@ -42,6 +42,7 @@ variable "project_id" {
   description = "The ID of the project in which the resources will be deployed."
 }
 
+
 variable "region" {
   description = "Region to deploy the resources. Should be in the same region as the zone."
 }
@@ -108,6 +109,21 @@ variable "boot_disk_size" {
   description = "Root disk size in GB"
 }
 
+variable "device_0" {
+  description = "Device name"
+  default     = "boot"
+}
+
+variable "device_1" {
+  description = "Device name"
+  default     = "pdssd"
+}
+
+variable "device_2" {
+  description = "Device name"
+  default     = "backup"
+}
+
 variable "boot_disk_type" {
   description = "The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
 }
@@ -161,22 +177,16 @@ variable "network_tags" {
   description = "List of network tags to attach to the instance."
 }
 
-variable "primary_instance_ip" {
-  description = "Primary instance ip address"
-}
-
-variable "secondary_instance_ip" {
-  description = "Secondary instance ip address"
+variable "public_ip" {
+  description = "Determines whether a public IP address is added to your VM instance."
+  default     = false
+  type        = bool
 }
 
 variable "sap_vip_internal_address" {
   description = "Name of static IP adress to add to the instance's access config."
 }
 
-variable "startup_script_1" {
-  description = "Startup script to install SAP HANA."
-}
-
-variable "startup_script_2" {
-  description = "Startup script to install SAP HANA."
+variable "ip_cidr_range" {
+  description = "ip cidr range for secondary ip ranges"
 }

@@ -83,10 +83,6 @@ variable "network_tags" {
   description = "List of network tags to attach to the instance."
 }
 
-variable "startup_script" {
-  description = "Startup script to install netweaver."
-}
-
 variable "post_deployment_script" {
   description = "Netweaver post deployment script. Must be a gs:// or https:// link to the script."
   default     = ""

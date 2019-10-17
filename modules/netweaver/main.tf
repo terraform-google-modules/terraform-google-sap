@@ -15,19 +15,19 @@
  */
 
 terraform {
-  required_version = "~> 0.11.0"
+  required_version = "~> 0.12.3"
 }
 
 locals {
   device_name_1 = "${var.instance_name}-${var.device_1}"
   device_name_2 = "${var.instance_name}-${var.device_2}"
   device_name_3 = "${var.instance_name}-${var.device_3}"
-
-  access_config = {
-    "0" = []
-    "1" = [{}]
-  }
 }
+
+data "template_file" "netweaver" {
+  template = "${file("${path.module}/files/startup.sh")}"
+}
+
 
 resource "google_compute_disk" "gcp_nw_pd_0" {
   project = "${var.project_id}"
@@ -60,7 +60,7 @@ resource "google_compute_attached_disk" "gcp_nw_attached_pd_0" {
   project     = "${var.project_id}"
   count       = "${var.usr_sap_size > 0 ? 1 : 0}"
   device_name = "${local.device_name_1}"
-  disk        = "${google_compute_disk.gcp_nw_pd_0.self_link}"
+  disk        = "${element(google_compute_disk.gcp_nw_pd_0.*.self_link, count.index)}"
   instance    = "${google_compute_instance.gcp_nw.self_link}"
 }
 
@@ -68,7 +68,7 @@ resource "google_compute_attached_disk" "gcp_nw_attached_pd_1" {
   project     = "${var.project_id}"
   count       = "${var.sap_mnt_size > 0 ? 1 : 0}"
   device_name = "${local.device_name_2}"
-  disk        = "${google_compute_disk.gcp_nw_pd_1.self_link}"
+  disk        = "${element(google_compute_disk.gcp_nw_pd_1.*.self_link, count.index)}"
   instance    = "${google_compute_instance.gcp_nw.self_link}"
 }
 
@@ -76,10 +76,9 @@ resource "google_compute_attached_disk" "gcp_nw_attached_pd_2" {
   project     = "${var.project_id}"
   count       = "${var.swap_size > 0 ? 1 : 0}"
   device_name = "${local.device_name_3}"
-  disk        = "${google_compute_disk.gcp_nw_pd_2.self_link}"
+  disk        = "${element(google_compute_disk.gcp_nw_pd_2.*.self_link, count.index)}"
   instance    = "${google_compute_instance.gcp_nw.self_link}"
 }
-
 resource "google_compute_instance" "gcp_nw" {
   project                   = "${var.project_id}"
   name                      = "${var.instance_name}"
@@ -109,10 +108,14 @@ resource "google_compute_instance" "gcp_nw" {
   network_interface {
     subnetwork         = "${var.subnetwork}"
     subnetwork_project = "${var.project_id}"
-    access_config      = "${local.access_config[var.public_ip]}"
+    dynamic "access_config" {
+      for_each = [for i in [""] : i if var.public_ip]
+      content {}
+    }
+
   }
 
-  metadata {
+  metadata = {
     instanceName           = "${var.instance_name}"
     instanceType           = "${var.instance_type}"
     post_deployment_script = "${var.post_deployment_script}"
@@ -121,7 +124,7 @@ resource "google_compute_instance" "gcp_nw" {
     sapmntSize             = "${var.sap_mnt_size}"
     swapSize               = "${var.swap_size}"
     sap_deployment_debug   = "${var.sap_deployment_debug}"
-    startup-script         = "${var.startup_script}"
+    startup-script         = "${data.template_file.netweaver.rendered}"
     publicIP               = "${var.public_ip}"
   }
 

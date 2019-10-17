@@ -56,6 +56,14 @@ variable "boot_disk_type" {
   default     = "pd-ssd"
 }
 
+variable "disk_name_0" {
+  description = "Name of first disk."
+}
+
+variable "disk_name_1" {
+  description = "Name of second disk."
+}
+
 variable "pd_ssd_size" {
   description = "Persistent disk size in GB"
   default     = ""
@@ -93,10 +101,6 @@ variable "post_deployment_script" {
   default     = ""
 }
 
-variable "startup_script" {
-  description = "Startup script to install SAP HANA."
-}
-
 variable "sap_hana_sid" {
   description = "SAP HANA System Identifier"
 }
@@ -123,6 +127,8 @@ variable "sap_hana_sapsys_gid" {
   default     = 900
 }
 
-variable "address_name" {
-  description = "Name of static IP adress to add to the instance's access config."
+variable "public_ip" {
+  description = "Determines whether a public IP address is added to your VM instance."
+  default     = false
+  type        = bool
 }
