@@ -1,19 +1,3 @@
-/**
- * Copyright 2018 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 terraform {
   required_version = "~> 0.12.3"
 }
@@ -25,6 +9,12 @@ module "sap_hana" {
 
 data "template_file" "startup_sap_hana" {
   template = "${file("${path.module}/files/startup.sh")}"
+}
+
+data "google_compute_subnetwork" "subnet" {
+  name    = "${var.subnetwork}"
+  project = "${var.subnetwork_project != "" ? var.subnetwork_project : var.project_id}"
+  region  = "${var.region}"
 }
 
 resource "google_compute_disk" "gcp_sap_hana_sd_0" {
@@ -43,13 +33,13 @@ resource "google_compute_disk" "gcp_sap_hana_sd_1" {
   size    = "${var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize}"
 }
 
-resource "google_compute_instance" "gcp_sap_hana" {
-  project        = "${var.project_id}"
-  name           = "${var.instance_name}"
-  machine_type   = "${var.instance_type}"
-  zone           = "${var.zone}"
-  tags           = "${var.network_tags}"
-  can_ip_forward = true
+# Create a VM which hosts a web page stating its identity ("VM")
+resource "google_compute_instance" "gcp_service_project_vm" {
+  name         = "${var.instance_name}"
+  project      = "${var.project_id}"
+  machine_type = "${var.instance_type}"
+  zone         = "${var.zone}"
+  tags         = "${var.network_tags}"
 
   scheduling {
     automatic_restart   = true
@@ -74,17 +64,6 @@ resource "google_compute_instance" "gcp_sap_hana" {
     source = "${google_compute_disk.gcp_sap_hana_sd_1.self_link}"
   }
 
-  network_interface {
-    subnetwork         = "${var.subnetwork}"
-    subnetwork_project = "${var.project_id}"
-
-    dynamic "access_config" {
-      for_each = [for i in [""] : i if var.public_ip]
-      content {}
-
-    }
-
-  }
 
   metadata = {
     sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
@@ -98,6 +77,17 @@ resource "google_compute_instance" "gcp_sap_hana" {
     sap_hana_sapsys_gid        = "${var.sap_hana_sapsys_gid}"
     publicIP                   = "${var.public_ip}"
     startup-script             = "${data.template_file.startup_sap_hana.rendered}"
+
+  }
+
+  network_interface {
+    subnetwork         = "${var.subnetwork}"
+    subnetwork_project = "${var.subnetwork_project != "" ? var.subnetwork_project : var.project_id}"
+
+    dynamic "access_config" {
+      for_each = [for i in [""] : i if var.public_ip]
+      content {}
+    }
 
   }
 

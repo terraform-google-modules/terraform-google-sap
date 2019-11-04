@@ -7,7 +7,7 @@ This module handles opinionated SAP HANA configuration and deployment.
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
-- Create a Compute Instance that will host SAP HANA
+- Create a Compute Instance that will host SAP HANA 
 - Create a Static IP Adresse for the Compute Instance
 - Create a 2 Persistent Disks to host SAP HANA's File systems
 
@@ -20,12 +20,13 @@ provider "google" {
 
 module "gcp_sap_hana" {
   source                 = "terraform-google-modules/sap/google/modules/sap_hana"
-  subnetwork                 = "${var.subnetwork}"
   linux_image_family         = "${var.linux_image_family}"
   linux_image_project        = "${var.linux_image_project}"
   instance_name              = "${var.instance_name}"
   instance_type              = "${var.instance_type}"
   project_id                 = "${var.project_id}"
+  subnetwork_project         = "${var.subnetwork_project}"
+  subnetwork                 = "${var.subnetwork}"
   region                     = "${var.region}"
   zone                       = "${var.zone}"
   service_account_email      = "${var.service_account_email}"
@@ -92,8 +93,8 @@ The recommended way is to use a GCS Bucket in the following way.:
 | boot\_disk\_type | The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | n/a | yes |
 | device\_name\_pd\_hdd | device name for standard persistant disk | string | `"backup"` | no |
 | device\_name\_pd\_ssd | device name for ssd persistant disk | string | `"pdssd"` | no |
-| disk\_name\_0 | Name of first disk. | string | `"sap-hana-pd-sd-0"` | no |
-| disk\_name\_1 | Name of second disk. | string | `"sap-hana-pd-sd-1"` | no |
+| disk\_name\_0 | Name of first disk. | string | n/a | no |
+| disk\_name\_1 | Name of second disk. | string | n/a | no |
 | disk\_type\_0 | The GCE data disk type. May be set to pd-ssd. | string | `"pd-ssd"` | no |
 | disk\_type\_1 | The GCE data disk type. May be set to pd-standard (for PD HDD). | string | `"pd-standard"` | no |
 | instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | n/a | yes |

@@ -16,7 +16,13 @@
 
   primary_instance_name = "sap-hana-ha-terra-1"
 
+  primary_instance_ip = "gcp-primary-instance-ip"
+
+  secondary_instance_ip = "gcp-secondary-instance-ip"
+
   sap_vip_internal_address = "sap-vip-internal-address"
+
+  sap_vip_secondary_internal_address = "sap-vip-secondary-internal-address"
 
   secondary_instance_name = "sap-hana-ha-terra-2"
 
@@ -26,9 +32,11 @@
 
   secondary_zone = "secondary-zone"
 
-  subnetwork = "default"
+  subnetwork = "host project subnetwork"
 
-  project_id = <project_id>
+  project_id = "<service project>"
+
+  subnetwork_project  = "host_project"
 
   region = "region"
 
@@ -44,9 +52,9 @@
 
   sap_hana_system_password = "<password>"
 
-  sap_vip = "<sap_ip_address>"
+  sap_vip = "10.1.0.24"
 
-  sap_vip_secondary_range = "name of secondary range"
+  sap_vip_secondary_range = "range-1"
 
   boot_disk_size = 300
 
@@ -54,14 +62,14 @@
 
   service_account_email = <service-account-email>
 
+  network_tags = ["ssh", "http-server", "https-server"]
+
   sap_hana_instance_number   = 10
 
   sap_hana_sidadm_uid        = 900
 
   sap_hana_sapsys_gid        = 900
 
-  network_tags = ["ssh", "http-server", "https-server"]
+ ip_cidr_range = "<secondary_ip CIDR_Range>"
 
-  ip_cidr_range = "<secondary_ip CIDR_Range>"
-
-  public_ip              = false
+ public_ip              = false

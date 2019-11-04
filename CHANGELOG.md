@@ -11,6 +11,9 @@ and this project adheres to
 
 ## [0.2.0] - 2019-09-10
 
+- removed startup-script variable
+- the sap modules are all using terraform version 0.12.3
+
 ### Added
 
 - Submodule to deploy NetWeaver. [#2]

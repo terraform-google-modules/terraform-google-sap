@@ -27,6 +27,7 @@ module "gcp_sap_hana_ha" {
   instance_type              = "${var.instance_type}"
   network_tags               = "${var.network_tags}"
   project_id                 = "${var.project_id}"
+  subnetwork_project         = "${var.subnetwork_project}"
   region                     = "${var.region}"
   service_account_email      = "${var.service_account_email}"
   boot_disk_size             = "${var.boot_disk_size}"
@@ -49,7 +50,9 @@ module "gcp_sap_hana_ha" {
   sap_hana_sapsys_gid        = 900
   sap_vip                    = "${var.sap_vip}"
   sap_vip_secondary_range    = "${var.sap_vip_secondary_range}"
+  primary_instance_ip        = "${var.primary_instance_ip}"
+  secondary_instance_ip      = "${var.secondary_instance_ip}"
   sap_vip_internal_address   = "${var.sap_vip_internal_address}"
-  ip_cidr_range              = "${var.ip_cidr_range}"
-  public_ip                  = "${var.public_ip}"
+  #ip_cidr_range              = "${var.ip_cidr_range}"
+  public_ip = "${var.public_ip}"
 }

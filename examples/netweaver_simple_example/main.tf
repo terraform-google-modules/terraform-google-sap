@@ -36,6 +36,7 @@ module "gcp_netweaver" {
   region                 = "${var.region}"
   network_tags           = "${var.network_tags}"
   project_id             = "${var.project_id}"
+  subnetwork_project     = "${var.subnetwork_project}"
   zone                   = "${var.zone}"
   service_account_email  = "${var.service_account_email}"
   boot_disk_size         = "${var.boot_disk_size}"

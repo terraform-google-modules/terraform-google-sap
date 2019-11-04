@@ -20,6 +20,7 @@ provider "google" {
 
 module "gcp_netweaver" {
   source                 = "terraform-google-modules/sap/google/modules/netweaver"
+  post_deployment_script = "${var.post_deployment_script}"
   subnetwork             = "${var.subnetwork}"
   linux_image_family     = "${var.linux_image_family}"
   linux_image_project    = "${var.linux_image_project}"
@@ -34,12 +35,12 @@ module "gcp_netweaver" {
   region                 = "${var.region}"
   network_tags           = "${var.network_tags}"
   project_id             = "${var.project_id}"
+  subnetwork_project     = "${var.subnetwork_project}"
   zone                   = "${var.zone}"
   service_account_email  = "${var.service_account_email}"
   boot_disk_size         = "${var.boot_disk_size}"
   boot_disk_type         = "${var.boot_disk_type}"
   disk_type              = "${var.disk_type}"
-  startup_script         = "${var.startup_script}"
 }
 
 ```

@@ -28,10 +28,32 @@ data "template_file" "startup_sap_emptyha_hana_2" {
 }
 
 
-resource "google_compute_address" "internal_sap_vip" {
+data "google_compute_subnetwork" "subnet" {
+  name    = "${var.subnetwork}"
+  project = "${var.subnetwork_project != "" ? var.subnetwork_project : var.project_id}"
+  region  = "${var.region}"
+}
+
+resource "google_compute_address" "primary_instance_ip" {
+  project      = "${var.project_id}"
+  name         = "${var.primary_instance_ip}"
+  address_type = "INTERNAL"
+  region       = "${var.region}"
+  subnetwork   = "projects/${var.subnetwork_project}/regions/${var.region}/subnetworks/${var.subnetwork}"
+}
+
+resource "google_compute_address" "secondary_instance_ip" {
+  project      = "${var.project_id}"
+  name         = "${var.secondary_instance_ip}"
+  address_type = "INTERNAL"
+  region       = "${var.region}"
+  subnetwork   = "projects/${var.subnetwork_project}/regions/${var.region}/subnetworks/${var.subnetwork}"
+}
+
+resource "google_compute_address" "internal" {
   project      = "${var.project_id}"
   name         = "${var.sap_vip_internal_address}"
-  subnetwork   = "${var.subnetwork}"
+  subnetwork   = "${data.google_compute_subnetwork.subnet.self_link}"
   address_type = "INTERNAL"
   address      = "${var.sap_vip}"
   region       = "${var.region}"
@@ -61,16 +83,17 @@ resource "google_compute_instance" "primary" {
     }
   }
 
+
   network_interface {
+    network_ip         = "${google_compute_address.primary_instance_ip.address}"
     subnetwork         = "${var.subnetwork}"
-    subnetwork_project = "${var.project_id}"
-
-
+    subnetwork_project = "${var.subnetwork_project != "" ? var.subnetwork_project : var.project_id}"
+    /*
     alias_ip_range {
       ip_cidr_range         = "${var.ip_cidr_range}"
       subnetwork_range_name = "${var.sap_vip_secondary_range}"
     }
-
+*/
     dynamic "access_config" {
       for_each = [for i in [""] : i if var.public_ip]
       content {}
@@ -121,8 +144,9 @@ resource "google_compute_instance" "secondary" {
   }
 
   network_interface {
+    network_ip         = "${google_compute_address.secondary_instance_ip.address}"
     subnetwork         = "${var.subnetwork}"
-    subnetwork_project = "${var.project_id}"
+    subnetwork_project = "${var.subnetwork_project != "" ? var.subnetwork_project : var.project_id}"
 
     dynamic "access_config" {
       for_each = [for i in [""] : i if var.public_ip]

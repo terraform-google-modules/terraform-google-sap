@@ -15,15 +15,23 @@
  */
 
 variable "project_id" {
-  description = "The ID of the project in which the resources will be deployed."
+  description = "The ID of the service project in which the resources will be deployed."
+}
+
+variable "subnetwork_project" {
+  description = "The ID of the shared VPC host project in which the service project's will be deployed."
 }
 
 variable "zone" {
-  description = "The zone that the instance should be created in."
+  description = "The zone that the service project instance should be created in."
 }
 
 variable "region" {
-  description = "Region to deploy the resources. Should be in the same region as the zone."
+  description = "The region that the  service project instance should be created in."
+}
+
+variable "subnetwork" {
+  description = "Compute Engine instance name"
 }
 
 variable "instance_name" {
@@ -34,8 +42,9 @@ variable "instance_type" {
   description = "The GCE instance/machine type."
 }
 
+
 variable "linux_image_family" {
-  description = "GCE linux image family."
+  description = "GCE image family."
 }
 
 variable "linux_image_project" {
@@ -44,28 +53,39 @@ variable "linux_image_project" {
 
 variable "autodelete_disk" {
   description = "Whether the disk will be auto-deleted when the instance is deleted."
-  default     = true
-}
-
-variable "boot_disk_size" {
-  description = "Root disk size in GB"
-}
-
-variable "boot_disk_type" {
-  description = "The GCE boot disk type.Set to pd-standard (for PD HDD)."
-  default     = "pd-ssd"
+  default     = "false"
 }
 
 variable "disk_name_0" {
   description = "Name of first disk."
+
 }
 
 variable "disk_name_1" {
   description = "Name of second disk."
+
+}
+
+variable "disk_type_0" {
+  description = "The GCE data disk type. May be set to pd-ssd."
+  default     = "pd-ssd"
+}
+
+variable "disk_type_1" {
+  description = "The GCE data disk type. May be set to pd-standard (for PD HDD)."
+  default     = "pd-standard"
+}
+
+variable "boot_disk_size" {
+  description = "Root disk size in GB."
+}
+
+variable "boot_disk_type" {
+  description = "The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
 }
 
 variable "pd_ssd_size" {
-  description = "Persistent disk size in GB"
+  description = "Persistent disk size in GB."
   default     = ""
 }
 
@@ -74,12 +94,18 @@ variable "pd_hdd_size" {
   default     = ""
 }
 
-variable "service_account_email" {
-  description = "Email of service account to attach to the instance."
+variable "device_name_pd_ssd" {
+  description = "device name for ssd persistant disk"
+  default     = "pdssd"
 }
 
-variable "subnetwork" {
-  description = "The name or self_link of the subnetwork where the isntance will be deployed. The subnetwork must exist in the same region this instance will be created in."
+variable "device_name_pd_hdd" {
+  description = "device name for standard persistant disk"
+  default     = "backup"
+}
+
+variable "service_account_email" {
+  description = "Email of service account to attach to the instance."
 }
 
 variable "network_tags" {
@@ -101,8 +127,12 @@ variable "post_deployment_script" {
   default     = ""
 }
 
+variable "PRIVATE_IP" {
+  description = "Private Ip belonging to the Shared VPC Project."
+  default     = ""
+}
 variable "sap_hana_sid" {
-  description = "SAP HANA System Identifier"
+  description = "SAP HANA System Identifier. When using the SID to enter a user session, like this for example, `su - [SID]adm`, make sure that [SID] is in lower case."
 }
 
 variable "sap_hana_instance_number" {
@@ -115,16 +145,6 @@ variable "sap_hana_sidadm_password" {
 
 variable "sap_hana_system_password" {
   description = "SAP HANA system password"
-}
-
-variable "sap_hana_sidadm_uid" {
-  description = "SAP HANA System Identifier Admin UID"
-  default     = 900
-}
-
-variable "sap_hana_sapsys_gid" {
-  description = "SAP HANA SAP System GID"
-  default     = 900
 }
 
 variable "public_ip" {

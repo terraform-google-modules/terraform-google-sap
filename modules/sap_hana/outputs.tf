@@ -15,13 +15,13 @@
  */
 
 output "instance_name" {
-  value = "${google_compute_instance.gcp_sap_hana.name}"
+  value = "${google_compute_instance.gcp_service_project_vm.name}"
 }
 
 output "zone" {
-  value = "${google_compute_instance.gcp_sap_hana.zone}"
+  value = "${google_compute_instance.gcp_service_project_vm.zone}"
 }
 
 output "machine_type" {
-  value = "${google_compute_instance.gcp_sap_hana.machine_type}"
+  value = "${google_compute_instance.gcp_service_project_vm.machine_type}"
 }

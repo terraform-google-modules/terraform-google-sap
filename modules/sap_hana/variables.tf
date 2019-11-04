@@ -15,16 +15,23 @@
  */
 
 variable "project_id" {
-  description = "The ID of the project in which the resources will be deployed."
+  description = "The ID of the service project in which the resources will be deployed."
 }
-
+variable "subnetwork_project" {
+  description = "The ID of the shared VPC host project in which the service project's will be deployed."
+}
 variable "zone" {
-  description = "The zone that the instance should be created in."
+  description = "The zone that the service project instance should be created in."
 }
 
 variable "region" {
-  description = "Region to deploy the resources. Should be in the same region as the zone."
+  description = "The region that the  service project instance should be created in."
 }
+
+variable "subnetwork" {
+  description = "Compute Engine instance name"
+}
+
 
 variable "instance_name" {
   description = "A unique name for the resource, required by GCE. Changing this forces a new resource to be created."
@@ -100,15 +107,10 @@ variable "service_account_email" {
   description = "Email of service account to attach to the instance."
 }
 
-variable "subnetwork" {
-  description = "The name or self_link of the subnetwork where the isntance will be deployed. The subnetwork must exist in the same region this instance will be created in."
-}
-
 variable "network_tags" {
   type        = "list"
   description = "List of network tags to attach to the instance."
 }
-
 
 variable "sap_hana_deployment_bucket" {
   description = "SAP hana deployment bucket."
@@ -124,6 +126,10 @@ variable "post_deployment_script" {
   default     = ""
 }
 
+variable "PRIVATE_IP" {
+  description = "Private Ip belonging to the Shared VPC HOST Project."
+  default     = ""
+}
 variable "sap_hana_sid" {
   description = "SAP HANA System Identifier. When using the SID to enter a user session, like this for example, `su - [SID]adm`, make sure that [SID] is in lower case."
 }
@@ -147,7 +153,6 @@ variable "sap_hana_sidadm_uid" {
 variable "sap_hana_sapsys_gid" {
   description = "SAP HANA SAP System GID"
 }
-
 variable "public_ip" {
   description = "Determines whether a public IP address is added to your VM instance."
   default     = false

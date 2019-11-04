@@ -16,6 +16,10 @@
 
   primary_instance_name = "sap-emptyha-terra-1"
 
+  primary_instance_ip = "gcp-primary-instance-ip"
+
+  secondary_instance_ip = "gcp-secondary-instance-ip"
+
   sap_vip_internal_address = "sap-vip-internal-address"
 
   secondary_instance_name = "sap-emptyha-terra-2"
@@ -26,9 +30,11 @@
 
   secondary_zone = "secondary-zone"
 
-  subnetwork = "app2"
+  subnetwork = "host project subnetwork"
 
-  project_id = <project_id>
+  project_id = "<service project>"
+
+  subnetwork_project  = "host_project"
 
   region = "region"
 
@@ -46,8 +52,8 @@
 
   service_account_email = <service-account-email>
 
-  network_tags = ["ssh", "http-server", "https-server"]
+network_tags = ["ssh", "http-server", "https-server"]
 
-  ip_cidr_range = "<secondary_ip CIDR_Range>"
+ ip_cidr_range = "<secondary_ip CIDR_Range>"
 
   public_ip              = false

@@ -1,5 +1,5 @@
 
-# SAP HANA HA Submodule
+# SAP HANA HA  Submodule
 
 This module deals with SAP HANA HA configuration and deployment.
 
@@ -27,6 +27,7 @@ linux_image_project        = "${var.linux_image_project}"
 instance_type              = "${var.instance_type}"
 network_tags               = "${var.network_tags}"
 project_id                 = "${var.project_id}"
+subnetwork_project         = "${var.subnetwork_project}"
 region                     = "${var.region}"
 service_account_email      = "${var.service_account_email}"
 boot_disk_size             = "${var.boot_disk_size}"
@@ -49,16 +50,19 @@ sap_hana_sidadm_uid        = 900
 sap_hana_sapsys_gid        = 900
 sap_vip                    = "${var.sap_vip}"
 sap_vip_secondary_range    = "${var.sap_vip_secondary_range}"
+primary_instance_ip        = "${var.primary_instance_ip}"
+secondary_instance_ip      = "${var.secondary_instance_ip}"
+public_ip                  = "${var.public_ip}"
+ip_cidr_range              = "${var.ip_cidr_range}"
 sap_vip_internal_address   = "${var.sap_vip_internal_address}"
-public_ip                = "${var.public_ip}"
-ip_cidr_range            = "${var.ip_cidr_range}"
 }
 
 ```
 ## Requirements
+
 ## Use Case 1: When only private Ip is the need , with no secondary ip ranges in subnetwork .
 
-Do the following in the code :  in the modules/sap_hana_ha
+Do the following in the code :  in the modules/sap_hana_ha_svpc
 
 ## (A) main.tf :
 
@@ -80,7 +84,7 @@ variable "ip_cidr_range" {
 }
 */
 
-## (C) in the examples/sap_hana_ha_simple_example :
+## (C) in the examples/sap_hana_ha_svpc_simple_example :
 
 (1) main.tf
 Comment the following :
@@ -106,7 +110,7 @@ Keep   public_ip = false
 
 ## Use Case 2: When only public Ip is the need , with secondary ip ranges in subnetwork . (This is the default settings of the current code)
 
-Do the following in the code :  in the modules/sap_hana_ha
+Do the following in the code :  in the modules/sap_hana_ha_svpc
 
 (A) main.tf :
 
@@ -125,7 +129,7 @@ variable "ip_cidr_range" {
   description = "ip cidr range for secondary ip ranges"
 }
 
-## (C) in the examples/sap_hana_ha_simple_example :
+## (C) in the examples/sap_hana_ha_svpc_simple_example :
 
 (1) main.tf
 Comment the following :

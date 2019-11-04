@@ -44,6 +44,10 @@ variable "project_id" {
   description = "The ID of the project in which the resources will be deployed."
 }
 
+variable "subnetwork_project" {
+  description = "The ID of the shared VPC host project in which the service project's will be deployed."
+}
+
 variable "region" {
   description = "Region to deploy the resources. Should be in the same region as the zone."
 }
@@ -55,6 +59,7 @@ variable "linux_image_family" {
 variable "linux_image_project" {
   description = "Project name containing the linux image."
 }
+
 
 variable "post_deployment_script" {
   description = "SAP HANA post deployment script. Must be a gs:// or https:// link to the script."
@@ -91,6 +96,14 @@ variable "public_ip" {
   description = "Determines whether a public IP address is added to your VM instance."
   default     = false
   type        = bool
+}
+
+variable "primary_instance_ip" {
+  description = "Primary instance ip address"
+}
+
+variable "secondary_instance_ip" {
+  description = "Secondary instance ip address"
 }
 
 variable "sap_vip_internal_address" {

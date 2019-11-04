@@ -21,11 +21,13 @@ instance_type = "<instance_type>"
 
 boot_disk_size = 100
 
-network_tags = []
+network_tags = ["ssh","http-server","https-server"]
 
-subnetwork = "default"
+subnetwork = "subnet of host project"
 
-project_id = "<project id>"
+subnetwork_project = "host_project"
+
+project_id = "service_project"
 
 region = "region"
 
@@ -47,4 +49,4 @@ disk_type = "pd-standard"
 
 sap_deployment_debug = "false"
 
-public_ip              = 1
+public_ip              = true
