@@ -44,106 +44,12 @@ sap_vip_secondary_range  = "${var.sap_vip_secondary_range}"
 primary_instance_ip      = "${var.primary_instance_ip}"
 secondary_instance_ip    = "${var.secondary_instance_ip}"
 public_ip                = "${var.public_ip}"
-ip_cidr_range            = "${var.ip_cidr_range}"
+#ip_cidr_range            = "${var.ip_cidr_range}"
 sap_vip_internal_address = "${var.sap_vip_internal_address}"
   }
 
 ```
 ## Requirements
-
-
-# Use Case 1: When only private Ip is the need , with no secondary ip ranges in subnetwork .
-
-Do the following in the code :  in the modules/sap_emptyha_svpc
-
-## (A) main.tf :
-
-Comment the following :
-
-/*
-alias_ip_range {
-  ip_cidr_range         = "${var.ip_cidr_range}"
-  subnetwork_range_name = "${var.sap_vip_secondary_range}"
-}
-*/
-
-## (B) variables.tf
-
-Comment the following :
-/*
-variable "ip_cidr_range" {
-  description = "ip cidr range for secondary ip ranges"
-}
-*/
-
-## (C) in the examples/sap_emptyha_svpc_simple_example :
-
-(1) main.tf
-Comment the following :
-
-#ip_cidr_range = "${var.ip_cidr_range}"
-
-(2) variables.tf
-
-Comment the following :
-/*
-variable "ip_cidr_range" {
-  description = "ip cidr range for secondary ip ranges"
-}
-*/
-
-(3) terraform.tfvars file :
-
-Comment the following :
-
-#ip_cidr_range = "<secondary_ip_cidr_range>"
-
-Keep   public_ip = false
-
-## Use Case 2: When only public Ip is the need , with secondary ip ranges in subnetwork . (This is the default settings of the current code)
-
-Do the following in the code :  in the modules/sap_emptyha_svpc
-
-## (A) main.tf :
-
-Comment the following :
-
-alias_ip_range {
-  ip_cidr_range         = "${var.ip_cidr_range}"
-  subnetwork_range_name = "${var.sap_vip_secondary_range}"
-}
-
-## (B) variables.tf
-
-Comment the following :
-
-variable "ip_cidr_range" {
-  description = "ip cidr range for secondary ip ranges"
-}
-
-## (C) in the examples/sap_empty_svpc_simple_example :
-
-(1) main.tf
-Comment the following :
-
-ip_cidr_range              = "${var.ip_cidr_range}"
-
-(2) variables.tf
-
-Comment the following :
-
-variable "ip_cidr_range" {
-  description = "ip cidr range for secondary ip ranges"
-}
-
-(3) terraform.tfvars file :
-
-Comment the following :
-
-ip_cidr_range = "<secondary_ip CIDR_Range>"
-
-Keep public_ip = true
-
 
 Make sure you've gone through the root [Requirement Section](../../README.md#requirements)
 

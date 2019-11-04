@@ -45,5 +45,5 @@ module "gcp_sap_emptyha" {
   secondary_instance_ip    = "${var.secondary_instance_ip}"
   sap_vip_internal_address = "${var.sap_vip_internal_address}"
   public_ip                = "${var.public_ip}"
-  ip_cidr_range            = "${var.ip_cidr_range}"
+  #ip_cidr_range            = "${var.ip_cidr_range}"
 }

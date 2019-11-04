@@ -120,7 +120,8 @@ variable "secondary_instance_ip" {
 variable "sap_vip_internal_address" {
   description = "Name of static IP adress to add to the instance's access config."
 }
-
+/*
 variable "ip_cidr_range" {
   description = "ip cidr range for secondary ip ranges"
 }
+*/
