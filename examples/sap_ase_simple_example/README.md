@@ -5,6 +5,24 @@ This example illustrates how to use the `SAP ASE` submodule to deploy SAP HANA o
 ## Requirements
 Make sure you go through this [Requirements section](../../modules/sap_ase/README.md#requirements) for the SAP ASE Submodule.
 
+The following changes would need to be done in tfvars file :
+
+## Use Case 1: For standalone projects
+
+subnetwork_project = “ “
+
+project_id = “project_id of standalone project”
+
+service_account = “service account email of standalone project”
+
+## Use Case 2: For Shared VPC Projects(Host/Service)
+
+subnetwork_project = “project_id of host project”
+
+project_id = “project_id of service project”
+
+service_account = “service account email of Service Project”
+
 ## Setup
 
 1. Create a `terraform.tfvars` in this directory or the directory where you're running this example.
