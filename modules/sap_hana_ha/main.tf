@@ -66,7 +66,7 @@ resource "google_compute_address" "internal_sap_vip" {
 
 resource "google_compute_disk" "gcp_sap_hana_sd_0" {
   project = "${var.project_id}"
-  name    = "${var.disk_name_0}"
+  name    = "${lower(var.sap_hana_sid)}-${var.disk_name_0}"
   type    = "${var.disk_type_0}"
   zone    = "${var.primary_zone}"
   size    = "${var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize}"
@@ -74,7 +74,7 @@ resource "google_compute_disk" "gcp_sap_hana_sd_0" {
 
 resource "google_compute_disk" "gcp_sap_hana_sd_1" {
   project = "${var.project_id}"
-  name    = "${var.disk_name_1}"
+  name    = "${lower(var.sap_hana_sid)}-${var.disk_name_1}"
   type    = "${var.disk_type_1}"
   zone    = "${var.primary_zone}"
   size    = "${var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize}"
@@ -82,7 +82,7 @@ resource "google_compute_disk" "gcp_sap_hana_sd_1" {
 
 resource "google_compute_disk" "gcp_sap_hana_sd_2" {
   project = "${var.project_id}"
-  name    = "${var.disk_name_2}"
+  name    = "${lower(var.sap_hana_sid)}-${var.disk_name_2}"
   type    = "${var.disk_type_0}"
   zone    = "${var.secondary_zone}"
   size    = "${var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize}"
@@ -90,7 +90,7 @@ resource "google_compute_disk" "gcp_sap_hana_sd_2" {
 
 resource "google_compute_disk" "gcp_sap_hana_sd_3" {
   project = "${var.project_id}"
-  name    = "${var.disk_name_3}"
+  name    = "${lower(var.sap_hana_sid)}-${var.disk_name_3}"
   type    = "${var.disk_type_1}"
   zone    = "${var.secondary_zone}"
   size    = "${var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize}"
