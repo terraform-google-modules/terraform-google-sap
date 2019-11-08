@@ -11,12 +11,6 @@ data "template_file" "startup_sap_hana" {
   template = "${file("${path.module}/files/startup.sh")}"
 }
 
-data "google_compute_subnetwork" "subnet" {
-  name    = "${var.subnetwork}"
-  project = "${var.project_id}"
-  region  = "${var.region}"
-}
-
 resource "google_compute_disk" "gcp_sap_hana_sd_0" {
   project = "${var.project_id}"
   name    = "${var.disk_name_0}-${var.device_name_pd_ssd}"
