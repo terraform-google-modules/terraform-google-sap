@@ -38,6 +38,12 @@ The following dependencies must be available:
 
 ### Service Account
 
+export GOOGLE_APPLICATION_CREDENTIALS="[PATH]"
+
+For example :
+
+export GOOGLE_APPLICATION_CREDENTIALS="/home/user/Downloads/[FILE_NAME].json"
+
 A service account with the following roles must be used to provision
 the resources of each submodule:
 
