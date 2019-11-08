@@ -1,5 +1,5 @@
 
-# SAP HANA Submodule
+# SAP HANA SVPC Submodule
 
 This module handles opinionated SAP HANA configuration and deployment.
 
@@ -18,13 +18,14 @@ provider "google" {
   version = "~> 2.6.0"
 }
 
-module "gcp_sap_hana" {
-  source                 = "terraform-google-modules/sap/google/modules/sap_hana"
+module "gcp_sap_hana_svpc" {
+  source                 = "terraform-google-modules/sap/google/modules/sap_hana_svpc"
   linux_image_family         = "${var.linux_image_family}"
   linux_image_project        = "${var.linux_image_project}"
   instance_name              = "${var.instance_name}"
   instance_type              = "${var.instance_type}"
   project_id                 = "${var.project_id}"
+  subnetwork_project         = "${var.subnetwork_project}"
   subnetwork                 = "${var.subnetwork}"
   region                     = "${var.region}"
   zone                       = "${var.zone}"

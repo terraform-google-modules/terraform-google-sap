@@ -18,6 +18,10 @@ variable "project_id" {
   description = "The ID of the service project in which the resources will be deployed."
 }
 
+variable "subnetwork_project" {
+  description = "The ID of the shared VPC host project in which the service project's will be deployed."
+}
+
 variable "zone" {
   description = "The zone that the service project instance should be created in."
 }
@@ -29,6 +33,7 @@ variable "region" {
 variable "subnetwork" {
   description = "Compute Engine instance name"
 }
+
 
 variable "instance_name" {
   description = "A unique name for the resource, required by GCE. Changing this forces a new resource to be created."
@@ -124,7 +129,7 @@ variable "post_deployment_script" {
 }
 
 variable "PRIVATE_IP" {
-  description = "Private Ip belonging to the Shared VPC Project."
+  description = "Private Ip belonging to the Shared VPC HOST Project."
   default     = ""
 }
 variable "sap_hana_sid" {
@@ -143,6 +148,13 @@ variable "sap_hana_system_password" {
   description = "SAP HANA system password"
 }
 
+variable "sap_hana_sidadm_uid" {
+  description = "SAP HANA System Identifier Admin UID"
+}
+
+variable "sap_hana_sapsys_gid" {
+  description = "SAP HANA SAP System GID"
+}
 variable "public_ip" {
   description = "Determines whether a public IP address is added to your VM instance."
   default     = false

@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
+provider "google" {
+  version = "~> 2.6.0"
+}
 
-module "gcp_sap_hana" {
-  source                     = "../../modules/sap_hana"
+module "gcp_sap_hana_svpc" {
+  source                     = "../../modules/sap_hana_svpc"
   linux_image_family         = "${var.linux_image_family}"
   linux_image_project        = "${var.linux_image_project}"
   instance_name              = "${var.instance_name}"

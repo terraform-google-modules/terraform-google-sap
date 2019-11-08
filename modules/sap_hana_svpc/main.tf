@@ -13,7 +13,7 @@ data "template_file" "startup_sap_hana" {
 
 data "google_compute_subnetwork" "subnet" {
   name    = "${var.subnetwork}"
-  project = "${var.project_id}"
+  project = "${var.subnetwork_project}"
   region  = "${var.region}"
 }
 
@@ -82,7 +82,7 @@ resource "google_compute_instance" "gcp_service_project_vm" {
 
   network_interface {
     subnetwork         = "${var.subnetwork}"
-    subnetwork_project = "${var.project_id}"
+    subnetwork_project = "${var.subnetwork_project}"
 
     dynamic "access_config" {
       for_each = [for i in [""] : i if var.public_ip]

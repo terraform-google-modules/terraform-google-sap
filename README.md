@@ -2,12 +2,12 @@
 
 This module is a collection of multiple opinionated submodules to deploy SAP Products.
 Below is the list of available submodules:
-
+- [SAP HANA](./modules/sap_hana/README.md)
+- [SAP HANA SVPC](./modules/sap_hana_svpc/README.md)
 - [NETWEAVER](./modules/netweaver/README.md)
 - [SAP ASE](./modules/sap_ase/README.md)
 - [SAP DB2](./modules/sap_db2/README.md)
 - [SAP EMPTYHA](./modules/sap_emptyha/README.md)
-- [SAP HANA](./modules/sap_hana/README.md)
 - [SAP HANA HA](./modules/sap_hana_ha/README.md)
 - [SAP HANA SCALEOUT](./modules/sap_hana_scaleout/README.md)
 

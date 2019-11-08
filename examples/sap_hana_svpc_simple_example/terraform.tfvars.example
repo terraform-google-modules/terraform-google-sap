@@ -1,4 +1,5 @@
 subnetwork = "subnet of host project"
+subnetwork_project = "host_project"
 project_id = "service_project_id"
 network_tags               = ["ssh","http-server","https-server"]
 linux_image_family         = "sles-12-sp3-sap"

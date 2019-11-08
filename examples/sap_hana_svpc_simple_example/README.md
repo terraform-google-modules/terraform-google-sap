@@ -1,6 +1,6 @@
-# SAP HANA Simple Example
+# SAP HANA SVPC Simple Example
 
-This example illustrates how to use the `SAP HANA` submodule to deploy SAP HANA on GCP.
+This example illustrates how to use the `SAP HANA SVPC` submodule to deploy SAP HANA on GCP.
 
 ## Requirements
 Make sure you go through this [Requirements section](../../modules/sap_hana/README.md#requirements) for the SAP HANA Submodule.
