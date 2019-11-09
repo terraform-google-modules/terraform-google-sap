@@ -36,13 +36,15 @@ The following dependencies must be available:
 - [Terraform][terraform] v0.12
 - [Terraform Provider for GCP][terraform-provider-gcp] plugin v2.6.0
 
-### Service Account
+## Using Credentials
 
 export GOOGLE_APPLICATION_CREDENTIALS="[PATH]"
 
-For example :
+### For example :
 
 export GOOGLE_APPLICATION_CREDENTIALS="/home/user/Downloads/[FILE_NAME].json"
+
+### Service Account
 
 A service account with the following roles must be used to provision
 the resources of each submodule:
