@@ -34,13 +34,6 @@ data "template_file" "startup_sap_hana_scaleout_2" {
   template = "${file("${path.module}/files/startup_secondary.sh")}"
 }
 
-data "google_compute_subnetwork" "subnet" {
-  name    = "${var.subnetwork}"
-  project = "${var.subnetwork_project != "" ? var.subnetwork_project : var.project_id}"
-  region  = "${var.region}"
-}
-
-
 resource "google_compute_address" "gcp_master_ip" {
   project = "${var.project_id}"
   name    = "${var.instance_name}-ip"
@@ -143,7 +136,7 @@ resource "google_compute_instance" "master" {
 
   network_interface {
     subnetwork         = "${var.subnetwork}"
-    subnetwork_project = "${var.subnetwork_project != "" ? var.subnetwork_project : var.project_id}"
+    subnetwork_project = "${var.project_id}"
 
     dynamic "access_config" {
       for_each = [for i in [""] : i if var.public_ip]
@@ -201,7 +194,7 @@ resource "google_compute_instance" "worker" {
 
   network_interface {
     subnetwork         = "${var.subnetwork}"
-    subnetwork_project = "${var.subnetwork_project != "" ? var.subnetwork_project : var.project_id}"
+    subnetwork_project = "${var.project_id}"
 
     dynamic "access_config" {
       for_each = [for i in [""] : i if var.public_ip]

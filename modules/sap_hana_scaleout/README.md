@@ -15,13 +15,9 @@ The resources/services/activations/deletions that this module will create/trigge
 You can go in the [examples](../../examples) folder complete working example. However, here's an example of how to use the module in a main.tf file.
 
 ```hcl
-provider "google" {
-  version = "~> 2.6.0"
-  region  = "${var.region}"
-}
 
 module "gcp_sap_hana_scaleout" {
-  source                     = "terraform-google-modules/sap/google/sap_hana_scaleout"
+  source                     = "../../modules/sap_hana_scaleout"
   post_deployment_script     = "${var.post_deployment_script}"
   subnetwork                 = "${var.subnetwork}"
   linux_image_family         = "${var.linux_image_family}"
@@ -29,7 +25,6 @@ module "gcp_sap_hana_scaleout" {
   instance_type              = "${var.instance_type}"
   network_tags               = "${var.network_tags}"
   project_id                 = "${var.project_id}"
-  subnetwork_project         = "${var.subnetwork_project}"
   region                     = "${var.region}"
   service_account_email      = "${var.service_account_email}"
   boot_disk_size             = "${var.boot_disk_size}"

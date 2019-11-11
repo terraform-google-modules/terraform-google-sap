@@ -54,7 +54,7 @@
 
   sap_vip = "10.1.0.24"
 
-  sap_vip_secondary_range = ""
+  sap_vip_secondary_range = "range-1"
 
   boot_disk_size = 300
 
@@ -70,6 +70,6 @@
 
   sap_hana_sapsys_gid        = 900
 
- #ip_cidr_range = "<secondary_ip CIDR_Range>"
+ # ip_cidr_range = "<secondary_ip CIDR_Range>"
 
  public_ip              = false

@@ -1,27 +1,9 @@
-# SAP HANA HA imple Example
+# SAP HANA HA Simple Example
 
 This example illustrates how to use the `SAP HANA HA` submodule to deploy SAP HANA on GCP.
 
 ## Requirements
 Make sure you go through this [Requirements section](../../modules/sap_hana_ha/README.md#requirements) for the SAP HANA HA Submodule.
-
-The following changes would need to be done in tfvars file :
-
-## Use Case 1: For standalone projects
-
-subnetwork_project = “ “
-
-project_id = “project_id of standalone project”
-
-service_account = “service account email of standalone project”
-
-## Use Case 2: For Shared VPC Projects(Host/Service)
-
-subnetwork_project = “project_id of host project”
-
-project_id = “project_id of service project”
-
-service_account = “service account email of Service Project”
 
 ## Setup
 

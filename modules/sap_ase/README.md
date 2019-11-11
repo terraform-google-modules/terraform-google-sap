@@ -14,12 +14,9 @@ The resources/services/activations/deletions that this module will create/trigge
 You can go in the [examples](../../examples) folder complete working example. However, here's an example of how to use the module in a main.tf file.
 
 ```hcl
-provider "google" {
-  version = "~> 2.6.0"
-}
 
 module "gcp_sap_ase" {
-  source                 = "terraform-google-modules/sap/google/modules/sap_ase"
+  source                 = "../../modules/sap_ase"
   subnetwork            = "${var.subnetwork}"
   linux_image_family    = "${var.linux_image_family}"
   linux_image_project   = "${var.linux_image_project}"
@@ -28,7 +25,6 @@ module "gcp_sap_ase" {
   zone                  = "${var.zone}"
   network_tags          = "${var.network_tags}"
   project_id            = "${var.project_id}"
-  subnetwork_project    = "${var.subnetwork_project}"
   region                = "${var.region}"
   service_account_email = "${var.service_account_email}"
   boot_disk_size        = "${var.boot_disk_size}"

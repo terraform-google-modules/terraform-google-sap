@@ -30,11 +30,9 @@
 
   secondary_zone = "secondary-zone"
 
-  subnetwork = "host project subnetwork"
+  subnetwork = "subnetwork"
 
   project_id = "<service project>"
-
-  subnetwork_project  = "host_project"
 
   region = "region"
 
@@ -44,7 +42,7 @@
 
   sap_vip = "10.0.10.176"
 
-  sap_vip_secondary_range = "range-1"
+sap_vip_secondary_range = ""
 
   boot_disk_size = 300
 
@@ -54,6 +52,4 @@
 
 network_tags = ["ssh", "http-server", "https-server"]
 
- ip_cidr_range = "<secondary_ip CIDR_Range>"
-
-  public_ip              = false
+public_ip              = false

@@ -15,14 +15,13 @@
  */
 
 
-module "gcp_sap_hana" {
+module "gcp-sap-hana" {
   source                     = "../../modules/sap_hana"
   linux_image_family         = "${var.linux_image_family}"
   linux_image_project        = "${var.linux_image_project}"
   instance_name              = "${var.instance_name}"
   instance_type              = "${var.instance_type}"
   project_id                 = "${var.project_id}"
-  subnetwork_project         = "${var.subnetwork_project}"
   subnetwork                 = "${var.subnetwork}"
   region                     = "${var.region}"
   zone                       = "${var.zone}"

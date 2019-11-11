@@ -17,9 +17,11 @@
 output "instance_name" {
   description = "Name of Netweaver instance"
   value       = "${var.instance_name}"
+
 }
 
 output "zone" {
   description = "Compute Engine instance deployment zone"
   value       = "${var.zone}"
+  value = module.project-factory.project_name
 }

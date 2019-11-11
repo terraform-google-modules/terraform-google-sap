@@ -22,9 +22,7 @@ instance_type = "<instance_type>"
 
 service_account_email = "<service-account-email>"
 
-project_id = "<service_project-id>"
-
-subnetwork_project  = "host_project"
+project_id = "<project-id>"
 
 boot_disk_size = 30
 

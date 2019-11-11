@@ -20,8 +20,7 @@
  boot_disk_size=100
  network_tags=[]
  subnetwork="default"
- project="service_project-id"
- subnetwork_project  = "host_project"
+ project="project-id"
  region="region"
  instance_name="terraform-sap-suse-db2"
  usrsap_size=15

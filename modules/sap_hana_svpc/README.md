@@ -14,12 +14,9 @@ The resources/services/activations/deletions that this module will create/trigge
 You can go in the [examples](../../examples) folder complete working example. However, here's an example of how to use the module in a main.tf file.
 
 ```hcl
-provider "google" {
-  version = "~> 2.6.0"
-}
 
 module "gcp_sap_hana_svpc" {
-  source                 = "terraform-google-modules/sap/google/modules/sap_hana_svpc"
+  source                 = "../../modules/sap_hana_svpc"
   linux_image_family         = "${var.linux_image_family}"
   linux_image_project        = "${var.linux_image_project}"
   instance_name              = "${var.instance_name}"

@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-provider "google" {
-  version     = "~> 2.6.0"
-  credentials = "${file("credentials.json")}"
-}
 
 module "gcp_sap_emptyha" {
   source                   = "../../modules/sap_emptyha"
@@ -28,7 +24,6 @@ module "gcp_sap_emptyha" {
   instance_type            = "${var.instance_type}"
   network_tags             = "${var.network_tags}"
   project_id               = "${var.project_id}"
-  subnetwork_project       = "${var.subnetwork_project}"
   region                   = "${var.region}"
   service_account_email    = "${var.service_account_email}"
   boot_disk_size           = "${var.boot_disk_size}"
@@ -45,5 +40,4 @@ module "gcp_sap_emptyha" {
   secondary_instance_ip    = "${var.secondary_instance_ip}"
   sap_vip_internal_address = "${var.sap_vip_internal_address}"
   public_ip                = "${var.public_ip}"
-  #ip_cidr_range            = "${var.ip_cidr_range}"
 }

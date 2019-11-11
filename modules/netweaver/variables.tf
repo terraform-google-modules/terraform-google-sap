@@ -16,9 +16,7 @@
 variable "project_id" {
   description = "The ID of the project in which the resources will be deployed."
 }
-variable "subnetwork_project" {
-  description = "The ID of the shared VPC host project in which the service project's will be deployed."
-}
+
 variable "zone" {
   description = "The zone that the instance should be created in."
 }

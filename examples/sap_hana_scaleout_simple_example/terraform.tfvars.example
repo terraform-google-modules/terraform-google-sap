@@ -22,8 +22,6 @@ zone = "zone"
 
 subnetwork = "default"
 
-subnetwork_project = "host_project"
-
 project_id = "service_project"
 
 region = "region"

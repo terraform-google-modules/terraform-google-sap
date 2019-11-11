@@ -42,11 +42,6 @@ variable "project_id" {
   description = "The ID of the project in which the resources will be deployed."
 }
 
-
-variable "subnetwork_project" {
-  description = "The ID of the shared VPC host project in which the service project's will be deployed."
-}
-
 variable "region" {
   description = "Region to deploy the resources. Should be in the same region as the zone."
 }
@@ -143,8 +138,3 @@ variable "secondary_instance_ip" {
 variable "sap_vip_internal_address" {
   description = "Name of static IP adress to add to the instance's access config."
 }
-/*
-variable "ip_cidr_range" {
-  description = "ip cidr range for secondary ip ranges"
-}
-*/

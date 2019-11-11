@@ -13,12 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-provider "google" {
-  version     = "~> 2.6.0"
-  credentials = "${file("credentials.json")}"
-}
-
 module "gcp_netweaver" {
   source                 = "../../modules/netweaver"
   post_deployment_script = "${var.post_deployment_script}"
@@ -36,7 +30,6 @@ module "gcp_netweaver" {
   region                 = "${var.region}"
   network_tags           = "${var.network_tags}"
   project_id             = "${var.project_id}"
-  subnetwork_project     = "${var.subnetwork_project}"
   zone                   = "${var.zone}"
   service_account_email  = "${var.service_account_email}"
   boot_disk_size         = "${var.boot_disk_size}"

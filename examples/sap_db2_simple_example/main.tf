@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-provider "google" {
-  version     = "~> 2.6.0"
-  credentials = "${file("credentials.json")}"
-  region      = "${var.region}"
-}
-
-
 module "gcp_sap_db2" {
   source                = "../../modules/sap_db2"
   subnetwork            = "${var.subnetwork}"
@@ -31,7 +24,6 @@ module "gcp_sap_db2" {
   zone                  = "${var.zone}"
   network_tags          = "${var.network_tags}"
   project_id            = "${var.project_id}"
-  subnetwork_project    = "${var.subnetwork_project}"
   region                = "${var.region}"
   service_account_email = "${var.service_account_email}"
   boot_disk_size        = "${var.boot_disk_size}"

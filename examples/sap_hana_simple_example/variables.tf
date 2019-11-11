@@ -127,6 +127,7 @@ variable "PRIVATE_IP" {
   description = "Private Ip belonging to the Shared VPC Project."
   default     = ""
 }
+
 variable "sap_hana_sid" {
   description = "SAP HANA System Identifier. When using the SID to enter a user session, like this for example, `su - [SID]adm`, make sure that [SID] is in lower case."
 }

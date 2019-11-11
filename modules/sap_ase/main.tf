@@ -18,12 +18,6 @@ terraform {
   required_version = "~> 0.12.3"
 }
 
-data "google_compute_subnetwork" "subnet" {
-  name    = "${var.subnetwork}"
-  project = "${var.subnetwork_project != "" ? var.subnetwork_project : var.project_id}"
-  region  = "${var.region}"
-}
-
 resource "google_compute_address" "gcp_master_ip" {
   project = "${var.project_id}"
   count   = "${var.instance_count_master}"
@@ -194,7 +188,7 @@ resource "google_compute_instance" "master" {
 
   network_interface {
     subnetwork         = "${var.subnetwork}"
-    subnetwork_project = "${var.subnetwork_project != "" ? var.subnetwork_project : var.project_id}"
+    subnetwork_project = "${var.project_id}"
 
     dynamic "access_config" {
       for_each = [for i in [""] : i if var.public_ip]

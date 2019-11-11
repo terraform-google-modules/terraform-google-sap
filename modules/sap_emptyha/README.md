@@ -14,13 +14,9 @@ The resources/services/activations/deletions that this module will create/trigge
 You can go in the [examples](../../examples) folder complete working example. However, here's an example of how to use the module in a main.tf file.
 
 ```hcl
-provider "google" {
-  version = "~> 2.6.0"
-  region  = "${var.region}"
-}
 
 module "gcp_sap_emptyha" {
-source                      = "terraform-google-modules/sap/google/modules/sap_emptyha"
+source                      = "../../modules/sap_emptyha"
 post_deployment_script   = "${var.post_deployment_script}"
 subnetwork               = "${var.subnetwork}"
 linux_image_family       = "${var.linux_image_family}"
@@ -28,7 +24,6 @@ linux_image_project      = "${var.linux_image_project}"
 instance_type            = "${var.instance_type}"
 network_tags             = "${var.network_tags}"
 project_id               = "${var.project_id}"
-subnetwork_project       = "${var.subnetwork_project}"
 region                   = "${var.region}"
 service_account_email    = "${var.service_account_email}"
 boot_disk_size           = "${var.boot_disk_size}"
@@ -44,7 +39,6 @@ sap_vip_secondary_range  = "${var.sap_vip_secondary_range}"
 primary_instance_ip      = "${var.primary_instance_ip}"
 secondary_instance_ip    = "${var.secondary_instance_ip}"
 public_ip                = "${var.public_ip}"
-#ip_cidr_range            = "${var.ip_cidr_range}"
 sap_vip_internal_address = "${var.sap_vip_internal_address}"
   }
 
