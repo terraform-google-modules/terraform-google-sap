@@ -13,3 +13,39 @@
 # limitations under the License.
 
 ---
+driver:
+  name: terraform
+
+provisioner:
+  name: terraform
+
+verifier:
+  name: terraform
+
+platforms:
+  - name: default
+
+suites:
+  - name: sap_hana_simple_example
+    driver:
+      root_module_directory: test/fixtures/sap_hana_simple_example/
+      command_timeout: 1800
+    verifier:
+      color: false
+      systems:
+        - name: sap_hana_simple_example local
+          backend: local
+          controls:
+            - deployment_validation
+
+  - name: sap_hana_svpc_simple_example
+    driver:
+      root_module_directory: test/fixtures/sap_hana_svpc_simple_example/
+      command_timeout: 1800
+    verifier:
+      color: false
+      systems:
+        - name: sap_hana_svpc_simple_example local
+          backend: local
+          controls:
+            - deployment_validation
