@@ -26,7 +26,6 @@ boot_disk_type             = "pd-ssd"
 boot_disk_size             = 64
 disk_name_0 = "sap-hana-pd-sd-0"
 disk_name_1 = "sap-hana-pd-sd-1"
-autodelete_disk            = "true"
 sap_deployment_debug       = "false"
 sap_hana_sid               = "D10"
 sap_hana_instance_number   = 10

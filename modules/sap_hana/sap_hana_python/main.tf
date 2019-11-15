@@ -5,7 +5,7 @@ data "http" "sap-hana-py" {
 resource "local_file" "sap-hana-py" {
   filename = "${path.module}/sap_hana.py"
 
-  content = "${data.http.sap-hana-py.body}"
+  content = data.http.sap-hana-py.body
 }
 
 resource "null_resource" "test" {
@@ -13,7 +13,7 @@ resource "null_resource" "test" {
     command = "python ${path.module}/wrapper.py ${var.instance-type} > ${local.memory_file}"
   }
 
-  depends_on = ["local_file.sap-hana-py"]
+  depends_on = [local_file.sap-hana-py]
 
   triggers = {
     sap-hana-py = "${data.http.sap-hana-py.body}"
@@ -28,5 +28,5 @@ locals {
 data "local_file" "test" {
   filename = "${local.memory_file}"
 
-  depends_on = ["null_resource.test"]
+  depends_on = [null_resource.test]
 }

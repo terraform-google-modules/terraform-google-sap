@@ -1,13 +1,13 @@
 
 # SAP HANA SVPC Submodule
 
-This module handles opinionated SAP HANA configuration and deployment.
+This module handles opinionated SAP HANA SVPC configuration and deployment.
 
 ## Usage
 
 The resources/services/activations/deletions that this module will create/trigger are:
 
-- Create a Compute Instance that will host SAP HANA
+- Create a Compute Instance that will host SAP HANA SVPC
 - Create a Static IP Adresse for the Compute Instance
 - Create a 2 Persistent Disks to host SAP HANA's File systems
 
@@ -15,14 +15,14 @@ You can go in the [examples](../../examples) folder complete working example. Ho
 
 ```hcl
 
-module "gcp_sap_hana_svpc" {
-  source                 = "../../modules/sap_hana_svpc"
+module "gcp_sap_hana" {
+  source                 = "../../modules/sap_hana"
   linux_image_family         = "${var.linux_image_family}"
   linux_image_project        = "${var.linux_image_project}"
   instance_name              = "${var.instance_name}"
   instance_type              = "${var.instance_type}"
   project_id                 = "${var.project_id}"
-  subnetwork_project         = "${var.subnetwork_project}"
+  subnetwork_project         = "${subnetwork_project}"
   subnetwork                 = "${var.subnetwork}"
   region                     = "${var.region}"
   zone                       = "${var.zone}"

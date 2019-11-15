@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-subnetwork = "subnet of host project"
-subnetwork_project = "host_project"
-project_id = "service_project_id"
+subnetwork                 = "subnet of project_id"
+project_id                 = "project_id"
+subnetwork_project         = "subnetwork_project"
 network_tags               = ["ssh","http-server","https-server"]
 linux_image_family         = "sles-12-sp3-sap"
 linux_image_project        = "suse-sap-cloud"
@@ -25,9 +25,8 @@ instance_type              = "n1-highmem-16"
 service_account_email      = "<service-account-email>"
 boot_disk_type             = "pd-ssd"
 boot_disk_size             = 64
-disk_name_0 = "sap-hana-pd-sd-0"
-disk_name_1 = "sap-hana-pd-sd-1"
-autodelete_disk            = "true"
+disk_name_0                = "sap-hana-pd-sd-0"
+disk_name_1                = "sap-hana-pd-sd-1"
 sap_deployment_debug       = "false"
 sap_hana_sid               = "D10"
 sap_hana_instance_number   = 10
@@ -35,5 +34,5 @@ sap_hana_sidadm_password   = "<my_password>"
 sap_hana_system_password   = "<my_password>"
 sap_hana_deployment_bucket = "bucket_name"
 zone = "zone"
-public_ip              = true
-region = "us-central1"
+public_ip                  = true
+region                     = "us-central1"

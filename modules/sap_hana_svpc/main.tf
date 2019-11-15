@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 module "sap_hana" {
   source        = "./sap_hana_python"
   instance-type = "${var.instance_type}"
@@ -24,35 +23,29 @@ data "template_file" "startup_sap_hana" {
   template = "${file("${path.module}/files/startup.sh")}"
 }
 
-data "google_compute_subnetwork" "subnet" {
-  name    = "${var.subnetwork}"
-  project = "${var.subnetwork_project}"
-  region  = "${var.region}"
-}
-
 resource "google_compute_disk" "gcp_sap_hana_sd_0" {
-  project = "${var.project_id}"
+  project = var.project_id
   name    = "${var.disk_name_0}-${var.device_name_pd_ssd}"
-  type    = "${var.disk_type_0}"
-  zone    = "${var.zone}"
-  size    = "${var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize}"
+  type    = var.disk_type_0
+  zone    = var.zone
+  size    = var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize
 }
 
 resource "google_compute_disk" "gcp_sap_hana_sd_1" {
-  project = "${var.project_id}"
+  project = var.project_id
   name    = "${var.disk_name_1}-${var.device_name_pd_hdd}"
-  type    = "${var.disk_type_1}"
-  zone    = "${var.zone}"
-  size    = "${var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize}"
+  type    = var.disk_type_1
+  zone    = var.zone
+  size    = var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize
 }
 
 # Create a VM which hosts a web page stating its identity ("VM")
 resource "google_compute_instance" "gcp_service_project_vm" {
-  name         = "${var.instance_name}"
-  project      = "${var.project_id}"
-  machine_type = "${var.instance_type}"
-  zone         = "${var.zone}"
-  tags         = "${var.network_tags}"
+  name         = var.instance_name
+  project      = var.project_id
+  machine_type = var.instance_type
+  zone         = var.zone
+  tags         = var.network_tags
 
   scheduling {
     automatic_restart   = true
@@ -60,21 +53,21 @@ resource "google_compute_instance" "gcp_service_project_vm" {
   }
 
   boot_disk {
-    auto_delete = "${var.autodelete_disk}"
+    auto_delete = var.autodelete_disk
 
     initialize_params {
       image = "projects/${var.linux_image_project}/global/images/family/${var.linux_image_family}"
-      size  = "${var.boot_disk_size}"
-      type  = "${var.boot_disk_type}"
+      size  = var.boot_disk_size
+      type  = var.boot_disk_type
     }
   }
 
   attached_disk {
-    source = "${google_compute_disk.gcp_sap_hana_sd_0.self_link}"
+    source = google_compute_disk.gcp_sap_hana_sd_0.self_link
   }
 
   attached_disk {
-    source = "${google_compute_disk.gcp_sap_hana_sd_1.self_link}"
+    source = google_compute_disk.gcp_sap_hana_sd_1.self_link
   }
 
 
@@ -94,8 +87,8 @@ resource "google_compute_instance" "gcp_service_project_vm" {
   }
 
   network_interface {
-    subnetwork         = "${var.subnetwork}"
-    subnetwork_project = "${var.subnetwork_project}"
+    subnetwork         = var.subnetwork
+    subnetwork_project = var.subnetwork_project
 
     dynamic "access_config" {
       for_each = [for i in [""] : i if var.public_ip]
@@ -105,7 +98,7 @@ resource "google_compute_instance" "gcp_service_project_vm" {
   }
 
   service_account {
-    email  = "${var.service_account_email}"
+    email  = var.service_account_email
     scopes = ["cloud-platform"]
   }
 }

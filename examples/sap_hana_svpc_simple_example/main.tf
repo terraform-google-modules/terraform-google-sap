@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-module "gcp_sap_hana_svpc" {
+
+module "gcp-sap-hana_svpc" {
   source                     = "../../modules/sap_hana_svpc"
   linux_image_family         = "${var.linux_image_family}"
   linux_image_project        = "${var.linux_image_project}"
