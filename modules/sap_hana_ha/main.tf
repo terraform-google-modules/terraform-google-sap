@@ -136,6 +136,11 @@ resource "google_compute_instance" "primary" {
     startup-script = "${var.startup_script_1}"
   }
 
+  lifecycle {
+    # Ignore changes in the instance metadata, since it is modified by the SAP startup script.
+    ignore_changes = [ "metadata" ]
+  }  
+
   service_account {
     email  = "${var.service_account_email}"
     scopes = ["cloud-platform"]
@@ -200,6 +205,11 @@ resource "google_compute_instance" "secondary" {
     sap_vip_secondary_range    = "${var.sap_vip_secondary_range}"
 
     startup-script = "${var.startup_script_2}"
+  }
+
+  lifecycle {
+    # Ignore changes in the instance metadata, since it is modified by the SAP startup script.
+    ignore_changes = [ "metadata" ]
   }
 
   service_account {
