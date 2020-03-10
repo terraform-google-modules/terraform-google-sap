@@ -64,7 +64,6 @@ module "example" {
   pd_hdd_size                = "${var.pd_hdd_size}"
   pd_ssd_size                = "${var.pd_ssd_size}"
   sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
-  post_deployment_script     = "${var.post_deployment_script}"
   primary_instance_name      = "${var.primary_instance_name}"
   secondary_instance_name    = "${var.secondary_instance_name}"
   primary_zone               = "${var.primary_zone}"
