@@ -138,8 +138,8 @@ resource "google_compute_instance" "primary" {
 
   lifecycle {
     # Ignore changes in the instance metadata, since it is modified by the SAP startup script.
-    ignore_changes = [ "metadata" ]
-  }  
+    ignore_changes = ["metadata"]
+  }
 
   service_account {
     email  = "${var.service_account_email}"

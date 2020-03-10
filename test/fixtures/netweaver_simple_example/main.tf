@@ -50,7 +50,6 @@ module "example" {
   subnetwork             = "${var.subnetwork}"
   linux_image_family     = "${var.linux_image_family}"
   linux_image_project    = "${var.linux_image_project}"
-  autodelete_disk        = "true"
   public_ip              = "${var.public_ip}"
   sap_deployment_debug   = "${var.sap_deployment_debug}"
   usr_sap_size           = "${var.usr_sap_size}"
