@@ -15,7 +15,7 @@
  */
 
 locals {
-  project_name   = "sap"
+  project_name   = "cft-sap"
   subfolder_name = "${local.project_name}-${random_id.folder_rand.hex}"
 }
 
