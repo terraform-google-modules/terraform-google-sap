@@ -20,26 +20,26 @@ provider "google" {
 
 module "gcp_netweaver" {
   source                 = "terraform-google-modules/sap/google/modules/netweaver"
-  subnetwork             = "${var.subnetwork}"
-  linux_image_family     = "${var.linux_image_family}"
-  linux_image_project    = "${var.linux_image_project}"
+  subnetwork             = var.subnetwork
+  linux_image_family     = var.linux_image_family
+  linux_image_project    = var.linux_image_project
   autodelete_disk        = "true"
-  public_ip              = "${var.public_ip}"
-  sap_deployment_debug   = "${var.sap_deployment_debug}"
-  usr_sap_size           = "${var.usr_sap_size}"
-  sap_mnt_size           = "${var.sap_mnt_size}"
-  swap_size              = "${var.swap_size}"
-  instance_name          = "${var.instance_name}"
-  instance_type          = "${var.instance_type}"
-  region                 = "${var.region}"
-  network_tags           = "${var.network_tags}"
-  project_id             = "${var.project_id}"
-  zone                   = "${var.zone}"
-  service_account_email  = "${var.service_account_email}"
-  boot_disk_size         = "${var.boot_disk_size}"
-  boot_disk_type         = "${var.boot_disk_type}"
-  disk_type              = "${var.disk_type}"
-  startup_script         = "${var.startup_script}"
+  public_ip              = var.public_ip
+  sap_deployment_debug   = var.sap_deployment_debug
+  usr_sap_size           = var.usr_sap_size
+  sap_mnt_size           = var.sap_mnt_size
+  swap_size              = var.swap_size
+  instance_name          = var.instance_name
+  instance_type          = var.instance_type
+  region                 = var.region
+  network_tags           = var.network_tags
+  project_id             = var.project_id
+  zone                   = var.zone
+  service_account_email  = var.service_account_email
+  boot_disk_size         = var.boot_disk_size
+  boot_disk_type         = var.boot_disk_type
+  disk_type              = var.disk_type
+  startup_script         = var.startup_script
 }
 
 ```
