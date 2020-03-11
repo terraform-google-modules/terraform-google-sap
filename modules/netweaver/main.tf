@@ -22,11 +22,6 @@ locals {
   device_name_1 = "${var.instance_name}-${var.device_1}"
   device_name_2 = "${var.instance_name}-${var.device_2}"
   device_name_3 = "${var.instance_name}-${var.device_3}"
-
-  access_config = {
-    "0" = []
-    "1" = [{}]
-  }
 }
 
 resource "google_compute_disk" "gcp_nw_pd_0" {
@@ -109,9 +104,15 @@ resource "google_compute_instance" "gcp_nw" {
   network_interface {
     subnetwork         = var.subnetwork
     subnetwork_project = var.project_id
-    access_config {
-      #local.access_config[var.public_ip] 
+
+    dynamic "access_config" {
+      for_each = var.public_ip ? ["external_ip"] : []
+      content {
+        # assign an ephemeral external IP address
+        nat_ip = null
+      }
     }
+
   }
 
   metadata = {
