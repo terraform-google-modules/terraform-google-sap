@@ -14,7 +14,7 @@
 
 control 'deployment_validation' do
 
-  describe command("gcloud compute instances get-serial-port-output #{attribute('instance_name')} --project=#{attribute('project_id')} --zone=#{attribute('zone')}") do
+  describe command("sleep 400 ; gcloud compute instances get-serial-port-output #{attribute('instance_name')} --project=#{attribute('project_id')} --zone=#{attribute('zone')}") do
       its(:exit_status) { should eq 0 }
 
       context "output of df -h command" do

@@ -14,22 +14,11 @@
 
 control 'deployment_validation_primary' do
 
-  describe command("gcloud compute instances get-serial-port-output #{attribute('primary_instance_name')} --project=#{attribute('project_id')} --zone=#{attribute('primary_zone')}") do
+  describe command("sleep 400 ; gcloud compute instances describe #{attribute('primary_instance_name')} --project=#{attribute('project_id')} --zone=#{attribute('primary_zone')}") do
       its(:exit_status) { should eq 0 }
 
-      context "output of df -h command" do
-        its('stdout') { should match('/dev/mapper/vg_hana-data') }
-        its('stdout') { should match('/dev/mapper/vg_hana-log') }
-      end
-
-      context "output of HDB info command" do
-        its('stdout') { should match('\_ hdbnameserver') }
-        its('stdout') { should match('\_ hdbcompileserver') }
-        its('stdout') { should match('\_ hdbpreprocessor') }
-        its('stdout') { should match('\_ hdbindexserver') }
-        its('stdout') { should match('\_ hdbxsengine') }
-        its('stdout') { should match('\_ hdbwebdispatcher') }
-        its('stdout') { should match('\_ \(sd-pam\)') }
+      context "metadata" do
+        its('stdout') { should match('value: completed') }
       end
     end
 end
