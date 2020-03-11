@@ -106,7 +106,7 @@ resource "google_compute_instance" "gcp_nw" {
     subnetwork_project = var.project_id
 
     dynamic "access_config" {
-      for_each = var.public_ip ? ["external_ip"] : []
+      for_each = var.public_ip == 1 ? ["external_ip"] : []
       content {
         # assign an ephemeral external IP address
         nat_ip = null
