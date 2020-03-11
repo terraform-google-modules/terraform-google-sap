@@ -14,17 +14,11 @@
 
 control 'deployment_validation' do
 
-  describe command("sleep 400 ; gcloud compute instances get-serial-port-output #{attribute('instance_name')} --project=#{attribute('project_id')} --zone=#{attribute('zone')}") do
+  describe command("sleep 100 ; gcloud compute instances get-serial-port-output #{attribute('instance_name')} --project=#{attribute('project_id')} --zone=#{attribute('zone')}") do
       its(:exit_status) { should eq 0 }
 
-      context "output of df -h command" do
-        its('stdout') { should match('/dev/mapper/vg_usrsap-vol') }
-        its('stdout') { should match('/dev/mapper/vg_sapmnt-vol') }
-      end
-
-      context "INFO startup-script:" do
-        its('stdout') { should match('Volume group "vg_swap" successfully created') }
-        its('stdout') { should match('Logical volume "vol" created') }
+      context "startup script" do
+        its('stdout') { should match('startup-script: Return code 0.') }
       end
     end
 end

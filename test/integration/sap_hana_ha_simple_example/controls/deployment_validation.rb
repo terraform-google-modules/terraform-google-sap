@@ -14,7 +14,7 @@
 
 control 'deployment_validation_primary' do
 
-  describe command("sleep 400 ; gcloud compute instances describe #{attribute('primary_instance_name')} --project=#{attribute('project_id')} --zone=#{attribute('primary_zone')}") do
+  describe command("sleep 100 ; gcloud compute instances describe #{attribute('primary_instance_name')} --project=#{attribute('project_id')} --zone=#{attribute('primary_zone')}") do
       its(:exit_status) { should eq 0 }
 
       context "metadata" do
