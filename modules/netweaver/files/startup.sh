@@ -16,4 +16,5 @@
 
 curl -s https://storage.googleapis.com/sapdeploy/dm-templates/sap_nw/startup.sh >> startup.sh
 chmod +x startup.sh
+# shellcheck disable=SC1091
 source startup.sh
