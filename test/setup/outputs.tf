@@ -120,7 +120,7 @@ output "secondary_instance_name" {
 }
 
 output "sap_vip" {
-  value = "10.1.0.24"
+  value = "10.10.10.20"
 }
 
 output "primary_instance_ip" {
