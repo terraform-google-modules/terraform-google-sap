@@ -123,6 +123,18 @@ output "sap_vip" {
   value = "10.1.0.24"
 }
 
+output "primary_instance_ip" {
+  value = "gcp-primary-instance-ip"
+}
+
+output "secondary_instance_ip" {
+  value = "gcp-secondary-instance-ip"
+}
+
+output "sap_vip_internal_address" {
+  value = "sap-vip-internal-address"
+}
+
 output "sap_vip_secondary_range" {
   value = ""
 }
@@ -134,4 +146,3 @@ output "service_account_email" {
 output "sap_hana_deployment_bucket" {
   value = "bucket_name"
 }
-
