@@ -104,7 +104,7 @@ variable "subnetwork" {
 }
 
 variable "network_tags" {
-  type        = "list"
+  type        = list
   description = "List of network tags to attach to the instance."
 }
 

@@ -20,68 +20,68 @@ terraform {
 
 module "sap_hana" {
   source        = "./sap_hana_python"
-  instance-type = "${var.instance_type}"
+  instance-type = "var.instance_type"
 }
 
 resource "google_compute_address" "primary_instance_ip" {
-  project = "${var.project_id}"
-  name    = "${var.primary_instance_ip}"
-  region  = "${var.region}"
+  project = var.project_id
+  name    = var.primary_instance_ip
+  region  = var.region
 }
 
 resource "google_compute_address" "secondary_instance_ip" {
-  project = "${var.project_id}"
-  name    = "${var.secondary_instance_ip}"
-  region  = "${var.region}"
+  project = var.project_id
+  name    = var.secondary_instance_ip
+  region  = var.region
 }
 
 resource "google_compute_address" "internal_sap_vip" {
-  project      = "${var.project_id}"
-  name         = "${var.sap_vip_internal_address}"
-  subnetwork   = "${var.subnetwork}"
+  project      = var.project_id
+  name         = var.sap_vip_internal_address
+  subnetwork   = var.subnetwork
   address_type = "INTERNAL"
-  address      = "${var.sap_vip}"
-  region       = "${var.region}"
+  address      = var.sap_vip
+  region       = var.region
 }
 
 resource "google_compute_disk" "gcp_sap_hana_sd_0" {
-  project = "${var.project_id}"
-  name    = "${var.disk_name_0}"
-  type    = "${var.disk_type_0}"
-  zone    = "${var.primary_zone}"
-  size    = "${var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize}"
+  project = var.project_id
+  name    = var.disk_name_0
+  type    = var.disk_type_0
+  zone    = var.primary_zone
+  size    = var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize
 }
 
 resource "google_compute_disk" "gcp_sap_hana_sd_1" {
-  project = "${var.project_id}"
-  name    = "${var.disk_name_1}"
-  type    = "${var.disk_type_1}"
-  zone    = "${var.primary_zone}"
-  size    = "${var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize}"
+  project = var.project_id
+  name    = var.disk_name_1
+  type    = var.disk_type_1
+  zone    = var.primary_zone
+  size    = var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize
 }
 
 resource "google_compute_disk" "gcp_sap_hana_sd_2" {
-  project = "${var.project_id}"
-  name    = "${var.disk_name_2}"
-  type    = "${var.disk_type_0}"
-  zone    = "${var.secondary_zone}"
-  size    = "${var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize}"
+  project = var.project_id
+  name    = var.disk_name_2
+  type    = var.disk_type_0
+  zone    = var.secondary_zone
+  size    = var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize
 }
 
 resource "google_compute_disk" "gcp_sap_hana_sd_3" {
-  project = "${var.project_id}"
-  name    = "${var.disk_name_3}"
-  type    = "${var.disk_type_1}"
-  zone    = "${var.secondary_zone}"
-  size    = "${var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize}"
+  project = var.project_id
+  name    = var.disk_name_3
+  type    = var.disk_type_1
+  zone    = var.secondary_zone
+  size    = var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize
 }
 
 resource "google_compute_instance" "primary" {
-  project        = "${var.project_id}"
-  name           = "${var.primary_instance_name}"
-  machine_type   = "${var.instance_type}"
-  zone           = "${var.primary_zone}"
-  tags           = "${var.network_tags}"
+  project        = var.project_id
+  name           = var.primary_instance_name
+  machine_type   = var.instance_type
+  zone           = var.primary_zone
+  tags           = var.network_tags
   can_ip_forward = true
 
   scheduling {
@@ -90,69 +90,69 @@ resource "google_compute_instance" "primary" {
   }
 
   boot_disk {
-    auto_delete = "${var.autodelete_disk}"
+    auto_delete = var.autodelete_disk
 
     initialize_params {
       image = "projects/${var.linux_image_project}/global/images/family/${var.linux_image_family}"
-      size  = "${var.boot_disk_size}"
-      type  = "${var.boot_disk_type}"
+      size  = var.boot_disk_size
+      type  = var.boot_disk_type
     }
   }
 
   attached_disk {
-    source = "${google_compute_disk.gcp_sap_hana_sd_0.self_link}"
+    source = google_compute_disk.gcp_sap_hana_sd_0.self_link
   }
 
   attached_disk {
-    source = "${google_compute_disk.gcp_sap_hana_sd_1.self_link}"
+    source = google_compute_disk.gcp_sap_hana_sd_1.self_link
   }
 
   network_interface {
-    subnetwork         = "${var.subnetwork}"
-    subnetwork_project = "${var.project_id}"
+    subnetwork         = var.subnetwork
+    subnetwork_project = var.project_id
 
     access_config {
-      nat_ip = "${google_compute_address.primary_instance_ip.address}"
+      nat_ip = google_compute_address.primary_instance_ip.address
     }
   }
 
-  metadata {
-    sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
-    sap_deployment_debug       = "${var.sap_deployment_debug}"
-    post_deployment_script     = "${var.post_deployment_script}"
-    sap_hana_sid               = "${var.sap_hana_sid}"
-    sap_primary_instance       = "${var.primary_instance_name}"
-    sap_secondary_instance     = "${var.secondary_instance_name}"
-    sap_primary_zone           = "${var.primary_zone}"
-    sap_secondary_zone         = "${var.secondary_zone}"
-    sap_hana_instance_number   = "${var.sap_hana_instance_number}"
-    sap_hana_sidadm_password   = "${var.sap_hana_sidadm_password}"
-    sap_hana_system_password   = "${var.sap_hana_system_password}"
-    sap_hana_sidadm_uid        = "${var.sap_hana_sidadm_uid}"
-    sap_hana_sapsys_gid        = "${var.sap_hana_sapsys_gid}"
-    sap_vip                    = "${var.sap_vip}"
-    sap_vip_secondary_range    = "${var.sap_vip_secondary_range}"
+  metadata = {
+    sap_hana_deployment_bucket = var.sap_hana_deployment_bucket
+    sap_deployment_debug       = var.sap_deployment_debug
+    post_deployment_script     = var.post_deployment_script
+    sap_hana_sid               = var.sap_hana_sid
+    sap_primary_instance       = var.primary_instance_name
+    sap_secondary_instance     = var.secondary_instance_name
+    sap_primary_zone           = var.primary_zone
+    sap_secondary_zone         = var.secondary_zone
+    sap_hana_instance_number   = var.sap_hana_instance_number
+    sap_hana_sidadm_password   = var.sap_hana_sidadm_password
+    sap_hana_system_password   = var.sap_hana_system_password
+    sap_hana_sidadm_uid        = var.sap_hana_sidadm_uid
+    sap_hana_sapsys_gid        = var.sap_hana_sapsys_gid
+    sap_vip                    = var.sap_vip
+    sap_vip_secondary_range    = var.sap_vip_secondary_range
 
-    startup-script = "${var.startup_script_1}"
+    startup-script = var.startup_script_1
   }
 
   lifecycle {
     # Ignore changes in the instance metadata, since it is modified by the SAP startup script.
-    ignore_changes = ["metadata"]
+    ignore_changes = [metadata]
   }
 
   service_account {
-    email  = "${var.service_account_email}"
+    email  = var.service_account_email
     scopes = ["cloud-platform"]
   }
 }
 
 resource "google_compute_instance" "secondary" {
-  project        = "${var.project_id}"
-  name           = "${var.secondary_instance_name}"
-  machine_type   = "${var.instance_type}"
-  zone           = "${var.secondary_zone}"
-  tags           = "${var.network_tags}"
+  project        = var.project_id
+  name           = var.secondary_instance_name
+  machine_type   = var.instance_type
+  zone           = var.secondary_zone
+  tags           = var.network_tags
   can_ip_forward = true
 
   scheduling {
@@ -161,59 +161,59 @@ resource "google_compute_instance" "secondary" {
   }
 
   boot_disk {
-    auto_delete = "${var.autodelete_disk}"
+    auto_delete = var.autodelete_disk
 
     initialize_params {
       image = "projects/${var.linux_image_project}/global/images/family/${var.linux_image_family}"
-      size  = "${var.boot_disk_size}"
-      type  = "${var.boot_disk_type}"
+      size  = var.boot_disk_size
+      type  = var.boot_disk_type
     }
   }
 
   attached_disk {
-    source = "${google_compute_disk.gcp_sap_hana_sd_2.self_link}"
+    source = google_compute_disk.gcp_sap_hana_sd_2.self_link
   }
 
   attached_disk {
-    source = "${google_compute_disk.gcp_sap_hana_sd_3.self_link}"
+    source = google_compute_disk.gcp_sap_hana_sd_3.self_link
   }
 
   network_interface {
-    subnetwork         = "${var.subnetwork}"
-    subnetwork_project = "${var.project_id}"
+    subnetwork         = var.subnetwork
+    subnetwork_project = var.project_id
 
     access_config {
-      nat_ip = "${google_compute_address.secondary_instance_ip.address}"
+      nat_ip = google_compute_address.secondary_instance_ip.address
     }
   }
 
-  metadata {
-    sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
-    sap_deployment_debug       = "${var.sap_deployment_debug}"
-    post_deployment_script     = "${var.post_deployment_script}"
-    sap_hana_sid               = "${var.sap_hana_sid}"
-    sap_primary_instance       = "${var.primary_instance_name}"
-    sap_secondary_instance     = "${var.secondary_instance_name}"
-    sap_primary_zone           = "${var.primary_zone}"
-    sap_secondary_zone         = "${var.secondary_zone}"
-    sap_hana_instance_number   = "${var.sap_hana_instance_number}"
-    sap_hana_sidadm_password   = "${var.sap_hana_sidadm_password}"
-    sap_hana_system_password   = "${var.sap_hana_system_password}"
-    sap_hana_sidadm_uid        = "${var.sap_hana_sidadm_uid}"
-    sap_hana_sapsys_gid        = "${var.sap_hana_sapsys_gid}"
-    sap_vip                    = "${var.sap_vip}"
-    sap_vip_secondary_range    = "${var.sap_vip_secondary_range}"
+  metadata = {
+    sap_hana_deployment_bucket = var.sap_hana_deployment_bucket
+    sap_deployment_debug       = var.sap_deployment_debug
+    post_deployment_script     = var.post_deployment_script
+    sap_hana_sid               = var.sap_hana_sid
+    sap_primary_instance       = var.primary_instance_name
+    sap_secondary_instance     = var.secondary_instance_name
+    sap_primary_zone           = var.primary_zone
+    sap_secondary_zone         = var.secondary_zone
+    sap_hana_instance_number   = var.sap_hana_instance_number
+    sap_hana_sidadm_password   = var.sap_hana_sidadm_password
+    sap_hana_system_password   = var.sap_hana_system_password
+    sap_hana_sidadm_uid        = var.sap_hana_sidadm_uid
+    sap_hana_sapsys_gid        = var.sap_hana_sapsys_gid
+    sap_vip                    = var.sap_vip
+    sap_vip_secondary_range    = var.sap_vip_secondary_range
 
-    startup-script = "${var.startup_script_2}"
+    startup-script = var.startup_script_2
   }
 
   lifecycle {
     # Ignore changes in the instance metadata, since it is modified by the SAP startup script.
-    ignore_changes = ["metadata"]
+    ignore_changes = [metadata]
   }
 
   service_account {
-    email  = "${var.service_account_email}"
+    email  = var.service_account_email
     scopes = ["cloud-platform"]
   }
 }
