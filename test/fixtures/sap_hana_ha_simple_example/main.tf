@@ -81,5 +81,5 @@ module "example" {
   sap_hana_deployment_bucket = local.gcs_bucket_static_name
   startup_script_1           = "../../../modules/sap_hana_ha/files/startup.sh"
   startup_script_2           = "../../../modules/sap_hana_ha/files/startup_secondary.sh"
-  post_deployment_script     = google_storage_bucket.deployment_bucket.url}/${google_storage_bucket_object.post_deployment_script.name
+  post_deployment_script     = "${google_storage_bucket.deployment_bucket.url}/${google_storage_bucket_object.post_deployment_script.name}"
 }
