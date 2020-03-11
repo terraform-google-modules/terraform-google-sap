@@ -35,6 +35,14 @@ output "zone" {
   value = var.zone
 }
 
+output "primary_zone" {
+  value = var.zone
+}
+
+output "secondary_zone" {
+  value = "us-east4-b"
+}
+
 output "subnetwork" {
   value = module.network.subnets_self_links[0]
 }
@@ -45,6 +53,14 @@ output "sap_hana_instance_number" {
 
 output "sap_hana_sid" {
   value = "D01"
+}
+
+output "sap_hana_sidadm_uid" {
+  value = 900
+}
+
+output "sap_hana_sapsys_gid" {
+  value = 900
 }
 
 output "sap_hana_sidadm_password" {
@@ -95,8 +111,27 @@ output "instance_name" {
   value = "gcp-sap-test"
 }
 
-output "service_account_email" {
-  value = "${module.project.number}-compute@developer.gserviceaccount.com"
+output "primary_instance_name" {
+  value = "gcp-sap-ha-1-test"
 }
 
+output "secondary_instance_name" {
+  value = "gcp-sap-ha-2-test"
+}
+
+output "sap_vip" {
+  value = "10.1.0.24"
+}
+
+output "sap_vip_secondary_range" {
+  value = ""
+}
+
+output "service_account_email" {
+  value = "${module.project.project_number}-compute@developer.gserviceaccount.com"
+}
+
+output "sap_hana_deployment_bucket" {
+  value = "bucket_name"
+}
 
