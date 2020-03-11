@@ -81,10 +81,12 @@ variable "subnetwork" {
 variable "network_tags" {
   type        = list
   description = "List of network tags to attach to the instance."
+  default     = []
 }
 
 variable "sap_deployment_debug" {
   description = "Debug flag for Netweaver deployment."
+  default     = "false"
 }
 
 variable "nw_deployment_bucket" {
@@ -94,4 +96,5 @@ variable "nw_deployment_bucket" {
 
 variable "public_ip" {
   description = "Determines whether a public IP address is added to your VM instance."
+  default     = 1
 }
