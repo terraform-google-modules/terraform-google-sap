@@ -107,10 +107,6 @@ output "instance_type" {
   value = "n1-highmem-16"
 }
 
-output "instance_name" {
-  value = "gcp-sap-test"
-}
-
 output "primary_instance_name" {
   value = "gcp-sap-ha-1-test"
 }
