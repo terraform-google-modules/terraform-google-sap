@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- variable "instance-type" {
+variable "instance-type" {
   description = "The GCE instance/machine type."
   type        = string
 }
