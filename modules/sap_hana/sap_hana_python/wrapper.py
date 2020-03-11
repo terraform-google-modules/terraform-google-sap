@@ -2,8 +2,6 @@ import sap_hana
 import sys
 
 
-
-
 class Context:
     def __init__(self, instance_type):
         self.properties = {
