@@ -135,6 +135,10 @@ output "sap_vip_internal_address" {
   value = "sap-vip-internal-address"
 }
 
+output "address_name" {
+  value = "gcp-sap-test-ip"
+}
+
 output "sap_vip_secondary_range" {
   value = ""
 }
