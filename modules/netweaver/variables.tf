@@ -82,6 +82,7 @@ variable "subnetwork" {
 variable "network_tags" {
   type        = list
   description = "List of network tags to attach to the instance."
+  default = []
 }
 
 variable "public_ip" {

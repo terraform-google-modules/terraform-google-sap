@@ -39,3 +39,6 @@ output "subnetwork" {
   value = module.network.subnets_self_links[0]
 }
 
+output "sap_hana_instance_number" {
+  value = 10
+}
