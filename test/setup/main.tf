@@ -15,17 +15,7 @@
  */
 
 locals {
-  project_name   = "cft-sap"
-  subfolder_name = "${local.project_name}-${random_id.folder_rand.hex}"
-}
-
-resource "random_id" "folder_rand" {
-  byte_length = 2
-}
-
-resource "google_folder" "ci_event_func_subfolder" {
-  display_name = local.subfolder_name
-  parent       = "folders/${var.folder_id}"
+  project_name = "cft-sap"
 }
 
 module "project" {

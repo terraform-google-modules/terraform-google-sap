@@ -18,10 +18,6 @@ output "project_id" {
   value = module.project.project_id
 }
 
-output "sub_folder_id" {
-  value = google_folder.ci_event_func_subfolder.id
-}
-
 output "region" {
   value = var.region
 }
