@@ -22,11 +22,6 @@ output "sub_folder_id" {
   value = google_folder.ci_event_func_subfolder.id
 }
 
-output "sa_key" {
-  value     = google_service_account_key.int_test.private_key
-  sensitive = true
-}
-
 output "region" {
   value = var.region
 }
@@ -140,7 +135,7 @@ output "sap_vip_secondary_range" {
 }
 
 output "service_account_email" {
-  value = "${module.project.project_number}-compute@developer.gserviceaccount.com"
+  value = google_service_account.int_test.email
 }
 
 output "sap_hana_deployment_bucket" {
