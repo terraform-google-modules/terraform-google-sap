@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,24 @@
  * limitations under the License.
  */
 
-output "instance_name" {
-  value = google_compute_instance.gcp_sap_hana.name
+locals {
+  int_required_roles = [
+    "roles/compute.admin",
+    "roles/logging.configWriter",
+    "roles/iam.serviceAccountUser",
+  ]
 }
 
-output "zone" {
-  value = google_compute_instance.gcp_sap_hana.zone
+resource "google_service_account" "int_test" {
+  project      = module.project.project_id
+  account_id   = "ci-account"
+  display_name = "ci-account"
 }
 
-output "machine_type" {
-  value = google_compute_instance.gcp_sap_hana.machine_type
+resource "google_project_iam_member" "int_test" {
+  count = length(local.int_required_roles)
+
+  project = module.project.project_id
+  role    = local.int_required_roles[count.index]
+  member  = "serviceAccount:${google_service_account.int_test.email}"
 }

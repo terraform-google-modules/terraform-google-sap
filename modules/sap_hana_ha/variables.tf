@@ -157,8 +157,9 @@ variable "service_account_email" {
 }
 
 variable "network_tags" {
-  type        = "list"
+  type        = list
   description = "List of network tags to attach to the instance."
+  default     = []
 }
 
 variable "primary_instance_ip" {

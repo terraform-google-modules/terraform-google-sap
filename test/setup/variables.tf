@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-output "instance_name" {
-  value = google_compute_instance.gcp_sap_hana.name
+variable "org_id" {
+  description = "The numeric organization id"
 }
 
-output "zone" {
-  value = google_compute_instance.gcp_sap_hana.zone
+variable "folder_id" {
+  description = "The folder to deploy in"
 }
 
-output "machine_type" {
-  value = google_compute_instance.gcp_sap_hana.machine_type
+variable "billing_account" {
+  description = "The billing account id associated with the project, e.g. XXXXXX-YYYYYY-ZZZZZZ"
+}
+
+variable "region" {
+  description = "Compute region to create test resources"
+  default     = "us-east4"
+}
+
+variable "zone" {
+  description = "Compute region zone to create test resources"
+  default     = "us-east4-a"
 }

@@ -15,42 +15,42 @@
  */
 
 terraform {
-  required_version = "~> 0.11.0"
+  required_version = "~> 0.12.0"
 }
 
 module "sap_hana" {
   source        = "./sap_hana_python"
-  instance-type = "${var.instance_type}"
+  instance-type = var.instance_type
 }
 
 resource "google_compute_disk" "gcp_sap_hana_sd_0" {
-  project = "${var.project_id}"
+  project = var.project_id
   name    = "${var.disk_name_0}-${var.device_name_pd_ssd}"
-  type    = "${var.disk_type_0}"
-  zone    = "${var.zone}"
-  size    = "${var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize}"
+  type    = var.disk_type_0
+  zone    = var.zone
+  size    = var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize
 }
 
 resource "google_compute_disk" "gcp_sap_hana_sd_1" {
-  project = "${var.project_id}"
+  project = var.project_id
   name    = "${var.disk_name_1}-${var.device_name_pd_hdd}"
-  type    = "${var.disk_type_1}"
-  zone    = "${var.zone}"
-  size    = "${var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize}"
+  type    = var.disk_type_1
+  zone    = var.zone
+  size    = var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize
 }
 
 resource "google_compute_address" "gcp_sap_hana_ip" {
-  project = "${var.project_id}"
-  name    = "${var.address_name}"
-  region  = "${var.region}"
+  project = var.project_id
+  name    = var.address_name
+  region  = var.region
 }
 
 resource "google_compute_instance" "gcp_sap_hana" {
-  project        = "${var.project_id}"
-  name           = "${var.instance_name}"
-  machine_type   = "${var.instance_type}"
-  zone           = "${var.zone}"
-  tags           = "${var.network_tags}"
+  project        = var.project_id
+  name           = var.instance_name
+  machine_type   = var.instance_type
+  zone           = var.zone
+  tags           = var.network_tags
   can_ip_forward = true
 
   scheduling {
@@ -59,48 +59,53 @@ resource "google_compute_instance" "gcp_sap_hana" {
   }
 
   boot_disk {
-    auto_delete = "${var.autodelete_disk}"
+    auto_delete = var.autodelete_disk
 
     initialize_params {
       image = "projects/${var.linux_image_project}/global/images/family/${var.linux_image_family}"
-      size  = "${var.boot_disk_size}"
-      type  = "${var.boot_disk_type}"
+      size  = var.boot_disk_size
+      type  = var.boot_disk_type
     }
   }
 
   attached_disk {
-    source = "${google_compute_disk.gcp_sap_hana_sd_0.self_link}"
+    source = google_compute_disk.gcp_sap_hana_sd_0.self_link
   }
 
   attached_disk {
-    source = "${google_compute_disk.gcp_sap_hana_sd_1.self_link}"
+    source = google_compute_disk.gcp_sap_hana_sd_1.self_link
   }
 
   network_interface {
-    subnetwork         = "${var.subnetwork}"
-    subnetwork_project = "${var.project_id}"
+    subnetwork         = var.subnetwork
+    subnetwork_project = var.project_id
 
     access_config {
-      nat_ip = "${element(google_compute_address.gcp_sap_hana_ip.*.address, count.index)}"
+      nat_ip = google_compute_address.gcp_sap_hana_ip.address
     }
   }
 
-  metadata {
-    sap_hana_deployment_bucket = "${var.sap_hana_deployment_bucket}"
-    sap_deployment_debug       = "${var.sap_deployment_debug}"
-    post_deployment_script     = "${var.post_deployment_script}"
-    sap_hana_sid               = "${var.sap_hana_sid}"
-    sap_hana_instance_number   = "${var.sap_hana_instance_number}"
-    sap_hana_sidadm_password   = "${var.sap_hana_sidadm_password}"
-    sap_hana_system_password   = "${var.sap_hana_system_password}"
-    sap_hana_sidadm_uid        = "${var.sap_hana_sidadm_uid}"
-    sap_hana_sapsys_gid        = "${var.sap_hana_sapsys_gid}"
+  metadata = {
+    sap_hana_deployment_bucket = var.sap_hana_deployment_bucket
+    sap_deployment_debug       = var.sap_deployment_debug
+    post_deployment_script     = var.post_deployment_script
+    sap_hana_sid               = var.sap_hana_sid
+    sap_hana_instance_number   = var.sap_hana_instance_number
+    sap_hana_sidadm_password   = var.sap_hana_sidadm_password
+    sap_hana_system_password   = var.sap_hana_system_password
+    sap_hana_sidadm_uid        = var.sap_hana_sidadm_uid
+    sap_hana_sapsys_gid        = var.sap_hana_sapsys_gid
 
-    startup-script = "${var.startup_script}"
+    startup-script = var.startup_script
+  }
+
+  lifecycle {
+    # Ignore changes in the instance metadata, since it is modified by the SAP startup script.
+    ignore_changes = [metadata]
   }
 
   service_account {
-    email  = "${var.service_account_email}"
+    email  = var.service_account_email
     scopes = ["cloud-platform"]
   }
 }
