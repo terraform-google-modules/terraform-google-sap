@@ -16,30 +16,30 @@
 
 output "sap_hana_sid" {
   description = "SAP Hana SID user"
-  value       = "${module.example.sap_hana_sid}"
+  value       = module.example.sap_hana_sid
 }
 
 output "project_id" {
   description = "The ID of the project in which resources are provisioned."
-  value       = "${var.project_id}"
+  value       = var.project_id
 }
 
 output "primary_instance_name" {
   description = "Name of sap primary instance"
-  value       = "${var.primary_instance_name}"
+  value       = var.primary_instance_name
 }
 
 output "secondary_instance_name" {
   description = "Name of sap secondary instance"
-  value       = "${var.secondary_instance_name}"
+  value       = var.secondary_instance_name
 }
 
 output "primary_zone" {
   description = "Compute Engine primary instance deployment zone"
-  value       = "${var.primary_zone}"
+  value       = var.primary_zone
 }
 
 output "secondary_zone" {
   description = "Compute Engine secondary instance deployment zone"
-  value       = "${var.secondary_zone}"
+  value       = var.secondary_zone
 }

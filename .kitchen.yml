@@ -61,5 +61,3 @@ suites:
           backend: local
           controls:
             - deployment_validation
-
-  

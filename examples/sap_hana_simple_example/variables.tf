@@ -75,8 +75,9 @@ variable "subnetwork" {
 }
 
 variable "network_tags" {
-  type        = "list"
+  type        = list
   description = "List of network tags to attach to the instance."
+  default     = []
 }
 
 variable "sap_hana_deployment_bucket" {

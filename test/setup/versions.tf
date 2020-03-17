@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-output "instance_name" {
-  value = google_compute_instance.gcp_sap_hana.name
+terraform {
+  required_version = ">= 0.12"
 }
 
-output "zone" {
-  value = google_compute_instance.gcp_sap_hana.zone
+provider "google" {
+  version = "~> 2.12.0"
 }
 
-output "machine_type" {
-  value = google_compute_instance.gcp_sap_hana.machine_type
+provider "google-beta" {
+  version = "~> 2.12.0"
 }

@@ -80,8 +80,9 @@ variable "subnetwork" {
 }
 
 variable "network_tags" {
-  type        = "list"
+  type        = list
   description = "List of network tags to attach to the instance."
+  default     = []
 }
 
 variable "public_ip" {
@@ -120,4 +121,5 @@ variable "post_deployment_script" {
 
 variable "sap_deployment_debug" {
   description = "Debug flag for Netweaver deployment."
+  default     = "false"
 }

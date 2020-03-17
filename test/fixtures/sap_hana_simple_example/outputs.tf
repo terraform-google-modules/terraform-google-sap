@@ -16,20 +16,20 @@
 
 output "sap_hana_sid" {
   description = "SAP Hana SID user"
-  value       = "${module.example.sap_hana_sid}"
+  value       = module.example.sap_hana_sid
 }
 
 output "project_id" {
   description = "The ID of the project in which resources are provisioned."
-  value       = "${var.project_id}"
+  value       = var.project_id
 }
 
 output "instance_name" {
   description = "Name of the instance"
-  value       = "${module.example.instance_name}"
+  value       = module.example.instance_name
 }
 
 output "zone" {
   description = "Compute Engine instance deployment zone"
-  value       = "${module.example.zone}"
+  value       = module.example.zone
 }

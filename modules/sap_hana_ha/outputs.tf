@@ -16,30 +16,30 @@
 
 output "primary_instance_name" {
   description = "Name of sap primary instance"
-  value       = "${google_compute_instance.primary.name}"
+  value       = google_compute_instance.primary.name
 }
 
 output "primary_zone" {
   description = "Compute Engine primary instance deployment zone"
-  value       = "${google_compute_instance.primary.zone}"
+  value       = google_compute_instance.primary.zone
 }
 
 output "primary_instance_machine_type" {
   description = "Primary GCE instance/machine type."
-  value       = "${google_compute_instance.primary.machine_type}"
+  value       = google_compute_instance.primary.machine_type
 }
 
 output "secondary_instance_name" {
   description = "Name of sap secondary instance"
-  value       = "${google_compute_instance.secondary.name}"
+  value       = google_compute_instance.secondary.name
 }
 
 output "secondary_zone" {
   description = "Compute Engine secondary instance deployment zone"
-  value       = "${google_compute_instance.secondary.zone}"
+  value       = google_compute_instance.secondary.zone
 }
 
 output "secondary_instance_machine_type" {
   description = "Secondary GCE instance/machine type."
-  value       = "${google_compute_instance.secondary.machine_type}"
+  value       = google_compute_instance.secondary.machine_type
 }
