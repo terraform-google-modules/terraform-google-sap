@@ -55,7 +55,6 @@ module "example" {
   usr_sap_size           = var.usr_sap_size
   sap_mnt_size           = var.sap_mnt_size
   swap_size              = var.swap_size
-  pd_kms_key             = var.disks_cmek
   instance_name          = var.instance_name
   instance_type          = var.instance_type
   network_tags           = var.network_tags

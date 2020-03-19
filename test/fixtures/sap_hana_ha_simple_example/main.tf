@@ -63,7 +63,6 @@ module "example" {
   boot_disk_type             = var.boot_disk_type
   pd_hdd_size                = var.pd_hdd_size
   pd_ssd_size                = var.pd_ssd_size
-  pd_kms_key                 = var.disks_cmek
   primary_instance_name      = var.primary_instance_name
   secondary_instance_name    = var.secondary_instance_name
   primary_zone               = var.primary_zone

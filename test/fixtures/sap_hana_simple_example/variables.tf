@@ -65,6 +65,10 @@ variable "pd_hdd_size" {
   default     = ""
 }
 
+variable "disks_cmek" {
+  description = "The customer managed encryption key to use for persistent disks."
+}
+
 variable "subnetwork" {
   description = "Compute Engine instance name"
 }
