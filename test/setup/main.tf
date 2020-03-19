@@ -65,6 +65,6 @@ resource "google_kms_crypto_key_iam_binding" "disks_cmek" {
 
   role = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   members = [
-    "serviceAccount:service-${module.project.number}@compute-system.iam.gserviceaccount.com",
+    "serviceAccount:service-${module.project.project_number}@compute-system.iam.gserviceaccount.com",
   ]
 }
