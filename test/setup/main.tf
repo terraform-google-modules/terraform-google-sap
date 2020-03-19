@@ -48,9 +48,9 @@ module "network" {
 }
 
 # Create a KMS key to use as customer managed encryption key for the instance
-# persistent disks. 
+# persistent disks.
 resource "google_kms_key_ring" "disks_cmek" {
-  project  = var.project_id
+  project  = module.project.project_id
   name     = "disks-cmek"
   location = var.region
 }
@@ -61,7 +61,7 @@ resource "google_kms_crypto_key" "disks_cmek" {
 }
 
 resource "google_kms_crypto_key_iam_binding" "disks_cmek" {
-  crypto_key_id = "${var.project_id}/${var.region}/${google_kms_key_ring.disks_cmek.name}/${google_kms_crypto_key.disks_cmek.name}"
+  crypto_key_id = google_kms_crypto_key.disks_cmek.self_link
 
   role = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   members = [

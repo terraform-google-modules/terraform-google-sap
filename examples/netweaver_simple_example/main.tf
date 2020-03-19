@@ -47,7 +47,7 @@ module "gcp_netweaver" {
 # Create a KMS key to use as customer managed encryption key for the instance
 # persistent disk. This is completely optional. If you do not need to manage
 # your own keys, just remove this section and remove also the pd_kms_key
-# parameter in the module declaration above. 
+# parameter in the module declaration above.
 resource "google_kms_key_ring" "netweaver_simple" {
   project  = var.project_id
   name     = "netweaver-simple-${random_id.this.hex}"

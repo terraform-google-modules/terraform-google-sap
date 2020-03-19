@@ -71,6 +71,10 @@ variable "boot_disk_type" {
   description = "The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
 }
 
+variable "disks_cmek" {
+  description = "The customer managed encryption key to use for persistent disks."
+}
+
 variable "service_account_email" {
   description = "Email of service account to attach to the instance."
 }
