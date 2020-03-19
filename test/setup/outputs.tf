@@ -86,6 +86,10 @@ output "sap_mnt_size" {
   value = 0
 }
 
+output "disks_cmek" {
+  value = google_kms_crypto_key.disks_cmek.self_link
+}
+
 output "linux_image_family" {
   value = "sles-12-sp3-sap"
 }

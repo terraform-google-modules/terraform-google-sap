@@ -62,6 +62,7 @@ module "example" {
   boot_disk_size             = var.boot_disk_size
   pd_ssd_size                = var.pd_ssd_size
   pd_hdd_size                = var.pd_hdd_size
+  pd_kms_key                 = var.disks_cmek
   sap_hana_sidadm_password   = var.sap_hana_sidadm_password
   sap_hana_system_password   = var.sap_hana_system_password
   sap_hana_sid               = var.sap_hana_sid

@@ -54,4 +54,37 @@ module "gcp_sap_hana_ha" {
   sap_vip_internal_address   = var.sap_vip_internal_address
   startup_script_1           = file(var.startup_script_1)
   startup_script_2           = file(var.startup_script_2)
+  pd_kms_key                 = google_kms_crypto_key.sap_hana_ha_simple.self_link
+}
+
+# Create a KMS key to use as customer managed encryption key for the instance
+# persistent disk. This is completely optional. If you do not need to manage
+# your own keys, just remove this section and remove also the pd_kms_key
+# parameter in the module declaration above. 
+resource "google_kms_key_ring" "sap_hana_ha_simple" {
+  project  = var.project_id
+  name     = "sap-hana-ha-simple-${random_id.this.hex}"
+  location = var.region
+}
+
+resource "google_kms_crypto_key" "sap_hana_ha_simple" {
+  name     = "sap-hana-ha-simple-${random_id.this.hex}"
+  key_ring = google_kms_key_ring.sap_hana_ha_simple.self_link
+}
+
+data "google_project" "project" {
+  project_id = var.project_id
+}
+
+resource "google_kms_crypto_key_iam_binding" "sap_hana_ha_simple" {
+  crypto_key_id = google_kms_crypto_key.sap_hana_ha_simple.self_link
+
+  role = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+  members = [
+    "serviceAccount:service-${data.google_project.project.number}@compute-system.iam.gserviceaccount.com",
+  ]
+}
+
+resource "random_id" "this" {
+  byte_length = 2
 }

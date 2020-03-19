@@ -29,6 +29,10 @@ resource "google_compute_disk" "gcp_sap_hana_sd_0" {
   type    = var.disk_type_0
   zone    = var.zone
   size    = var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize
+
+  disk_encryption_key {
+    kms_key_self_link = var.pd_kms_key
+  }
 }
 
 resource "google_compute_disk" "gcp_sap_hana_sd_1" {
@@ -37,6 +41,10 @@ resource "google_compute_disk" "gcp_sap_hana_sd_1" {
   type    = var.disk_type_1
   zone    = var.zone
   size    = var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize
+
+  disk_encryption_key {
+    kms_key_self_link = var.pd_kms_key
+  }
 }
 
 resource "google_compute_address" "gcp_sap_hana_ip" {
@@ -59,7 +67,8 @@ resource "google_compute_instance" "gcp_sap_hana" {
   }
 
   boot_disk {
-    auto_delete = var.autodelete_disk
+    auto_delete       = var.autodelete_disk
+    kms_key_self_link = var.pd_kms_key
 
     initialize_params {
       image = "projects/${var.linux_image_project}/global/images/family/${var.linux_image_family}"
