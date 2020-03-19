@@ -29,7 +29,8 @@ module "project" {
   billing_account   = var.billing_account
 
   activate_apis = [
-    "compute.googleapis.com"
+    "compute.googleapis.com",
+    "cloudkms.googleapis.com",
   ]
 }
 
