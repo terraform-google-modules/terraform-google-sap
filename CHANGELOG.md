@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### [0.2.1](https://www.github.com/terraform-google-modules/terraform-google-sap/compare/v0.2.0...v0.2.1) (2020-03-19)
+
+
+### Bug Fixes
+
+* Avoid instance metadata conflicts after instance setup ([#11](https://www.github.com/terraform-google-modules/terraform-google-sap/issues/11)) ([a5592c2](https://www.github.com/terraform-google-modules/terraform-google-sap/commit/a5592c2f9d56181f3c60df1fd9d138440e7c542a))
+
 ## [Unreleased]
 
 ## [0.2.0] - 2019-09-10
