@@ -74,7 +74,7 @@ resource "google_kms_crypto_key_iam_binding" "sap_hana_simple" {
 
   role = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   members = [
-    "serviceAccount:service-${data.google_project.project.number}@compute-system.iam.gserviceaccount.com",
+    "serviceAccount:service-${data.google_project.project.project_number}@compute-system.iam.gserviceaccount.com",
   ]
 }
 
