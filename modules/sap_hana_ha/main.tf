@@ -51,8 +51,12 @@ resource "google_compute_disk" "gcp_sap_hana_sd_0" {
   zone    = var.primary_zone
   size    = var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize
 
-  disk_encryption_key {
-    kms_key_self_link = var.pd_kms_key
+  # Add the disk_encryption_key block only if a pd_kms_key was provided
+  dynamic "disk_encryption_key" {
+    for_each = var.pd_kms_key != null ? [""] : []
+    content {
+      kms_key_self_link = var.pd_kms_key
+    }
   }
 }
 
@@ -63,8 +67,12 @@ resource "google_compute_disk" "gcp_sap_hana_sd_1" {
   zone    = var.primary_zone
   size    = var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize
 
-  disk_encryption_key {
-    kms_key_self_link = var.pd_kms_key
+  # Add the disk_encryption_key block only if a pd_kms_key was provided
+  dynamic "disk_encryption_key" {
+    for_each = var.pd_kms_key != null ? [""] : []
+    content {
+      kms_key_self_link = var.pd_kms_key
+    }
   }
 }
 
@@ -75,8 +83,12 @@ resource "google_compute_disk" "gcp_sap_hana_sd_2" {
   zone    = var.secondary_zone
   size    = var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize
 
-  disk_encryption_key {
-    kms_key_self_link = var.pd_kms_key
+  # Add the disk_encryption_key block only if a pd_kms_key was provided
+  dynamic "disk_encryption_key" {
+    for_each = var.pd_kms_key != null ? [""] : []
+    content {
+      kms_key_self_link = var.pd_kms_key
+    }
   }
 }
 
@@ -87,8 +99,12 @@ resource "google_compute_disk" "gcp_sap_hana_sd_3" {
   zone    = var.secondary_zone
   size    = var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize
 
-  disk_encryption_key {
-    kms_key_self_link = var.pd_kms_key
+  # Add the disk_encryption_key block only if a pd_kms_key was provided
+  dynamic "disk_encryption_key" {
+    for_each = var.pd_kms_key != null ? [""] : []
+    content {
+      kms_key_self_link = var.pd_kms_key
+    }
   }
 }
 

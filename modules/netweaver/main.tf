@@ -32,8 +32,12 @@ resource "google_compute_disk" "gcp_nw_pd_0" {
   count   = var.usr_sap_size > 0 ? 1 : 0
   size    = var.usr_sap_size
 
-  disk_encryption_key {
-    kms_key_self_link = var.pd_kms_key
+  # Add the disk_encryption_key block only if a pd_kms_key was provided
+  dynamic "disk_encryption_key" {
+    for_each = var.pd_kms_key != null ? [""] : []
+    content {
+      kms_key_self_link = var.pd_kms_key
+    }
   }
 }
 
@@ -45,8 +49,12 @@ resource "google_compute_disk" "gcp_nw_pd_1" {
   count   = var.sap_mnt_size > 0 ? 1 : 0
   size    = var.sap_mnt_size
 
-  disk_encryption_key {
-    kms_key_self_link = var.pd_kms_key
+  # Add the disk_encryption_key block only if a pd_kms_key was provided
+  dynamic "disk_encryption_key" {
+    for_each = var.pd_kms_key != null ? [""] : []
+    content {
+      kms_key_self_link = var.pd_kms_key
+    }
   }
 }
 
@@ -58,8 +66,12 @@ resource "google_compute_disk" "gcp_nw_pd_2" {
   count   = var.swap_size > 0 ? 1 : 0
   size    = var.swap_size
 
-  disk_encryption_key {
-    kms_key_self_link = var.pd_kms_key
+  # Add the disk_encryption_key block only if a pd_kms_key was provided
+  dynamic "disk_encryption_key" {
+    for_each = var.pd_kms_key != null ? [""] : []
+    content {
+      kms_key_self_link = var.pd_kms_key
+    }
   }
 }
 
