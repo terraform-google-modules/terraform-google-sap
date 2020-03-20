@@ -72,7 +72,7 @@ variable "boot_disk_type" {
 }
 
 variable "pd_kms_key" {
-  description = "Customer managed encryption key to use in persistent disks. If none provided, a Google managed key will be used.."
+  description = "Customer managed encryption key to use in persistent disks. If none provided, a Google managed key will be used."
   default     = null
 }
 
