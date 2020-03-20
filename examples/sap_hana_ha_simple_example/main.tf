@@ -76,13 +76,10 @@ data "google_project" "project" {
   project_id = var.project_id
 }
 
-resource "google_kms_crypto_key_iam_binding" "sap_hana_ha_simple" {
+resource "google_kms_crypto_key_iam_member" "sap_hana_ha_simple" {
   crypto_key_id = google_kms_crypto_key.sap_hana_ha_simple.self_link
-
-  role = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-  members = [
-    "serviceAccount:service-${data.google_project.project.number}@compute-system.iam.gserviceaccount.com",
-  ]
+  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+  member        = "serviceAccount:service-${data.google_project.project.number}@compute-system.iam.gserviceaccount.com"
 }
 
 resource "random_id" "this" {

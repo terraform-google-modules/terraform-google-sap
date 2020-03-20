@@ -63,13 +63,10 @@ data "google_project" "project" {
   project_id = var.project_id
 }
 
-resource "google_kms_crypto_key_iam_binding" "netweaver_simple" {
+resource "google_kms_crypto_key_iam_member" "netweaver_simple" {
   crypto_key_id = google_kms_crypto_key.netweaver_simple.self_link
-
-  role = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-  members = [
-    "serviceAccount:service-${data.google_project.project.number}@compute-system.iam.gserviceaccount.com",
-  ]
+  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+  member        = "serviceAccount:service-${data.google_project.project.number}@compute-system.iam.gserviceaccount.com"
 }
 
 resource "random_id" "this" {
