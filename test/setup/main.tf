@@ -20,7 +20,7 @@ locals {
 
 module "project" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 3.0"
+  version = "~> 7.1.0"
 
   name              = local.project_name
   random_project_id = true
@@ -29,13 +29,14 @@ module "project" {
   billing_account   = var.billing_account
 
   activate_apis = [
-    "compute.googleapis.com"
+    "compute.googleapis.com",
+    "cloudkms.googleapis.com",
   ]
 }
 
 module "network" {
   source  = "terraform-google-modules/network/google"
-  version = "~> 1.2"
+  version = "~> 2.1.0"
 
   project_id   = module.project.project_id
   network_name = "test-network"

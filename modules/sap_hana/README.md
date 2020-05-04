@@ -15,7 +15,7 @@ You can go in the [examples](../../examples) folder complete working example. Ho
 
 ```hcl
 provider "google" {
-  version = "~> 2.6.0"
+  version = "~> 3.13.0"
 }
 
 module "gcp_sap_hana" {
@@ -105,6 +105,7 @@ The recommended way is to use a GCS Bucket in the following way.:
 | disk\_name\_1 | Name of second disk. | string | `"sap-hana-pd-sd-1"` | no |
 | disk\_type\_0 | The GCE data disk type. May be set to pd-ssd. | string | `"pd-ssd"` | no |
 | disk\_type\_1 | The GCE data disk type. May be set to pd-standard (for PD HDD). | string | `"pd-standard"` | no |
+| pd\_kms\_key | Customer managed encryption key to use in persistent disks. If none provided, a Google managed key will be used. | string | `null` | no |
 | instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | n/a | yes |
 | instance\_type | The GCE instance/machine type. | string | n/a | yes |
 | linux\_image\_family | GCE image family. | string | n/a | yes |

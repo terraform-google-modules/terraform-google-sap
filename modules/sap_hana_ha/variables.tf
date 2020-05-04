@@ -152,6 +152,11 @@ variable "disk_name_3" {
   default     = "sap-hana-pd-sd-3"
 }
 
+variable "pd_kms_key" {
+  description = "Customer managed encryption key to use in persistent disks. If none provided, a Google managed key will be used.."
+  default     = null
+}
+
 variable "service_account_email" {
   description = "Email of service account to attach to the instance."
 }

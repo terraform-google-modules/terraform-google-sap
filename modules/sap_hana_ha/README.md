@@ -15,7 +15,7 @@ You can go in the [examples](../../examples) folder complete working example. Ho
 
 ```hcl
 provider "google" {
-  version = "~> 2.6.0"
+  version = "~> 3.13.0"
   region  = var.region
 }
 
@@ -114,6 +114,7 @@ It is the recommended way is to use a GCS Bucket in the following way.:
 | disk\_name\_3 | Name of fourth disk. | string | `"sap-hana-pd-sd-3"` | no |
 | disk\_type\_0 | The GCE data disk type. May be set to pd-ssd. | string | `"pd-ssd"` | no |
 | disk\_type\_1 | The GCE data disk type. May be set to pd-standard (for PD HDD). | string | `"pd-standard"` | no |
+| pd\_kms\_key | Customer managed encryption key to use in persistent disks. If none provided, a Google managed key will be used. | string | `null` | no |
 | instance\_type | The GCE instance/machine type. | string | n/a | yes |
 | linux\_image\_family | GCE image family. | string | n/a | yes |
 | linux\_image\_project | Project name containing the linux image. | string | n/a | yes |

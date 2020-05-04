@@ -15,7 +15,7 @@
  */
 
 provider "google" {
-  version = "~> 2.6.0"
+  version = "~> 3.13.0"
 }
 
 module "gcp_netweaver" {
@@ -41,4 +41,34 @@ module "gcp_netweaver" {
   boot_disk_type         = var.boot_disk_type
   disk_type              = var.disk_type
   startup_script         = var.startup_script
+  pd_kms_key             = google_kms_crypto_key.netweaver_simple.self_link
+}
+
+# Create a KMS key to use as customer managed encryption key for the instance
+# persistent disk. This is completely optional. If you do not need to manage
+# your own keys, just remove this section and remove also the pd_kms_key
+# parameter in the module declaration above.
+resource "google_kms_key_ring" "netweaver_simple" {
+  project  = var.project_id
+  name     = "netweaver-simple-${random_id.this.hex}"
+  location = var.region
+}
+
+resource "google_kms_crypto_key" "netweaver_simple" {
+  name     = "netweaver-simple-${random_id.this.hex}"
+  key_ring = google_kms_key_ring.netweaver_simple.self_link
+}
+
+data "google_project" "project" {
+  project_id = var.project_id
+}
+
+resource "google_kms_crypto_key_iam_member" "netweaver_simple" {
+  crypto_key_id = google_kms_crypto_key.netweaver_simple.self_link
+  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+  member        = "serviceAccount:service-${data.google_project.project.number}@compute-system.iam.gserviceaccount.com"
+}
+
+resource "random_id" "this" {
+  byte_length = 2
 }

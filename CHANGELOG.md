@@ -9,6 +9,19 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Added
+
+- Added support for [Customer Managed Encryption Keys](https://cloud.google.com/compute/docs/disks/customer-managed-encryption) in persistent disks attached to the instances.
+
+### Changed
+
+- Updated for Terraform 0.12. [#11]
+- Updated tests and examples to Google provider 3.13.
+
+### Fixed
+
+- Avoid metadata conflicts after SAP startup script completes. [#11]
+
 ## [0.2.0] - 2019-09-10
 
 ### Added
@@ -30,3 +43,4 @@ and this project adheres to
 [0.1.0]: https://github.com/terraform-google-modules/terraform-google-sap/releases/tag/v0.1.0
 [#2]: https://github.com/terraform-google-modules/terraform-google-sap/pull/2
 [#4]: https://github.com/terraform-google-modules/terraform-google-sap/issues/4
+[#11]: https://github.com/terraform-google-modules/terraform-google-sap/pull/11

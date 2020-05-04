@@ -15,7 +15,7 @@ You can go in the [examples](../../examples) folder complete working example. Ho
 
 ```hcl
 provider "google" {
-  version = "~> 2.6.0"
+  version = "~> 3.13.0"
 }
 
 module "gcp_netweaver" {
@@ -111,6 +111,7 @@ The recommended way is to use a GCS Bucket in the following way.:
 | device\_2 | Device name | string | `"sapmnt"` | no |
 | device\_3 | Device name | string | `"swap"` | no |
 | disk\_type | The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | n/a | yes |
+| pd\_kms\_key | Customer managed encryption key to use in persistent disks. If none provided, a Google managed key will be used. | string | `null` | no |
 | instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | n/a | yes |
 | instance\_type | The GCE instance/machine type. | string | n/a | yes |
 | linux\_image\_family | GCE image family. | string | n/a | yes |

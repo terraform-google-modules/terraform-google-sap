@@ -31,6 +31,14 @@ resource "google_compute_disk" "gcp_nw_pd_0" {
   zone    = var.zone
   count   = var.usr_sap_size > 0 ? 1 : 0
   size    = var.usr_sap_size
+
+  # Add the disk_encryption_key block only if a pd_kms_key was provided
+  dynamic "disk_encryption_key" {
+    for_each = var.pd_kms_key != null ? [""] : []
+    content {
+      kms_key_self_link = var.pd_kms_key
+    }
+  }
 }
 
 resource "google_compute_disk" "gcp_nw_pd_1" {
@@ -40,6 +48,14 @@ resource "google_compute_disk" "gcp_nw_pd_1" {
   zone    = var.zone
   count   = var.sap_mnt_size > 0 ? 1 : 0
   size    = var.sap_mnt_size
+
+  # Add the disk_encryption_key block only if a pd_kms_key was provided
+  dynamic "disk_encryption_key" {
+    for_each = var.pd_kms_key != null ? [""] : []
+    content {
+      kms_key_self_link = var.pd_kms_key
+    }
+  }
 }
 
 resource "google_compute_disk" "gcp_nw_pd_2" {
@@ -49,6 +65,14 @@ resource "google_compute_disk" "gcp_nw_pd_2" {
   zone    = var.zone
   count   = var.swap_size > 0 ? 1 : 0
   size    = var.swap_size
+
+  # Add the disk_encryption_key block only if a pd_kms_key was provided
+  dynamic "disk_encryption_key" {
+    for_each = var.pd_kms_key != null ? [""] : []
+    content {
+      kms_key_self_link = var.pd_kms_key
+    }
+  }
 }
 
 resource "google_compute_attached_disk" "gcp_nw_attached_pd_0" {
@@ -90,7 +114,8 @@ resource "google_compute_instance" "gcp_nw" {
   }
 
   boot_disk {
-    auto_delete = var.autodelete_disk
+    auto_delete       = var.autodelete_disk
+    kms_key_self_link = var.pd_kms_key
 
     device_name = "${var.instance_name}-${var.device_0}"
 

@@ -50,6 +50,14 @@ resource "google_compute_disk" "gcp_sap_hana_sd_0" {
   type    = var.disk_type_0
   zone    = var.primary_zone
   size    = var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize
+
+  # Add the disk_encryption_key block only if a pd_kms_key was provided
+  dynamic "disk_encryption_key" {
+    for_each = var.pd_kms_key != null ? [""] : []
+    content {
+      kms_key_self_link = var.pd_kms_key
+    }
+  }
 }
 
 resource "google_compute_disk" "gcp_sap_hana_sd_1" {
@@ -58,6 +66,14 @@ resource "google_compute_disk" "gcp_sap_hana_sd_1" {
   type    = var.disk_type_1
   zone    = var.primary_zone
   size    = var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize
+
+  # Add the disk_encryption_key block only if a pd_kms_key was provided
+  dynamic "disk_encryption_key" {
+    for_each = var.pd_kms_key != null ? [""] : []
+    content {
+      kms_key_self_link = var.pd_kms_key
+    }
+  }
 }
 
 resource "google_compute_disk" "gcp_sap_hana_sd_2" {
@@ -66,6 +82,14 @@ resource "google_compute_disk" "gcp_sap_hana_sd_2" {
   type    = var.disk_type_0
   zone    = var.secondary_zone
   size    = var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize
+
+  # Add the disk_encryption_key block only if a pd_kms_key was provided
+  dynamic "disk_encryption_key" {
+    for_each = var.pd_kms_key != null ? [""] : []
+    content {
+      kms_key_self_link = var.pd_kms_key
+    }
+  }
 }
 
 resource "google_compute_disk" "gcp_sap_hana_sd_3" {
@@ -74,6 +98,14 @@ resource "google_compute_disk" "gcp_sap_hana_sd_3" {
   type    = var.disk_type_1
   zone    = var.secondary_zone
   size    = var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize
+
+  # Add the disk_encryption_key block only if a pd_kms_key was provided
+  dynamic "disk_encryption_key" {
+    for_each = var.pd_kms_key != null ? [""] : []
+    content {
+      kms_key_self_link = var.pd_kms_key
+    }
+  }
 }
 
 resource "google_compute_instance" "primary" {
@@ -90,7 +122,8 @@ resource "google_compute_instance" "primary" {
   }
 
   boot_disk {
-    auto_delete = var.autodelete_disk
+    auto_delete       = var.autodelete_disk
+    kms_key_self_link = var.pd_kms_key
 
     initialize_params {
       image = "projects/${var.linux_image_project}/global/images/family/${var.linux_image_family}"
@@ -161,7 +194,8 @@ resource "google_compute_instance" "secondary" {
   }
 
   boot_disk {
-    auto_delete = var.autodelete_disk
+    auto_delete       = var.autodelete_disk
+    kms_key_self_link = var.pd_kms_key
 
     initialize_params {
       image = "projects/${var.linux_image_project}/global/images/family/${var.linux_image_family}"
