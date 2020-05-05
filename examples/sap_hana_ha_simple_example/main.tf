@@ -49,6 +49,7 @@ module "gcp_sap_hana_ha" {
   sap_hana_sapsys_gid        = 900
   sap_vip                    = var.sap_vip
   sap_vip_secondary_range    = var.sap_vip_secondary_range
+  public_ip                  = var.public_ip
   primary_instance_ip        = var.primary_instance_ip
   secondary_instance_ip      = var.secondary_instance_ip
   sap_vip_internal_address   = var.sap_vip_internal_address

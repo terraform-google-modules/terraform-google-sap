@@ -56,9 +56,11 @@ resource "google_compute_disk" "gcp_sap_hana_sd_1" {
 }
 
 resource "google_compute_address" "gcp_sap_hana_ip" {
-  project = var.project_id
-  name    = var.address_name
-  region  = var.region
+    count   = var.public_ip
+
+    project = var.project_id
+    name    = var.address_name
+    region  = var.region
 }
 
 resource "google_compute_instance" "gcp_sap_hana" {
@@ -97,9 +99,13 @@ resource "google_compute_instance" "gcp_sap_hana" {
     subnetwork         = var.subnetwork
     subnetwork_project = var.project_id
 
-    access_config {
-      nat_ip = google_compute_address.gcp_sap_hana_ip.address
+    dynamic "access_config" {
+      for_each = var.public_ip == 1 ? google_compute_address.gcp_sap_hana_ip : []
+      content {
+        nat_ip = access_config.value.address
+      }
     }
+
   }
 
   metadata = {

@@ -167,12 +167,19 @@ variable "network_tags" {
   default     = []
 }
 
+variable "public_ip" {
+  description = "Determines whether a public IP address is added to your VM instance."
+  default     = 1
+}
+
 variable "primary_instance_ip" {
   description = "Primary instance ip address"
+  default     = ""
 }
 
 variable "secondary_instance_ip" {
   description = "Secondary instance ip address"
+  default     = ""
 }
 
 variable "sap_vip_internal_address" {

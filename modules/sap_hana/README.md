@@ -91,50 +91,63 @@ The recommended way is to use a GCS Bucket in the following way.:
 
 [^]: (autogen_docs_start)
 
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | ~> 0.12.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| google | n/a |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| address\_name | Name of static IP adress to add to the instance's access config. | string | n/a | yes |
-| autodelete\_disk | Whether the disk will be auto-deleted when the instance is deleted. | string | `"false"` | no |
-| boot\_disk\_size | Root disk size in GB. | string | n/a | yes |
-| boot\_disk\_type | The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | string | n/a | yes |
-| device\_name\_pd\_hdd | device name for standard persistant disk | string | `"backup"` | no |
-| device\_name\_pd\_ssd | device name for ssd persistant disk | string | `"pdssd"` | no |
-| disk\_name\_0 | Name of first disk. | string | `"sap-hana-pd-sd-0"` | no |
-| disk\_name\_1 | Name of second disk. | string | `"sap-hana-pd-sd-1"` | no |
-| disk\_type\_0 | The GCE data disk type. May be set to pd-ssd. | string | `"pd-ssd"` | no |
-| disk\_type\_1 | The GCE data disk type. May be set to pd-standard (for PD HDD). | string | `"pd-standard"` | no |
-| pd\_kms\_key | Customer managed encryption key to use in persistent disks. If none provided, a Google managed key will be used. | string | `null` | no |
-| instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | string | n/a | yes |
-| instance\_type | The GCE instance/machine type. | string | n/a | yes |
-| linux\_image\_family | GCE image family. | string | n/a | yes |
-| linux\_image\_project | Project name containing the linux image. | string | n/a | yes |
-| network\_tags | List of network tags to attach to the instance. | list | n/a | yes |
-| pd\_hdd\_size | Persistent disk size in GB. | string | `""` | no |
-| pd\_ssd\_size | Persistent disk size in GB. | string | `""` | no |
-| post\_deployment\_script | SAP HANA post deployment script. Must be a gs:// or https:// link to the script. | string | `""` | no |
-| project\_id | The ID of the project in which the resources will be deployed. | string | n/a | yes |
-| region | Region to deploy the resources. Should be in the same region as the zone. | string | n/a | yes |
-| sap\_deployment\_debug | Debug flag for SAP HANA deployment. | string | `"false"` | no |
-| sap\_hana\_deployment\_bucket | SAP hana deployment bucket. | string | n/a | yes |
-| sap\_hana\_instance\_number | SAP HANA instance number | string | n/a | yes |
-| sap\_hana\_sapsys\_gid | SAP HANA SAP System GID | string | n/a | yes |
-| sap\_hana\_sid | SAP HANA System Identifier. When using the SID to enter a user session, like this for example, `su - [SID]adm`, make sure that [SID] is in lower case. | string | n/a | yes |
-| sap\_hana\_sidadm\_password | SAP HANA System Identifier Admin password | string | n/a | yes |
-| sap\_hana\_sidadm\_uid | SAP HANA System Identifier Admin UID | string | n/a | yes |
-| sap\_hana\_system\_password | SAP HANA system password | string | n/a | yes |
-| service\_account\_email | Email of service account to attach to the instance. | string | n/a | yes |
-| startup\_script | Startup script to install SAP HANA. | string | n/a | yes |
-| subnetwork | The name or self_link of the subnetwork where the isntance will be deployed. The subnetwork must exist in the same region this instance will be created in. | string | n/a | yes |
-| zone | The zone that the instance should be created in. | string | n/a | yes |
+|------|-------------|------|---------|:--------:|
+| address\_name | Name of static IP adress to add to the instance's access config. | `string` | `""` | no |
+| autodelete\_disk | Whether the disk will be auto-deleted when the instance is deleted. | `string` | `"false"` | no |
+| boot\_disk\_size | Root disk size in GB. | `any` | n/a | yes |
+| boot\_disk\_type | The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | `any` | n/a | yes |
+| device\_name\_pd\_hdd | device name for standard persistant disk | `string` | `"backup"` | no |
+| device\_name\_pd\_ssd | device name for ssd persistant disk | `string` | `"pdssd"` | no |
+| disk\_name\_0 | Name of first disk. | `string` | `"sap-hana-pd-sd-0"` | no |
+| disk\_name\_1 | Name of second disk. | `string` | `"sap-hana-pd-sd-1"` | no |
+| disk\_type\_0 | The GCE data disk type. May be set to pd-ssd. | `string` | `"pd-ssd"` | no |
+| disk\_type\_1 | The GCE data disk type. May be set to pd-standard (for PD HDD). | `string` | `"pd-standard"` | no |
+| instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | `any` | n/a | yes |
+| instance\_type | The GCE instance/machine type. | `any` | n/a | yes |
+| linux\_image\_family | GCE image family. | `any` | n/a | yes |
+| linux\_image\_project | Project name containing the linux image. | `any` | n/a | yes |
+| network\_tags | List of network tags to attach to the instance. | `list` | `[]` | no |
+| pd\_hdd\_size | Persistent disk size in GB. | `string` | `""` | no |
+| pd\_kms\_key | Customer managed encryption key to use in persistent disks. If none provided, a Google managed key will be used.. | `any` | `null` | no |
+| pd\_ssd\_size | Persistent disk size in GB. | `string` | `""` | no |
+| post\_deployment\_script | SAP HANA post deployment script. Must be a gs:// or https:// link to the script. | `string` | `""` | no |
+| project\_id | The ID of the project in which the resources will be deployed. | `any` | n/a | yes |
+| public\_ip | Determines whether a public IP address is added to your VM instance. | `number` | `1` | no |
+| region | Region to deploy the resources. Should be in the same region as the zone. | `any` | n/a | yes |
+| sap\_deployment\_debug | Debug flag for SAP HANA deployment. | `string` | `"false"` | no |
+| sap\_hana\_deployment\_bucket | SAP hana deployment bucket. | `any` | n/a | yes |
+| sap\_hana\_instance\_number | SAP HANA instance number | `any` | n/a | yes |
+| sap\_hana\_sapsys\_gid | SAP HANA SAP System GID | `any` | n/a | yes |
+| sap\_hana\_sid | SAP HANA System Identifier. When using the SID to enter a user session, like this for example, `su - [SID]adm`, make sure that [SID] is in lower case. | `any` | n/a | yes |
+| sap\_hana\_sidadm\_password | SAP HANA System Identifier Admin password | `any` | n/a | yes |
+| sap\_hana\_sidadm\_uid | SAP HANA System Identifier Admin UID | `any` | n/a | yes |
+| sap\_hana\_system\_password | SAP HANA system password | `any` | n/a | yes |
+| service\_account\_email | Email of service account to attach to the instance. | `any` | n/a | yes |
+| startup\_script | Startup script to install SAP HANA. | `any` | n/a | yes |
+| subnetwork | The name or self\_link of the subnetwork where the isntance will be deployed. The subnetwork must exist in the same region this instance will be created in. | `any` | n/a | yes |
+| zone | The zone that the instance should be created in. | `any` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| instance\_name |  |
-| machine\_type |  |
-| zone |  |
+| instance\_name | n/a |
+| machine\_type | n/a |
+| zone | n/a |
 
 [^]: (autogen_docs_end)

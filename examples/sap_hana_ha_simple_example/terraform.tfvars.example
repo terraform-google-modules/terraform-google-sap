@@ -18,6 +18,7 @@ primary_instance_name = "sap-hana-ha-terra-1"
 primary_instance_ip = "gcp-primary-instance-ip"
 secondary_instance_ip = "gcp-secondary-instance-ip"
 sap_vip_internal_address = "sap-vip-internal-address"
+public_ip                  = 1
 secondary_instance_name = "sap-hana-ha-terra-2"
 instance_type = "n1-highmem-16"
 primary_zone = "primary-zone"

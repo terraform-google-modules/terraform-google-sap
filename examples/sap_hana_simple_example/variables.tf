@@ -124,6 +124,12 @@ variable "sap_hana_sapsys_gid" {
   default     = 900
 }
 
+variable "public_ip" {
+  description = "Determines whether a public IP address is added to your VM instance."
+  default     = 1
+}
+
 variable "address_name" {
   description = "Name of static IP adress to add to the instance's access config."
+  default     = ""
 }
