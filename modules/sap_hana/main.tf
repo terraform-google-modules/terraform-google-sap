@@ -56,11 +56,11 @@ resource "google_compute_disk" "gcp_sap_hana_sd_1" {
 }
 
 resource "google_compute_address" "gcp_sap_hana_ip" {
-    count   = var.public_ip
+  count = var.public_ip
 
-    project = var.project_id
-    name    = var.address_name
-    region  = var.region
+  project = var.project_id
+  name    = var.address_name
+  region  = var.region
 }
 
 resource "google_compute_instance" "gcp_sap_hana" {

@@ -24,7 +24,7 @@ module "sap_hana" {
 }
 
 resource "google_compute_address" "primary_instance_ip" {
-  count   = var.public_ip
+  count = var.public_ip
 
   project = var.project_id
   name    = var.primary_instance_ip
@@ -32,8 +32,8 @@ resource "google_compute_address" "primary_instance_ip" {
 }
 
 resource "google_compute_address" "secondary_instance_ip" {
-  count   = var.public_ip
-  
+  count = var.public_ip
+
   project = var.project_id
   name    = var.secondary_instance_ip
   region  = var.region
