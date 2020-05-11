@@ -24,7 +24,7 @@ module "sap_hana" {
 }
 
 resource "google_compute_address" "primary_instance_ip" {
-  count = var.public_ip
+  count = var.public_ip ? 1 : 0
 
   project = var.project_id
   name    = var.primary_instance_ip
@@ -32,7 +32,7 @@ resource "google_compute_address" "primary_instance_ip" {
 }
 
 resource "google_compute_address" "secondary_instance_ip" {
-  count = var.public_ip
+  count = var.public_ip ? 1 : 0
 
   project = var.project_id
   name    = var.secondary_instance_ip
@@ -149,7 +149,7 @@ resource "google_compute_instance" "primary" {
     subnetwork_project = var.project_id
 
     dynamic "access_config" {
-      for_each = var.public_ip == 1 ? google_compute_address.primary_instance_ip : []
+      for_each = var.public_ip ? google_compute_address.primary_instance_ip : []
       content {
         nat_ip = access_config.value.address
       }
@@ -224,7 +224,7 @@ resource "google_compute_instance" "secondary" {
     subnetwork_project = var.project_id
 
     dynamic "access_config" {
-      for_each = var.public_ip == 1 ? google_compute_address.secondary_instance_ip : []
+      for_each = var.public_ip ? google_compute_address.secondary_instance_ip : []
       content {
         nat_ip = access_config.value.address
       }
