@@ -40,7 +40,7 @@ No provider.
 | pd\_ssd\_size | Persistent disk size in GB | `string` | `""` | no |
 | post\_deployment\_script | SAP HANA post deployment script. Must be a gs:// or https:// link to the script. | `string` | `""` | no |
 | project\_id | The ID of the project in which the resources will be deployed. | `any` | n/a | yes |
-| public\_ip | Determines whether a public IP address is added to your VM instance. | `number` | `1` | no |
+| public\_ip | Determines whether a public IP address is added to your VM instance. | `bool` | `true` | no |
 | region | Region to deploy the resources. Should be in the same region as the zone. | `any` | n/a | yes |
 | sap\_deployment\_debug | Debug flag for SAP HANA deployment. | `string` | `"false"` | no |
 | sap\_hana\_deployment\_bucket | SAP hana deployment bucket. | `any` | n/a | yes |

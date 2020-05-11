@@ -43,7 +43,7 @@ Make sure you go through this [Requirements section](../../modules/sap_hana_ha/R
 | primary\_instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | `any` | n/a | yes |
 | primary\_zone | The primary zone that the instance should be created in. | `any` | n/a | yes |
 | project\_id | The ID of the project in which the resources will be deployed. | `any` | n/a | yes |
-| public\_ip | Determines whether a public IP address is added to your VM instance. | `number` | `1` | no |
+| public\_ip | Determines whether a public IP address is added to your VM instance. | `bool` | `true` | no |
 | region | Region to deploy the resources. Should be in the same region as the zone. | `any` | n/a | yes |
 | sap\_hana\_deployment\_bucket | SAP HANA post deployment script. Must be a gs:// or https:// link to the script. | `any` | n/a | yes |
 | sap\_hana\_instance\_number | SAP HANA instance number | `any` | n/a | yes |
