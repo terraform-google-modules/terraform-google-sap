@@ -41,4 +41,5 @@ if __name__ == '__main__':
 
     out = sap_hana.GenerateConfig(context)
 
-    print(out['resources'][0]['properties']['sizeGb'])
+    print(next((sub for sub in out['resources'] if sub['name'] == '-pdssd'), None)['properties']['sizeGb'])
+    print(next((sub for sub in out['resources'] if sub['name'] == '-backup'), None)['properties']['sizeGb'])

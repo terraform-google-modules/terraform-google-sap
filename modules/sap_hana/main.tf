@@ -28,7 +28,7 @@ resource "google_compute_disk" "gcp_sap_hana_sd_0" {
   name    = "${var.disk_name_0}-${var.device_name_pd_ssd}"
   type    = var.disk_type_0
   zone    = var.zone
-  size    = var.pd_ssd_size != "" ? var.pd_ssd_size : module.sap_hana.diskSize
+  size    = var.pd_ssd_size != "" ? var.pd_ssd_size : floor(module.sap_hana.diskSizeSSD)
 
   # Add the disk_encryption_key block only if a pd_kms_key was provided
   dynamic "disk_encryption_key" {
@@ -44,7 +44,7 @@ resource "google_compute_disk" "gcp_sap_hana_sd_1" {
   name    = "${var.disk_name_1}-${var.device_name_pd_hdd}"
   type    = var.disk_type_1
   zone    = var.zone
-  size    = var.pd_hdd_size != "" ? var.pd_hdd_size : module.sap_hana.diskSize
+  size    = var.pd_hdd_size != "" ? var.pd_hdd_size : floor(module.sap_hana.diskSizeHDD)
 
   # Add the disk_encryption_key block only if a pd_kms_key was provided
   dynamic "disk_encryption_key" {
