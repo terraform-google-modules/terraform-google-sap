@@ -114,8 +114,14 @@ variable "network_tags" {
   default     = []
 }
 
+variable "public_ip" {
+  description = "Determines whether a public IP address is added to your VM instance."
+  default     = true
+}
+
 variable "address_name" {
   description = "Name of static IP adress to add to the instance's access config."
+  default     = ""
 }
 
 variable "sap_hana_deployment_bucket" {

@@ -46,5 +46,6 @@ module "gcp_sap_hana" {
   network_tags               = var.network_tags
   sap_hana_sidadm_uid        = 900
   sap_hana_sapsys_gid        = 900
+  public_ip                  = var.public_ip
   address_name               = var.address_name
 }

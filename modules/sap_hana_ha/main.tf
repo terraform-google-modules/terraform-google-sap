@@ -24,12 +24,16 @@ module "sap_hana" {
 }
 
 resource "google_compute_address" "primary_instance_ip" {
+  count = var.public_ip ? 1 : 0
+
   project = var.project_id
   name    = var.primary_instance_ip
   region  = var.region
 }
 
 resource "google_compute_address" "secondary_instance_ip" {
+  count = var.public_ip ? 1 : 0
+
   project = var.project_id
   name    = var.secondary_instance_ip
   region  = var.region
@@ -144,8 +148,11 @@ resource "google_compute_instance" "primary" {
     subnetwork         = var.subnetwork
     subnetwork_project = var.project_id
 
-    access_config {
-      nat_ip = google_compute_address.primary_instance_ip.address
+    dynamic "access_config" {
+      for_each = var.public_ip ? google_compute_address.primary_instance_ip : []
+      content {
+        nat_ip = access_config.value.address
+      }
     }
   }
 
@@ -216,8 +223,11 @@ resource "google_compute_instance" "secondary" {
     subnetwork         = var.subnetwork
     subnetwork_project = var.project_id
 
-    access_config {
-      nat_ip = google_compute_address.secondary_instance_ip.address
+    dynamic "access_config" {
+      for_each = var.public_ip ? google_compute_address.secondary_instance_ip : []
+      content {
+        nat_ip = access_config.value.address
+      }
     }
   }
 
