@@ -39,7 +39,9 @@ if __name__ == '__main__':
 
     context = Context(instance_type)
 
-    out = sap_hana.GenerateConfig(context)
+    resources = sap_hana.GenerateConfig(context)['resources']
 
-    print(next((sub for sub in out['resources'] if sub['name'] == '-pdssd'), None)['properties']['sizeGb'])
-    print(next((sub for sub in out['resources'] if sub['name'] == '-backup'), None)['properties']['sizeGb'])
+    diskSSD = next((sub for sub in resources if sub['name'] == '-pdssd'))
+    diskHDD = next((sub for sub in resources if sub['name'] == '-backup'))
+    print(diskSSD['properties']['sizeGb'])
+    print(diskHDD['properties']['sizeGb'])
