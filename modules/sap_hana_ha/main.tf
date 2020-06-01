@@ -20,7 +20,7 @@ terraform {
 
 module "sap_hana" {
   source        = "./sap_hana_python"
-  instance-type = "var.instance_type"
+  instance-type = var.instance_type
 }
 
 resource "google_compute_address" "primary_instance_ip" {
