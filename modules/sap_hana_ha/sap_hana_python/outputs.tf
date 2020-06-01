@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 output "diskSizeSSD" {
-  value = trimspace(split("\n",data.local_file.test.content)[0])
+  value = trimspace(split("\n", data.local_file.test.content)[0])
 }
 output "diskSizeHDD" {
-  value = trimspace(split("\n",data.local_file.test.content)[1])
+  value = trimspace(split("\n", data.local_file.test.content)[1])
 }
