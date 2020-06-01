@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-output "diskSize" {
-  value = trimspace(data.local_file.test.content)
+output "diskSizeSSD" {
+  value = trimspace(split("\n",data.local_file.test.content)[0])
+}
+output "diskSizeHDD" {
+  value = trimspace(split("\n",data.local_file.test.content)[1])
 }
