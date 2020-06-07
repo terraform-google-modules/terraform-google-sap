@@ -18,6 +18,11 @@ variable "project_id" {
   description = "The ID of the project in which the resources will be deployed."
 }
 
+variable "host_project_id" {
+  description = "Shared VPC only - The ID of the host project containing the Shared VPC network."
+  default     = ""
+}
+
 variable "zone" {
   description = "The zone that the instance should be created in."
 }

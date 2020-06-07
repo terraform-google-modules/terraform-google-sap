@@ -99,6 +99,13 @@ resource "google_compute_attached_disk" "gcp_nw_attached_pd_2" {
   instance    = google_compute_instance.gcp_nw.self_link
 }
 
+# Add Shared VPC management
+data "google_compute_subnetwork" "subnet" {
+  name    = var.subnetwork
+  project = var.host_project_id != "" ? var.host_project_id : var.project_id
+  region  = var.region
+}
+
 resource "google_compute_instance" "gcp_nw" {
   project                   = var.project_id
   name                      = var.instance_name
@@ -128,7 +135,7 @@ resource "google_compute_instance" "gcp_nw" {
 
   network_interface {
     subnetwork         = var.subnetwork
-    subnetwork_project = var.project_id
+    subnetwork_project = var.host_project_id != "" ? var.host_project_id : var.project_id
 
     dynamic "access_config" {
       for_each = var.public_ip == 1 ? ["external_ip"] : []
