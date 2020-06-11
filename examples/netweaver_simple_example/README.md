@@ -34,6 +34,7 @@ Make sure you go through this [Requirements section](../../modules/netweaver/REA
 | boot\_disk\_size | Root disk size in GB. | `any` | n/a | yes |
 | boot\_disk\_type | The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | `any` | n/a | yes |
 | disk\_type | The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | `any` | n/a | yes |
+| host\_project\_id | Shared VPC only - The ID of the host project containing the Shared VPC network. | `string` | `""` | no |
 | instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | `any` | n/a | yes |
 | instance\_type | The GCE instance/machine type. | `any` | n/a | yes |
 | linux\_image\_family | GCE image family. | `any` | n/a | yes |

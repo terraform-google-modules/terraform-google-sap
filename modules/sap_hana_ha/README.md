@@ -126,6 +126,7 @@ It is the recommended way is to use a GCS Bucket in the following way.:
 | disk\_name\_3 | Name of fourth disk. | `string` | `"sap-hana-pd-sd-3"` | no |
 | disk\_type\_0 | The GCE data disk type. May be set to pd-ssd. | `string` | `"pd-ssd"` | no |
 | disk\_type\_1 | The GCE data disk type. May be set to pd-standard (for PD HDD). | `string` | `"pd-standard"` | no |
+| host\_project\_id | Shared VPC only - The ID of the host project containing the Shared VPC network. | `string` | `""` | no |
 | instance\_type | The GCE instance/machine type. | `any` | n/a | yes |
 | linux\_image\_family | GCE image family. | `any` | n/a | yes |
 | linux\_image\_project | Project name containing the linux image. | `any` | n/a | yes |

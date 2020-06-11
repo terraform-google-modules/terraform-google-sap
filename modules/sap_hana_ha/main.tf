@@ -39,10 +39,17 @@ resource "google_compute_address" "secondary_instance_ip" {
   region  = var.region
 }
 
+# Add Shared VPC management
+data "google_compute_subnetwork" "subnet" {
+  name    = var.subnetwork
+  project = var.host_project_id != "" ? var.host_project_id : var.project_id
+  region  = var.region
+}
+
 resource "google_compute_address" "internal_sap_vip" {
   project      = var.project_id
   name         = var.sap_vip_internal_address
-  subnetwork   = var.subnetwork
+  subnetwork   = data.google_compute_subnetwork.subnet.self_link
   address_type = "INTERNAL"
   address      = var.sap_vip
   region       = var.region
@@ -146,7 +153,7 @@ resource "google_compute_instance" "primary" {
 
   network_interface {
     subnetwork         = var.subnetwork
-    subnetwork_project = var.project_id
+    subnetwork_project = var.host_project_id != "" ? var.host_project_id : var.project_id
 
     dynamic "access_config" {
       for_each = var.public_ip ? google_compute_address.primary_instance_ip : []
@@ -221,7 +228,7 @@ resource "google_compute_instance" "secondary" {
 
   network_interface {
     subnetwork         = var.subnetwork
-    subnetwork_project = var.project_id
+    subnetwork_project = var.host_project_id != "" ? var.host_project_id : var.project_id
 
     dynamic "access_config" {
       for_each = var.public_ip ? google_compute_address.secondary_instance_ip : []

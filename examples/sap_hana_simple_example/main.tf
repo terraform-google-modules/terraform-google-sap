@@ -27,6 +27,7 @@ module "gcp_sap_hana" {
   instance_name              = var.instance_name
   instance_type              = var.instance_type
   project_id                 = var.project_id
+  host_project_id            = var.host_project_id
   region                     = var.region
   zone                       = var.zone
   service_account_email      = var.service_account_email

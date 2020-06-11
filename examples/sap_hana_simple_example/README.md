@@ -31,6 +31,7 @@ No provider.
 | autodelete\_disk | Whether the disk will be auto-deleted when the instance is deleted. | `bool` | `true` | no |
 | boot\_disk\_size | Root disk size in GB | `any` | n/a | yes |
 | boot\_disk\_type | The GCE boot disk type.Set to pd-standard (for PD HDD). | `string` | `"pd-ssd"` | no |
+| host\_project\_id | Shared VPC only - The ID of the host project containing the Shared VPC network. | `string` | `""` | no |
 | instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | `any` | n/a | yes |
 | instance\_type | The GCE instance/machine type. | `any` | n/a | yes |
 | linux\_image\_family | GCE linux image family. | `any` | n/a | yes |
