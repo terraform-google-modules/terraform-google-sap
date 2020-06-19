@@ -39,8 +39,13 @@ resource "google_compute_address" "secondary_instance_ip" {
   region  = var.region
 }
 
+# Check if subnet is a self_link
+locals {
+  is_self_link = "${replace(var.subnetwork, "https", "") != var.subnetwork}"
+}
 # Add Shared VPC management
 data "google_compute_subnetwork" "subnet" {
+  count   = local.is_self_link ? 0 : 1
   name    = var.subnetwork
   project = var.host_project_id != "" ? var.host_project_id : var.project_id
   region  = var.region
@@ -49,7 +54,7 @@ data "google_compute_subnetwork" "subnet" {
 resource "google_compute_address" "internal_sap_vip" {
   project      = var.project_id
   name         = var.sap_vip_internal_address
-  subnetwork   = data.google_compute_subnetwork.subnet.self_link
+  subnetwork   = local.is_self_link ? var.subnetwork : data.google_compute_subnetwork.subnet[0].self_link
   address_type = "INTERNAL"
   address      = var.sap_vip
   region       = var.region
