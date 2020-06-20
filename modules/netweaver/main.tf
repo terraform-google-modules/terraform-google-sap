@@ -99,6 +99,16 @@ resource "google_compute_attached_disk" "gcp_nw_attached_pd_2" {
   instance    = google_compute_instance.gcp_nw.self_link
 }
 
+# Create address for instance private ip
+resource "google_compute_address" "sap_internal_ip" {
+  project      = var.project_id
+  name         = "${var.instance_name}-ip"
+  region       = var.region
+  address_type = "INTERNAL"
+  address      = var.instance_internal_ip
+  subnetwork   = var.subnetwork
+}
+
 resource "google_compute_instance" "gcp_nw" {
   project                   = var.project_id
   name                      = var.instance_name
@@ -129,6 +139,7 @@ resource "google_compute_instance" "gcp_nw" {
   network_interface {
     subnetwork         = var.subnetwork
     subnetwork_project = var.project_id
+    network_ip         = google_compute_address.sap_internal_ip.self_link
 
     dynamic "access_config" {
       for_each = var.public_ip == 1 ? ["external_ip"] : []

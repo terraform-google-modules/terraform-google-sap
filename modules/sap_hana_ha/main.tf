@@ -48,6 +48,26 @@ resource "google_compute_address" "internal_sap_vip" {
   region       = var.region
 }
 
+# Create address for primary instance private ip
+resource "google_compute_address" "primary_sap_hana_internal_ip" {
+  project      = var.project_id
+  name         = "${var.primary_instance_name}-ip"
+  region       = var.region
+  address_type = "INTERNAL"
+  address      = var.primary_instance_internal_ip
+  subnetwork   = var.subnetwork
+}
+
+# Create address for secondary instance private ip
+resource "google_compute_address" "secondary_sap_hana_internal_ip" {
+  project      = var.project_id
+  name         = "${var.secondary_instance_name}-ip"
+  region       = var.region
+  address_type = "INTERNAL"
+  address      = var.secondary_instance_internal_ip
+  subnetwork   = var.subnetwork
+}
+
 resource "google_compute_disk" "gcp_sap_hana_sd_0" {
   project = var.project_id
   name    = var.disk_name_0
@@ -147,6 +167,7 @@ resource "google_compute_instance" "primary" {
   network_interface {
     subnetwork         = var.subnetwork
     subnetwork_project = var.project_id
+    network_ip         = google_compute_address.primary_sap_hana_internal_ip.self_link
 
     dynamic "access_config" {
       for_each = var.public_ip ? google_compute_address.primary_instance_ip : []
@@ -222,6 +243,7 @@ resource "google_compute_instance" "secondary" {
   network_interface {
     subnetwork         = var.subnetwork
     subnetwork_project = var.project_id
+    network_ip         = google_compute_address.secondary_sap_hana_internal_ip.self_link
 
     dynamic "access_config" {
       for_each = var.public_ip ? google_compute_address.secondary_instance_ip : []

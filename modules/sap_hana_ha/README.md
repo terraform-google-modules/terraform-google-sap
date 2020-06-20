@@ -134,6 +134,7 @@ It is the recommended way is to use a GCS Bucket in the following way.:
 | pd\_kms\_key | Customer managed encryption key to use in persistent disks. If none provided, a Google managed key will be used.. | `any` | `null` | no |
 | pd\_ssd\_size | Persistent disk size in GB | `string` | `""` | no |
 | post\_deployment\_script | SAP post deployment script | `any` | n/a | yes |
+| primary\_instance\_internal\_ip | Primary instance private ip address | `string` | `""` | no |
 | primary\_instance\_ip | Primary instance ip address | `string` | `""` | no |
 | primary\_instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | `any` | n/a | yes |
 | primary\_zone | The primary zone that the instance should be created in. | `any` | n/a | yes |
@@ -151,6 +152,7 @@ It is the recommended way is to use a GCS Bucket in the following way.:
 | sap\_vip | SAP VIP | `any` | n/a | yes |
 | sap\_vip\_internal\_address | Name of static IP adress to add to the instance's access config. | `any` | n/a | yes |
 | sap\_vip\_secondary\_range | SAP seconday VIP range | `any` | n/a | yes |
+| secondary\_instance\_internal\_ip | Secondary instance private ip address | `string` | `""` | no |
 | secondary\_instance\_ip | Secondary instance ip address | `string` | `""` | no |
 | secondary\_instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | `any` | n/a | yes |
 | secondary\_zone | The secondary zone that the instance should be created in. | `any` | n/a | yes |

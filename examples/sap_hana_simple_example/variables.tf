@@ -133,3 +133,8 @@ variable "address_name" {
   description = "Name of static IP adress to add to the instance's access config."
   default     = ""
 }
+
+variable "instance_internal_ip" {
+  description = "Instance private ip address"
+  default     = ""
+}

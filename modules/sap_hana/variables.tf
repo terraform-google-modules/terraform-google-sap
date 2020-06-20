@@ -165,3 +165,8 @@ variable "sap_hana_sidadm_uid" {
 variable "sap_hana_sapsys_gid" {
   description = "SAP HANA SAP System GID"
 }
+
+variable "instance_internal_ip" {
+  description = "Instance private ip address"
+  default     = ""
+}

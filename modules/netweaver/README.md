@@ -123,6 +123,7 @@ The recommended way is to use a GCS Bucket in the following way.:
 | device\_2 | Device name | `string` | `"sapmnt"` | no |
 | device\_3 | Device name | `string` | `"swap"` | no |
 | disk\_type | The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | `any` | n/a | yes |
+| instance\_internal\_ip | Instance private ip address | `string` | `""` | no |
 | instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | `any` | n/a | yes |
 | instance\_type | The GCE instance/machine type. | `any` | n/a | yes |
 | linux\_image\_family | GCE image family. | `any` | n/a | yes |
