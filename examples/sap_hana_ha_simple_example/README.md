@@ -39,6 +39,7 @@ Make sure you go through this [Requirements section](../../modules/sap_hana_ha/R
 | pd\_hdd\_size | Persistent disk size in GB. | `string` | `""` | no |
 | pd\_ssd\_size | Persistent disk size in GB | `string` | `""` | no |
 | post\_deployment\_script | SAP HANA post deployment script. Must be a gs:// or https:// link to the script. | `string` | `""` | no |
+| primary\_instance\_internal\_ip | Primary instance private ip address | `string` | `""` | no |
 | primary\_instance\_ip | Primary instance ip address | `string` | `""` | no |
 | primary\_instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | `any` | n/a | yes |
 | primary\_zone | The primary zone that the instance should be created in. | `any` | n/a | yes |
@@ -55,6 +56,7 @@ Make sure you go through this [Requirements section](../../modules/sap_hana_ha/R
 | sap\_vip | SAP VIP | `any` | n/a | yes |
 | sap\_vip\_internal\_address | Name of static IP adress to add to the instance's access config. | `any` | n/a | yes |
 | sap\_vip\_secondary\_range | SAP seconday VIP range | `any` | n/a | yes |
+| secondary\_instance\_internal\_ip | Secondary instance private ip address | `string` | `""` | no |
 | secondary\_instance\_ip | Secondary instance ip address | `string` | `""` | no |
 | secondary\_instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | `any` | n/a | yes |
 | secondary\_zone | The secondary zone that the instance should be created in. | `any` | n/a | yes |

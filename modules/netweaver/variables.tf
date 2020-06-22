@@ -128,3 +128,8 @@ variable "sap_deployment_debug" {
   description = "Debug flag for Netweaver deployment."
   default     = "false"
 }
+
+variable "instance_internal_ip" {
+  description = "Instance private ip address"
+  default     = ""
+}

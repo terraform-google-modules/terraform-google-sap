@@ -102,3 +102,8 @@ variable "public_ip" {
   description = "Determines whether a public IP address is added to your VM instance."
   default     = 1
 }
+
+variable "instance_internal_ip" {
+  description = "Instance private ip address"
+  default     = ""
+}

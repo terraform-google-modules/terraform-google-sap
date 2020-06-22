@@ -193,3 +193,13 @@ variable "startup_script_1" {
 variable "startup_script_2" {
   description = "Startup script to install SAP HANA."
 }
+
+variable "primary_instance_internal_ip" {
+  description = "Primary instance private ip address"
+  default     = ""
+}
+
+variable "secondary_instance_internal_ip" {
+  description = "Secondary instance private ip address"
+  default     = ""
+}
