@@ -42,6 +42,7 @@ module "gcp_netweaver" {
   disk_type              = var.disk_type
   startup_script         = var.startup_script
   instance_internal_ip   = var.instance_internal_ip
+  can_ip_forward         = var.can_ip_forward
   pd_kms_key             = google_kms_crypto_key.netweaver_simple.self_link
 }
 

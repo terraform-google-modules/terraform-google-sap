@@ -49,4 +49,5 @@ module "gcp_sap_hana" {
   public_ip                  = var.public_ip
   address_name               = var.address_name
   instance_internal_ip       = var.instance_internal_ip
+  can_ip_forward             = var.can_ip_forward
 }
