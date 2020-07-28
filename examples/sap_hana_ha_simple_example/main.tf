@@ -57,6 +57,7 @@ module "gcp_sap_hana_ha" {
   startup_script_2               = file(var.startup_script_2)
   primary_instance_internal_ip   = var.primary_instance_internal_ip
   secondary_instance_internal_ip = var.secondary_instance_internal_ip
+  can_ip_forward                 = var.can_ip_forward
   pd_kms_key                     = google_kms_crypto_key.sap_hana_ha_simple.self_link
 }
 

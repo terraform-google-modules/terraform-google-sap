@@ -32,6 +32,7 @@ Make sure you go through this [Requirements section](../../modules/sap_hana_ha/R
 |------|-------------|------|---------|:--------:|
 | boot\_disk\_size | Root disk size in GB | `any` | n/a | yes |
 | boot\_disk\_type | The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | `any` | n/a | yes |
+| can\_ip\_forward | Allow IP forwarding for the instance | `bool` | `true` | no |
 | instance\_type | The GCE instance/machine type. | `any` | n/a | yes |
 | linux\_image\_family | GCE image family. | `any` | n/a | yes |
 | linux\_image\_project | Project name containing the linux image. | `any` | n/a | yes |

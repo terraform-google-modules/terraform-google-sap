@@ -118,6 +118,7 @@ The recommended way is to use a GCS Bucket in the following way.:
 | autodelete\_disk | Whether the disk will be auto-deleted when the instance is deleted. | `string` | `"false"` | no |
 | boot\_disk\_size | Root disk size in GB. | `any` | n/a | yes |
 | boot\_disk\_type | The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | `any` | n/a | yes |
+| can\_ip\_forward | Allow IP forwarding for the instance | `bool` | `true` | no |
 | device\_0 | Device name | `string` | `"boot"` | no |
 | device\_1 | Device name | `string` | `"usrsap"` | no |
 | device\_2 | Device name | `string` | `"sapmnt"` | no |

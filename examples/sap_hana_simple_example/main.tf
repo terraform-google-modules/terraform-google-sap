@@ -48,5 +48,6 @@ module "gcp_sap_hana" {
   sap_hana_sapsys_gid        = 900
   public_ip                  = var.public_ip
   address_name               = var.address_name
+  can_ip_forward             = var.can_ip_forward
   instance_internal_ip       = var.instance_internal_ip
 }

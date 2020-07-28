@@ -159,3 +159,8 @@ variable "secondary_instance_internal_ip" {
   description = "Secondary instance private ip address"
   default     = ""
 }
+
+variable "can_ip_forward" {
+  description = "Allow IP forwarding for the instance"
+  default     = true
+}

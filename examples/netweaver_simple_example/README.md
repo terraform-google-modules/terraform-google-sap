@@ -33,6 +33,7 @@ Make sure you go through this [Requirements section](../../modules/netweaver/REA
 | autodelete\_disk | Whether the disk will be auto-deleted when the instance is deleted. | `string` | `"false"` | no |
 | boot\_disk\_size | Root disk size in GB. | `any` | n/a | yes |
 | boot\_disk\_type | The GCE boot disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | `any` | n/a | yes |
+| can\_ip\_forward | Allow IP forwarding for the instance | `bool` | `true` | no |
 | disk\_type | The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd. | `any` | n/a | yes |
 | instance\_internal\_ip | Instance private ip address | `string` | `""` | no |
 | instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | `any` | n/a | yes |

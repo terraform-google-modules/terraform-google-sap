@@ -138,7 +138,7 @@ resource "google_compute_instance" "primary" {
   machine_type   = var.instance_type
   zone           = var.primary_zone
   tags           = var.network_tags
-  can_ip_forward = true
+  can_ip_forward = var.can_ip_forward
 
   scheduling {
     automatic_restart   = true
@@ -214,7 +214,7 @@ resource "google_compute_instance" "secondary" {
   machine_type   = var.instance_type
   zone           = var.secondary_zone
   tags           = var.network_tags
-  can_ip_forward = true
+  can_ip_forward = var.can_ip_forward
 
   scheduling {
     automatic_restart   = true

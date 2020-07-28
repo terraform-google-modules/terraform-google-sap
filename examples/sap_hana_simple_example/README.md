@@ -31,6 +31,7 @@ No provider.
 | autodelete\_disk | Whether the disk will be auto-deleted when the instance is deleted. | `bool` | `true` | no |
 | boot\_disk\_size | Root disk size in GB | `any` | n/a | yes |
 | boot\_disk\_type | The GCE boot disk type.Set to pd-standard (for PD HDD). | `string` | `"pd-ssd"` | no |
+| can\_ip\_forward | Allow IP forwarding for the instance | `bool` | `true` | no |
 | instance\_internal\_ip | Instance private ip address | `string` | `""` | no |
 | instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | `any` | n/a | yes |
 | instance\_type | The GCE instance/machine type. | `any` | n/a | yes |

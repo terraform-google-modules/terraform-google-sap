@@ -116,7 +116,7 @@ resource "google_compute_instance" "gcp_nw" {
   zone                      = var.zone
   tags                      = var.network_tags
   allow_stopping_for_update = true
-  can_ip_forward            = true
+  can_ip_forward            = var.can_ip_forward
 
   scheduling {
     automatic_restart   = true
