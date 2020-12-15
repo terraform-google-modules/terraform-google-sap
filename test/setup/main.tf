@@ -20,7 +20,7 @@ locals {
 
 module "project" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 8.1.0"
+  version = "~> 9.0.0"
 
   name              = local.project_name
   random_project_id = true
