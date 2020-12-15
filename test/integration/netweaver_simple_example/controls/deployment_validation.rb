@@ -18,7 +18,7 @@ control 'deployment_validation' do
       its(:exit_status) { should eq 0 }
 
       context "startup script" do
-        its('stdout') { should match('startup-script: Return code 0.') }
+        its('stdout') { should match('startup-script exit status 0') }
       end
     end
 end
