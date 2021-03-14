@@ -20,7 +20,7 @@ locals {
 
 module "project" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 7.1.0"
+  version = "~> 10.0"
 
   name              = local.project_name
   random_project_id = true
@@ -36,7 +36,7 @@ module "project" {
 
 module "network" {
   source  = "terraform-google-modules/network/google"
-  version = "~> 2.1.0"
+  version = "~> 3.0"
 
   project_id   = module.project.project_id
   network_name = "test-network"
