@@ -7,6 +7,22 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0](https://www.github.com/terraform-google-modules/terraform-google-sap/compare/v0.4.0...v1.0.0) (2021-06-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* add Terraform 0.13 constraint and module attribution (#36)
+
+### Features
+
+* add Terraform 0.13 constraint and module attribution ([#36](https://www.github.com/terraform-google-modules/terraform-google-sap/issues/36)) ([f97fce9](https://www.github.com/terraform-google-modules/terraform-google-sap/commit/f97fce90bb4a4ad608d0a648142f62cbe5eefdb3))
+
+
+### Bug Fixes
+
+* Add support for Terraform 0.13 + deployment validation check for NW ([#34](https://www.github.com/terraform-google-modules/terraform-google-sap/issues/34)) ([969ff19](https://www.github.com/terraform-google-modules/terraform-google-sap/commit/969ff1942b7b01e0964598de104d55e1f9206084))
+
 ## [0.4.0](https://www.github.com/terraform-google-modules/terraform-google-sap/compare/v0.3.0...v0.4.0) (2020-07-27)
 
 
