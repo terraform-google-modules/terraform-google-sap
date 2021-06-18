@@ -25,7 +25,7 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-sap:netweaver/v1.0.0"
+    module_name = "blueprints/terraform/terraform-google-sap:netweaver/v0.5.0"
   }
 
 }
