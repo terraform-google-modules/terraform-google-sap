@@ -133,3 +133,9 @@ variable "instance_internal_ip" {
   description = "Instance private ip address"
   default     = ""
 }
+
+variable "labels" {
+  description = "GCP Labels"
+  type        = map(string)
+  default     = {}
+}

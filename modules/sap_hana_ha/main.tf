@@ -74,6 +74,7 @@ resource "google_compute_disk" "gcp_sap_hana_sd_0" {
   type    = var.disk_type_0
   zone    = var.primary_zone
   size    = var.pd_ssd_size != "" ? var.pd_ssd_size : floor(module.sap_hana.diskSizeSSD)
+  labels  = var.labels
 
   # Add the disk_encryption_key block only if a pd_kms_key was provided
   dynamic "disk_encryption_key" {
@@ -90,6 +91,7 @@ resource "google_compute_disk" "gcp_sap_hana_sd_1" {
   type    = var.disk_type_1
   zone    = var.primary_zone
   size    = var.pd_hdd_size != "" ? var.pd_hdd_size : floor(module.sap_hana.diskSizeHDD)
+  labels  = var.labels
 
   # Add the disk_encryption_key block only if a pd_kms_key was provided
   dynamic "disk_encryption_key" {
@@ -106,6 +108,7 @@ resource "google_compute_disk" "gcp_sap_hana_sd_2" {
   type    = var.disk_type_0
   zone    = var.secondary_zone
   size    = var.pd_ssd_size != "" ? var.pd_ssd_size : floor(module.sap_hana.diskSizeSSD)
+  labels  = var.labels
 
   # Add the disk_encryption_key block only if a pd_kms_key was provided
   dynamic "disk_encryption_key" {
@@ -122,6 +125,7 @@ resource "google_compute_disk" "gcp_sap_hana_sd_3" {
   type    = var.disk_type_1
   zone    = var.secondary_zone
   size    = var.pd_hdd_size != "" ? var.pd_hdd_size : floor(module.sap_hana.diskSizeHDD)
+  labels  = var.labels
 
   # Add the disk_encryption_key block only if a pd_kms_key was provided
   dynamic "disk_encryption_key" {
@@ -206,6 +210,8 @@ resource "google_compute_instance" "primary" {
     email  = var.service_account_email
     scopes = ["cloud-platform"]
   }
+
+  labels  = var.labels
 }
 
 resource "google_compute_instance" "secondary" {
@@ -282,4 +288,6 @@ resource "google_compute_instance" "secondary" {
     email  = var.service_account_email
     scopes = ["cloud-platform"]
   }
+
+  labels  = var.labels
 }

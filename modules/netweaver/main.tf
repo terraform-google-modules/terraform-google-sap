@@ -31,6 +31,7 @@ resource "google_compute_disk" "gcp_nw_pd_0" {
   zone    = var.zone
   count   = var.usr_sap_size > 0 ? 1 : 0
   size    = var.usr_sap_size
+  labels  = var.labels
 
   # Add the disk_encryption_key block only if a pd_kms_key was provided
   dynamic "disk_encryption_key" {
@@ -48,6 +49,7 @@ resource "google_compute_disk" "gcp_nw_pd_1" {
   zone    = var.zone
   count   = var.sap_mnt_size > 0 ? 1 : 0
   size    = var.sap_mnt_size
+  labels  = var.labels
 
   # Add the disk_encryption_key block only if a pd_kms_key was provided
   dynamic "disk_encryption_key" {
@@ -65,6 +67,7 @@ resource "google_compute_disk" "gcp_nw_pd_2" {
   zone    = var.zone
   count   = var.swap_size > 0 ? 1 : 0
   size    = var.swap_size
+  labels  = var.labels
 
   # Add the disk_encryption_key block only if a pd_kms_key was provided
   dynamic "disk_encryption_key" {
@@ -173,4 +176,6 @@ resource "google_compute_instance" "gcp_nw" {
     email  = var.service_account_email
     scopes = ["cloud-platform"]
   }
+
+  labels  = var.labels
 }

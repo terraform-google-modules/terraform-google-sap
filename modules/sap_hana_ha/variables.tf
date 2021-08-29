@@ -203,3 +203,9 @@ variable "secondary_instance_internal_ip" {
   description = "Secondary instance private ip address"
   default     = ""
 }
+
+variable "labels" {
+  description = "GCP Labels"
+  type        = map(string)
+  default     = {}
+}

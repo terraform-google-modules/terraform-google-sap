@@ -54,6 +54,7 @@ secondary_instance_ip      = var.secondary_instance_ip
 sap_vip_internal_address   = var.sap_vip_internal_address
 startup_script_1           = var.startup_script_1
 startup_script_2           = var.startup_script_2
+labels                     = var.labels
     }
 
 ```
@@ -127,6 +128,7 @@ It is the recommended way is to use a GCS Bucket in the following way.:
 | disk\_type\_0 | The GCE data disk type. May be set to pd-ssd. | `string` | `"pd-ssd"` | no |
 | disk\_type\_1 | The GCE data disk type. May be set to pd-standard (for PD HDD). | `string` | `"pd-standard"` | no |
 | instance\_type | The GCE instance/machine type. | `any` | n/a | yes |
+| labels | Labels for instance and disk | `any` | n/a | no |
 | linux\_image\_family | GCE image family. | `any` | n/a | yes |
 | linux\_image\_project | Project name containing the linux image. | `any` | n/a | yes |
 | network\_tags | List of network tags to attach to the instance. | `list` | `[]` | no |
