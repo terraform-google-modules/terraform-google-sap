@@ -121,7 +121,7 @@ The recommended way is to use a GCS Bucket in the following way.:
 | instance\_internal\_ip | Instance private ip address | `string` | `""` | no |
 | instance\_name | A unique name for the resource, required by GCE. Changing this forces a new resource to be created. | `any` | n/a | yes |
 | instance\_type | The GCE instance/machine type. | `any` | n/a | yes |
-| labels | Labels for instance and disk | `any` | n/a | no |
+| labels | Labels for instance and disk | `map` | n/a | no |
 | linux\_image\_family | GCE image family. | `any` | n/a | yes |
 | linux\_image\_project | Project name containing the linux image. | `any` | n/a | yes |
 | network\_tags | List of network tags to attach to the instance. | `list` | `[]` | no |
