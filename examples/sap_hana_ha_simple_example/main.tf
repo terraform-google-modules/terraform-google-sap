@@ -15,8 +15,7 @@
  */
 
 provider "google" {
-  version = "~> 3.53"
-  region  = var.region
+  region = var.region
 }
 
 module "gcp_sap_hana_ha" {

@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-provider "google" {
-  version = "~> 3.53"
-}
-
 module "gcp_netweaver" {
   source                 = "../../modules/netweaver"
   post_deployment_script = var.post_deployment_script
