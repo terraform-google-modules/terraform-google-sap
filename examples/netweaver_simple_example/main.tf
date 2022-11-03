@@ -15,7 +15,7 @@
  */
 
 provider "google" {
-  version = "~> 3.53"
+  version = "~> 4.0"
 }
 
 module "gcp_netweaver" {
