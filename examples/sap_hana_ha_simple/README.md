@@ -33,6 +33,7 @@ for provisioning SAP HANA with HA
 
 | Name | Description |
 |------|-------------|
+| project\_id | n/a |
 | sap\_hana\_ha\_firewall\_link | Link to the optional fire wall |
 | sap\_hana\_ha\_loadbalander\_link | Link to the optional load balancer |
 | sap\_hana\_ha\_primary\_instance\_self\_link | Self-link for the primary SAP HANA HA instance created. |
