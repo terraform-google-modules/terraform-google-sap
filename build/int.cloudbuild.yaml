@@ -26,22 +26,22 @@ steps:
   waitFor:
     - prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run all --stage init --verbose']
+  args: ['cd test/integration/ &&', '/bin/bash', '-c', 'cft test run all --stage init --verbose']
 
 - id: apply sap-hana-ha-simple
   waitFor: ["init-all"]
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSapHanaHaSimpleModule --stage apply --verbose']
+  args: ['cd test/integration/ &&', '/bin/bash', '-c', 'cft test run TestSapHanaHaSimpleModule --stage apply --verbose']
 - id: verify sap-hana-ha-simple
   waitFor:
     - apply sap-hana-ha-simple
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSapHanaHaSimpleModule --stage verify --verbose']
+  args: ['cd test/integration/ &&', '/bin/bash', '-c', 'cft test run TestSapHanaHaSimpleModule --stage verify --verbose']
 - id: teardown sap-hana-ha-simple
   waitFor:
     - verify sap-hana-ha-simple
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSapHanaHaSimpleModule --stage teardown --verbose']
+  args: ['cd test/integration/ &&', '/bin/bash', '-c', 'cft test run TestSapHanaHaSimpleModule --stage teardown --verbose']
 
 tags:
 - 'ci'
