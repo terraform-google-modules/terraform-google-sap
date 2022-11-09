@@ -17,6 +17,13 @@
 terraform {
   required_version = ">=0.12.6"
   required_providers {
-    google = {}
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 4.0.0, < 5.0"
+    }
+  }
+
+  provider_meta "google" {
+    module_name = "blueprints/terraform/terraform-google-sap:sap_hana_ha/v0.5.0"
   }
 }

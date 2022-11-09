@@ -13,10 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-output "project_id" {
-  value = var.project_id
-}
-
 output "sap_hana_ha_primary_instance_self_link" {
   description = "Self-link for the primary SAP HANA HA instance created."
   value       = module.sap_hana_ha.sap_hana_ha_primary_instance_self_link

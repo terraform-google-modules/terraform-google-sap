@@ -61,7 +61,7 @@ func TestSapHanaHaSimpleModule(t *testing.T) {
 		// assert instance configurations
 		for insType, insSelfLink := range instanceSelfLinks {
 			zone, name := getInstanceNameAndZone(insSelfLink)
-			op := gcloud.Run(t, fmt.Sprintf("compute instances describe %s --zone %s --project %s", name, zone, sapHanaHa.GetStringOutput("project_id")))
+			op := gcloud.Runf(t, "compute instances describe %s --zone %s --project %s", name, zone, sapHanaHa.GetTFSetupStringOutput("project_id"))
 			assert.Equal("n1-highmem-32", getInstanceMachineType(op.Get("machineType").String()), fmt.Sprintf("%s machine type set as n1-highmem-32", insType))
 			insNetworkInterface := op.Get("networkInterfaces").Array()[0]
 			assert.Equal("default", getInstanceNetworkName(insNetworkInterface.Get("network").String()), fmt.Sprintf("%s instance connected to default network", insType))

@@ -3,7 +3,7 @@ module github.com/terraform-google-modules/terraform-google-sap/test/integration
 go 1.17
 
 require (
-	github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.0.0-20220513044842-e1d915150aec
+	github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.2.1-0.20220817224646-e95dc64d9b45
 	github.com/stretchr/testify v1.8.1
 )
 

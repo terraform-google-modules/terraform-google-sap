@@ -36,23 +36,4 @@ module "sap_hana_ha" {
   primary_zone                    = "us-east1-b"
   secondary_instance_name         = "hana-ha-secondary"
   secondary_zone                  = "us-east1-c"
-  sap_hana_deployment_bucket      = var.sap_hana_deployment_bucket
-  sap_hana_sid                    = var.sap_hana_sid
-  sap_hana_instance_number        = var.sap_hana_instance_number
-  sap_hana_sidadm_password        = var.sap_hana_sidadm_password
-  sap_hana_sidadm_password_secret = var.sap_hana_sidadm_password_secret
-  sap_hana_system_password        = var.sap_hana_system_password
-  sap_hana_system_password_secret = var.sap_hana_system_password_secret
-  sap_hana_backup_size            = var.sap_hana_backup_size
-  sap_hana_sidadm_uid             = var.sap_hana_sidadm_uid
-  sap_hana_sapsys_gid             = var.sap_hana_sapsys_gid
-  sap_vip                         = var.sap_vip
-  primary_instance_group_name     = var.primary_instance_group_name
-  secondary_instance_group_name   = var.secondary_instance_group_name
-  loadbalancer_name               = var.loadbalancer_name
-  network_tags                    = var.network_tags
-  public_ip                       = var.public_ip
-  service_account                 = var.service_account
-  primary_reservation_name        = var.primary_reservation_name
-  secondary_reservation_name      = var.secondary_reservation_name
 }
