@@ -19,54 +19,6 @@ variable "project_id" {
   description = "Project id where the instances will be created."
 }
 
-variable "primary_zone" {
-  type        = string
-  description = "Zone where the primary instances will be created."
-}
-
-variable "secondary_zone" {
-  type        = string
-  description = "Zone where the secondary instances will be created."
-}
-
-variable "machine_type" {
-  type        = string
-  description = "Machine type for the instances."
-}
-
-variable "subnetwork" {
-  type        = string
-  description = "The sub network to deploy the instance in."
-}
-
-variable "linux_image" {
-  type        = string
-  description = "Linux image name to use."
-}
-
-variable "linux_image_project" {
-  type        = string
-  description = "The project which the Linux image belongs to."
-}
-
-variable "primary_instance_name" {
-  type        = string
-  description = "Hostname of the primary GCE instance."
-  validation {
-    condition     = can(regex("^[a-z0-9\\-]+$", var.primary_instance_name))
-    error_message = "The primary_instance_name must consist of lowercase letters (a-z), numbers, and hyphens."
-  }
-}
-
-variable "secondary_instance_name" {
-  type        = string
-  description = "Hostname of the secondary GCE instance."
-  validation {
-    condition     = can(regex("^[a-z0-9\\-]+$", var.secondary_instance_name))
-    error_message = "The secondary_instance_name must consist of lowercase letters (a-z), numbers, and hyphens."
-  }
-}
-
 variable "sap_hana_deployment_bucket" {
   type        = string
   description = "The GCS bucket containing the SAP HANA media. If this is not defined, the GCE instance will be provisioned without SAP HANA installed."
@@ -174,11 +126,6 @@ variable "secondary_instance_group_name" {
   default     = ""
 }
 
-variable "network" {
-  type        = string
-  description = "Network in which the ILB resides including resources like firewall rules."
-}
-
 variable "loadbalancer_name" {
   type        = string
   description = "OPTIONAL - Name of the load balancer that will be created. If left blank with use_ilb_vip set to true, then will use lb-SID as default"
@@ -201,12 +148,6 @@ variable "service_account" {
   type        = string
   description = "OPTIONAL - Ability to define a custom service account instead of using the default project service account."
   default     = ""
-}
-
-variable "sap_deployment_debug" {
-  type        = bool
-  description = "OPTIONAL - If this value is set to true, the deployment will generates verbose deployment logs. Only turn this setting on if a Google support engineer asks you to enable debugging."
-  default     = false
 }
 
 variable "primary_reservation_name" {
@@ -245,43 +186,4 @@ variable "secondary_reservation_name" {
   All other instance types can have automatic Min CPU Platform"
   EOT
   default     = ""
-}
-
-variable "post_deployment_script" {
-  type        = string
-  description = "OPTIONAL - gs:// or https:// location of a script to execute on the created VM's post deployment."
-  default     = ""
-}
-
-#
-# DO NOT MODIFY unless you know what you are doing
-#
-variable "wlm_deployment_name" {
-  type        = string
-  description = "Deployment name to be used for integrating into Work Load Management."
-  default     = ""
-}
-
-variable "is_work_load_management_deployment" {
-  type        = bool
-  description = "If set the necessary tags and labels will be added to resoucres to support WLM."
-  default     = false
-}
-
-variable "primary_startup_url" {
-  type        = string
-  description = "Startup script to be executed when the VM boots, should not be overridden."
-  default     = "curl -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202210141928/terraform/sap_hana_ha/startup.sh | bash -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202210141928/terraform"
-}
-
-variable "secondary_startup_url" {
-  type        = string
-  default     = "curl -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202210141928/terraform/sap_hana_ha/startup_secondary.sh | bash -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202210141928/terraform"
-  description = "DO NOT USE"
-}
-
-variable "can_ip_forward" {
-  type        = bool
-  description = "Whether sending and receiving of packets with non-matching source or destination IPs is allowed."
-  default     = true
 }

@@ -21,21 +21,31 @@ steps:
   - 'TF_VAR_org_id=$_ORG_ID'
   - 'TF_VAR_folder_id=$_FOLDER_ID'
   - 'TF_VAR_billing_account=$_BILLING_ACCOUNT'
-- id: create
+
+- id: init-all
+    waitFor:
+      - prepare
+    name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+    args: ['/bin/bash', '-c', 'cft test run all --stage init --verbose']
+
+- id: apply sap-hana-ha-simple
+    waitFor: ["init-all"]
+    name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+    args: ['/bin/bash', '-c', 'cft test run TestSapHanaHaSimpleModule --stage apply --verbose']
+- id: verify sap-hana-ha-simple
+  waitFor:
+    - apply sap-hana-ha-simple
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do create']
-- id: converge
+  args: ['/bin/bash', '-c', 'cft test run TestSapHanaHaSimpleModule --stage verify --verbose']
+- id: teardown sap-hana-ha-simple
+  waitFor:
+    - verify sap-hana-ha-simple
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge']
-- id: verify
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do verify']
-- id: destroy
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy']
+  args: ['/bin/bash', '-c', 'cft test run TestSapHanaHaSimpleModule --stage teardown --verbose']
+
 tags:
 - 'ci'
 - 'integration'
 substitutions:
   _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
-  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '0.13'
+  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.3'
