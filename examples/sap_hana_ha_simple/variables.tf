@@ -14,16 +14,7 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">=0.12.6"
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = ">= 4.0.0, < 5.0"
-    }
-  }
-
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-sap:sap_hana_ha/v0.5.0"
-  }
+variable "project_id" {
+  type        = string
+  description = "Project id where the instances will be created."
 }

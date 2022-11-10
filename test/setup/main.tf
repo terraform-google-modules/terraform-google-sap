@@ -14,36 +14,37 @@
  * limitations under the License.
  */
 
-locals {
-  project_name = "cft-sap"
-}
-
 module "project" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 10.0"
+  version = "~> 13.0"
 
-  name              = local.project_name
-  random_project_id = true
+  name              = "ci-sap"
+  random_project_id = "true"
   org_id            = var.org_id
   folder_id         = var.folder_id
   billing_account   = var.billing_account
 
   activate_apis = [
+    "cloudresourcemanager.googleapis.com",
+    "storage-api.googleapis.com",
+    "serviceusage.googleapis.com",
     "compute.googleapis.com",
-    "cloudkms.googleapis.com",
   ]
 }
 
-module "network" {
+module "vpc" {
   source  = "terraform-google-modules/network/google"
-  version = "~> 3.0"
+  version = "~> 5.0"
 
-  project_id   = module.project.project_id
-  network_name = "test-network"
+  project_id                             = module.project.project_id
+  network_name                           = "default"
+  delete_default_internet_gateway_routes = true
 
-  subnets = [{
-    subnet_name   = "test-subnet-01"
-    subnet_ip     = "10.10.10.0/24"
-    subnet_region = var.region
-  }]
+  subnets = [
+    {
+      subnet_name   = "default"
+      subnet_ip     = "10.128.0.0/20"
+      subnet_region = "us-east1"
+    },
+  ]
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,192 +14,274 @@
  * limitations under the License.
  */
 
-variable "primary_instance_name" {
-  description = "A unique name for the resource, required by GCE. Changing this forces a new resource to be created."
-}
-
-variable "secondary_instance_name" {
-  description = "A unique name for the resource, required by GCE. Changing this forces a new resource to be created."
+variable "project_id" {
+  type        = string
+  description = "Project id where the instances will be created."
 }
 
 variable "primary_zone" {
-  description = "The primary zone that the instance should be created in."
+  type        = string
+  description = "Zone where the primary instances will be created."
 }
 
 variable "secondary_zone" {
-  description = "The secondary zone that the instance should be created in."
+  type        = string
+  description = "Zone where the secondary instances will be created."
 }
 
-variable "instance_type" {
-  description = "The GCE instance/machine type."
+variable "machine_type" {
+  type        = string
+  description = "Machine type for the instances."
 }
 
 variable "subnetwork" {
-  description = "Compute Engine instance name"
+  type        = string
+  description = "The sub network to deploy the instance in."
 }
 
-variable "project_id" {
-  description = "The ID of the project in which the resources will be deployed."
-}
-
-variable "region" {
-  description = "Region to deploy the resources. Should be in the same region as the zone."
-}
-
-variable "linux_image_family" {
-  description = "GCE image family."
+variable "linux_image" {
+  type        = string
+  description = "Linux image name to use."
 }
 
 variable "linux_image_project" {
-  description = "Project name containing the linux image."
+  type        = string
+  description = "The project which the Linux image belongs to."
+}
+
+variable "primary_instance_name" {
+  type        = string
+  description = "Hostname of the primary GCE instance."
+  validation {
+    condition     = can(regex("^[a-z0-9\\-]+$", var.primary_instance_name))
+    error_message = "The primary_instance_name must consist of lowercase letters (a-z), numbers, and hyphens."
+  }
+}
+
+variable "secondary_instance_name" {
+  type        = string
+  description = "Hostname of the secondary GCE instance."
+  validation {
+    condition     = can(regex("^[a-z0-9\\-]+$", var.secondary_instance_name))
+    error_message = "The secondary_instance_name must consist of lowercase letters (a-z), numbers, and hyphens."
+  }
 }
 
 variable "sap_hana_deployment_bucket" {
-  description = "SAP HANA post deployment script. Must be a gs:// or https:// link to the script."
-}
-
-variable "sap_deployment_debug" {
-  description = "Debug flag for SAP HANA deployment."
-  default     = "false"
-}
-
-variable "post_deployment_script" {
-  description = "SAP post deployment script"
+  type        = string
+  description = "The GCS bucket containing the SAP HANA media. If this is not defined, the GCE instance will be provisioned without SAP HANA installed."
+  default     = ""
 }
 
 variable "sap_hana_sid" {
-  description = "SAP HANA System Identifier. When using the SID to enter a user session, like this for example, `su - [SID]adm`, make sure that [SID] is in lower case."
+  type        = string
+  description = "The SAP HANA SID. If this is not defined, the GCE instance will be provisioned without SAP HANA installed. SID must adhere to SAP standard (Three letters or numbers and start with a letter)"
+  default     = ""
+  validation {
+    condition = length(var.sap_hana_sid) == 0 || (
+    length(var.sap_hana_sid) == 3 && can(regex("[A-Z][A-Z0-9]{2}", var.sap_hana_sid)))
+    error_message = "The sap_hana_sid must be 3 characters long and start with a letter and all letters must be capitalized."
+  }
 }
 
 variable "sap_hana_instance_number" {
-  description = "SAP HANA instance number"
+  type        = number
+  description = "The SAP instance number. If this is not defined, the GCE instance will be provisioned without SAP HANA installed."
+  default     = 0
+  validation {
+    condition     = (var.sap_hana_instance_number >= 0) && (var.sap_hana_instance_number < 100)
+    error_message = "The sap_hana_instance_number must be 2 digits long."
+  }
 }
 
 variable "sap_hana_sidadm_password" {
-  description = "SAP HANA System Identifier Admin password"
+  type        = string
+  description = "The linux sidadm login password. If this is not defined, the GCE instance will be provisioned without SAP HANA installed. Minimum requirement is 8 characters."
+  default     = ""
+  validation {
+    condition = (length(var.sap_hana_sidadm_password) == 0 ||
+      (length(var.sap_hana_sidadm_password) >= 8 &&
+        can(regex("[0-9]", var.sap_hana_sidadm_password)) &&
+        can(regex("[a-z]", var.sap_hana_sidadm_password)) &&
+    can(regex("[A-Z]", var.sap_hana_sidadm_password))))
+    error_message = "The sap_hanasidadm_password must have at least 8 characters. Must contain at least one capitalized letter, one lowercase letter, and one number."
+  }
+}
+
+variable "sap_hana_sidadm_password_secret" {
+  type        = string
+  description = "The secret key used to retrieve the linux sidadm login from Secret Manager (https://cloud.google.com/secret-manager). The Secret Manager password will overwrite the clear text password from sap_hana_sidadm_password if both are set."
+  default     = ""
 }
 
 variable "sap_hana_system_password" {
-  description = "SAP HANA system password"
+  type        = string
+  description = "The SAP HANA SYSTEM password. If this is not defined, the GCE instance will be provisioned without SAP HANA installed. Minimum requirement is 8 characters with at least 1 number."
+  default     = ""
+  validation {
+    condition = (length(var.sap_hana_system_password) == 0 ||
+      (length(var.sap_hana_system_password) >= 8 &&
+        can(regex("[0-9]", var.sap_hana_system_password)) &&
+        can(regex("[a-z]", var.sap_hana_system_password)) &&
+    can(regex("[A-Z]", var.sap_hana_system_password))))
+    error_message = "The sap_hana_system_password must have at least 8 characters. Must contain at least one capitalized letter, one lowercase letter, and one number."
+  }
+}
+
+variable "sap_hana_system_password_secret" {
+  type        = string
+  description = "The secret key used to retrieve the SAP HANA SYSTEM login from Secret Manager (https://cloud.google.com/secret-manager). The Secret Manager password will overwrite the clear text password from sap_hana_system_password if both are set."
+  default     = ""
+}
+
+variable "sap_hana_backup_size" {
+  type        = number
+  description = "Size in GB of the /hanabackup volume. If this is not set or set to zero, the GCE instance will be provisioned with a hana backup volume of 2 times the total memory."
+  default     = 0
+  validation {
+    condition     = var.sap_hana_backup_size >= 0
+    error_message = "The sap_hana_backup_size must be positive or 0."
+  }
 }
 
 variable "sap_hana_sidadm_uid" {
-  description = "SAP HANA System Identifier Admin UID"
+  type        = number
+  description = "The Linux UID of the <SID>adm user. By default this is set to 900 to avoid conflicting with other OS users."
+  default     = 900
 }
 
 variable "sap_hana_sapsys_gid" {
-  description = "SAP HANA SAP System GID"
+  type        = number
+  description = "The Linux GID of the SAPSYS group. By default this is set to 79"
+  default     = 79
 }
 
 variable "sap_vip" {
-  description = "SAP VIP"
-}
-
-variable "sap_vip_secondary_range" {
-  description = "SAP seconday VIP range"
-}
-
-variable "autodelete_disk" {
-  description = "Whether the disk will be auto-deleted when the instance is deleted."
-  default     = "false"
-}
-
-variable "boot_disk_size" {
-  description = "Root disk size in GB"
-}
-
-variable "boot_disk_type" {
-  description = "The GCE data disk type. May be set to pd-standard (for PD HDD) or pd-ssd."
-}
-
-variable "disk_type_0" {
-  description = "The GCE data disk type. May be set to pd-ssd."
-  default     = "pd-ssd"
-}
-
-variable "disk_type_1" {
-  description = "The GCE data disk type. May be set to pd-standard (for PD HDD)."
-  default     = "pd-standard"
-}
-
-variable "pd_ssd_size" {
-  description = "Persistent disk size in GB"
+  type        = string
+  description = "OPTIONAL - The virtual IP address of the alias/route pointing towards the active SAP HANA instance. For a route based solution this IP must sit outside of any defined networks."
   default     = ""
 }
 
-variable "pd_hdd_size" {
-  description = "Persistent disk size in GB"
+variable "primary_instance_group_name" {
+  type        = string
+  description = "OPTIONAL - Unmanaged instance group to be created for the primary node. If blank, will use ig-VM_NAME"
   default     = ""
 }
 
-variable "disk_name_0" {
-  description = "Name of first disk."
-  default     = "sap-hana-pd-sd-0"
+variable "secondary_instance_group_name" {
+  type        = string
+  description = "OPTIONAL - Unmanaged instance group to be created for the secondary node. If blank, will use ig-VM_NAME"
+  default     = ""
 }
 
-variable "disk_name_1" {
-  description = "Name of second disk."
-  default     = "sap-hana-pd-sd-1"
+variable "network" {
+  type        = string
+  description = "Network in which the ILB resides including resources like firewall rules."
 }
 
-variable "disk_name_2" {
-  description = "Name of third disk."
-  default     = "sap-hana-pd-sd-2"
-}
-
-variable "disk_name_3" {
-  description = "Name of fourth disk."
-  default     = "sap-hana-pd-sd-3"
-}
-
-variable "pd_kms_key" {
-  description = "Customer managed encryption key to use in persistent disks. If none provided, a Google managed key will be used.."
-  default     = null
-}
-
-variable "service_account_email" {
-  description = "Email of service account to attach to the instance."
+variable "loadbalancer_name" {
+  type        = string
+  description = "OPTIONAL - Name of the load balancer that will be created. If left blank with use_ilb_vip set to true, then will use lb-SID as default"
+  default     = ""
 }
 
 variable "network_tags" {
-  type        = list
-  description = "List of network tags to attach to the instance."
+  type        = list(string)
+  description = "OPTIONAL - Network tags can be associated to your instance on deployment. This can be used for firewalling or routing purposes."
   default     = []
 }
 
 variable "public_ip" {
-  description = "Determines whether a public IP address is added to your VM instance."
+  type        = bool
+  description = "OPTIONAL - Defines whether a public IP address should be added to your VM. By default this is set to Yes. Note that if you set this to No without appropriate network nat and tags in place, there will be no route to the internet and thus the installation will fail."
   default     = true
 }
 
-variable "primary_instance_ip" {
-  description = "Primary instance ip address"
+variable "service_account" {
+  type        = string
+  description = "OPTIONAL - Ability to define a custom service account instead of using the default project service account."
   default     = ""
 }
 
-variable "secondary_instance_ip" {
-  description = "Secondary instance ip address"
+variable "sap_deployment_debug" {
+  type        = bool
+  description = "OPTIONAL - If this value is set to true, the deployment will generates verbose deployment logs. Only turn this setting on if a Google support engineer asks you to enable debugging."
+  default     = false
+}
+
+variable "primary_reservation_name" {
+  type        = string
+  description = <<-EOT
+  Use a reservation specified by RESERVATION_NAME.
+  By default ANY_RESERVATION is used when this variable is empty.
+  In order for a reservation to be used it must be created with the
+  "Select specific reservation" selected (specificReservationRequired set to true)
+  Be sure to create your reservation with the correct Min CPU Platform for the
+  following instance types:
+  n1-highmem-32 : Intel Broadwell
+  n1-highmem-64 : Intel Broadwell
+  n1-highmem-96 : Intel Skylake
+  n1-megamem-96 : Intel Skylake
+  m1-megamem-96 : Intel Skylake
+  All other instance types can have automatic Min CPU Platform"
+  EOT
   default     = ""
 }
 
-variable "sap_vip_internal_address" {
-  description = "Name of static IP adress to add to the instance's access config."
-}
-
-variable "startup_script_1" {
-  description = "Startup script to install SAP HANA."
-}
-
-variable "startup_script_2" {
-  description = "Startup script to install SAP HANA."
-}
-
-variable "primary_instance_internal_ip" {
-  description = "Primary instance private ip address"
+variable "secondary_reservation_name" {
+  type        = string
+  description = <<-EOT
+  Use a reservation specified by RESERVATION_NAME.
+  By default ANY_RESERVATION is used when this variable is empty.
+  In order for a reservation to be used it must be created with the
+  "Select specific reservation" selected (specificReservationRequired set to true)
+  Be sure to create your reservation with the correct Min CPU Platform for the
+  following instance types:
+  n1-highmem-32 : Intel Broadwell
+  n1-highmem-64 : Intel Broadwell
+  n1-highmem-96 : Intel Skylake
+  n1-megamem-96 : Intel Skylake
+  m1-megamem-96 : Intel Skylake
+  All other instance types can have automatic Min CPU Platform"
+  EOT
   default     = ""
 }
 
-variable "secondary_instance_internal_ip" {
-  description = "Secondary instance private ip address"
+variable "post_deployment_script" {
+  type        = string
+  description = "OPTIONAL - gs:// or https:// location of a script to execute on the created VM's post deployment."
   default     = ""
+}
+
+#
+# DO NOT MODIFY unless you know what you are doing
+#
+variable "wlm_deployment_name" {
+  type        = string
+  description = "Deployment name to be used for integrating into Work Load Management."
+  default     = ""
+}
+
+variable "is_work_load_management_deployment" {
+  type        = bool
+  description = "If set the necessary tags and labels will be added to resoucres to support WLM."
+  default     = false
+}
+
+variable "primary_startup_url" {
+  type        = string
+  description = "Startup script to be executed when the VM boots, should not be overridden."
+  default     = "curl -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202210141928/terraform/sap_hana_ha/startup.sh | bash -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202210141928/terraform"
+}
+
+variable "secondary_startup_url" {
+  type        = string
+  default     = "curl -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202210141928/terraform/sap_hana_ha/startup_secondary.sh | bash -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202210141928/terraform"
+  description = "DO NOT USE"
+}
+
+variable "can_ip_forward" {
+  type        = bool
+  description = "Whether sending and receiving of packets with non-matching source or destination IPs is allowed."
+  default     = true
 }

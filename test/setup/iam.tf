@@ -16,9 +16,7 @@
 
 locals {
   int_required_roles = [
-    "roles/compute.admin",
-    "roles/logging.configWriter",
-    "roles/iam.serviceAccountUser",
+    "roles/owner"
   ]
 }
 
@@ -34,4 +32,8 @@ resource "google_project_iam_member" "int_test" {
   project = module.project.project_id
   role    = local.int_required_roles[count.index]
   member  = "serviceAccount:${google_service_account.int_test.email}"
+}
+
+resource "google_service_account_key" "int_test" {
+  service_account_id = google_service_account.int_test.id
 }
