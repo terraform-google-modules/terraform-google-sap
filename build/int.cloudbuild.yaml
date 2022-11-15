@@ -59,20 +59,20 @@ steps:
   args: ['/bin/bash', '-c', 'cft test run TestSapHanaSimpleModule --stage teardown --verbose']
 
 # TODO: enable scaleout test when we have a resolution for CPU quota (b/259260905)
-# - id: apply sap-hana-scaleout
-#   waitFor: ["init-all", "teardown sap-hana-simple"]
-#   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-#   args: ['/bin/bash', '-c', 'cft test run TestSapHanaScaleoutModule --stage apply --verbose']
-# - id: verify sap-hana-scaleout
-#   waitFor:
-#     - apply sap-hana-scaleout
-#   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-#   args: ['/bin/bash', '-c', 'cft test run TestSapHanaScaleoutModule --stage verify --verbose']
-# - id: teardown sap-hana-scaleout
-#   waitFor:
-#     - verify sap-hana-scaleout
-#   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-#   args: ['/bin/bash', '-c', 'cft test run TestSapHanaScaleoutModule --stage teardown --verbose']
+- id: apply sap-hana-scaleout
+  waitFor: ["init-all", "teardown sap-hana-simple"]
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSapHanaScaleoutModule --stage apply --verbose']
+- id: verify sap-hana-scaleout
+  waitFor:
+    - apply sap-hana-scaleout
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSapHanaScaleoutModule --stage verify --verbose']
+- id: teardown sap-hana-scaleout
+  waitFor:
+    - verify sap-hana-scaleout
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestSapHanaScaleoutModule --stage teardown --verbose']
 
 tags:
 - 'ci'

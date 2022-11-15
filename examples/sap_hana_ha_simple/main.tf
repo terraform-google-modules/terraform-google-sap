@@ -27,7 +27,7 @@ module "sap_hana_ha" {
   # version = "0.5.0"
 
   project_id              = var.project_id
-  machine_type            = "n1-highmem-32"
+  machine_type            = "n1-standard-16"
   network                 = "default"
   subnetwork              = "default"
   linux_image             = "rhel-8-4-sap-ha"

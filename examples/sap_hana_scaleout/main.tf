@@ -28,7 +28,7 @@ module "hana_scaleout" {
 
   project_id          = var.project_id
   zone                = "us-east1-b"
-  machine_type        = "n1-highmem-32"
+  machine_type        = "n1-standard-16"
   subnetwork          = "default"
   linux_image         = "rhel-8-4-sap-ha"
   linux_image_project = "rhel-sap-cloud"
