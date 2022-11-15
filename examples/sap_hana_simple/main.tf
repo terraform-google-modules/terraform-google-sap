@@ -15,25 +15,23 @@
  */
 
 #
-# Version:    2.0.2022101419281665775728
-# Build Hash: 5f4ef08feb4fed0e1eabc3bfc4b2d64d99001ae7
+# Version:    BUILD.VERSION
+# Build Hash: BUILD.HASH
 #
-module "sap_hana_ha" {
+module "sap_hana" {
   # hardcoding the module for testing only
-  source = "../../modules/sap_hana_ha"
+  source = "../../modules/sap_hana"
 
   # reference the module by its registry URL and version as such:
-  # source = "terraform-google-modules/sap/google//modules/sap_hana_ha"
+  # source = "terraform-google-modules/sap/google//modules/sap_hana"
   # version = "0.5.0"
 
-  project_id              = var.project_id
-  machine_type            = "n1-highmem-32"
-  network                 = "default"
-  subnetwork              = "default"
-  linux_image             = "rhel-8-4-sap-ha"
-  linux_image_project     = "rhel-sap-cloud"
-  primary_instance_name   = "hana-ha-primary"
-  primary_zone            = "us-east1-b"
-  secondary_instance_name = "hana-ha-secondary"
-  secondary_zone          = "us-east1-c"
+  project_id          = var.project_id
+  machine_type        = "n1-highmem-32"
+  subnetwork          = "default"
+  linux_image         = "rhel-8-4-sap-ha"
+  linux_image_project = "rhel-sap-cloud"
+  instance_name       = "hana-instance"
+  zone                = "us-east1-b"
+  sap_hana_sid        = "XYZ"
 }

@@ -15,8 +15,8 @@ Basic usage of this module is as follows:
 
 ```hcl
 module "sap_hana_ha" {
-  source  = "terraform-google-modules/{{ cookiecutter.module_name }}/google"
-  version = "~> 0.1"
+  source  = "terraform-google-modules/sap/google//modules/sap_hana_ha"
+  version = "0.5"
 
   project_id              = "PROJECT_ID"          # example: my-project-x
   machine_type            = "MACHINE_TYPE"        # example: n1-highmem-32
@@ -31,8 +31,8 @@ module "sap_hana_ha" {
 }
 ```
 
-Functional examples are included in the
-[examples](./examples/) directory.
+Functional example is included in the
+[examples](./examples/sap_hana_ha_simple) directory.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
@@ -96,28 +96,7 @@ These sections describe requirements for using this module.
 The following dependencies must be available:
 
 - [Terraform][terraform] v0.13
-- [Terraform Provider for GCP][terraform-provider-gcp] plugin v3.0
-
-### Service Account
-
-A service account with the following roles must be used to provision
-the resources of this module:
-
-- Storage Admin: `roles/storage.admin`
-
-The [Project Factory module][project-factory-module] and the
-[IAM module][iam-module] may be used in combination to provision a
-service account with the necessary roles applied.
-
-### APIs
-
-A project with the following APIs enabled must be used to host the
-resources of this module:
-
-- Google Cloud Storage JSON API: `storage-api.googleapis.com`
-
-The [Project Factory module][project-factory-module] can be used to
-provision a project with the necessary APIs enabled.
+- [Terraform Provider for GCP][terraform-provider-gcp] plugin v4.0
 
 ## Contributing
 
