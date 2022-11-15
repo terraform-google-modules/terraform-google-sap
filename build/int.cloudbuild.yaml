@@ -44,7 +44,7 @@ steps:
   args: ['/bin/bash', '-c', 'cft test run TestSapHanaHaSimpleModule --stage teardown --verbose']
 
 - id: apply sap-hana-simple
-  waitFor: ["init-all"]
+  waitFor: ["init-all", "teardown sap-hana-ha-simple"]
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSapHanaSimpleModule --stage apply --verbose']
 - id: verify sap-hana-simple
@@ -59,7 +59,7 @@ steps:
   args: ['/bin/bash', '-c', 'cft test run TestSapHanaSimpleModule --stage teardown --verbose']
 
 - id: apply sap-hana-scaleout
-  waitFor: ["init-all"]
+  waitFor: ["init-all", "teardown sap-hana-simple"]
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSapHanaScaleoutModule --stage apply --verbose']
 - id: verify sap-hana-scaleout
