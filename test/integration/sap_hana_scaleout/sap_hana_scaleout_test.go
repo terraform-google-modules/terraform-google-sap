@@ -21,6 +21,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
+	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-google-modules/terraform-google-sap/test/integration/common"
 )
@@ -33,9 +34,7 @@ func TestSapHanaScaleoutModule(t *testing.T) {
 
 		instanceSelfLinks := make(map[string]string)
 		instanceSelfLinks["primary"] = sapHanaSc.GetStringOutput("sap_hana_primary_self_link")
-
-		workersListRaw := sapHanaSc.GetStringOutput("hana_scaleout_worker_self_links")
-		workers := strings.Split(strings.Trim(workersListRaw, "[]"), ",")
+		workers := terraform.OutputList(t, sapHanaSc.GetTFOptions(), "hana_scaleout_worker_self_links")
 		for i, workerLink := range workers {
 			instanceSelfLinks[fmt.Sprintf("worker-%d", i)] = workerLink
 		}
