@@ -49,6 +49,7 @@ locals {
     "m2-ultramem-416" = 11832
   }
   cpu_platform_map = {
+    "n1-standard-16"  = "Intel Haswell"
     "n1-highmem-32"   = "Intel Broadwell"
     "n1-highmem-64"   = "Intel Broadwell"
     "n1-highmem-96"   = "Intel Skylake"

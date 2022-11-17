@@ -12,32 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package sap_hana_ha_simple
+package sap_hana_scaleout
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
+	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-google-modules/terraform-google-sap/test/integration/common"
 )
 
-func TestSapHanaHaSimpleModule(t *testing.T) {
-	sapHanaHa := tft.NewTFBlueprintTest(t)
+func TestSapHanaScaleoutModule(t *testing.T) {
+	sapHanaSc := tft.NewTFBlueprintTest(t)
 
-	sapHanaHa.DefineVerify(func(assert *assert.Assertions) {
-		sapHanaHa.DefaultVerify(assert)
+	sapHanaSc.DefineVerify(func(assert *assert.Assertions) {
+		sapHanaSc.DefaultVerify(assert)
 
 		instanceSelfLinks := make(map[string]string)
-		instanceSelfLinks["primary"] = sapHanaHa.GetStringOutput("sap_hana_ha_primary_instance_self_link")
-		instanceSelfLinks["secondary"] = sapHanaHa.GetStringOutput("sap_hana_ha_secondary_instance_self_link")
+		instanceSelfLinks["primary"] = sapHanaSc.GetStringOutput("sap_hana_primary_self_link")
+		workers := terraform.OutputList(t, sapHanaSc.GetTFOptions(), "hana_scaleout_worker_self_links")
+		for i, workerLink := range workers {
+			instanceSelfLinks[fmt.Sprintf("worker-%d", i)] = workerLink
+		}
+
+		standyListRaw := sapHanaSc.GetStringOutput("hana_scaleout_standby_self_links")
+		standbys := strings.Split(strings.Trim(standyListRaw, "[]"), ",")
+		for i, standbyLink := range standbys {
+			instanceSelfLinks[fmt.Sprintf("standby-%d", i)] = standbyLink
+		}
 
 		// assert instance configurations
 		for insType, insSelfLink := range instanceSelfLinks {
 			zone, name := common.GetInstanceNameAndZone(insSelfLink)
-			op := gcloud.Runf(t, "compute instances describe %s --zone %s --project %s", name, zone, sapHanaHa.GetTFSetupStringOutput("project_id"))
+			op := gcloud.Runf(t, "compute instances describe %s --zone %s --project %s", name, zone, sapHanaSc.GetTFSetupStringOutput("project_id"))
 			assert.Equal("n1-standard-16", common.GetInstanceMachineType(op.Get("machineType").String()), fmt.Sprintf("%s machine type set as n1-highmem-32", insType))
 			insNetworkInterface := op.Get("networkInterfaces").Array()[0]
 			assert.Equal("default", common.GetInstanceNetworkName(insNetworkInterface.Get("network").String()), fmt.Sprintf("%s instance connected to default network", insType))
@@ -46,5 +57,5 @@ func TestSapHanaHaSimpleModule(t *testing.T) {
 		}
 	})
 
-	sapHanaHa.Test()
+	sapHanaSc.Test()
 }
