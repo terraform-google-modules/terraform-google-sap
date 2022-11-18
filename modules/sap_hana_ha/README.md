@@ -16,7 +16,7 @@ Basic usage of this module is as follows:
 ```hcl
 module "sap_hana_ha" {
   source  = "terraform-google-modules/sap/google//modules/sap_hana_ha"
-  version = "0.5"
+  version = "~> 1.0"
 
   project_id              = "PROJECT_ID"          # example: my-project-x
   machine_type            = "MACHINE_TYPE"        # example: n1-highmem-32

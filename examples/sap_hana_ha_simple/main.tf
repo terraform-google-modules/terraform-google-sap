@@ -14,17 +14,9 @@
  * limitations under the License.
  */
 
-#
-# Version:    2.0.2022101419281665775728
-# Build Hash: 5f4ef08feb4fed0e1eabc3bfc4b2d64d99001ae7
-#
 module "sap_hana_ha" {
-  # hardcoding the module for testing only
-  source = "../../modules/sap_hana_ha"
-
-  # reference the module by its registry URL and version as such:
-  # source = "terraform-google-modules/sap/google//modules/sap_hana_ha"
-  # version = "0.5.0"
+  source = "terraform-google-modules/sap/google//modules/sap_hana_ha"
+  version = "~> 1.0"
 
   project_id              = var.project_id
   machine_type            = "n1-standard-16"

@@ -10,7 +10,7 @@ Basic usage of this module is as follows:
 ```hcl
 module "hana_scaleout" {
   source  = "terraform-google-modules/sap/google//modules/sap_hana_scaleout"
-  version = "0.5"
+  version = "~> 1.0"
 
   project_id                     = "PROJECT_ID"          # example: my-project-x
   zone                           = "ZONE"                # example: us-east1-b
