@@ -13,14 +13,14 @@ module "sap_hana" {
   source  = "terraform-google-modules/sap/google//modules/sap_hana"
   version = "~> 1.0"
 
-  project_id                     = "PROJECT_ID"          # example: my-project-x
-  zone                           = "ZONE"                # example: us-east1-b
-  machine_type                   = "MACHINE_TYPE"        # example: n1-highmem-32
-  subnetwork                     = "SUBNETWORK"          # example: default
-  linux_image                    = "LINUX_IMAGE"         # example: rhel-8-4-sap-ha
-  linux_image_project            = "LINUX_IMAGE_PROJECT" # example: rhel-sap-cloud
-  instance_name                  = "VM_NAME"             # example: hana_instance
-  sap_hana_sid                   = "SID"                 # example: ABC, Must conform to [a-zA-Z][a-zA-Z0-9]{2}
+  project_id          = "PROJECT_ID"          # example: my-project-x
+  zone                = "ZONE"                # example: us-east1-b
+  machine_type        = "MACHINE_TYPE"        # example: n1-highmem-32
+  subnetwork          = "SUBNETWORK"          # example: default
+  linux_image         = "LINUX_IMAGE"         # example: rhel-8-4-sap-ha
+  linux_image_project = "LINUX_IMAGE_PROJECT" # example: rhel-sap-cloud
+  instance_name       = "VM_NAME"             # example: hana_instance
+  sap_hana_sid        = "SID"                 # example: ABC, Must conform to [a-zA-Z][a-zA-Z0-9]{2}
 }
 ```
 
