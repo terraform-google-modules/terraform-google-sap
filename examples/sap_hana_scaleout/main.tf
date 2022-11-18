@@ -14,17 +14,9 @@
  * limitations under the License.
  */
 
-#
-# Version:    BUILD.VERSION
-# Build Hash: BUILD.HASH
-#
 module "hana_scaleout" {
-  # hardcoding the module for testing only
-  source = "../../modules/sap_hana_scaleout"
-
-  # reference the module by its registry URL and version as such:
-  # source = "terraform-google-modules/sap/google//modules/sap_hana_scaleout"
-  # version = "0.5.0"
+  source  = "terraform-google-modules/sap/google//modules/sap_hana_scaleout"
+  version = "~> 1.0"
 
   project_id          = var.project_id
   zone                = "us-east1-b"
