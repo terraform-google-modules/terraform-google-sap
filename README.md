@@ -5,7 +5,7 @@ Below is the list of available submodules:
 
 - [SAP HANA](./modules/sap_hana/README.md)
 - [SAP HANA HA](./modules/sap_hana_ha/README.md)
-- [NETWEAVER](./modules/netweaver/README.md)
+- [SAP HANA Scaleout](./modules/sap_hana_scaleout/README.md)
 
 ## Usage
 
@@ -27,8 +27,8 @@ These sections describe requirements for using this module.
 
 The following dependencies must be available:
 
-- [Terraform][terraform] v0.11
-- [Terraform Provider for GCP][terraform-provider-gcp] plugin v2.6.0
+- [Terraform][terraform] v0.12.6
+- [Terraform Provider for GCP][terraform-provider-gcp] plugin v4.0.0
 
 ### Service Account
 
