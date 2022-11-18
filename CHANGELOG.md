@@ -7,6 +7,19 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0](https://github.com/terraform-google-modules/terraform-google-sap/compare/v0.5.0...v1.0.0) (2022-11-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* adds sap hana modules and examples (#62)
+
+### Features
+
+* adds sap hana modules and examples ([#62](https://github.com/terraform-google-modules/terraform-google-sap/issues/62)) ([b379c7b](https://github.com/terraform-google-modules/terraform-google-sap/commit/b379c7bd3a244af52539972af2813aefc41338e6))
+* changes prepare the repository for the new templates. ([#56](https://github.com/terraform-google-modules/terraform-google-sap/issues/56)) ([9d95c22](https://github.com/terraform-google-modules/terraform-google-sap/commit/9d95c227f61c7f7a0cb6143385c417092bb86cc5))
+* updates top level readme for v1.0 ([#65](https://github.com/terraform-google-modules/terraform-google-sap/issues/65)) ([223ce64](https://github.com/terraform-google-modules/terraform-google-sap/commit/223ce64d66a5d8e4ed3fa61285f81d71156ff15b))
+
 ## [0.5.0](https://www.github.com/terraform-google-modules/terraform-google-sap/compare/v0.4.0...v0.5.0) (2021-06-18)
 
 
