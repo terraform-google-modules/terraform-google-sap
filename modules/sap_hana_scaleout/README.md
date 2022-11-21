@@ -40,7 +40,7 @@ Functional example is included in the
 | machine\_type | Machine type for the instances. | `string` | n/a | yes |
 | network\_tags | OPTIONAL - Network tags can be associated to your instance on deployment. This can be used for firewalling or routing purposes. | `list(string)` | `[]` | no |
 | post\_deployment\_script | OPTIONAL - gs:// or https:// location of a script to execute on the created VM's post deployment. | `string` | `""` | no |
-| primary\_startup\_url | Startup script to be executed when the VM boots, should not be overridden. | `string` | `"curl -s BUILD.TERRA_SH_URL/sap_hana_scaleout/startup.sh | bash -s BUILD.TERRA_SH_URL"` | no |
+| primary\_startup\_url | Startup script to be executed when the VM boots, should not be overridden. | `string` | `"curl -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202211212015/terraform/sap_hana_scaleout/startup.sh | bash -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202211212015/terraform"` | no |
 | project\_id | Project id where the instances will be created. | `string` | n/a | yes |
 | public\_ip | OPTIONAL - Defines whether a public IP address should be added to your VM. By default this is set to Yes. Note that if you set this to No without appropriate network nat and tags in place, there will be no route to the internet and thus the installation will fail. | `bool` | `true` | no |
 | reservation\_name | Use a reservation specified by RESERVATION\_NAME.<br>By default ANY\_RESERVATION is used when this variable is empty.<br>In order for a reservation to be used it must be created with the<br>"Select specific reservation" selected (specificReservationRequired set to true)<br>Be sure to create your reservation with the correct Min CPU Platform for the<br>following instance types:<br>n1-highmem-32 : Intel Broadwell<br>n1-highmem-64 : Intel Broadwell<br>n1-highmem-96 : Intel Skylake<br>n1-megamem-96 : Intel Skylake<br>m1-megamem-96 : Intel Skylake<br>All other instance types can have automatic Min CPU Platform" | `string` | `""` | no |
@@ -58,7 +58,7 @@ Functional example is included in the
 | sap\_hana\_system\_password | The SAP HANA SYSTEM password. If this is not defined, the GCE instance will be provisioned without SAP HANA installed. Minimum requirement is 8 characters with at least 1 number. | `string` | `""` | no |
 | sap\_hana\_system\_password\_secret | The secret key used to retrieve the SAP HANA SYSTEM login from Secret Manager (https://cloud.google.com/secret-manager). The Secret Manager password will overwrite the clear text password from sap\_hana\_system\_password if both are set. | `string` | `""` | no |
 | sap\_hana\_worker\_nodes | Number of worker nodes to create.<br>This is in addition to the primary node. | `number` | `1` | no |
-| secondary\_startup\_url | DO NOT USE | `string` | `"curl -s BUILD.TERRA_SH_URL/sap_hana_scaleout/startup_secondary.sh | bash -s BUILD.TERRA_SH_URL"` | no |
+| secondary\_startup\_url | DO NOT USE | `string` | `"curl -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202211212015/terraform/sap_hana_scaleout/startup_secondary.sh | bash -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202211212015/terraform"` | no |
 | service\_account | OPTIONAL - Ability to define a custom service account instead of using the default project service account. | `string` | `""` | no |
 | subnetwork | The sub network to deploy the instance in. | `string` | n/a | yes |
 | zone | Zone where the instances will be created. | `string` | n/a | yes |
