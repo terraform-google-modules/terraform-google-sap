@@ -204,12 +204,12 @@ variable "post_deployment_script" {
 variable "primary_startup_url" {
   type        = string
   description = "Startup script to be executed when the VM boots, should not be overridden."
-  default     = "curl -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202211211958/terraform/sap_hana/startup.sh | bash -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202211211958/terraform"
+  default     = "curl -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202211212015/terraform/sap_hana/startup.sh | bash -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202211212015/terraform"
 }
 
 variable "secondary_startup_url" {
   type        = string
-  default     = "curl -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202211211958/terraform/sap_hana/startup_secondary.sh | bash -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202211211958/terraform"
+  default     = "curl -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202211212015/terraform/sap_hana/startup_secondary.sh | bash -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202211212015/terraform"
   description = "DO NOT USE"
 }
 

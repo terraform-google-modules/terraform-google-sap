@@ -17,8 +17,8 @@
 # Terraform SAP HANA Scaleout for Google Cloud
 #
 #
-# Version:    2.0.2022112119581669060735
-# Build Hash: 8fa5ae64ac323505b8c8efcd585d65afd762bb3e
+# Version:    2.0.2022112120151669061726
+# Build Hash: 7289c9a20be2aa11f3510cd7d2b9c2403a80587f
 #
 
 ################################################################################
@@ -81,22 +81,22 @@ locals {
     "m3-ultramem-64"  = "Automatic"
     "m3-ultramem-128" = "Automatic"
   }
-  mem_size = lookup(local.mem_size_map, var.machine_type, 320)
-  sap_hana_log_size_min = min(512, max(64, local.mem_size / 2))
+  mem_size               = lookup(local.mem_size_map, var.machine_type, 320)
+  sap_hana_log_size_min  = min(512, max(64, local.mem_size / 2))
   sap_hana_data_size_min = local.mem_size * 12 / 10
 
-  sap_hana_log_size = local.sap_hana_log_size_min
+  sap_hana_log_size  = local.sap_hana_log_size_min
   sap_hana_data_size = local.sap_hana_data_size_min
 
-  zone_split = split("-", var.zone)
-  region = "${local.zone_split[0]}-${local.zone_split[1]}"
+  zone_split       = split("-", var.zone)
+  region           = "${local.zone_split[0]}-${local.zone_split[1]}"
   subnetwork_split = split("/", var.subnetwork)
   subnetwork_uri = length(local.subnetwork_split) > 1 ? (
-      "projects/${local.subnetwork_split[0]}/regions/${local.region}/subnetworks/${local.subnetwork_split[1]}") : (
-      "projects/${var.project_id}/regions/${local.region}/subnetworks/${var.subnetwork}")
+    "projects/${local.subnetwork_split[0]}/regions/${local.region}/subnetworks/${local.subnetwork_split[1]}") : (
+  "projects/${var.project_id}/regions/${local.region}/subnetworks/${var.subnetwork}")
 
-  pdssd_size = ceil(max(834, local.sap_hana_log_size + local.sap_hana_data_size  + 1))
-  primary_startup_url = var.sap_deployment_debug ? replace(var.primary_startup_url, "bash -s", "bash -x -s") : var.primary_startup_url
+  pdssd_size            = ceil(max(834, local.sap_hana_log_size + local.sap_hana_data_size + 1))
+  primary_startup_url   = var.sap_deployment_debug ? replace(var.primary_startup_url, "bash -s", "bash -x -s") : var.primary_startup_url
   secondary_startup_url = var.sap_deployment_debug ? replace(var.secondary_startup_url, "bash -s", "bash -x -s") : var.secondary_startup_url
 }
 
@@ -105,13 +105,13 @@ locals {
 ################################################################################
 resource "google_compute_disk" "sap_hana_scaleout_boot_disks" {
   # Need a disk for primary, worker nodes, standby nodes
-  count = var.sap_hana_worker_nodes + var.sap_hana_standby_nodes + 1
-  name  = count.index == 0 ? "${var.instance_name}-boot" : "${var.instance_name}w${count.index}-boot"
-  type  = "pd-standard"
-  zone = var.zone
-  size = 45
+  count   = var.sap_hana_worker_nodes + var.sap_hana_standby_nodes + 1
+  name    = count.index == 0 ? "${var.instance_name}-boot" : "${var.instance_name}w${count.index}-boot"
+  type    = "pd-standard"
+  zone    = var.zone
+  size    = 45
   project = var.project_id
-  image = "${var.linux_image_project}/${var.linux_image}"
+  image   = "${var.linux_image_project}/${var.linux_image}"
 
   lifecycle {
     # Ignores newer versions of the OS image. Removing this lifecycle
@@ -123,11 +123,11 @@ resource "google_compute_disk" "sap_hana_scaleout_boot_disks" {
 
 resource "google_compute_disk" "sap_hana_scaleout_pd_disks" {
   # Need a pd disk for primary, worker nodes
-  count = var.sap_hana_worker_nodes + 1
-  name = format("${var.instance_name}-mnt%05d", count.index + 1)
-  type = "pd-ssd"
-  zone = var.zone
-  size = local.pdssd_size
+  count   = var.sap_hana_worker_nodes + 1
+  name    = format("${var.instance_name}-mnt%05d", count.index + 1)
+  type    = "pd-ssd"
+  zone    = var.zone
+  size    = local.pdssd_size
   project = var.project_id
 }
 
@@ -164,23 +164,23 @@ resource "google_compute_address" "sap_hana_standby_ip" {
 ################################################################################
 resource "google_compute_instance" "sap_hana_scaleout_primary_instance" {
   # We will have a primary, worker nodes, and standby nodes
-  name = var.instance_name
+  name         = var.instance_name
   machine_type = var.machine_type
-  zone = var.zone
-  project = var.project_id
+  zone         = var.zone
+  project      = var.project_id
 
   min_cpu_platform = lookup(local.cpu_platform_map, var.machine_type, "Automatic")
 
   boot_disk {
     auto_delete = true
     device_name = "boot"
-    source = google_compute_disk.sap_hana_scaleout_boot_disks[0].self_link
+    source      = google_compute_disk.sap_hana_scaleout_boot_disks[0].self_link
   }
 
   attached_disk {
     # we only attach the PDs to the primary and workers
     device_name = google_compute_disk.sap_hana_scaleout_pd_disks[0].name
-    source = google_compute_disk.sap_hana_scaleout_pd_disks[0].self_link
+    source      = google_compute_disk.sap_hana_scaleout_pd_disks[0].self_link
   }
 
   can_ip_forward = var.can_ip_forward
@@ -212,32 +212,32 @@ resource "google_compute_instance" "sap_hana_scaleout_primary_instance" {
     content {
       type = "SPECIFIC_RESERVATION"
       specific_reservation {
-        key = "compute.googleapis.com/reservation-name"
+        key    = "compute.googleapis.com/reservation-name"
         values = [var.reservation_name]
       }
     }
   }
 
   metadata = {
-    startup-script = local.primary_startup_url
-    post_deployment_script = var.post_deployment_script
-    sap_deployment_debug = var.sap_deployment_debug
-    sap_hana_deployment_bucket = var.sap_hana_deployment_bucket
-    sap_hana_original_role = "master"
-    sap_hana_sid = var.sap_hana_sid
-    sap_hana_instance_number = var.sap_hana_instance_number
-    sap_hana_sidadm_password = var.sap_hana_sidadm_password
+    startup-script                  = local.primary_startup_url
+    post_deployment_script          = var.post_deployment_script
+    sap_deployment_debug            = var.sap_deployment_debug
+    sap_hana_deployment_bucket      = var.sap_hana_deployment_bucket
+    sap_hana_original_role          = "master"
+    sap_hana_sid                    = var.sap_hana_sid
+    sap_hana_instance_number        = var.sap_hana_instance_number
+    sap_hana_sidadm_password        = var.sap_hana_sidadm_password
     sap_hana_sidadm_password_secret = var.sap_hana_sidadm_password_secret
     # wording on system_password may be inconsitent with DM
-    sap_hana_system_password = var.sap_hana_system_password
+    sap_hana_system_password        = var.sap_hana_system_password
     sap_hana_system_password_secret = var.sap_hana_system_password_secret
-    sap_hana_sidadm_uid = var.sap_hana_sidadm_uid
-    sap_hana_scaleout_nodes = var.sap_hana_worker_nodes + var.sap_hana_standby_nodes
-    sap_hana_worker_nodes = var.sap_hana_worker_nodes
-    sap_hana_standby_nodes = var.sap_hana_standby_nodes
-    sap_hana_shared_nfs = var.sap_hana_shared_nfs
-    sap_hana_backup_nfs = var.sap_hana_backup_nfs
-    template-type = "TERRAFORM"
+    sap_hana_sidadm_uid             = var.sap_hana_sidadm_uid
+    sap_hana_scaleout_nodes         = var.sap_hana_worker_nodes + var.sap_hana_standby_nodes
+    sap_hana_worker_nodes           = var.sap_hana_worker_nodes
+    sap_hana_standby_nodes          = var.sap_hana_standby_nodes
+    sap_hana_shared_nfs             = var.sap_hana_shared_nfs
+    sap_hana_backup_nfs             = var.sap_hana_backup_nfs
+    template-type                   = "TERRAFORM"
   }
 
   lifecycle {
@@ -248,24 +248,24 @@ resource "google_compute_instance" "sap_hana_scaleout_primary_instance" {
 
 resource "google_compute_instance" "sap_hana_scaleout_worker_instances" {
   # We will have a primary, worker nodes, and standby nodes
-  count = var.sap_hana_worker_nodes
-  name = "${var.instance_name}w${count.index + 1}"
+  count        = var.sap_hana_worker_nodes
+  name         = "${var.instance_name}w${count.index + 1}"
   machine_type = var.machine_type
-  zone = var.zone
-  project = var.project_id
+  zone         = var.zone
+  project      = var.project_id
 
   min_cpu_platform = lookup(local.cpu_platform_map, var.machine_type, "Automatic")
 
   boot_disk {
     auto_delete = true
     device_name = "boot"
-    source = google_compute_disk.sap_hana_scaleout_boot_disks[count.index + 1].self_link
+    source      = google_compute_disk.sap_hana_scaleout_boot_disks[count.index + 1].self_link
   }
 
   attached_disk {
     # we only attach the PDs to the primary and workers
     device_name = google_compute_disk.sap_hana_scaleout_pd_disks[count.index + 1].name
-    source = google_compute_disk.sap_hana_scaleout_pd_disks[count.index + 1].self_link
+    source      = google_compute_disk.sap_hana_scaleout_pd_disks[count.index + 1].self_link
   }
 
   can_ip_forward = var.can_ip_forward
@@ -297,32 +297,32 @@ resource "google_compute_instance" "sap_hana_scaleout_worker_instances" {
     content {
       type = "SPECIFIC_RESERVATION"
       specific_reservation {
-        key = "compute.googleapis.com/reservation-name"
+        key    = "compute.googleapis.com/reservation-name"
         values = [var.reservation_name]
       }
     }
   }
 
   metadata = {
-    startup-script = local.secondary_startup_url
-    post_deployment_script = var.post_deployment_script
-    sap_deployment_debug = var.sap_deployment_debug
+    startup-script             = local.secondary_startup_url
+    post_deployment_script     = var.post_deployment_script
+    sap_deployment_debug       = var.sap_deployment_debug
     sap_hana_deployment_bucket = var.sap_hana_deployment_bucket
-    sap_hana_sid = var.sap_hana_sid
-    sap_hana_instance_number = var.sap_hana_instance_number
-    sap_hana_scaleout_nodes = var.sap_hana_worker_nodes + var.sap_hana_standby_nodes
+    sap_hana_sid               = var.sap_hana_sid
+    sap_hana_instance_number   = var.sap_hana_instance_number
+    sap_hana_scaleout_nodes    = var.sap_hana_worker_nodes + var.sap_hana_standby_nodes
 
-    sap_hana_original_role = "worker"
-    sap_hana_sidadm_password = var.sap_hana_sidadm_password
+    sap_hana_original_role          = "worker"
+    sap_hana_sidadm_password        = var.sap_hana_sidadm_password
     sap_hana_sidadm_password_secret = var.sap_hana_sidadm_password_secret
-    sap_hana_system_password = var.sap_hana_system_password
+    sap_hana_system_password        = var.sap_hana_system_password
     sap_hana_system_password_secret = var.sap_hana_system_password_secret
-    sap_hana_sidadm_uid = var.sap_hana_sidadm_uid
-    sap_hana_shared_nfs = var.sap_hana_shared_nfs
-    sap_hana_backup_nfs = var.sap_hana_backup_nfs
-    sap_hana_worker_nodes = var.sap_hana_worker_nodes
-    sap_hana_standby_nodes = var.sap_hana_standby_nodes
-    template-type = "TERRAFORM"
+    sap_hana_sidadm_uid             = var.sap_hana_sidadm_uid
+    sap_hana_shared_nfs             = var.sap_hana_shared_nfs
+    sap_hana_backup_nfs             = var.sap_hana_backup_nfs
+    sap_hana_worker_nodes           = var.sap_hana_worker_nodes
+    sap_hana_standby_nodes          = var.sap_hana_standby_nodes
+    template-type                   = "TERRAFORM"
   }
 
   lifecycle {
@@ -337,18 +337,18 @@ resource "google_compute_instance" "sap_hana_scaleout_worker_instances" {
 
 resource "google_compute_instance" "sap_hana_scaleout_standby_instances" {
   # We will have a primary, worker nodes, and standby nodes
-  count = var.sap_hana_standby_nodes
-  name = "${var.instance_name}w${count.index + var.sap_hana_worker_nodes + 1}"
+  count        = var.sap_hana_standby_nodes
+  name         = "${var.instance_name}w${count.index + var.sap_hana_worker_nodes + 1}"
   machine_type = var.machine_type
-  zone = var.zone
-  project = var.project_id
+  zone         = var.zone
+  project      = var.project_id
 
   min_cpu_platform = lookup(local.cpu_platform_map, var.machine_type, "Automatic")
 
   boot_disk {
     auto_delete = true
     device_name = "boot"
-    source = google_compute_disk.sap_hana_scaleout_boot_disks[count.index + var.sap_hana_worker_nodes + 1].self_link
+    source      = google_compute_disk.sap_hana_scaleout_boot_disks[count.index + var.sap_hana_worker_nodes + 1].self_link
   }
 
 
@@ -381,32 +381,32 @@ resource "google_compute_instance" "sap_hana_scaleout_standby_instances" {
     content {
       type = "SPECIFIC_RESERVATION"
       specific_reservation {
-        key = "compute.googleapis.com/reservation-name"
+        key    = "compute.googleapis.com/reservation-name"
         values = [var.reservation_name]
       }
     }
   }
 
   metadata = {
-    startup-script = local.secondary_startup_url
-    post_deployment_script = var.post_deployment_script
-    sap_deployment_debug = var.sap_deployment_debug
+    startup-script             = local.secondary_startup_url
+    post_deployment_script     = var.post_deployment_script
+    sap_deployment_debug       = var.sap_deployment_debug
     sap_hana_deployment_bucket = var.sap_hana_deployment_bucket
-    sap_hana_sid = var.sap_hana_sid
-    sap_hana_instance_number = var.sap_hana_instance_number
-    sap_hana_scaleout_nodes = var.sap_hana_worker_nodes + var.sap_hana_standby_nodes
+    sap_hana_sid               = var.sap_hana_sid
+    sap_hana_instance_number   = var.sap_hana_instance_number
+    sap_hana_scaleout_nodes    = var.sap_hana_worker_nodes + var.sap_hana_standby_nodes
 
-    sap_hana_original_role = "standby"
-    sap_hana_sidadm_password = var.sap_hana_sidadm_password
+    sap_hana_original_role          = "standby"
+    sap_hana_sidadm_password        = var.sap_hana_sidadm_password
     sap_hana_sidadm_password_secret = var.sap_hana_sidadm_password_secret
-    sap_hana_system_password = var.sap_hana_system_password
+    sap_hana_system_password        = var.sap_hana_system_password
     sap_hana_system_password_secret = var.sap_hana_system_password_secret
-    sap_hana_sidadm_uid = var.sap_hana_sidadm_uid
-    sap_hana_shared_nfs = var.sap_hana_shared_nfs
-    sap_hana_backup_nfs = var.sap_hana_backup_nfs
-    sap_hana_worker_nodes = var.sap_hana_worker_nodes
-    sap_hana_standby_nodes = var.sap_hana_standby_nodes
-    template-type = "TERRAFORM"
+    sap_hana_sidadm_uid             = var.sap_hana_sidadm_uid
+    sap_hana_shared_nfs             = var.sap_hana_shared_nfs
+    sap_hana_backup_nfs             = var.sap_hana_backup_nfs
+    sap_hana_worker_nodes           = var.sap_hana_worker_nodes
+    sap_hana_standby_nodes          = var.sap_hana_standby_nodes
+    template-type                   = "TERRAFORM"
   }
 
   lifecycle {
