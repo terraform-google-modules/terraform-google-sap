@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #
 # Terraform SAP HANA for Google Cloud
 #
-# Version:    BUILD.VERSION
-# Build Hash: BUILD.HASH
+# Version:    2.0.2022112119581669060735
+# Build Hash: 8fa5ae64ac323505b8c8efcd585d65afd762bb3e
 #
 
 ################################################################################
@@ -54,7 +53,6 @@ locals {
     "m3-ultramem-128" = 3904
   }
   cpu_platform_map = {
-    "n1-standard-16"  = "Intel Haswell"
     "n1-highmem-32"   = "Intel Broadwell"
     "n1-highmem-64"   = "Intel Broadwell"
     "n1-highmem-96"   = "Intel Skylake"
@@ -92,7 +90,7 @@ locals {
 
   # scaleout_nodes > 0 then hana_shared_size and pdhdd is changed; assumes that sap_hana_scaleout_nodes is an interger
   hana_shared_size   = local.hana_shared_size_min * (var.sap_hana_scaleout_nodes > 0 ? ceil(var.sap_hana_scaleout_nodes / 4) : 1)
-  pdhdd_size_default = var.sap_hana_scaleout_nodes > 0 ? 2 * local.mem_size * (var.sap_hana_scaleout_nodes + 1) : 500
+  pdhdd_size_default = var.sap_hana_scaleout_nodes > 0 ? 2 * local.mem_size * (var.sap_hana_scaleout_nodes + 1) : 0
 
   # ensure pd-ssd meets minimum size/performance ; 32 is the min allowed memery and + 1 is there to make sure no undersizing happens
   pdssd_size = ceil(max(834, local.hana_log_size + local.hana_data_size + local.hana_shared_size + 32 + 1))
