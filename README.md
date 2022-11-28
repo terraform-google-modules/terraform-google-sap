@@ -53,6 +53,11 @@ resources of this module:
 The [Project Factory module][project-factory-module] can be used to
 provision a project with the necessary APIs enabled.
 
+## Contributing
+
+We are not  accepting contributions at this time.
+
+
 [iam-module]: https://registry.terraform.io/modules/terraform-google-modules/iam/google
 [project-factory-module]: https://registry.terraform.io/modules/terraform-google-modules/project-factory/google
 [terraform-provider-gcp]: https://www.terraform.io/docs/providers/google/index.html
