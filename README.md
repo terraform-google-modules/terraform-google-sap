@@ -55,8 +55,8 @@ provision a project with the necessary APIs enabled.
 
 ## Contributing
 
-Refer to the [contribution guidelines](./CONTRIBUTING.md) for
-information on contributing to this module.
+We are not  accepting contributions at this time.
+
 
 [iam-module]: https://registry.terraform.io/modules/terraform-google-modules/iam/google
 [project-factory-module]: https://registry.terraform.io/modules/terraform-google-modules/project-factory/google
