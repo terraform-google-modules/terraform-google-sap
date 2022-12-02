@@ -26,7 +26,7 @@ module "hana_scaleout" {
 ```
 
 Functional example is included in the
-[examples](./examples/sap_hana_scaleout) directory.
+[examples](../../examples/sap_hana_scaleout) directory.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
