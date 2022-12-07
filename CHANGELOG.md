@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0](https://github.com/terraform-google-modules/terraform-google-sap/compare/v1.0.0...v1.1.0) (2022-12-02)
+
+
+### Features
+
+* makes the sap_hana_scaleout example consistent with the other examples ([#70](https://github.com/terraform-google-modules/terraform-google-sap/issues/70)) ([69dea7b](https://github.com/terraform-google-modules/terraform-google-sap/commit/69dea7b523501885e4b547ddd749a6a8d2c806a1))
+
 ## [1.0.0](https://github.com/terraform-google-modules/terraform-google-sap/compare/v0.5.0...v1.0.0) (2022-11-18)
 
 

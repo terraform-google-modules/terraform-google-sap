@@ -11,7 +11,7 @@ Basic usage of this module is as follows:
 ```hcl
 module "sap_hana" {
   source  = "terraform-google-modules/sap/google//modules/sap_hana"
-  version = "~> 1.0"
+  version = "~> 1.1"
 
   project_id          = "PROJECT_ID"          # example: my-project-x
   zone                = "ZONE"                # example: us-east1-b
