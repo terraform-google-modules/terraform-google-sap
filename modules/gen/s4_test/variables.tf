@@ -52,12 +52,16 @@ variable "db_machine_type" {
   default = "e2-standard-32"
 }
 
+variable "media_bucket_name" {
+  default = "core-connect-dev-sap-installation-media"
+}
+
 variable "region_name" {
   default = "us-central1"
 }
 
 variable "sap_boot_disk_image" {
-  default = "projects/rhel-sap-cloud/global/images/rhel-7-6-sap-v20220822"
+  default = "projects/suse-sap-cloud/global/images/sles-15-sp1-sap-v20221108-x86-64"
 }
 
 variable "vm_prefix" {
