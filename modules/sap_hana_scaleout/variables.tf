@@ -157,12 +157,6 @@ variable "sap_hana_sidadm_uid" {
   default     = 900
 }
 
-variable "sap_hana_sapsys_gid" {
-  type        = number
-  description = "The Linux GID of the SAPSYS group. By default this is set to 79"
-  default     = 79
-}
-
 variable "network_tags" {
   type        = list(string)
   description = "OPTIONAL - Network tags can be associated to your instance on deployment. This can be used for firewalling or routing purposes."
