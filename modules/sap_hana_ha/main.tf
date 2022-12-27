@@ -223,7 +223,7 @@ resource "google_compute_instance" "sap_hana_ha_primary_instance" {
 
   network_interface {
     subnetwork = local.subnetwork_uri
-    network_ip = google_compute_address.sap_hana_ha_vm_ip.0.address
+    network_ip = google_compute_address.sap_hana_ha_vm_ip[0].address
 
     # we only include access_config if public_ip is true, an empty access_config
     # will create an ephemeral public ip
@@ -357,7 +357,7 @@ resource "google_compute_instance" "sap_hana_ha_secondary_instance" {
 
   network_interface {
     subnetwork = local.subnetwork_uri
-    network_ip = google_compute_address.sap_hana_ha_vm_ip.1.address
+    network_ip = google_compute_address.sap_hana_ha_vm_ip[1].address
     # we only include access_config if public_ip is true, an empty access_config
     # will create an ephemeral public ip
     dynamic "access_config" {
@@ -507,6 +507,6 @@ resource "google_compute_firewall" "sap_hana_ha_vpc_firewall" {
   target_tags   = ["sap-${local.healthcheck_name}-port"]
   allow {
     protocol = "tcp"
-    ports    = ["${local.sap_hc_port}"]
+    ports    = [local.sap_hc_port]
   }
 }

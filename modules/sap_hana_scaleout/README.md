@@ -48,7 +48,6 @@ Functional example is included in the
 | sap\_hana\_backup\_nfs | Google Filestore share for /hanabackup | `string` | n/a | yes |
 | sap\_hana\_deployment\_bucket | The GCS bucket containing the SAP HANA media. If this is not defined, the GCE instance will be provisioned without SAP HANA installed. | `string` | `""` | no |
 | sap\_hana\_instance\_number | The SAP instance number. If this is not defined, the GCE instance will be provisioned without SAP HANA installed. | `number` | `0` | no |
-| sap\_hana\_sapsys\_gid | The Linux GID of the SAPSYS group. By default this is set to 79 | `number` | `79` | no |
 | sap\_hana\_shared\_nfs | Google Filestore share for /hana/shared | `string` | n/a | yes |
 | sap\_hana\_sid | The SAP HANA SID. SID must adhere to SAP standard (Three letters or numbers and start with a letter) | `string` | n/a | yes |
 | sap\_hana\_sidadm\_password | The linux sidadm login password. If this is not defined, the GCE instance will be provisioned without SAP HANA installed. Minimum requirement is 8 characters. | `string` | `""` | no |
