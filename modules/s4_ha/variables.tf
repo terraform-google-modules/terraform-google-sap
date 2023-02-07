@@ -1,0 +1,129 @@
+variable "allow_stopping_for_update" {
+  default     = true
+  description = "allow_stopping_for_update"
+}
+
+variable "app_disk_export_interfaces_size" {
+  default     = 128
+  description = "app_disk_export_interfaces_size"
+}
+
+variable "app_disk_usr_sap_size" {
+  default     = 256
+  description = "app_disk_usr_sap_size"
+}
+
+variable "app_machine_type" {
+  default     = "e2-standard-32"
+  description = "app_machine_type"
+}
+
+variable "app_sid" {
+  default     = "ED1"
+  description = "app_sid"
+}
+
+variable "app_vms_multiplier" {
+  default     = 1
+  description = "Multiplies app VMs. E.g. if there is 2 VMs then with value 3 each VM will be multiplied by 3 (so there will be 6 total VMs)"
+}
+
+variable "ascs_disk_usr_sap_size" {
+  default     = 256
+  description = "ascs_disk_usr_sap_size"
+}
+
+variable "ascs_machine_type" {
+  default     = "e2-standard-8"
+  description = "ascs_machine_type"
+}
+
+variable "db_disk_export_backup_size" {
+  default     = 256
+  description = "db_disk_export_backup_size"
+}
+
+variable "db_disk_hana_data_size" {
+  default     = 256
+  description = "db_disk_hana_data_size"
+}
+
+variable "db_disk_hana_log_size" {
+  default     = 256
+  description = "db_disk_hana_log_size"
+}
+
+variable "db_disk_hana_restore_size" {
+  default     = 512
+  description = "db_disk_hana_restore_size"
+}
+
+variable "db_disk_hana_shared_size" {
+  default     = 256
+  description = "db_disk_hana_shared_size"
+}
+
+variable "db_disk_usr_sap_size" {
+  default     = 128
+  description = "db_disk_usr_sap_size"
+}
+
+variable "db_machine_type" {
+  default     = "e2-standard-32"
+  description = "db_machine_type"
+}
+
+variable "db_sid" {
+  default     = "HD1"
+  description = "db_sid"
+}
+
+variable "deployment_name" {
+  default     = "s4test"
+  description = "deployment_name"
+}
+
+variable "dns_zone_name_suffix" {
+  default     = "gcp.sapcloud.goog."
+  description = "dns_zone_name_suffix"
+}
+
+variable "gcp_project_name" {
+  default     = "core-connect-dev"
+  description = "gcp_project_name"
+}
+
+variable "media_bucket_name" {
+  default     = "core-connect-dev-sap-installation-media"
+  description = "media_bucket_name"
+}
+
+variable "region_name" {
+  default     = "us-central1"
+  description = "region_name"
+}
+
+variable "sap_boot_disk_image" {
+  default     = "projects/suse-sap-cloud/global/images/sles-15-sp1-sap-v20221108-x86-64"
+  description = "sap_boot_disk_image"
+}
+
+variable "vm_prefix" {
+  default     = "sapd"
+  description = "vm_prefix"
+}
+
+variable "vpc_name" {
+  default     = "s4test-sap-s4-test"
+  description = "vpc_name"
+}
+
+variable "zone1_name" {
+  default     = "us-central1-a"
+  description = "zone1_name"
+}
+
+variable "zone2_name" {
+  default     = "us-central1-b"
+  description = "zone2_name"
+}
