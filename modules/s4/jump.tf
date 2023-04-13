@@ -99,12 +99,6 @@ resource "google_project_iam_member" "jump_sa_role_1" {
   role    = "roles/compute.instanceAdmin.v1"
 }
 
-resource "google_project_iam_member" "jump_sa_role_2" {
-  member  = "serviceAccount:${google_service_account.service_account_jump.email}"
-  project = data.google_project.sap-project.project_id
-  role    = "roles/dns.admin"
-}
-
 resource "google_service_account" "service_account_jump" {
   account_id = "sap-jump-role-${var.deployment_name}"
   project    = data.google_project.sap-project.project_id

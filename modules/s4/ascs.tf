@@ -1,0 +1,145 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+data "google_compute_subnetwork" "sap-subnet-ascs-1" {
+  name    = var.subnet_name
+  project = data.google_project.sap-project.project_id
+  region  = var.region_name
+}
+
+resource "google_compute_address" "alidascs11" {
+  address_type = "INTERNAL"
+  name         = "${var.deployment_name}-alidascs11"
+  project      = data.google_project.sap-project.project_id
+  region       = var.region_name
+  subnetwork   = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
+}
+
+resource "google_compute_disk" "sapdascs11" {
+  image = var.sap_boot_disk_image
+  lifecycle {
+    ignore_changes = [snapshot, image]
+  }
+
+  name    = "${var.vm_prefix}ascs11"
+  project = data.google_project.sap-project.project_id
+  size    = 50
+  timeouts {
+    create = "1h"
+    delete = "1h"
+    update = "1h"
+  }
+
+  type = "pd-ssd"
+  zone = var.zone1_name
+}
+
+resource "google_compute_disk" "sapdascs11_usr_sap" {
+  lifecycle {
+    ignore_changes = [snapshot]
+  }
+
+  name    = "${var.vm_prefix}ascs11-usr-sap"
+  project = data.google_project.sap-project.project_id
+  size    = var.ascs_disk_usr_sap_size
+  timeouts {
+    create = "1h"
+    delete = "1h"
+    update = "1h"
+  }
+
+  type = "pd-ssd"
+  zone = var.zone1_name
+}
+
+resource "google_compute_instance" "sapdascs11" {
+  allow_stopping_for_update = var.allow_stopping_for_update
+  attached_disk {
+    device_name = google_compute_disk.sapdascs11_usr_sap.name
+    source      = google_compute_disk.sapdascs11_usr_sap.self_link
+  }
+
+
+  boot_disk {
+    auto_delete = false
+    device_name = "persistent-disk-0"
+    source      = google_compute_disk.sapdascs11.self_link
+  }
+
+  lifecycle {
+    ignore_changes = [
+      min_cpu_platform,
+      network_interface[0].alias_ip_range,
+      metadata["ssh-keys"]
+    ]
+  }
+
+  machine_type = var.ascs_machine_type
+  metadata = {
+    ssh-keys = ""
+  }
+  name = "${var.vm_prefix}ascs11"
+  network_interface {
+    access_config {
+    }
+
+    network    = data.google_compute_network.sap-vpc.self_link
+    subnetwork = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
+  }
+
+
+  project = data.google_project.sap-project.project_id
+  scheduling {
+    automatic_restart   = true
+    on_host_maintenance = "MIGRATE"
+    preemptible         = false
+  }
+
+  service_account {
+    email  = google_service_account.service_account_ascs.email
+    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+  }
+
+  tags = ["wlm-db", "allow-health-checks"]
+  zone = var.zone1_name
+}
+
+resource "google_dns_record_set" "ascs_alidascs11" {
+  managed_zone = google_dns_managed_zone.sap_zone.name
+  name         = "alidascs11.${google_dns_managed_zone.sap_zone.dns_name}"
+  project      = data.google_project.sap-project.project_id
+  rrdatas      = [google_compute_address.alidascs11.address]
+  ttl          = 300
+  type         = "A"
+}
+
+resource "google_dns_record_set" "to_vm_sapdascs11" {
+  managed_zone = google_dns_managed_zone.sap_zone.name
+  name         = "${var.vm_prefix}ascs11.${google_dns_managed_zone.sap_zone.dns_name}"
+  project      = data.google_project.sap-project.project_id
+  rrdatas      = [google_compute_instance.sapdascs11.network_interface.0.network_ip]
+  ttl          = 300
+  type         = "A"
+}
+
+resource "google_project_iam_member" "ascs_sa_role_1" {
+  member  = "serviceAccount:${google_service_account.service_account_ascs.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/compute.instanceAdmin.v1"
+}
+
+resource "google_service_account" "service_account_ascs" {
+  account_id = "sap-ascs-role-${var.deployment_name}"
+  project    = data.google_project.sap-project.project_id
+}
