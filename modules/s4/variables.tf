@@ -48,7 +48,7 @@ variable "ascs_disk_usr_sap_size" {
 }
 
 variable "ascs_machine_type" {
-  default     = "e2-standard-32"
+  default     = "e2-standard-8"
   description = "ascs_machine_type"
 }
 
@@ -82,11 +82,6 @@ variable "db_disk_usr_sap_size" {
   description = "db_disk_usr_sap_size"
 }
 
-variable "db_ilb_healthcheck_port" {
-  default     = 8080
-  description = "db_ilb_healthcheck_port"
-}
-
 variable "db_machine_type" {
   default     = "e2-standard-32"
   description = "db_machine_type"
@@ -98,7 +93,7 @@ variable "db_sid" {
 }
 
 variable "deployment_name" {
-  default     = "s4ha"
+  default     = "s4"
   description = "deployment_name"
 }
 
@@ -128,7 +123,7 @@ variable "primary_startup_url" {
 }
 
 variable "region_name" {
-  default     = "us-central1"
+  default     = "us-east4"
   description = "region_name"
 }
 
@@ -143,7 +138,7 @@ variable "subnet_name" {
 }
 
 variable "vm_prefix" {
-  default     = "sapd"
+  default     = "sap"
   description = "vm_prefix"
 }
 
@@ -153,11 +148,11 @@ variable "vpc_name" {
 }
 
 variable "zone1_name" {
-  default     = "us-central1-a"
+  default     = "us-east4-a"
   description = "zone1_name"
 }
 
 variable "zone2_name" {
-  default     = "us-central1-b"
+  default     = "us-east4-b"
   description = "zone2_name"
 }

@@ -12,20 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+data "google_compute_subnetwork" "sap-subnet-ascs-1" {
+  name    = var.subnet_name
+  project = data.google_project.sap-project.project_id
+  region  = var.region_name
+}
+
 resource "google_compute_address" "alidascs11" {
   address_type = "INTERNAL"
-  name         = "alidascs11"
+  name         = "${var.deployment_name}-alidascs11"
   project      = data.google_project.sap-project.project_id
   region       = var.region_name
-  subnetwork   = google_compute_instance.sapdascs11.network_interface[0].subnetwork
+  subnetwork   = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
 }
 
 resource "google_compute_address" "aliders11" {
   address_type = "INTERNAL"
-  name         = "aliders11"
+  name         = "${var.deployment_name}-aliders11"
   project      = data.google_project.sap-project.project_id
   region       = var.region_name
-  subnetwork   = google_compute_instance.sapdascs12.network_interface[0].subnetwork
+  subnetwork   = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
 }
 
 resource "google_compute_disk" "sapdascs11" {
@@ -112,7 +118,7 @@ resource "google_compute_forwarding_rule" "ascs_forwarding_rule" {
   network               = data.google_compute_network.sap-vpc.self_link
   project               = data.google_project.sap-project.project_id
   region                = var.region_name
-  subnetwork            = google_compute_instance.sapdascs11.network_interface[0].subnetwork
+  subnetwork            = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
 }
 
 resource "google_compute_forwarding_rule" "ers_forwarding_rule" {
@@ -125,7 +131,7 @@ resource "google_compute_forwarding_rule" "ers_forwarding_rule" {
   network               = data.google_compute_network.sap-vpc.self_link
   project               = data.google_project.sap-project.project_id
   region                = var.region_name
-  subnetwork            = google_compute_instance.sapdascs11.network_interface[0].subnetwork
+  subnetwork            = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
 }
 
 resource "google_compute_health_check" "ascs_service_health_check" {
@@ -133,7 +139,7 @@ resource "google_compute_health_check" "ascs_service_health_check" {
   name               = "${var.deployment_name}-ascs-service-health-check"
   project            = data.google_project.sap-project.project_id
   tcp_health_check {
-    port = "60000"
+    port = "80"
   }
 
   timeout_sec = 10
@@ -144,7 +150,7 @@ resource "google_compute_health_check" "ers_service_health_check" {
   name               = "${var.deployment_name}-ers-service-health-check"
   project            = data.google_project.sap-project.project_id
   tcp_health_check {
-    port = "60010"
+    port = "8080"
   }
 
   timeout_sec = 10
@@ -181,7 +187,8 @@ resource "google_compute_instance" "sapdascs11" {
     access_config {
     }
 
-    network = data.google_compute_network.sap-vpc.self_link
+    network    = data.google_compute_network.sap-vpc.self_link
+    subnetwork = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
   }
 
 
@@ -197,7 +204,7 @@ resource "google_compute_instance" "sapdascs11" {
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
-  tags = ["wlm-ascs"]
+  tags = ["wlm-ascs", "allow-health-checks"]
   zone = var.zone1_name
 }
 
@@ -232,7 +239,8 @@ resource "google_compute_instance" "sapdascs12" {
     access_config {
     }
 
-    network = data.google_compute_network.sap-vpc.self_link
+    network    = data.google_compute_network.sap-vpc.self_link
+    subnetwork = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
   }
 
 
@@ -248,7 +256,7 @@ resource "google_compute_instance" "sapdascs12" {
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
-  tags = ["wlm-ascs"]
+  tags = ["wlm-ascs", "allow-health-checks"]
   zone = var.zone2_name
 }
 
