@@ -12,6 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+data "google_compute_subnetwork" "sap-subnet-db-1" {
+  name    = var.subnet_name
+  project = data.google_project.sap-project.project_id
+  region  = var.region_name
+}
+
 resource "google_compute_disk" "sapddb11" {
   image = var.sap_boot_disk_image
   lifecycle {
@@ -268,7 +274,7 @@ resource "google_compute_disk" "sapddb12_usr_sap" {
 
 resource "google_compute_firewall" "ilb_firewall_db" {
   allow {
-    ports    = ["60000"]
+    ports    = ["${var.db_ilb_healthcheck_port}"]
     protocol = "tcp"
   }
 
@@ -290,7 +296,7 @@ resource "google_compute_forwarding_rule" "db_forwarding_rule" {
   network               = data.google_compute_network.sap-vpc.self_link
   project               = data.google_project.sap-project.project_id
   region                = var.region_name
-  subnetwork            = google_compute_instance.sapddb11.network_interface[0].subnetwork
+  subnetwork            = data.google_compute_subnetwork.sap-subnet-db-1.self_link
 }
 
 resource "google_compute_health_check" "db_service_health_check" {
@@ -298,7 +304,7 @@ resource "google_compute_health_check" "db_service_health_check" {
   name               = "${var.deployment_name}-db-service-health-check"
   project            = data.google_project.sap-project.project_id
   tcp_health_check {
-    port = "60000"
+    port = var.db_ilb_healthcheck_port
   }
 
   timeout_sec = 10
@@ -360,7 +366,8 @@ resource "google_compute_instance" "sapddb11" {
     access_config {
     }
 
-    network = data.google_compute_network.sap-vpc.self_link
+    network    = data.google_compute_network.sap-vpc.self_link
+    subnetwork = data.google_compute_subnetwork.sap-subnet-db-1.self_link
   }
 
 
@@ -376,7 +383,7 @@ resource "google_compute_instance" "sapddb11" {
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
-  tags = ["wlm-db"]
+  tags = ["wlm-db", "allow-health-checks"]
   zone = var.zone1_name
 }
 
@@ -436,7 +443,8 @@ resource "google_compute_instance" "sapddb12" {
     access_config {
     }
 
-    network = data.google_compute_network.sap-vpc.self_link
+    network    = data.google_compute_network.sap-vpc.self_link
+    subnetwork = data.google_compute_subnetwork.sap-subnet-db-1.self_link
   }
 
 
@@ -452,7 +460,7 @@ resource "google_compute_instance" "sapddb12" {
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
-  tags = ["wlm-db"]
+  tags = ["wlm-db", "allow-health-checks"]
   zone = var.zone2_name
 }
 
@@ -537,6 +545,12 @@ resource "google_dns_record_set" "to_vm_sapddb12" {
   rrdatas      = [google_compute_instance.sapddb12.network_interface.0.network_ip]
   ttl          = 300
   type         = "A"
+}
+
+resource "google_project_iam_member" "db_sa_role_1" {
+  member  = "serviceAccount:${google_service_account.service_account_db.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/compute.instanceAdmin.v1"
 }
 
 resource "google_service_account" "service_account_db" {
