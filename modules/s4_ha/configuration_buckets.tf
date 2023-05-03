@@ -103,7 +103,10 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                       },
                       "gce_instance_metadata" : {
                         "active_region" : true,
+                        "ascs_healthcheck_port" : "${var.ascs_ilb_healthcheck_port}",
                         "dns_name" : "${google_dns_managed_zone.sap_zone.dns_name}",
+                        "ers_healthcheck_port" : "${var.ers_ilb_healthcheck_port}",
+                        "failover_type" : "ILB",
                         "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
                         "media_bucket_name" : "${var.media_bucket_name}",
                         "sid" : "${var.app_sid}",
@@ -123,7 +126,10 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                       },
                       "gce_instance_metadata" : {
                         "active_region" : true,
+                        "ascs_healthcheck_port" : "${var.ascs_ilb_healthcheck_port}",
                         "dns_name" : "${google_dns_managed_zone.sap_zone.dns_name}",
+                        "ers_healthcheck_port" : "${var.ers_ilb_healthcheck_port}",
+                        "failover_type" : "ILB",
                         "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
                         "media_bucket_name" : "${var.media_bucket_name}",
                         "sid" : "${var.app_sid}",
