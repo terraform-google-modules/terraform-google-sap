@@ -18,6 +18,14 @@ data "google_compute_subnetwork" "sap-subnet-jump-1" {
   region  = var.region_name
 }
 
+resource "google_compute_address" "sapdjump11-1" {
+  address_type = "INTERNAL"
+  name         = "${var.deployment_name}-jump-box-internal"
+  project      = data.google_project.sap-project.project_id
+  region       = var.region_name
+  subnetwork   = data.google_compute_subnetwork.sap-subnet-jump-1.self_link
+}
+
 resource "google_compute_disk" "sapdjump11" {
   image = "rhel-9-v20230203"
   lifecycle {
@@ -73,6 +81,7 @@ resource "google_compute_instance" "sapdjump11" {
     }
 
     network    = data.google_compute_network.sap-vpc.self_link
+    network_ip = google_compute_address.sapdjump11-1.address
     subnetwork = data.google_compute_subnetwork.sap-subnet-jump-1.self_link
   }
 
@@ -97,6 +106,18 @@ resource "google_project_iam_member" "jump_sa_role_1" {
   member  = "serviceAccount:${google_service_account.service_account_jump.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/compute.instanceAdmin.v1"
+}
+
+resource "google_project_iam_member" "jump_sa_role_2" {
+  member  = "serviceAccount:${google_service_account.service_account_jump.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/dns.admin"
+}
+
+resource "google_project_iam_member" "jump_sa_role_3" {
+  member  = "serviceAccount:${google_service_account.service_account_jump.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/logging.admin"
 }
 
 resource "google_service_account" "service_account_jump" {

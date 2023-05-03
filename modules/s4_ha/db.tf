@@ -18,6 +18,22 @@ data "google_compute_subnetwork" "sap-subnet-db-1" {
   region  = var.region_name
 }
 
+resource "google_compute_address" "sapddb11-1" {
+  address_type = "INTERNAL"
+  name         = "${var.vm_prefix}db11-internal"
+  project      = data.google_project.sap-project.project_id
+  region       = var.region_name
+  subnetwork   = data.google_compute_subnetwork.sap-subnet-db-1.self_link
+}
+
+resource "google_compute_address" "sapddb12-1" {
+  address_type = "INTERNAL"
+  name         = "${var.vm_prefix}db12-internal"
+  project      = data.google_project.sap-project.project_id
+  region       = var.region_name
+  subnetwork   = data.google_compute_subnetwork.sap-subnet-db-1.self_link
+}
+
 resource "google_compute_disk" "sapddb11" {
   image = var.sap_boot_disk_image
   lifecycle {
@@ -279,7 +295,7 @@ resource "google_compute_firewall" "ilb_firewall_db" {
   }
 
   description   = "Google-FW-LB"
-  name          = "ilb-firewall-db"
+  name          = "ilb-firewall-db-${var.deployment_name}"
   network       = data.google_compute_network.sap-vpc.self_link
   project       = data.google_project.sap-project.project_id
   source_ranges = ["35.191.0.0/16", "130.211.0.0/22"]
@@ -367,6 +383,7 @@ resource "google_compute_instance" "sapddb11" {
     }
 
     network    = data.google_compute_network.sap-vpc.self_link
+    network_ip = google_compute_address.sapddb11-1.address
     subnetwork = data.google_compute_subnetwork.sap-subnet-db-1.self_link
   }
 
@@ -444,6 +461,7 @@ resource "google_compute_instance" "sapddb12" {
     }
 
     network    = data.google_compute_network.sap-vpc.self_link
+    network_ip = google_compute_address.sapddb12-1.address
     subnetwork = data.google_compute_subnetwork.sap-subnet-db-1.self_link
   }
 
