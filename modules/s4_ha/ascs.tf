@@ -18,17 +18,17 @@ data "google_compute_subnetwork" "sap-subnet-ascs-1" {
   region  = var.region_name
 }
 
-resource "google_compute_address" "alidascs11" {
+resource "google_compute_address" "sapdascs11-1" {
   address_type = "INTERNAL"
-  name         = "${var.deployment_name}-alidascs11"
+  name         = "${var.vm_prefix}ascs11-internal"
   project      = data.google_project.sap-project.project_id
   region       = var.region_name
   subnetwork   = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
 }
 
-resource "google_compute_address" "aliders11" {
+resource "google_compute_address" "sapdascs12-1" {
   address_type = "INTERNAL"
-  name         = "${var.deployment_name}-aliders11"
+  name         = "${var.vm_prefix}ascs12-internal"
   project      = data.google_project.sap-project.project_id
   region       = var.region_name
   subnetwork   = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
@@ -108,6 +108,34 @@ resource "google_compute_disk" "sapdascs12_usr_sap" {
   zone = var.zone2_name
 }
 
+resource "google_compute_firewall" "ilb_firewall_ascs" {
+  allow {
+    ports    = ["${var.ascs_ilb_healthcheck_port}"]
+    protocol = "tcp"
+  }
+
+  description   = "Google-FW-LB"
+  name          = "ilb-firewall-ascs-${var.deployment_name}"
+  network       = data.google_compute_network.sap-vpc.self_link
+  project       = data.google_project.sap-project.project_id
+  source_ranges = ["35.191.0.0/16", "130.211.0.0/22"]
+  target_tags   = ["wlm-ascs"]
+}
+
+resource "google_compute_firewall" "ilb_firewall_ers" {
+  allow {
+    ports    = ["${var.ers_ilb_healthcheck_port}"]
+    protocol = "tcp"
+  }
+
+  description   = "Google-FW-LB"
+  name          = "ilb-firewall-ers-${var.deployment_name}"
+  network       = data.google_compute_network.sap-vpc.self_link
+  project       = data.google_project.sap-project.project_id
+  source_ranges = ["35.191.0.0/16", "130.211.0.0/22"]
+  target_tags   = ["wlm-ascs"]
+}
+
 resource "google_compute_forwarding_rule" "ascs_forwarding_rule" {
   all_ports             = true
   allow_global_access   = true
@@ -139,7 +167,7 @@ resource "google_compute_health_check" "ascs_service_health_check" {
   name               = "${var.deployment_name}-ascs-service-health-check"
   project            = data.google_project.sap-project.project_id
   tcp_health_check {
-    port = "80"
+    port = var.ascs_ilb_healthcheck_port
   }
 
   timeout_sec = 10
@@ -150,7 +178,7 @@ resource "google_compute_health_check" "ers_service_health_check" {
   name               = "${var.deployment_name}-ers-service-health-check"
   project            = data.google_project.sap-project.project_id
   tcp_health_check {
-    port = "8080"
+    port = var.ers_ilb_healthcheck_port
   }
 
   timeout_sec = 10
@@ -188,6 +216,7 @@ resource "google_compute_instance" "sapdascs11" {
     }
 
     network    = data.google_compute_network.sap-vpc.self_link
+    network_ip = google_compute_address.sapdascs11-1.address
     subnetwork = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
   }
 
@@ -240,6 +269,7 @@ resource "google_compute_instance" "sapdascs12" {
     }
 
     network    = data.google_compute_network.sap-vpc.self_link
+    network_ip = google_compute_address.sapdascs12-1.address
     subnetwork = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
   }
 
@@ -338,18 +368,18 @@ resource "google_dns_record_set" "ascs_alidascs11" {
   managed_zone = google_dns_managed_zone.sap_zone.name
   name         = "alidascs11.${google_dns_managed_zone.sap_zone.dns_name}"
   project      = data.google_project.sap-project.project_id
-  rrdatas      = [google_compute_address.alidascs11.address]
+  rrdatas      = [google_dns_record_set.ilb_ascs_1.name]
   ttl          = 300
-  type         = "A"
+  type         = "CNAME"
 }
 
 resource "google_dns_record_set" "ascs_aliders11" {
   managed_zone = google_dns_managed_zone.sap_zone.name
   name         = "aliders11.${google_dns_managed_zone.sap_zone.dns_name}"
   project      = data.google_project.sap-project.project_id
-  rrdatas      = [google_compute_address.aliders11.address]
+  rrdatas      = [google_dns_record_set.ilb_ers_1.name]
   ttl          = 300
-  type         = "A"
+  type         = "CNAME"
 }
 
 resource "google_dns_record_set" "ilb_ascs_1" {
