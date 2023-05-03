@@ -47,6 +47,11 @@ variable "ascs_disk_usr_sap_size" {
   description = "ascs_disk_usr_sap_size"
 }
 
+variable "ascs_ilb_healthcheck_port" {
+  default     = 80
+  description = "ascs_ilb_healthcheck_port"
+}
+
 variable "ascs_machine_type" {
   default     = "e2-standard-32"
   description = "ascs_machine_type"
@@ -105,6 +110,11 @@ variable "deployment_name" {
 variable "dns_zone_name_suffix" {
   default     = "gcp.sapcloud.goog."
   description = "dns_zone_name_suffix"
+}
+
+variable "ers_ilb_healthcheck_port" {
+  default     = 8080
+  description = "ers_ilb_healthcheck_port"
 }
 
 variable "gcp_project_id" {
