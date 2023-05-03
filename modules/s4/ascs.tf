@@ -18,9 +18,9 @@ data "google_compute_subnetwork" "sap-subnet-ascs-1" {
   region  = var.region_name
 }
 
-resource "google_compute_address" "alidascs11" {
+resource "google_compute_address" "sapdascs11-1" {
   address_type = "INTERNAL"
-  name         = "${var.deployment_name}-alidascs11"
+  name         = "${var.vm_prefix}ascs11-internal"
   project      = data.google_project.sap-project.project_id
   region       = var.region_name
   subnetwork   = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
@@ -95,6 +95,7 @@ resource "google_compute_instance" "sapdascs11" {
     }
 
     network    = data.google_compute_network.sap-vpc.self_link
+    network_ip = google_compute_address.sapdascs11-1.address
     subnetwork = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
   }
 
@@ -119,9 +120,9 @@ resource "google_dns_record_set" "ascs_alidascs11" {
   managed_zone = google_dns_managed_zone.sap_zone.name
   name         = "alidascs11.${google_dns_managed_zone.sap_zone.dns_name}"
   project      = data.google_project.sap-project.project_id
-  rrdatas      = [google_compute_address.alidascs11.address]
+  rrdatas      = [google_dns_record_set.to_vm_sapdascs11.name]
   ttl          = 300
-  type         = "A"
+  type         = "CNAME"
 }
 
 resource "google_dns_record_set" "to_vm_sapdascs11" {

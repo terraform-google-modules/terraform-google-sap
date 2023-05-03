@@ -84,8 +84,8 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                       "gce_instance_metadata" : {
                         "active_region" : true,
                         "dns_name" : "${google_dns_managed_zone.sap_zone.dns_name}",
+                        "failover_type" : "NONE",
                         "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
-                        "is_ha" : false,
                         "media_bucket_name" : "${var.media_bucket_name}",
                         "sid" : "${var.app_sid}",
                         "sid_hana" : "${var.db_sid}"
