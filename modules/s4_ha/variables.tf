@@ -137,6 +137,11 @@ variable "primary_startup_url" {
   description = "primary_startup_url"
 }
 
+variable "public_ip" {
+  default     = false
+  description = "public_ip"
+}
+
 variable "region_name" {
   default     = "us-central1"
   description = "region_name"
