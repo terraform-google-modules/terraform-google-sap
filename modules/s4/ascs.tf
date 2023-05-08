@@ -91,7 +91,11 @@ resource "google_compute_instance" "sapdascs11" {
   }
   name = "${var.vm_prefix}ascs11"
   network_interface {
-    access_config {
+    dynamic "access_config" {
+      content {
+      }
+
+      for_each = var.public_ip ? [1] : []
     }
 
     network    = data.google_compute_network.sap-vpc.self_link
@@ -138,6 +142,18 @@ resource "google_project_iam_member" "ascs_sa_role_1" {
   member  = "serviceAccount:${google_service_account.service_account_ascs.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/compute.instanceAdmin.v1"
+}
+
+resource "google_project_iam_member" "ascs_sa_role_2" {
+  member  = "serviceAccount:${google_service_account.service_account_ascs.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/storage.objectViewer"
+}
+
+resource "google_project_iam_member" "ascs_sa_role_3" {
+  member  = "serviceAccount:${google_service_account.service_account_ascs.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/monitoring.metricWriter"
 }
 
 resource "google_service_account" "service_account_ascs" {
