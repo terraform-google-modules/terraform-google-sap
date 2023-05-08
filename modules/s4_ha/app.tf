@@ -186,7 +186,11 @@ resource "google_compute_instance" "sapdapp11" {
   }
   name = "${var.vm_prefix}app1${1 + (count.index * 2)}"
   network_interface {
-    access_config {
+    dynamic "access_config" {
+      content {
+      }
+
+      for_each = var.public_ip ? [1] : []
     }
 
     network    = data.google_compute_network.sap-vpc.self_link
@@ -245,7 +249,11 @@ resource "google_compute_instance" "sapdapp12" {
   }
   name = "${var.vm_prefix}app1${2 + (count.index * 2)}"
   network_interface {
-    access_config {
+    dynamic "access_config" {
+      content {
+      }
+
+      for_each = var.public_ip ? [1] : []
     }
 
     network    = data.google_compute_network.sap-vpc.self_link
@@ -292,6 +300,18 @@ resource "google_dns_record_set" "to_vm_sapdapp12" {
   ]
   ttl  = 300
   type = "A"
+}
+
+resource "google_project_iam_member" "app_sa_role_1" {
+  member  = "serviceAccount:${google_service_account.service_account_app.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/storage.objectViewer"
+}
+
+resource "google_project_iam_member" "app_sa_role_2" {
+  member  = "serviceAccount:${google_service_account.service_account_app.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/monitoring.metricWriter"
 }
 
 resource "google_service_account" "service_account_app" {
