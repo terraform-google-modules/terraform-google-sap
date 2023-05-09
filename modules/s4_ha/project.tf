@@ -60,6 +60,5 @@ resource "google_filestore_instance" "sap_fstore_1" {
   }
 
   project  = data.google_project.sap-project.project_id
-  provider = google-beta
   tier     = "ENTERPRISE"
 }
