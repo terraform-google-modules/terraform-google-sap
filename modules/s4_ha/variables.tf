@@ -133,7 +133,7 @@ variable "package_location" {
 }
 
 variable "primary_startup_url" {
-  default     = "gs://cloudsapdeploytesting/wlm/continuous/startup.sh"
+  default     = "gs://cloudsapdeploytesting/wlm/continuous/ansible_runner_startup.sh"
   description = "primary_startup_url"
 }
 
