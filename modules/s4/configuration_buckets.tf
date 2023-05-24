@@ -13,6 +13,7 @@
 # limitations under the License.
 
 resource "google_storage_bucket" "configuration" {
+  force_destroy               = true
   location                    = "US"
   name                        = "${var.gcp_project_id}-${var.deployment_name}-configuration"
   project                     = data.google_project.sap-project.project_id
@@ -23,13 +24,13 @@ resource "google_storage_bucket" "configuration" {
 resource "google_storage_bucket_iam_binding" "objectviewer_configuration" {
   bucket = google_storage_bucket.configuration.name
   members = [
-    "serviceAccount:${google_service_account.service_account_jump.email}"
+    "serviceAccount:${google_service_account.service_account_ansible.email}"
   ]
   role = "roles/storage.objectViewer"
 }
 
 resource "google_storage_bucket_object" "ansible_inventory" {
-  bucket = "${var.gcp_project_id}-${var.deployment_name}-configuration"
+  bucket = google_storage_bucket.configuration.name
   content = jsonencode({
     "s4" : {
       "children" : {
