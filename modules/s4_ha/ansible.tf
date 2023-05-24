@@ -12,27 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-data "google_compute_subnetwork" "sap-subnet-jump-1" {
+data "google_compute_subnetwork" "sap-subnet-ansible-1" {
   name    = var.subnet_name
   project = data.google_project.sap-project.project_id
   region  = var.region_name
 }
 
-resource "google_compute_address" "sapdjump11-1" {
+resource "google_compute_address" "sapdansible11-1" {
   address_type = "INTERNAL"
-  name         = "${var.deployment_name}-jump-box-internal"
+  name         = "${var.deployment_name}-ansible-runner-internal"
   project      = data.google_project.sap-project.project_id
   region       = var.region_name
-  subnetwork   = data.google_compute_subnetwork.sap-subnet-jump-1.self_link
+  subnetwork   = data.google_compute_subnetwork.sap-subnet-ansible-1.self_link
 }
 
-resource "google_compute_disk" "sapdjump11" {
+resource "google_compute_disk" "sapdansible11" {
   image = "rhel-9-v20230203"
   lifecycle {
     ignore_changes = [snapshot, image]
   }
 
-  name    = "${var.deployment_name}-jump-box"
+  name    = "${var.deployment_name}-ansible-runner"
   project = data.google_project.sap-project.project_id
   size    = 50
   timeouts {
@@ -45,18 +45,18 @@ resource "google_compute_disk" "sapdjump11" {
   zone = var.zone1_name
 }
 
-resource "google_compute_instance" "sapdjump11" {
+resource "google_compute_instance" "sapdansible11" {
   allow_stopping_for_update = var.allow_stopping_for_update
   boot_disk {
     auto_delete = false
     device_name = "persistent-disk-0"
-    source      = google_compute_disk.sapdjump11.self_link
+    source      = google_compute_disk.sapdansible11.self_link
   }
 
   depends_on = [google_filestore_instance.sap_fstore_1]
   labels = {
     active_region  = true
-    component      = "jump"
+    component      = "ansible"
     component_type = "generic"
     environment    = "${var.deployment_name}"
   }
@@ -68,21 +68,21 @@ resource "google_compute_instance" "sapdjump11" {
     ]
   }
 
-  machine_type = "e2-medium"
+  machine_type = "n1-standard-16"
   metadata = {
     active_region     = true
     media_bucket_name = "${var.media_bucket_name}"
     ssh-keys          = ""
     startup-script    = "gsutil cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}"
   }
-  name = "${var.deployment_name}-jump-box"
+  name = "${var.deployment_name}-ansible-runner"
   network_interface {
     access_config {
     }
 
     network    = data.google_compute_network.sap-vpc.self_link
-    network_ip = google_compute_address.sapdjump11-1.address
-    subnetwork = data.google_compute_subnetwork.sap-subnet-jump-1.self_link
+    network_ip = google_compute_address.sapdansible11-1.address
+    subnetwork = data.google_compute_subnetwork.sap-subnet-ansible-1.self_link
   }
 
 
@@ -94,51 +94,63 @@ resource "google_compute_instance" "sapdjump11" {
   }
 
   service_account {
-    email  = google_service_account.service_account_jump.email
+    email  = google_service_account.service_account_ansible.email
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
-  tags = ["wlm-jump"]
+  tags = ["wlm-ansible-runner"]
   zone = var.zone1_name
 }
 
-resource "google_project_iam_member" "jump_sa_role_1" {
-  member  = "serviceAccount:${google_service_account.service_account_jump.email}"
+resource "google_project_iam_member" "ansible_sa_role_1" {
+  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/compute.instanceAdmin.v1"
 }
 
-resource "google_project_iam_member" "jump_sa_role_2" {
-  member  = "serviceAccount:${google_service_account.service_account_jump.email}"
+resource "google_project_iam_member" "ansible_sa_role_2" {
+  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/storage.objectViewer"
+}
+
+resource "google_project_iam_member" "ansible_sa_role_3" {
+  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/dns.admin"
 }
 
-resource "google_project_iam_member" "jump_sa_role_3" {
-  member  = "serviceAccount:${google_service_account.service_account_jump.email}"
+resource "google_project_iam_member" "ansible_sa_role_4" {
+  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/logging.admin"
 }
 
-resource "google_service_account" "service_account_jump" {
-  account_id = "sap-jump-role-${var.deployment_name}"
+resource "google_project_iam_member" "ansible_sa_role_5" {
+  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/iam.serviceAccountUser"
+}
+
+resource "google_service_account" "service_account_ansible" {
+  account_id = "sap-ansible-role-${var.deployment_name}"
   project    = data.google_project.sap-project.project_id
 }
 
-resource "google_service_account_iam_member" "jump_sa_user_of_app" {
-  member             = "serviceAccount:${google_service_account.service_account_jump.email}"
+resource "google_service_account_iam_member" "ansible_sa_user_of_app" {
+  member             = "serviceAccount:${google_service_account.service_account_ansible.email}"
   role               = "roles/iam.serviceAccountUser"
   service_account_id = google_service_account.service_account_app.name
 }
 
-resource "google_service_account_iam_member" "jump_sa_user_of_ascs" {
-  member             = "serviceAccount:${google_service_account.service_account_jump.email}"
+resource "google_service_account_iam_member" "ansible_sa_user_of_ascs" {
+  member             = "serviceAccount:${google_service_account.service_account_ansible.email}"
   role               = "roles/iam.serviceAccountUser"
   service_account_id = google_service_account.service_account_ascs.name
 }
 
-resource "google_service_account_iam_member" "jump_sa_user_of_db" {
-  member             = "serviceAccount:${google_service_account.service_account_jump.email}"
+resource "google_service_account_iam_member" "ansible_sa_user_of_db" {
+  member             = "serviceAccount:${google_service_account.service_account_ansible.email}"
   role               = "roles/iam.serviceAccountUser"
   service_account_id = google_service_account.service_account_db.name
 }

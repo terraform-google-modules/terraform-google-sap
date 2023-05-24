@@ -110,7 +110,7 @@ resource "google_compute_disk" "sapdascs12_usr_sap" {
 
 resource "google_compute_firewall" "ilb_firewall_ascs" {
   allow {
-    ports    = ["${var.ascs_ilb_healthcheck_port}"]
+    ports    = [var.ascs_ilb_healthcheck_port]
     protocol = "tcp"
   }
 
@@ -124,7 +124,7 @@ resource "google_compute_firewall" "ilb_firewall_ascs" {
 
 resource "google_compute_firewall" "ilb_firewall_ers" {
   allow {
-    ports    = ["${var.ers_ilb_healthcheck_port}"]
+    ports    = [var.ers_ilb_healthcheck_port]
     protocol = "tcp"
   }
 
@@ -237,7 +237,7 @@ resource "google_compute_instance" "sapdascs11" {
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
-  tags = ["wlm-ascs", "allow-health-checks"]
+  tags = ["wlm-ascs", "allow-health-checks-range"]
   zone = var.zone1_name
 }
 
@@ -294,22 +294,22 @@ resource "google_compute_instance" "sapdascs12" {
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
-  tags = ["wlm-ascs", "allow-health-checks"]
+  tags = ["wlm-ascs", "allow-health-checks-range"]
   zone = var.zone2_name
 }
 
 resource "google_compute_instance_group" "sapdascs11_group" {
-  description = "sapdascs11-group"
+  description = "${var.vm_prefix}ascs11-group"
   instances   = [google_compute_instance.sapdascs11.self_link]
-  name        = "sapdascs11-group"
+  name        = "${var.vm_prefix}ascs11-group"
   project     = data.google_project.sap-project.project_id
   zone        = var.zone1_name
 }
 
 resource "google_compute_instance_group" "sapdascs12_group" {
-  description = "sapdascs12-group"
+  description = "${var.vm_prefix}ascs12-group"
   instances   = [google_compute_instance.sapdascs12.self_link]
-  name        = "sapdascs12-group"
+  name        = "${var.vm_prefix}ascs12-group"
   project     = data.google_project.sap-project.project_id
   zone        = var.zone2_name
 }
