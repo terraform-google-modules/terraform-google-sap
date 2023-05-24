@@ -48,11 +48,11 @@ resource "google_dns_record_set" "sap_fstore_1" {
 
 resource "google_filestore_instance" "sap_fstore_1" {
   file_shares {
-    capacity_gb = 1024
+    capacity_gb = var.filestore_gb
     name        = "default"
   }
 
-  location = var.region_name
+  location = var.filestore_location
   name     = "fstore-${var.deployment_name}-1"
   networks {
     modes   = ["MODE_IPV4"]
@@ -60,5 +60,6 @@ resource "google_filestore_instance" "sap_fstore_1" {
   }
 
   project  = data.google_project.sap-project.project_id
-  tier     = "ENTERPRISE"
+  provider = google-beta
+  tier     = var.filestore_tier
 }
