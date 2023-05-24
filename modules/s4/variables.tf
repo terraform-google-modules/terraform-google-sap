@@ -23,12 +23,12 @@ variable "app_disk_export_interfaces_size" {
 }
 
 variable "app_disk_usr_sap_size" {
-  default     = 256
+  default     = 128
   description = "app_disk_usr_sap_size"
 }
 
 variable "app_machine_type" {
-  default     = "e2-standard-32"
+  default     = "n2-standard-16"
   description = "app_machine_type"
 }
 
@@ -43,47 +43,47 @@ variable "app_vms_multiplier" {
 }
 
 variable "ascs_disk_usr_sap_size" {
-  default     = 256
+  default     = 128
   description = "ascs_disk_usr_sap_size"
 }
 
 variable "ascs_machine_type" {
-  default     = "e2-standard-8"
+  default     = "n2-standard-32"
   description = "ascs_machine_type"
 }
 
 variable "db_disk_export_backup_size" {
-  default     = 256
+  default     = 128
   description = "db_disk_export_backup_size"
 }
 
 variable "db_disk_hana_data_size" {
-  default     = 256
+  default     = 249
   description = "db_disk_hana_data_size"
 }
 
 variable "db_disk_hana_log_size" {
-  default     = 256
+  default     = 104
   description = "db_disk_hana_log_size"
 }
 
 variable "db_disk_hana_restore_size" {
-  default     = 512
+  default     = 128
   description = "db_disk_hana_restore_size"
 }
 
 variable "db_disk_hana_shared_size" {
-  default     = 256
+  default     = 208
   description = "db_disk_hana_shared_size"
 }
 
 variable "db_disk_usr_sap_size" {
-  default     = 128
+  default     = 32
   description = "db_disk_usr_sap_size"
 }
 
 variable "db_machine_type" {
-  default     = "e2-standard-32"
+  default     = "n1-highmem-32"
   description = "db_machine_type"
 }
 
@@ -93,7 +93,6 @@ variable "db_sid" {
 }
 
 variable "deployment_name" {
-  default     = "s4"
   description = "deployment_name"
 }
 
@@ -102,13 +101,26 @@ variable "dns_zone_name_suffix" {
   description = "dns_zone_name_suffix"
 }
 
+variable "filestore_gb" {
+  default     = 1024
+  description = "filestore_gb"
+}
+
+variable "filestore_location" {
+  default     = "us-east4"
+  description = "filestore_location"
+}
+
+variable "filestore_tier" {
+  default     = "ENTERPRISE"
+  description = "filestore_tier"
+}
+
 variable "gcp_project_id" {
-  default     = "core-connect-dev"
   description = "gcp_project_id"
 }
 
 variable "media_bucket_name" {
-  default     = "core-connect-dev-sap-installation-media"
   description = "media_bucket_name"
 }
 
@@ -128,7 +140,6 @@ variable "public_ip" {
 }
 
 variable "region_name" {
-  default     = "us-east4"
   description = "region_name"
 }
 
@@ -138,7 +149,7 @@ variable "sap_boot_disk_image" {
 }
 
 variable "subnet_name" {
-  default     = "s4test-sap-s4-test"
+  default     = "default"
   description = "subnet_name"
 }
 
@@ -148,16 +159,14 @@ variable "vm_prefix" {
 }
 
 variable "vpc_name" {
-  default     = "s4test-sap-s4-test"
+  default     = "default"
   description = "vpc_name"
 }
 
 variable "zone1_name" {
-  default     = "us-east4-a"
   description = "zone1_name"
 }
 
 variable "zone2_name" {
-  default     = "us-east4-b"
   description = "zone2_name"
 }
