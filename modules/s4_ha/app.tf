@@ -315,6 +315,6 @@ resource "google_project_iam_member" "app_sa_role_2" {
 }
 
 resource "google_service_account" "service_account_app" {
-  account_id = "sap-app-role-${var.deployment_name}"
+  account_id = "${var.deployment_name}-app"
   project    = data.google_project.sap-project.project_id
 }
