@@ -51,11 +51,15 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         },
                         "gce_instance_metadata" : {
                           "active_region" : true,
+                          "application_secret_name" : "${var.application_secret_name}",
                           "ascs_first_vm_name" : "${google_compute_instance.sapdascs11.name}",
                           "dns_name" : "${google_dns_managed_zone.sap_zone.dns_name}",
                           "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
+                          "hana_secret_name" : "${var.hana_secret_name}",
                           "media_bucket_name" : "${var.media_bucket_name}",
-                          "sid" : "${var.app_sid}"
+                          "sap_version" : "${var.sap_version}",
+                          "sid" : "${var.app_sid}",
+                          "sid_hana" : "${var.db_sid}"
                         },
                         "gce_instance_name" : "${var.vm_prefix}app1${1 + (count.index * 2)}",
                         "gce_instance_project" : "${data.google_project.sap-project.project_id}",
@@ -71,11 +75,15 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         },
                         "gce_instance_metadata" : {
                           "active_region" : true,
+                          "application_secret_name" : "${var.application_secret_name}",
                           "ascs_first_vm_name" : "${google_compute_instance.sapdascs11.name}",
                           "dns_name" : "${google_dns_managed_zone.sap_zone.dns_name}",
                           "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
+                          "hana_secret_name" : "${var.hana_secret_name}",
                           "media_bucket_name" : "${var.media_bucket_name}",
-                          "sid" : "${var.app_sid}"
+                          "sap_version" : "${var.sap_version}",
+                          "sid" : "${var.app_sid}",
+                          "sid_hana" : "${var.db_sid}"
                         },
                         "gce_instance_name" : "${var.vm_prefix}app1${2 + (count.index * 2)}",
                         "gce_instance_project" : "${data.google_project.sap-project.project_id}",
@@ -104,15 +112,17 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                       },
                       "gce_instance_metadata" : {
                         "active_region" : true,
+                        "application_secret_name" : "${var.application_secret_name}",
                         "ascs_healthcheck_port" : "${var.ascs_ilb_healthcheck_port}",
                         "dns_name" : "${google_dns_managed_zone.sap_zone.dns_name}",
                         "ers_healthcheck_port" : "${var.ers_ilb_healthcheck_port}",
                         "failover_type" : "ILB",
                         "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
+                        "hana_secret_name" : "${var.hana_secret_name}",
                         "media_bucket_name" : "${var.media_bucket_name}",
                         "pacemaker_scenario" : "ON",
-                        "sid" : "${var.app_sid}",
-                        "sid_hana" : "${var.db_sid}"
+                        "sap_version" : "${var.sap_version}",
+                        "sid" : "${var.app_sid}"
                       },
                       "gce_instance_name" : "${var.vm_prefix}ascs11",
                       "gce_instance_project" : "${data.google_project.sap-project.project_id}",
@@ -128,15 +138,17 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                       },
                       "gce_instance_metadata" : {
                         "active_region" : true,
+                        "application_secret_name" : "${var.application_secret_name}",
                         "ascs_healthcheck_port" : "${var.ascs_ilb_healthcheck_port}",
                         "dns_name" : "${google_dns_managed_zone.sap_zone.dns_name}",
                         "ers_healthcheck_port" : "${var.ers_ilb_healthcheck_port}",
                         "failover_type" : "ILB",
                         "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
+                        "hana_secret_name" : "${var.hana_secret_name}",
                         "media_bucket_name" : "${var.media_bucket_name}",
                         "pacemaker_scenario" : "ON",
-                        "sid" : "${var.app_sid}",
-                        "sid_hana" : "${var.db_sid}"
+                        "sap_version" : "${var.sap_version}",
+                        "sid" : "${var.app_sid}"
                       },
                       "gce_instance_name" : "${var.vm_prefix}ascs12",
                       "gce_instance_project" : "${data.google_project.sap-project.project_id}",
@@ -164,9 +176,11 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                       },
                       "gce_instance_metadata" : {
                         "active_region" : true,
+                        "application_secret_name" : "${var.application_secret_name}",
                         "dns_name" : "${google_dns_managed_zone.sap_zone.dns_name}",
                         "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
                         "ha_sr_pcs_scenario" : "ON",
+                        "hana_secret_name" : "${var.hana_secret_name}",
                         "hana_sr_failover_type" : "ILB",
                         "hana_sr_is_active_region" : true,
                         "hana_sr_remote_host" : "",
@@ -174,6 +188,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "hana_sr_tier1_dns_target" : "sapddb-vip11.${google_dns_managed_zone.sap_zone.dns_name}",
                         "ilb_healthcheck_port" : "${var.db_ilb_healthcheck_port}",
                         "media_bucket_name" : "${var.media_bucket_name}",
+                        "sap_version" : "${var.sap_version}",
                         "sid" : "${var.db_sid}",
                         "sid_tenant" : "${var.app_sid}"
                       },
@@ -191,9 +206,11 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                       },
                       "gce_instance_metadata" : {
                         "active_region" : true,
+                        "application_secret_name" : "${var.application_secret_name}",
                         "dns_name" : "${google_dns_managed_zone.sap_zone.dns_name}",
                         "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
                         "ha_sr_pcs_scenario" : "ON",
+                        "hana_secret_name" : "${var.hana_secret_name}",
                         "hana_sr_failover_type" : "ILB",
                         "hana_sr_is_active_region" : true,
                         "hana_sr_remote_host" : "${var.vm_prefix}db11",
@@ -201,6 +218,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "hana_sr_tier1_dns_target" : "sapddb-vip11.${google_dns_managed_zone.sap_zone.dns_name}",
                         "ilb_healthcheck_port" : "${var.db_ilb_healthcheck_port}",
                         "media_bucket_name" : "${var.media_bucket_name}",
+                        "sap_version" : "${var.sap_version}",
                         "sid" : "${var.db_sid}",
                         "sid_tenant" : "${var.app_sid}"
                       },
