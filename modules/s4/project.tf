@@ -52,14 +52,13 @@ resource "google_filestore_instance" "sap_fstore_1" {
     name        = "default"
   }
 
-  location = var.filestore_location
+  location = var.filestore_location == "" ? var.region_name : var.filestore_location
   name     = "fstore-${var.deployment_name}-1"
   networks {
     modes   = ["MODE_IPV4"]
     network = data.google_compute_network.sap-vpc.name
   }
 
-  project  = data.google_project.sap-project.project_id
-  provider = google-beta
-  tier     = var.filestore_tier
+  project = data.google_project.sap-project.project_id
+  tier    = var.filestore_tier
 }

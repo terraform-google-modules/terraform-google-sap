@@ -53,7 +53,7 @@ resource "google_compute_instance" "sapdansible11" {
     source      = google_compute_disk.sapdansible11.self_link
   }
 
-  depends_on = [google_filestore_instance.sap_fstore_1]
+  depends_on = [google_storage_bucket_object.ansible_inventory]
   labels = {
     active_region  = true
     component      = "ansible"
@@ -132,8 +132,20 @@ resource "google_project_iam_member" "ansible_sa_role_5" {
   role    = "roles/iam.serviceAccountUser"
 }
 
+resource "google_project_iam_member" "ansible_sa_role_6" {
+  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/secretmanager.viewer"
+}
+
+resource "google_project_iam_member" "ansible_sa_role_7" {
+  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/secretmanager.secretAccessor"
+}
+
 resource "google_service_account" "service_account_ansible" {
-  account_id = "sap-ansible-role-${var.deployment_name}"
+  account_id = "${var.deployment_name}-ansible"
   project    = data.google_project.sap-project.project_id
 }
 
