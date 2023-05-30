@@ -42,6 +42,11 @@ variable "app_vms_multiplier" {
   description = "Multiplies app VMs. E.g. if there is 2 VMs then with value 3 each VM will be multiplied by 3 (so there will be 6 total VMs)"
 }
 
+variable "application_secret_name" {
+  default     = "default"
+  description = "application_secret_name"
+}
+
 variable "ascs_disk_usr_sap_size" {
   default     = 128
   description = "ascs_disk_usr_sap_size"
@@ -116,8 +121,27 @@ variable "ers_ilb_healthcheck_port" {
   description = "ers_ilb_healthcheck_port"
 }
 
+variable "filestore_gb" {
+  default     = 1024
+  description = "filestore_gb"
+}
+
+variable "filestore_location" {
+  description = "filestore_location"
+}
+
+variable "filestore_tier" {
+  default     = "ENTERPRISE"
+  description = "filestore_tier"
+}
+
 variable "gcp_project_id" {
   description = "gcp_project_id"
+}
+
+variable "hana_secret_name" {
+  default     = "default"
+  description = "hana_secret_name"
 }
 
 variable "media_bucket_name" {
@@ -146,6 +170,11 @@ variable "region_name" {
 variable "sap_boot_disk_image" {
   default     = "projects/rhel-sap-cloud/global/images/rhel-8-4-sap-v20220719"
   description = "sap_boot_disk_image"
+}
+
+variable "sap_version" {
+  default     = "2021"
+  description = "sap_version"
 }
 
 variable "subnet_name" {

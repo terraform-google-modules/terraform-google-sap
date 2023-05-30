@@ -592,6 +592,6 @@ resource "google_project_iam_member" "db_sa_role_3" {
 }
 
 resource "google_service_account" "service_account_db" {
-  account_id = "sap-db-role-${var.deployment_name}"
+  account_id = "${var.deployment_name}-db"
   project    = data.google_project.sap-project.project_id
 }
