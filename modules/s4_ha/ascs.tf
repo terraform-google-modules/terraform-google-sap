@@ -445,6 +445,6 @@ resource "google_project_iam_member" "ascs_sa_role_3" {
 }
 
 resource "google_service_account" "service_account_ascs" {
-  account_id = "sap-ascs-role-${var.deployment_name}"
+  account_id = "${var.deployment_name}-ascs"
   project    = data.google_project.sap-project.project_id
 }
