@@ -52,7 +52,6 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "gce_instance_metadata" : {
                           "active_region" : true,
                           "application_secret_name" : "${var.application_secret_name}",
-                          "ascs_first_vm_name" : "${google_compute_instance.sapdascs11.name}",
                           "dns_name" : "${google_dns_managed_zone.sap_zone.dns_name}",
                           "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
                           "hana_secret_name" : "${var.hana_secret_name}",
@@ -76,7 +75,6 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "gce_instance_metadata" : {
                           "active_region" : true,
                           "application_secret_name" : "${var.application_secret_name}",
-                          "ascs_first_vm_name" : "${google_compute_instance.sapdascs11.name}",
                           "dns_name" : "${google_dns_managed_zone.sap_zone.dns_name}",
                           "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
                           "hana_secret_name" : "${var.hana_secret_name}",
