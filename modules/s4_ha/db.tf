@@ -18,6 +18,10 @@ data "google_compute_subnetwork" "sap-subnet-db-1" {
   region  = var.region_name
 }
 
+locals {
+  hdx_hana_config = var.disk_type == "hyperdisk-extreme" ? true : false
+}
+
 resource "google_compute_address" "sapddb11-1" {
   address_type = "INTERNAL"
   name         = "${var.vm_prefix}db11-internal"
@@ -67,7 +71,7 @@ resource "google_compute_disk" "sapddb11_export_backup" {
     update = "1h"
   }
 
-  type = "pd-ssd"
+  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone1_name
 }
 
@@ -76,16 +80,17 @@ resource "google_compute_disk" "sapddb11_hana_data" {
     ignore_changes = [snapshot]
   }
 
-  name    = "${var.vm_prefix}db11-hana-data"
-  project = data.google_project.sap-project.project_id
-  size    = var.db_disk_hana_data_size
+  name             = "${var.vm_prefix}db11-hana-data"
+  project          = data.google_project.sap-project.project_id
+  provisioned_iops = var.disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.db_disk_hana_data_size) : null
+  size             = var.db_disk_hana_data_size
   timeouts {
     create = "1h"
     delete = "1h"
     update = "1h"
   }
 
-  type = "pd-ssd"
+  type = var.disk_type
   zone = var.zone1_name
 }
 
@@ -94,16 +99,17 @@ resource "google_compute_disk" "sapddb11_hana_log" {
     ignore_changes = [snapshot]
   }
 
-  name    = "${var.vm_prefix}db11-hana-log"
-  project = data.google_project.sap-project.project_id
-  size    = var.db_disk_hana_log_size
+  name             = "${var.vm_prefix}db11-hana-log"
+  project          = data.google_project.sap-project.project_id
+  provisioned_iops = var.disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.db_disk_hana_log_size) : null
+  size             = var.db_disk_hana_log_size
   timeouts {
     create = "1h"
     delete = "1h"
     update = "1h"
   }
 
-  type = "pd-ssd"
+  type = var.disk_type
   zone = var.zone1_name
 }
 
@@ -121,7 +127,7 @@ resource "google_compute_disk" "sapddb11_hana_restore" {
     update = "1h"
   }
 
-  type = "pd-standard"
+  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone1_name
 }
 
@@ -139,7 +145,7 @@ resource "google_compute_disk" "sapddb11_hana_shared" {
     update = "1h"
   }
 
-  type = "pd-ssd"
+  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone1_name
 }
 
@@ -157,7 +163,7 @@ resource "google_compute_disk" "sapddb11_usr_sap" {
     update = "1h"
   }
 
-  type = "pd-ssd"
+  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone1_name
 }
 
@@ -194,7 +200,7 @@ resource "google_compute_disk" "sapddb12_export_backup" {
     update = "1h"
   }
 
-  type = "pd-ssd"
+  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone2_name
 }
 
@@ -203,16 +209,17 @@ resource "google_compute_disk" "sapddb12_hana_data" {
     ignore_changes = [snapshot]
   }
 
-  name    = "${var.vm_prefix}db12-hana-data"
-  project = data.google_project.sap-project.project_id
-  size    = var.db_disk_hana_data_size
+  name             = "${var.vm_prefix}db12-hana-data"
+  project          = data.google_project.sap-project.project_id
+  provisioned_iops = var.disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.db_disk_hana_data_size) : null
+  size             = var.db_disk_hana_data_size
   timeouts {
     create = "1h"
     delete = "1h"
     update = "1h"
   }
 
-  type = "pd-ssd"
+  type = var.disk_type
   zone = var.zone2_name
 }
 
@@ -221,16 +228,17 @@ resource "google_compute_disk" "sapddb12_hana_log" {
     ignore_changes = [snapshot]
   }
 
-  name    = "${var.vm_prefix}db12-hana-log"
-  project = data.google_project.sap-project.project_id
-  size    = var.db_disk_hana_log_size
+  name             = "${var.vm_prefix}db12-hana-log"
+  project          = data.google_project.sap-project.project_id
+  provisioned_iops = var.disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.db_disk_hana_log_size) : null
+  size             = var.db_disk_hana_log_size
   timeouts {
     create = "1h"
     delete = "1h"
     update = "1h"
   }
 
-  type = "pd-ssd"
+  type = var.disk_type
   zone = var.zone2_name
 }
 
@@ -248,7 +256,7 @@ resource "google_compute_disk" "sapddb12_hana_restore" {
     update = "1h"
   }
 
-  type = "pd-standard"
+  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone2_name
 }
 
@@ -266,7 +274,7 @@ resource "google_compute_disk" "sapddb12_hana_shared" {
     update = "1h"
   }
 
-  type = "pd-ssd"
+  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone2_name
 }
 
@@ -284,7 +292,7 @@ resource "google_compute_disk" "sapddb12_usr_sap" {
     update = "1h"
   }
 
-  type = "pd-ssd"
+  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone2_name
 }
 
@@ -299,7 +307,7 @@ resource "google_compute_firewall" "ilb_firewall_db" {
   network       = data.google_compute_network.sap-vpc.self_link
   project       = data.google_project.sap-project.project_id
   source_ranges = ["35.191.0.0/16", "130.211.0.0/22"]
-  target_tags   = ["wlm-db"]
+  target_tags   = ["allow-health-checks-range"]
 }
 
 resource "google_compute_forwarding_rule" "db_forwarding_rule" {
@@ -375,7 +383,8 @@ resource "google_compute_instance" "sapddb11" {
 
   machine_type = var.db_machine_type
   metadata = {
-    ssh-keys = ""
+    VmDnsSetting = "ZonalPreferred"
+    ssh-keys     = ""
   }
   name = "${var.vm_prefix}db11"
   network_interface {
@@ -404,7 +413,7 @@ resource "google_compute_instance" "sapddb11" {
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
-  tags = ["wlm-db", "allow-health-checks-range"]
+  tags = ["allow-health-checks-range", "${var.deployment_name}-s4-comms"]
   zone = var.zone1_name
 }
 
@@ -457,7 +466,8 @@ resource "google_compute_instance" "sapddb12" {
 
   machine_type = var.db_machine_type
   metadata = {
-    ssh-keys = ""
+    VmDnsSetting = "ZonalPreferred"
+    ssh-keys     = ""
   }
   name = "${var.vm_prefix}db12"
   network_interface {
@@ -486,7 +496,7 @@ resource "google_compute_instance" "sapddb12" {
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
-  tags = ["wlm-db", "allow-health-checks-range"]
+  tags = ["allow-health-checks-range", "${var.deployment_name}-s4-comms"]
   zone = var.zone2_name
 }
 
