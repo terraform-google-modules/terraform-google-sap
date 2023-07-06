@@ -28,7 +28,7 @@ variable "app_disk_usr_sap_size" {
 }
 
 variable "app_machine_type" {
-  default     = "n2-standard-16"
+  default     = "n1-highem-32"
   description = "app_machine_type"
 }
 
@@ -53,7 +53,7 @@ variable "ascs_disk_usr_sap_size" {
 }
 
 variable "ascs_machine_type" {
-  default     = "n2-standard-32"
+  default     = "n1-standard-8"
   description = "ascs_machine_type"
 }
 
@@ -101,6 +101,16 @@ variable "deployment_name" {
   description = "deployment_name"
 }
 
+variable "disk_type" {
+  default     = "pd-balanced"
+  description = "disk_type"
+  validation {
+    condition     = contains(["pd-ssd", "pd-balanced", "hyperdisk-extreme"], var.disk_type)
+    error_message = "disk_type must be one of [\"pd-ssd\", \"pd-balanced\", \"hyperdisk-extreme\"]"
+  }
+
+}
+
 variable "dns_zone_name_suffix" {
   default     = "gcp.sapcloud.goog."
   description = "dns_zone_name_suffix"
@@ -134,12 +144,12 @@ variable "media_bucket_name" {
 }
 
 variable "package_location" {
-  default     = "gs://cloudsapdeploytesting/wlm/continuous"
+  default     = "gs://cloudsapdeploy/deployments/latest"
   description = "package_location"
 }
 
 variable "primary_startup_url" {
-  default     = "gs://cloudsapdeploytesting/wlm/continuous/startup.sh"
+  default     = "gs://cloudsapdeploy/deployments/latest/startup/ansible_runner_startup.sh"
   description = "primary_startup_url"
 }
 

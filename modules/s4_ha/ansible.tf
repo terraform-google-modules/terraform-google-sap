@@ -27,7 +27,7 @@ resource "google_compute_address" "sapdansible11-1" {
 }
 
 resource "google_compute_disk" "sapdansible11" {
-  image = "rhel-9-v20230203"
+  image = "projects/rhel-cloud/global/images/rhel-9-v20230615"
   lifecycle {
     ignore_changes = [snapshot, image]
   }
@@ -59,6 +59,7 @@ resource "google_compute_instance" "sapdansible11" {
     component      = "ansible"
     component_type = "generic"
     environment    = "${var.deployment_name}"
+    service_group  = "ansible_runner"
   }
   lifecycle {
     ignore_changes = [
@@ -98,7 +99,7 @@ resource "google_compute_instance" "sapdansible11" {
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
-  tags = ["wlm-ansible-runner"]
+  tags = ["${var.deployment_name}-s4-comms"]
   zone = var.zone1_name
 }
 

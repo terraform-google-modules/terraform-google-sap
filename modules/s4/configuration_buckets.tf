@@ -32,6 +32,39 @@ resource "google_storage_bucket_iam_binding" "objectviewer_configuration" {
 resource "google_storage_bucket_object" "ansible_inventory" {
   bucket = google_storage_bucket.configuration.name
   content = jsonencode({
+    "ansible_runner" : {
+      "children" : {
+        "all_generic" : {
+          "children" : {
+            "${var.deployment_name}_ansible" : {
+              "children" : {
+                "ansible" : {
+                  "hosts" : {
+                    "${var.deployment_name}-ansible-runner" : {
+                      "gce_instance_labels" : {
+                        "active_region" : true,
+                        "component" : "ansible",
+                        "component_type" : "generic",
+                        "environment" : "${var.deployment_name}",
+                        "service_group" : "ansible_runner"
+                      },
+                      "gce_instance_metadata" : {
+                        "active_region" : true,
+                        "media_bucket_name" : "${var.media_bucket_name}",
+                        "startup-script" : "gsutil cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}"
+                      },
+                      "gce_instance_name" : "${var.deployment_name}-ansible-runner",
+                      "gce_instance_project" : "${data.google_project.sap-project.project_id}",
+                      "gce_instance_zone" : "${var.zone1_name}"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "s4" : {
       "children" : {
         "all_app" : {
@@ -57,7 +90,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                           "hana_secret_name" : "${var.hana_secret_name}",
                           "media_bucket_name" : "${var.media_bucket_name}",
                           "sap_version" : "${var.sap_version}",
-                          "sid" : "${var.app_sid}",
+                          "sid_app" : "${var.app_sid}",
                           "sid_hana" : "${var.db_sid}"
                         },
                         "gce_instance_name" : "${var.vm_prefix}app1${1 + (count.index * 2)}",
@@ -94,7 +127,8 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "hana_secret_name" : "${var.hana_secret_name}",
                         "media_bucket_name" : "${var.media_bucket_name}",
                         "sap_version" : "${var.sap_version}",
-                        "sid" : "${var.app_sid}"
+                        "sid_app" : "${var.app_sid}",
+                        "sid_hana" : "${var.db_sid}"
                       },
                       "gce_instance_name" : "${var.vm_prefix}ascs11",
                       "gce_instance_project" : "${data.google_project.sap-project.project_id}",
@@ -126,10 +160,11 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "dns_name" : "${google_dns_managed_zone.sap_zone.dns_name}",
                         "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
                         "hana_secret_name" : "${var.hana_secret_name}",
+                        "hdx_hana_config" : "${local.hdx_hana_config}",
                         "media_bucket_name" : "${var.media_bucket_name}",
                         "sap_version" : "${var.sap_version}",
-                        "sid" : "${var.db_sid}",
-                        "sid_tenant" : "${var.app_sid}"
+                        "sid_app" : "${var.app_sid}",
+                        "sid_hana" : "${var.db_sid}"
                       },
                       "gce_instance_name" : "${var.vm_prefix}db11",
                       "gce_instance_project" : "${data.google_project.sap-project.project_id}",

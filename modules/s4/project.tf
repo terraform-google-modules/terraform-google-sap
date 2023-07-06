@@ -21,11 +21,33 @@ provider "google" {
   region  = "!!! Terraform resource is using default region !!!"
 }
 
+resource "google_compute_firewall" "intra_vm_communication" {
+  allow {
+    protocol = "tcp"
+  }
+
+  allow {
+    protocol = "icmp"
+  }
+
+  allow {
+    protocol = "udp"
+  }
+
+  description = "Enables intra VM communications"
+  name        = "${var.deployment_name}-communication-firewall"
+  network     = data.google_compute_network.sap-vpc.self_link
+  project     = data.google_project.sap-project.project_id
+  source_tags = ["${var.deployment_name}-s4-comms"]
+  target_tags = ["${var.deployment_name}-s4-comms"]
+}
+
 resource "google_dns_managed_zone" "sap_zone" {
-  depends_on  = [google_project_service.service_dns_googleapis_com]
-  description = "${var.deployment_name} SAP DNS zone"
-  dns_name    = "${var.deployment_name}.${var.dns_zone_name_suffix}"
-  name        = "${var.deployment_name}"
+  depends_on    = [google_project_service.service_dns_googleapis_com]
+  description   = "${var.deployment_name} SAP DNS zone"
+  dns_name      = "${var.deployment_name}.${var.dns_zone_name_suffix}"
+  force_destroy = true
+  name          = "${var.deployment_name}"
   private_visibility_config {
     networks {
       network_url = data.google_compute_network.sap-vpc.self_link
