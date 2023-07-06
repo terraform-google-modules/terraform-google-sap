@@ -67,7 +67,7 @@ resource "google_compute_disk" "sapdascs11_usr_sap" {
     update = "1h"
   }
 
-  type = "pd-ssd"
+  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone1_name
 }
 
@@ -104,7 +104,7 @@ resource "google_compute_disk" "sapdascs12_usr_sap" {
     update = "1h"
   }
 
-  type = "pd-ssd"
+  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone2_name
 }
 
@@ -119,7 +119,7 @@ resource "google_compute_firewall" "ilb_firewall_ascs" {
   network       = data.google_compute_network.sap-vpc.self_link
   project       = data.google_project.sap-project.project_id
   source_ranges = ["35.191.0.0/16", "130.211.0.0/22"]
-  target_tags   = ["wlm-ascs"]
+  target_tags   = ["allow-health-checks-range"]
 }
 
 resource "google_compute_firewall" "ilb_firewall_ers" {
@@ -133,7 +133,7 @@ resource "google_compute_firewall" "ilb_firewall_ers" {
   network       = data.google_compute_network.sap-vpc.self_link
   project       = data.google_project.sap-project.project_id
   source_ranges = ["35.191.0.0/16", "130.211.0.0/22"]
-  target_tags   = ["wlm-ascs"]
+  target_tags   = ["allow-health-checks-range"]
 }
 
 resource "google_compute_forwarding_rule" "ascs_forwarding_rule" {
@@ -208,7 +208,8 @@ resource "google_compute_instance" "sapdascs11" {
 
   machine_type = var.ascs_machine_type
   metadata = {
-    ssh-keys = ""
+    VmDnsSetting = "ZonalPreferred"
+    ssh-keys     = ""
   }
   name = "${var.vm_prefix}ascs11"
   network_interface {
@@ -237,7 +238,7 @@ resource "google_compute_instance" "sapdascs11" {
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
-  tags = ["wlm-ascs", "allow-health-checks-range"]
+  tags = ["allow-health-checks-range", "${var.deployment_name}-s4-comms"]
   zone = var.zone1_name
 }
 
@@ -265,7 +266,8 @@ resource "google_compute_instance" "sapdascs12" {
 
   machine_type = var.ascs_machine_type
   metadata = {
-    ssh-keys = ""
+    VmDnsSetting = "ZonalPreferred"
+    ssh-keys     = ""
   }
   name = "${var.vm_prefix}ascs12"
   network_interface {
@@ -294,7 +296,7 @@ resource "google_compute_instance" "sapdascs12" {
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
-  tags = ["wlm-ascs", "allow-health-checks-range"]
+  tags = ["allow-health-checks-range", "${var.deployment_name}-s4-comms"]
   zone = var.zone2_name
 }
 
