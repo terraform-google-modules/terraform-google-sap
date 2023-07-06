@@ -59,7 +59,7 @@ resource "google_compute_disk" "sapdascs11_usr_sap" {
     update = "1h"
   }
 
-  type = "pd-ssd"
+  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone1_name
 }
 
@@ -87,7 +87,8 @@ resource "google_compute_instance" "sapdascs11" {
 
   machine_type = var.ascs_machine_type
   metadata = {
-    ssh-keys = ""
+    VmDnsSetting = "ZonalPreferred"
+    ssh-keys     = ""
   }
   name = "${var.vm_prefix}ascs11"
   network_interface {
@@ -116,7 +117,7 @@ resource "google_compute_instance" "sapdascs11" {
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
-  tags = ["wlm-db", "allow-health-checks"]
+  tags = ["allow-health-checks", "${var.deployment_name}-s4-comms"]
   zone = var.zone1_name
 }
 
