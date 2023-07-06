@@ -71,7 +71,7 @@ resource "google_compute_disk" "sapdapp11_export_interfaces" {
     update = "1h"
   }
 
-  type = "pd-ssd"
+  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone1_name
 }
 
@@ -90,7 +90,7 @@ resource "google_compute_disk" "sapdapp11_usr_sap" {
     update = "1h"
   }
 
-  type = "pd-ssd"
+  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone1_name
 }
 
@@ -129,7 +129,7 @@ resource "google_compute_disk" "sapdapp12_export_interfaces" {
     update = "1h"
   }
 
-  type = "pd-ssd"
+  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone2_name
 }
 
@@ -148,7 +148,7 @@ resource "google_compute_disk" "sapdapp12_usr_sap" {
     update = "1h"
   }
 
-  type = "pd-ssd"
+  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone2_name
 }
 
@@ -182,7 +182,8 @@ resource "google_compute_instance" "sapdapp11" {
 
   machine_type = var.app_machine_type
   metadata = {
-    ssh-keys = ""
+    VmDnsSetting = "ZonalPreferred"
+    ssh-keys     = ""
   }
   name = "${var.vm_prefix}app1${1 + (count.index * 2)}"
   network_interface {
@@ -211,7 +212,7 @@ resource "google_compute_instance" "sapdapp11" {
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
-  tags = ["wlm-app"]
+  tags = ["${var.deployment_name}-s4-comms"]
   zone = var.zone1_name
 }
 
@@ -245,7 +246,8 @@ resource "google_compute_instance" "sapdapp12" {
 
   machine_type = var.app_machine_type
   metadata = {
-    ssh-keys = ""
+    VmDnsSetting = "ZonalPreferred"
+    ssh-keys     = ""
   }
   name = "${var.vm_prefix}app1${2 + (count.index * 2)}"
   network_interface {
@@ -274,7 +276,7 @@ resource "google_compute_instance" "sapdapp12" {
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
-  tags = ["wlm-app"]
+  tags = ["${var.deployment_name}-s4-comms"]
   zone = var.zone2_name
 }
 
