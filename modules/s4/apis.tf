@@ -53,3 +53,9 @@ resource "google_project_service" "service_secretmanager_googleapis_com" {
   project            = data.google_project.sap-project.project_id
   service            = "secretmanager.googleapis.com"
 }
+
+resource "google_project_service" "service_serviceusage_googleapis_com" {
+  disable_on_destroy = false
+  project            = data.google_project.sap-project.project_id
+  service            = "serviceusage.googleapis.com"
+}
