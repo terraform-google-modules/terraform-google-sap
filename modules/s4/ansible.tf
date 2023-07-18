@@ -53,7 +53,12 @@ resource "google_compute_instance" "sapdansible11" {
     source      = google_compute_disk.sapdansible11.self_link
   }
 
-  depends_on = [google_storage_bucket_object.ansible_inventory]
+  depends_on = [
+    google_storage_bucket_object.ansible_inventory,
+    google_compute_instance.sapdapp11,
+    google_compute_instance.sapddb11,
+    google_compute_instance.sapdascs11
+  ]
   labels = {
     active_region  = true
     component      = "ansible"
