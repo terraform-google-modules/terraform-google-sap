@@ -69,6 +69,7 @@ resource "google_dns_record_set" "sap_fstore_1" {
 }
 
 resource "google_filestore_instance" "sap_fstore_1" {
+  depends_on = [google_project_service.service_file_googleapis_com]
   file_shares {
     capacity_gb = var.filestore_gb
     name        = "default"
