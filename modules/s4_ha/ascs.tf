@@ -446,6 +446,24 @@ resource "google_project_iam_member" "ascs_sa_role_3" {
   role    = "roles/monitoring.metricWriter"
 }
 
+resource "google_project_iam_member" "ascs_sa_role_4" {
+  member  = "serviceAccount:${google_service_account.service_account_ascs.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/logging.admin"
+}
+
+resource "google_project_iam_member" "ascs_sa_role_5" {
+  member  = "serviceAccount:${google_service_account.service_account_ascs.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/monitoring.admin"
+}
+
+resource "google_project_iam_member" "ascs_sa_role_6" {
+  member  = "serviceAccount:${google_service_account.service_account_ascs.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/compute.viewer"
+}
+
 resource "google_service_account" "service_account_ascs" {
   account_id = "${var.deployment_name}-ascs"
   project    = data.google_project.sap-project.project_id
