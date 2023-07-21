@@ -153,6 +153,18 @@ resource "google_project_iam_member" "ansible_sa_role_7" {
   role    = "roles/secretmanager.secretAccessor"
 }
 
+resource "google_project_iam_member" "ansible_sa_role_8" {
+  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/monitoring.admin"
+}
+
+resource "google_project_iam_member" "ansible_sa_role_9" {
+  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/compute.viewer"
+}
+
 resource "google_service_account" "service_account_ansible" {
   account_id = "${var.deployment_name}-ansible"
   project    = data.google_project.sap-project.project_id
