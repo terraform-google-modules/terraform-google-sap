@@ -386,7 +386,8 @@ resource "google_compute_instance" "sapddb11" {
     VmDnsSetting = "ZonalPreferred"
     ssh-keys     = ""
   }
-  name = "${var.vm_prefix}db11"
+  min_cpu_platform = lookup(local.cpu_platform_map, var.db_machine_type, "Automatic")
+  name             = "${var.vm_prefix}db11"
   network_interface {
     dynamic "access_config" {
       content {
@@ -469,7 +470,8 @@ resource "google_compute_instance" "sapddb12" {
     VmDnsSetting = "ZonalPreferred"
     ssh-keys     = ""
   }
-  name = "${var.vm_prefix}db12"
+  min_cpu_platform = lookup(local.cpu_platform_map, var.db_machine_type, "Automatic")
+  name             = "${var.vm_prefix}db12"
   network_interface {
     dynamic "access_config" {
       content {
