@@ -16,6 +16,23 @@ data "google_project" "sap-project" {
   project_id = var.gcp_project_id
 }
 
+locals {
+  cpu_platform_map = {
+    m1-megamem-96  = "Intel Skylake"
+    n1-highmem-16  = "Intel Broadwell"
+    n1-highmem-32  = "Intel Broadwell"
+    n1-highmem-64  = "Intel Broadwell"
+    n1-highmem-8   = "Intel Broadwell"
+    n1-highmem-96  = "Intel Skylake"
+    n1-megamem-96  = "Intel Skylake"
+    n1-standard-16 = "Intel Broadwell"
+    n1-standard-32 = "Intel Broadwell"
+    n1-standard-64 = "Intel Broadwell"
+    n1-standard-8  = "Intel Broadwell"
+    n1-standard-96 = "Intel Skylake"
+  }
+}
+
 provider "google" {
   project = "!!! Terraform resource is using default project name !!!"
   region  = "!!! Terraform resource is using default region !!!"

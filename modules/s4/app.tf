@@ -118,7 +118,8 @@ resource "google_compute_instance" "sapdapp11" {
     VmDnsSetting = "ZonalPreferred"
     ssh-keys     = ""
   }
-  name = "${var.vm_prefix}app1${1 + (count.index * 2)}"
+  min_cpu_platform = lookup(local.cpu_platform_map, var.app_machine_type, "Automatic")
+  name             = "${var.vm_prefix}app1${1 + (count.index * 2)}"
   network_interface {
     dynamic "access_config" {
       content {

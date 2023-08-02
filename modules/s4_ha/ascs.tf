@@ -211,7 +211,8 @@ resource "google_compute_instance" "sapdascs11" {
     VmDnsSetting = "ZonalPreferred"
     ssh-keys     = ""
   }
-  name = "${var.vm_prefix}ascs11"
+  min_cpu_platform = lookup(local.cpu_platform_map, var.ascs_machine_type, "Automatic")
+  name             = "${var.vm_prefix}ascs11"
   network_interface {
     dynamic "access_config" {
       content {
@@ -269,7 +270,8 @@ resource "google_compute_instance" "sapdascs12" {
     VmDnsSetting = "ZonalPreferred"
     ssh-keys     = ""
   }
-  name = "${var.vm_prefix}ascs12"
+  min_cpu_platform = lookup(local.cpu_platform_map, var.ascs_machine_type, "Automatic")
+  name             = "${var.vm_prefix}ascs12"
   network_interface {
     dynamic "access_config" {
       content {
