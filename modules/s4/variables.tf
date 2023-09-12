@@ -167,6 +167,21 @@ variable "sap_boot_disk_image" {
   description = "sap_boot_disk_image"
 }
 
+variable "sap_boot_disk_image_app" {
+  default     = ""
+  description = "sap_boot_disk_image_app"
+}
+
+variable "sap_boot_disk_image_ascs" {
+  default     = ""
+  description = "sap_boot_disk_image_ascs"
+}
+
+variable "sap_boot_disk_image_db" {
+  default     = ""
+  description = "sap_boot_disk_image_db"
+}
+
 variable "sap_version" {
   default     = "2021"
   description = "sap_version"
