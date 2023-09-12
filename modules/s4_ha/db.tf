@@ -39,7 +39,7 @@ resource "google_compute_address" "sapddb12-1" {
 }
 
 resource "google_compute_disk" "sapddb11" {
-  image = var.sap_boot_disk_image
+  image = var.sap_boot_disk_image_db == "" ? var.sap_boot_disk_image : var.sap_boot_disk_image_db
   lifecycle {
     ignore_changes = [snapshot, image]
   }
@@ -168,7 +168,7 @@ resource "google_compute_disk" "sapddb11_usr_sap" {
 }
 
 resource "google_compute_disk" "sapddb12" {
-  image = var.sap_boot_disk_image
+  image = var.sap_boot_disk_image_db == "" ? var.sap_boot_disk_image : var.sap_boot_disk_image_db
   lifecycle {
     ignore_changes = [snapshot, image]
   }
@@ -383,8 +383,9 @@ resource "google_compute_instance" "sapddb11" {
 
   machine_type = var.db_machine_type
   metadata = {
-    VmDnsSetting = "ZonalPreferred"
-    ssh-keys     = ""
+    VmDnsSetting   = "ZonalPreferred"
+    enable-oslogin = "FALSE"
+    ssh-keys       = ""
   }
   min_cpu_platform = lookup(local.cpu_platform_map, var.db_machine_type, "Automatic")
   name             = "${var.vm_prefix}db11"
@@ -467,8 +468,9 @@ resource "google_compute_instance" "sapddb12" {
 
   machine_type = var.db_machine_type
   metadata = {
-    VmDnsSetting = "ZonalPreferred"
-    ssh-keys     = ""
+    VmDnsSetting   = "ZonalPreferred"
+    enable-oslogin = "FALSE"
+    ssh-keys       = ""
   }
   min_cpu_platform = lookup(local.cpu_platform_map, var.db_machine_type, "Automatic")
   name             = "${var.vm_prefix}db12"
