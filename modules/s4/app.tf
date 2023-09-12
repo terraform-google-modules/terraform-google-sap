@@ -29,7 +29,7 @@ resource "google_compute_address" "sapdapp11-1" {
 
 resource "google_compute_disk" "sapdapp11" {
   count = var.app_vms_multiplier
-  image = var.sap_boot_disk_image
+  image = var.sap_boot_disk_image_app == "" ? var.sap_boot_disk_image : var.sap_boot_disk_image_app
   lifecycle {
     ignore_changes = [snapshot, image]
   }
@@ -115,8 +115,9 @@ resource "google_compute_instance" "sapdapp11" {
 
   machine_type = var.app_machine_type
   metadata = {
-    VmDnsSetting = "ZonalPreferred"
-    ssh-keys     = ""
+    VmDnsSetting   = "ZonalPreferred"
+    enable-oslogin = "FALSE"
+    ssh-keys       = ""
   }
   min_cpu_platform = lookup(local.cpu_platform_map, var.app_machine_type, "Automatic")
   name             = "${var.vm_prefix}app1${1 + (count.index * 2)}"
