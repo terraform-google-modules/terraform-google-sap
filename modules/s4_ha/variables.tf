@@ -131,6 +131,11 @@ variable "ers_ilb_healthcheck_port" {
   description = "ers_ilb_healthcheck_port"
 }
 
+variable "existing_dns_zone_name" {
+  default     = ""
+  description = "existing_dns_zone_name"
+}
+
 variable "filestore_gb" {
   default     = 1024
   description = "filestore_gb"
@@ -195,6 +200,26 @@ variable "sap_boot_disk_image_ascs" {
 variable "sap_boot_disk_image_db" {
   default     = ""
   description = "sap_boot_disk_image_db"
+}
+
+variable "sap_instance_id_app" {
+  default     = "10"
+  description = "sap_instance_id_app"
+}
+
+variable "sap_instance_id_ascs" {
+  default     = "11"
+  description = "sap_instance_id_ascs"
+}
+
+variable "sap_instance_id_db" {
+  default     = "00"
+  description = "sap_instance_id_db"
+}
+
+variable "sap_instance_id_ers" {
+  default     = "12"
+  description = "sap_instance_id_ers"
 }
 
 variable "sap_version" {

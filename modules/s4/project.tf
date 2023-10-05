@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+data "google_dns_managed_zone" "sap_zone" {
+  name    = var.existing_dns_zone_name == "" ? resource.google_dns_managed_zone.sap_zone[0].name : var.existing_dns_zone_name
+  project = data.google_project.sap-project.project_id
+}
+
 data "google_project" "sap-project" {
   project_id = var.gcp_project_id
 }
@@ -60,6 +65,7 @@ resource "google_compute_firewall" "intra_vm_communication" {
 }
 
 resource "google_dns_managed_zone" "sap_zone" {
+  count         = var.existing_dns_zone_name == "" ? 1 : 0
   depends_on    = [google_project_service.service_dns_googleapis_com]
   description   = "${var.deployment_name} SAP DNS zone"
   dns_name      = "${var.deployment_name}.${var.dns_zone_name_suffix}"
@@ -77,8 +83,8 @@ resource "google_dns_managed_zone" "sap_zone" {
 }
 
 resource "google_dns_record_set" "sap_fstore_1" {
-  managed_zone = google_dns_managed_zone.sap_zone.name
-  name         = "fstore-${var.deployment_name}-1.${var.deployment_name}.${var.dns_zone_name_suffix}"
+  managed_zone = data.google_dns_managed_zone.sap_zone.name
+  name         = "fstore-${var.deployment_name}-1.${data.google_dns_managed_zone.sap_zone.dns_name}"
   project      = data.google_project.sap-project.project_id
   rrdatas      = [google_filestore_instance.sap_fstore_1.networks[0].ip_addresses[0]]
   ttl          = 60
