@@ -552,17 +552,17 @@ resource "google_dns_record_set" "global_master_db" {
     ignore_changes = [rrdatas]
   }
 
-  managed_zone = google_dns_managed_zone.sap_zone.name
-  name         = "db.${google_dns_managed_zone.sap_zone.dns_name}"
+  managed_zone = data.google_dns_managed_zone.sap_zone.name
+  name         = "db.${data.google_dns_managed_zone.sap_zone.dns_name}"
   project      = data.google_project.sap-project.project_id
-  rrdatas      = ["sapddb-vip11.${google_dns_managed_zone.sap_zone.dns_name}"]
+  rrdatas      = ["sapddb-vip11.${data.google_dns_managed_zone.sap_zone.dns_name}"]
   ttl          = 60
   type         = "CNAME"
 }
 
 resource "google_dns_record_set" "ilb_db_1" {
-  managed_zone = google_dns_managed_zone.sap_zone.name
-  name         = "sapddb-vip11.${google_dns_managed_zone.sap_zone.dns_name}"
+  managed_zone = data.google_dns_managed_zone.sap_zone.name
+  name         = "sapddb-vip11.${data.google_dns_managed_zone.sap_zone.dns_name}"
   project      = data.google_project.sap-project.project_id
   rrdatas      = [google_compute_forwarding_rule.db_forwarding_rule.ip_address]
   ttl          = 300
@@ -570,8 +570,8 @@ resource "google_dns_record_set" "ilb_db_1" {
 }
 
 resource "google_dns_record_set" "to_vm_sapddb11" {
-  managed_zone = google_dns_managed_zone.sap_zone.name
-  name         = "${var.vm_prefix}db11.${google_dns_managed_zone.sap_zone.dns_name}"
+  managed_zone = data.google_dns_managed_zone.sap_zone.name
+  name         = "${var.vm_prefix}db11.${data.google_dns_managed_zone.sap_zone.dns_name}"
   project      = data.google_project.sap-project.project_id
   rrdatas      = [google_compute_instance.sapddb11.network_interface.0.network_ip]
   ttl          = 300
@@ -579,8 +579,8 @@ resource "google_dns_record_set" "to_vm_sapddb11" {
 }
 
 resource "google_dns_record_set" "to_vm_sapddb12" {
-  managed_zone = google_dns_managed_zone.sap_zone.name
-  name         = "${var.vm_prefix}db12.${google_dns_managed_zone.sap_zone.dns_name}"
+  managed_zone = data.google_dns_managed_zone.sap_zone.name
+  name         = "${var.vm_prefix}db12.${data.google_dns_managed_zone.sap_zone.dns_name}"
   project      = data.google_project.sap-project.project_id
   rrdatas      = [google_compute_instance.sapddb12.network_interface.0.network_ip]
   ttl          = 300

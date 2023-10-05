@@ -77,6 +77,7 @@ resource "google_compute_instance" "sapdansible11" {
   machine_type = "n1-standard-16"
   metadata = {
     active_region     = true
+    dns_zone_name     = "${data.google_dns_managed_zone.sap_zone.name}"
     media_bucket_name = "${var.media_bucket_name}"
     ssh-keys          = ""
     startup-script    = "gsutil cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}"
