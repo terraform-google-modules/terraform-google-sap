@@ -50,6 +50,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                       },
                       "gce_instance_metadata" : {
                         "active_region" : true,
+                        "dns_zone_name" : "${data.google_dns_managed_zone.sap_zone.name}",
                         "media_bucket_name" : "${var.media_bucket_name}",
                         "startup-script" : "gsutil cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}"
                       },
@@ -85,10 +86,14 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "gce_instance_metadata" : {
                           "active_region" : true,
                           "application_secret_name" : "${var.application_secret_name}",
-                          "dns_name" : "${google_dns_managed_zone.sap_zone.dns_name}",
+                          "dns_name" : "${data.google_dns_managed_zone.sap_zone.dns_name}",
+                          "dns_zone_name" : "${data.google_dns_managed_zone.sap_zone.name}",
                           "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
                           "hana_secret_name" : "${var.hana_secret_name}",
                           "media_bucket_name" : "${var.media_bucket_name}",
+                          "sap_instance_id_app" : "${var.sap_instance_id_app}",
+                          "sap_instance_id_ascs" : "${var.sap_instance_id_ascs}",
+                          "sap_instance_id_db" : "${var.sap_instance_id_db}",
                           "sap_version" : "${var.sap_version}",
                           "sid_app" : "${var.app_sid}",
                           "sid_hana" : "${var.db_sid}"
@@ -121,11 +126,15 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                       "gce_instance_metadata" : {
                         "active_region" : true,
                         "application_secret_name" : "${var.application_secret_name}",
-                        "dns_name" : "${google_dns_managed_zone.sap_zone.dns_name}",
+                        "dns_name" : "${data.google_dns_managed_zone.sap_zone.dns_name}",
+                        "dns_zone_name" : "${data.google_dns_managed_zone.sap_zone.name}",
                         "failover_type" : "NONE",
                         "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
                         "hana_secret_name" : "${var.hana_secret_name}",
                         "media_bucket_name" : "${var.media_bucket_name}",
+                        "sap_instance_id_app" : "${var.sap_instance_id_app}",
+                        "sap_instance_id_ascs" : "${var.sap_instance_id_ascs}",
+                        "sap_instance_id_db" : "${var.sap_instance_id_db}",
                         "sap_version" : "${var.sap_version}",
                         "sid_app" : "${var.app_sid}",
                         "sid_hana" : "${var.db_sid}"
@@ -157,11 +166,15 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                       "gce_instance_metadata" : {
                         "active_region" : true,
                         "application_secret_name" : "${var.application_secret_name}",
-                        "dns_name" : "${google_dns_managed_zone.sap_zone.dns_name}",
+                        "dns_name" : "${data.google_dns_managed_zone.sap_zone.dns_name}",
+                        "dns_zone_name" : "${data.google_dns_managed_zone.sap_zone.name}",
                         "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
                         "hana_secret_name" : "${var.hana_secret_name}",
                         "hdx_hana_config" : "${local.hdx_hana_config}",
                         "media_bucket_name" : "${var.media_bucket_name}",
+                        "sap_instance_id_app" : "${var.sap_instance_id_app}",
+                        "sap_instance_id_ascs" : "${var.sap_instance_id_ascs}",
+                        "sap_instance_id_db" : "${var.sap_instance_id_db}",
                         "sap_version" : "${var.sap_version}",
                         "sid_app" : "${var.app_sid}",
                         "sid_hana" : "${var.db_sid}"

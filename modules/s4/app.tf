@@ -153,8 +153,8 @@ resource "google_compute_instance" "sapdapp11" {
 
 resource "google_dns_record_set" "to_vm_sapdapp11" {
   count        = var.app_vms_multiplier
-  managed_zone = google_dns_managed_zone.sap_zone.name
-  name         = "${var.vm_prefix}app1${1 + (count.index * 2)}.${google_dns_managed_zone.sap_zone.dns_name}"
+  managed_zone = data.google_dns_managed_zone.sap_zone.name
+  name         = "${var.vm_prefix}app1${1 + (count.index * 2)}.${data.google_dns_managed_zone.sap_zone.dns_name}"
   project      = data.google_project.sap-project.project_id
   rrdatas = [
     google_compute_instance.sapdapp11[count.index].network_interface.0.network_ip
