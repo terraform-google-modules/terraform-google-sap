@@ -205,25 +205,21 @@ variable "sap_boot_disk_image_db" {
 variable "sap_instance_id_app" {
   default     = "10"
   description = "sap_instance_id_app"
-  type = string
 }
 
 variable "sap_instance_id_ascs" {
   default     = "11"
   description = "sap_instance_id_ascs"
-  type = string
 }
 
 variable "sap_instance_id_db" {
   default     = "00"
   description = "sap_instance_id_db"
-  type = string
 }
 
 variable "sap_instance_id_ers" {
   default     = "12"
   description = "sap_instance_id_ers"
-  type = string
 }
 
 variable "sap_version" {
