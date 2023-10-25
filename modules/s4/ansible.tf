@@ -115,6 +115,12 @@ resource "google_project_iam_member" "ansible_sa_role_1" {
   role    = "roles/compute.instanceAdmin.v1"
 }
 
+resource "google_project_iam_member" "ansible_sa_role_10" {
+  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/iam.roleViewer"
+}
+
 resource "google_project_iam_member" "ansible_sa_role_2" {
   member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
   project = data.google_project.sap-project.project_id
