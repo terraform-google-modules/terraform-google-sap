@@ -76,11 +76,13 @@ resource "google_compute_instance" "sapdansible11" {
 
   machine_type = "n1-standard-16"
   metadata = {
-    active_region     = true
-    dns_zone_name     = "${data.google_dns_managed_zone.sap_zone.name}"
-    media_bucket_name = "${var.media_bucket_name}"
-    ssh-keys          = ""
-    startup-script    = "gsutil cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}"
+    active_region             = true
+    configuration_bucket_name = "${data.google_storage_bucket.configuration.name}"
+    dns_zone_name             = "${data.google_dns_managed_zone.sap_zone.name}"
+    is_test                   = "${var.is_test}"
+    media_bucket_name         = "${var.media_bucket_name}"
+    ssh-keys                  = ""
+    startup-script            = "gsutil cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}"
   }
   name = "${var.deployment_name}-ansible-runner"
   network_interface {
