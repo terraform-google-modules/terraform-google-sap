@@ -12,17 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resource "google_storage_bucket" "configuration" {
-  force_destroy               = true
-  location                    = "US"
-  name                        = "${var.gcp_project_id}-${var.deployment_name}-configuration"
-  project                     = data.google_project.sap-project.project_id
-  storage_class               = "MULTI_REGIONAL"
-  uniform_bucket_level_access = true
+data "google_storage_bucket" "configuration" {
+  name = var.configuration_bucket_name == "" ? "${var.gcp_project_id}-${var.deployment_name}-configuration" : var.configuration_bucket_name
 }
 
 resource "google_storage_bucket_iam_binding" "objectviewer_configuration" {
-  bucket = google_storage_bucket.configuration.name
+  bucket = data.google_storage_bucket.configuration.name
   members = [
     "serviceAccount:${google_service_account.service_account_ansible.email}"
   ]
@@ -30,7 +25,7 @@ resource "google_storage_bucket_iam_binding" "objectviewer_configuration" {
 }
 
 resource "google_storage_bucket_object" "ansible_inventory" {
-  bucket = google_storage_bucket.configuration.name
+  bucket = data.google_storage_bucket.configuration.name
   content = jsonencode({
     "ansible_runner" : {
       "children" : {
@@ -50,7 +45,9 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                       },
                       "gce_instance_metadata" : {
                         "active_region" : true,
+                        "configuration_bucket_name" : "${data.google_storage_bucket.configuration.name}",
                         "dns_zone_name" : "${data.google_dns_managed_zone.sap_zone.name}",
+                        "is_test" : "${var.is_test}",
                         "media_bucket_name" : "${var.media_bucket_name}",
                         "startup-script" : "gsutil cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}"
                       },
@@ -303,5 +300,5 @@ resource "google_storage_bucket_object" "ansible_inventory" {
       }
     }
   })
-  name = "wlm.${var.deployment_name}.yml"
+  name = var.configuration_bucket_name == "" ? "wlm.${var.deployment_name}.yml" : "${var.gcp_project_id}-${var.deployment_name}-configuration/wlm.${var.deployment_name}.yml"
 }
