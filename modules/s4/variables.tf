@@ -57,6 +57,11 @@ variable "ascs_machine_type" {
   description = "ascs_machine_type"
 }
 
+variable "configuration_bucket_name" {
+  default     = ""
+  description = "configuration_bucket_name"
+}
+
 variable "db_disk_export_backup_size" {
   default     = 128
   description = "db_disk_export_backup_size"
@@ -142,6 +147,11 @@ variable "gcp_project_id" {
 variable "hana_secret_name" {
   default     = "default"
   description = "hana_secret_name"
+}
+
+variable "is_test" {
+  default     = "false"
+  description = "is_test"
 }
 
 variable "media_bucket_name" {
