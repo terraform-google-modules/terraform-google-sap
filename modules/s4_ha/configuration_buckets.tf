@@ -13,7 +13,7 @@
 # limitations under the License.
 
 data "google_storage_bucket" "configuration" {
-  name = var.configuration_bucket_name == "" ? "${var.gcp_project_id}-${var.deployment_name}-configuration" : var.configuration_bucket_name
+  name = var.configuration_bucket_name == "" ? resource.google_storage_bucket.configuration[0].name : var.configuration_bucket_name
 }
 
 resource "google_storage_bucket_iam_binding" "objectviewer_configuration" {
