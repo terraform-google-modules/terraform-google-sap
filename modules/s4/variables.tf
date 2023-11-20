@@ -57,6 +57,11 @@ variable "ascs_machine_type" {
   description = "ascs_machine_type"
 }
 
+variable "ascs_vm_names" {
+  default     = []
+  description = "ascs_vm_names"
+}
+
 variable "configuration_bucket_name" {
   default     = ""
   description = "configuration_bucket_name"
@@ -100,6 +105,11 @@ variable "db_machine_type" {
 variable "db_sid" {
   default     = "HD1"
   description = "db_sid"
+}
+
+variable "db_vm_names" {
+  default     = []
+  description = "db_vm_names"
 }
 
 variable "deployment_name" {
@@ -166,6 +176,11 @@ variable "package_location" {
 variable "primary_startup_url" {
   default     = "gs://cloudsapdeploy/deployments/latest/startup/ansible_runner_startup.sh"
   description = "primary_startup_url"
+}
+
+variable "public_ansible_runner_ip" {
+  default     = true
+  description = "public_ansible_runner_ip"
 }
 
 variable "public_ip" {
