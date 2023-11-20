@@ -89,7 +89,11 @@ resource "google_compute_instance" "sapdansible11" {
   }
   name = "${var.deployment_name}-ansible-runner"
   network_interface {
-    access_config {
+    dynamic "access_config" {
+      content {
+      }
+
+      for_each = var.public_ansible_runner_ip ? [1] : []
     }
 
     network    = data.google_compute_network.sap-vpc.self_link

@@ -112,7 +112,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
               "children" : {
                 "ascs" : {
                   "hosts" : {
-                    "${var.vm_prefix}ascs11" : {
+                    "${length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}" : "${var.vm_prefix}ascs11"}" : {
                       "gce_instance_labels" : {
                         "active_region" : true,
                         "component" : "ascs",
@@ -136,7 +136,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "sid_app" : "${var.app_sid}",
                         "sid_hana" : "${var.db_sid}"
                       },
-                      "gce_instance_name" : "${var.vm_prefix}ascs11",
+                      "gce_instance_name" : "${length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}" : "${var.vm_prefix}ascs11"}",
                       "gce_instance_project" : "${data.google_project.sap-project.project_id}",
                       "gce_instance_zone" : "${var.zone1_name}"
                     }
@@ -152,7 +152,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
               "children" : {
                 "db" : {
                   "hosts" : {
-                    "${var.vm_prefix}db11" : {
+                    "${length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}" : "${var.vm_prefix}db11"}" : {
                       "gce_instance_labels" : {
                         "active_region" : true,
                         "component" : "db",
@@ -176,7 +176,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "sid_app" : "${var.app_sid}",
                         "sid_hana" : "${var.db_sid}"
                       },
-                      "gce_instance_name" : "${var.vm_prefix}db11",
+                      "gce_instance_name" : "${length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}" : "${var.vm_prefix}db11"}",
                       "gce_instance_project" : "${data.google_project.sap-project.project_id}",
                       "gce_instance_zone" : "${var.zone1_name}"
                     }

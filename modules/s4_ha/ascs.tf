@@ -20,7 +20,7 @@ data "google_compute_subnetwork" "sap-subnet-ascs-1" {
 
 resource "google_compute_address" "sapdascs11-1" {
   address_type = "INTERNAL"
-  name         = "${var.vm_prefix}ascs11-internal"
+  name         = length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}-internal" : "${var.vm_prefix}ascs11-internal"
   project      = data.google_project.sap-project.project_id
   region       = var.region_name
   subnetwork   = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
@@ -28,7 +28,7 @@ resource "google_compute_address" "sapdascs11-1" {
 
 resource "google_compute_address" "sapdascs12-1" {
   address_type = "INTERNAL"
-  name         = "${var.vm_prefix}ascs12-internal"
+  name         = length(var.ascs_vm_names) > 1 ? "${var.ascs_vm_names[1]}-internal" : "${var.vm_prefix}ascs12-internal"
   project      = data.google_project.sap-project.project_id
   region       = var.region_name
   subnetwork   = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
@@ -40,7 +40,7 @@ resource "google_compute_disk" "sapdascs11" {
     ignore_changes = [snapshot, image]
   }
 
-  name    = "${var.vm_prefix}ascs11"
+  name    = length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}" : "${var.vm_prefix}ascs11"
   project = data.google_project.sap-project.project_id
   size    = 50
   timeouts {
@@ -58,7 +58,7 @@ resource "google_compute_disk" "sapdascs11_usr_sap" {
     ignore_changes = [snapshot]
   }
 
-  name    = "${var.vm_prefix}ascs11-usr-sap"
+  name    = length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}-usr-sap" : "${var.vm_prefix}ascs11-usr-sap"
   project = data.google_project.sap-project.project_id
   size    = var.ascs_disk_usr_sap_size
   timeouts {
@@ -77,7 +77,7 @@ resource "google_compute_disk" "sapdascs12" {
     ignore_changes = [snapshot, image]
   }
 
-  name    = "${var.vm_prefix}ascs12"
+  name    = length(var.ascs_vm_names) > 1 ? "${var.ascs_vm_names[1]}" : "${var.vm_prefix}ascs12"
   project = data.google_project.sap-project.project_id
   size    = 50
   timeouts {
@@ -95,7 +95,7 @@ resource "google_compute_disk" "sapdascs12_usr_sap" {
     ignore_changes = [snapshot]
   }
 
-  name    = "${var.vm_prefix}ascs12-usr-sap"
+  name    = length(var.ascs_vm_names) > 1 ? "${var.ascs_vm_names[1]}-usr-sap" : "${var.vm_prefix}ascs12-usr-sap"
   project = data.google_project.sap-project.project_id
   size    = var.ascs_disk_usr_sap_size
   timeouts {
@@ -213,7 +213,7 @@ resource "google_compute_instance" "sapdascs11" {
     ssh-keys       = ""
   }
   min_cpu_platform = lookup(local.cpu_platform_map, var.ascs_machine_type, "Automatic")
-  name             = "${var.vm_prefix}ascs11"
+  name             = length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}" : "${var.vm_prefix}ascs11"
   network_interface {
     dynamic "access_config" {
       content {
@@ -273,7 +273,7 @@ resource "google_compute_instance" "sapdascs12" {
     ssh-keys       = ""
   }
   min_cpu_platform = lookup(local.cpu_platform_map, var.ascs_machine_type, "Automatic")
-  name             = "${var.vm_prefix}ascs12"
+  name             = length(var.ascs_vm_names) > 1 ? "${var.ascs_vm_names[1]}" : "${var.vm_prefix}ascs12"
   network_interface {
     dynamic "access_config" {
       content {
@@ -305,17 +305,17 @@ resource "google_compute_instance" "sapdascs12" {
 }
 
 resource "google_compute_instance_group" "sapdascs11_group" {
-  description = "${var.vm_prefix}ascs11-group"
+  description = length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}-group" : "${var.vm_prefix}ascs11-group"
   instances   = [google_compute_instance.sapdascs11.self_link]
-  name        = "${var.vm_prefix}ascs11-group"
+  name        = length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}-group" : "${var.vm_prefix}ascs11-group"
   project     = data.google_project.sap-project.project_id
   zone        = var.zone1_name
 }
 
 resource "google_compute_instance_group" "sapdascs12_group" {
-  description = "${var.vm_prefix}ascs12-group"
+  description = length(var.ascs_vm_names) > 1 ? "${var.ascs_vm_names[1]}-group" : "${var.vm_prefix}ascs12-group"
   instances   = [google_compute_instance.sapdascs12.self_link]
-  name        = "${var.vm_prefix}ascs12-group"
+  name        = length(var.ascs_vm_names) > 1 ? "${var.ascs_vm_names[1]}-group" : "${var.vm_prefix}ascs12-group"
   project     = data.google_project.sap-project.project_id
   zone        = var.zone2_name
 }
@@ -416,7 +416,7 @@ resource "google_dns_record_set" "ilb_ers_1" {
 
 resource "google_dns_record_set" "to_vm_sapdascs11" {
   managed_zone = data.google_dns_managed_zone.sap_zone.name
-  name         = "${var.vm_prefix}ascs11.${data.google_dns_managed_zone.sap_zone.dns_name}"
+  name         = length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}.${data.google_dns_managed_zone.sap_zone.dns_name}" : "${var.vm_prefix}ascs11.${data.google_dns_managed_zone.sap_zone.dns_name}"
   project      = data.google_project.sap-project.project_id
   rrdatas      = [google_compute_instance.sapdascs11.network_interface.0.network_ip]
   ttl          = 300
@@ -425,7 +425,7 @@ resource "google_dns_record_set" "to_vm_sapdascs11" {
 
 resource "google_dns_record_set" "to_vm_sapdascs12" {
   managed_zone = data.google_dns_managed_zone.sap_zone.name
-  name         = "${var.vm_prefix}ascs12.${data.google_dns_managed_zone.sap_zone.dns_name}"
+  name         = length(var.ascs_vm_names) > 1 ? "${var.ascs_vm_names[1]}.${data.google_dns_managed_zone.sap_zone.dns_name}" : "${var.vm_prefix}ascs12.${data.google_dns_managed_zone.sap_zone.dns_name}"
   project      = data.google_project.sap-project.project_id
   rrdatas      = [google_compute_instance.sapdascs12.network_interface.0.network_ip]
   ttl          = 300
