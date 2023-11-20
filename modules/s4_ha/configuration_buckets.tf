@@ -141,7 +141,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
               "children" : {
                 "ascs" : {
                   "hosts" : {
-                    "${var.vm_prefix}ascs11" : {
+                    "${length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}" : "${var.vm_prefix}ascs11"}" : {
                       "gce_instance_labels" : {
                         "active_region" : true,
                         "component" : "ascs",
@@ -169,11 +169,11 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "sid_app" : "${var.app_sid}",
                         "sid_hana" : "${var.db_sid}"
                       },
-                      "gce_instance_name" : "${var.vm_prefix}ascs11",
+                      "gce_instance_name" : "${length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}" : "${var.vm_prefix}ascs11"}",
                       "gce_instance_project" : "${data.google_project.sap-project.project_id}",
                       "gce_instance_zone" : "${var.zone1_name}"
                     },
-                    "${var.vm_prefix}ascs12" : {
+                    "${length(var.ascs_vm_names) > 1 ? "${var.ascs_vm_names[1]}" : "${var.vm_prefix}ascs12"}" : {
                       "gce_instance_labels" : {
                         "active_region" : true,
                         "component" : "ascs",
@@ -201,7 +201,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "sid_app" : "${var.app_sid}",
                         "sid_hana" : "${var.db_sid}"
                       },
-                      "gce_instance_name" : "${var.vm_prefix}ascs12",
+                      "gce_instance_name" : "${length(var.ascs_vm_names) > 1 ? "${var.ascs_vm_names[1]}" : "${var.vm_prefix}ascs12"}",
                       "gce_instance_project" : "${data.google_project.sap-project.project_id}",
                       "gce_instance_zone" : "${var.zone2_name}"
                     }
@@ -217,7 +217,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
               "children" : {
                 "db" : {
                   "hosts" : {
-                    "${var.vm_prefix}db11" : {
+                    "${length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}" : "${var.vm_prefix}db11"}" : {
                       "gce_instance_labels" : {
                         "active_region" : true,
                         "component" : "db",
@@ -250,11 +250,11 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "sid_app" : "${var.app_sid}",
                         "sid_hana" : "${var.db_sid}"
                       },
-                      "gce_instance_name" : "${var.vm_prefix}db11",
+                      "gce_instance_name" : "${length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}" : "${var.vm_prefix}db11"}",
                       "gce_instance_project" : "${data.google_project.sap-project.project_id}",
                       "gce_instance_zone" : "${var.zone1_name}"
                     },
-                    "${var.vm_prefix}db12" : {
+                    "${length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}" : "${var.vm_prefix}db12"}" : {
                       "gce_instance_labels" : {
                         "active_region" : true,
                         "component" : "db",
@@ -273,7 +273,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "hana_sr_failover_type" : "ILB",
                         "hana_sr_ilb_url" : "sapddb-vip11.${data.google_dns_managed_zone.sap_zone.dns_name}",
                         "hana_sr_is_active_region" : true,
-                        "hana_sr_remote_host" : "${var.vm_prefix}db11",
+                        "hana_sr_remote_host" : "${length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}" : "${var.vm_prefix}db11"}",
                         "hana_sr_tier" : 2,
                         "hana_sr_tier1_dns_target" : "sapddb-vip11.${data.google_dns_managed_zone.sap_zone.dns_name}",
                         "hdx_hana_config" : "${local.hdx_hana_config}",
@@ -287,7 +287,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "sid_app" : "${var.app_sid}",
                         "sid_hana" : "${var.db_sid}"
                       },
-                      "gce_instance_name" : "${var.vm_prefix}db12",
+                      "gce_instance_name" : "${length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}" : "${var.vm_prefix}db12"}",
                       "gce_instance_project" : "${data.google_project.sap-project.project_id}",
                       "gce_instance_zone" : "${var.zone2_name}"
                     }
