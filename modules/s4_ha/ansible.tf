@@ -14,7 +14,7 @@
 
 data "google_compute_subnetwork" "sap-subnet-ansible-1" {
   name    = var.subnet_name
-  project = data.google_project.sap-project.project_id
+  project = data.google_compute_network.sap-vpc.project
   region  = var.region_name
 }
 
@@ -86,6 +86,7 @@ resource "google_compute_instance" "sapdansible11" {
     media_bucket_name         = "${var.media_bucket_name}"
     ssh-keys                  = ""
     startup-script            = "gsutil cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}"
+    template_name             = "s4_ha"
   }
   name = "${var.deployment_name}-ansible-runner"
   network_interface {

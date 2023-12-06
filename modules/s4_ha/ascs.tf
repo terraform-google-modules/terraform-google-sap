@@ -14,7 +14,7 @@
 
 data "google_compute_subnetwork" "sap-subnet-ascs-1" {
   name    = var.subnet_name
-  project = data.google_project.sap-project.project_id
+  project = data.google_compute_network.sap-vpc.project
   region  = var.region_name
 }
 
@@ -117,7 +117,7 @@ resource "google_compute_firewall" "ilb_firewall_ascs" {
   description   = "Google-FW-LB"
   name          = "ilb-firewall-ascs-${var.deployment_name}"
   network       = data.google_compute_network.sap-vpc.self_link
-  project       = data.google_project.sap-project.project_id
+  project       = data.google_compute_network.sap-vpc.project
   source_ranges = ["35.191.0.0/16", "130.211.0.0/22"]
   target_tags   = ["allow-health-checks-range"]
 }
@@ -131,7 +131,7 @@ resource "google_compute_firewall" "ilb_firewall_ers" {
   description   = "Google-FW-LB"
   name          = "ilb-firewall-ers-${var.deployment_name}"
   network       = data.google_compute_network.sap-vpc.self_link
-  project       = data.google_project.sap-project.project_id
+  project       = data.google_compute_network.sap-vpc.project
   source_ranges = ["35.191.0.0/16", "130.211.0.0/22"]
   target_tags   = ["allow-health-checks-range"]
 }
