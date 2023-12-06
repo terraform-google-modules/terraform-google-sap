@@ -168,6 +168,11 @@ variable "media_bucket_name" {
   description = "media_bucket_name"
 }
 
+variable "network_project" {
+  default     = ""
+  description = "network_project"
+}
+
 variable "package_location" {
   default     = "gs://cloudsapdeploy/deployments/latest"
   description = "package_location"

@@ -14,7 +14,7 @@
 
 data "google_compute_subnetwork" "sap-subnet-ascs-1" {
   name    = var.subnet_name
-  project = data.google_project.sap-project.project_id
+  project = data.google_compute_network.sap-vpc.project
   region  = var.region_name
 }
 
