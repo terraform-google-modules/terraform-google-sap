@@ -49,7 +49,8 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "dns_zone_name" : "${data.google_dns_managed_zone.sap_zone.name}",
                         "is_test" : "${var.is_test}",
                         "media_bucket_name" : "${var.media_bucket_name}",
-                        "startup-script" : "gsutil cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}"
+                        "startup-script" : "gsutil cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}",
+                        "template_name" : "s4"
                       },
                       "gce_instance_name" : "${var.deployment_name}-ansible-runner",
                       "gce_instance_project" : "${data.google_project.sap-project.project_id}",
@@ -93,7 +94,8 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                           "sap_instance_id_db" : "${var.sap_instance_id_db}",
                           "sap_version" : "${var.sap_version}",
                           "sid_app" : "${var.app_sid}",
-                          "sid_hana" : "${var.db_sid}"
+                          "sid_hana" : "${var.db_sid}",
+                          "template_name" : "s4"
                         },
                         "gce_instance_name" : "${var.vm_prefix}app1${1 + (count.index * 2)}",
                         "gce_instance_project" : "${data.google_project.sap-project.project_id}",
@@ -134,7 +136,8 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "sap_instance_id_db" : "${var.sap_instance_id_db}",
                         "sap_version" : "${var.sap_version}",
                         "sid_app" : "${var.app_sid}",
-                        "sid_hana" : "${var.db_sid}"
+                        "sid_hana" : "${var.db_sid}",
+                        "template_name" : "s4"
                       },
                       "gce_instance_name" : "${length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}" : "${var.vm_prefix}ascs11"}",
                       "gce_instance_project" : "${data.google_project.sap-project.project_id}",
@@ -174,7 +177,8 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "sap_instance_id_db" : "${var.sap_instance_id_db}",
                         "sap_version" : "${var.sap_version}",
                         "sid_app" : "${var.app_sid}",
-                        "sid_hana" : "${var.db_sid}"
+                        "sid_hana" : "${var.db_sid}",
+                        "template_name" : "s4"
                       },
                       "gce_instance_name" : "${length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}" : "${var.vm_prefix}db11"}",
                       "gce_instance_project" : "${data.google_project.sap-project.project_id}",
