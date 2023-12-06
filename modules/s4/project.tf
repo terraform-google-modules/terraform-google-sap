@@ -59,7 +59,7 @@ resource "google_compute_firewall" "intra_vm_communication" {
   description = "Enables intra VM communications"
   name        = "${var.deployment_name}-communication-firewall"
   network     = data.google_compute_network.sap-vpc.self_link
-  project     = data.google_project.sap-project.project_id
+  project     = data.google_compute_network.sap-vpc.project
   source_tags = ["${var.deployment_name}-s4-comms"]
   target_tags = ["${var.deployment_name}-s4-comms"]
 }
@@ -102,9 +102,9 @@ resource "google_filestore_instance" "sap_fstore_1" {
   name     = "fstore-${var.deployment_name}-1"
   networks {
     modes   = ["MODE_IPV4"]
-    network = data.google_compute_network.sap-vpc.name
+    network = data.google_compute_network.sap-vpc.id
   }
 
-  project = data.google_project.sap-project.project_id
+  project = data.google_compute_network.sap-vpc.project
   tier    = var.filestore_tier
 }
