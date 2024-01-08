@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,15 +47,12 @@ resource "google_compute_firewall" "intra_vm_communication" {
   allow {
     protocol = "tcp"
   }
-
   allow {
     protocol = "icmp"
   }
-
   allow {
     protocol = "udp"
   }
-
   description = "Enables intra VM communications"
   name        = "${var.deployment_name}-communication-firewall"
   network     = data.google_compute_network.sap-vpc.self_link
@@ -75,9 +72,7 @@ resource "google_dns_managed_zone" "sap_zone" {
     networks {
       network_url = data.google_compute_network.sap-vpc.self_link
     }
-
   }
-
   project    = data.google_project.sap-project.project_id
   visibility = "private"
 }
@@ -97,14 +92,12 @@ resource "google_filestore_instance" "sap_fstore_1" {
     capacity_gb = var.filestore_gb
     name        = "default"
   }
-
   location = var.filestore_location == "" ? var.region_name : var.filestore_location
   name     = "fstore-${var.deployment_name}-1"
   networks {
     modes   = ["MODE_IPV4"]
     network = data.google_compute_network.sap-vpc.id
   }
-
   project = data.google_compute_network.sap-vpc.project
   tier    = var.filestore_tier
 }

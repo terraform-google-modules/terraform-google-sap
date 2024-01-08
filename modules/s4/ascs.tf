@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ resource "google_compute_disk" "sapdascs11" {
   lifecycle {
     ignore_changes = [snapshot, image]
   }
-
   name    = length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}" : "${var.vm_prefix}ascs11"
   project = data.google_project.sap-project.project_id
   size    = 50
@@ -40,7 +39,6 @@ resource "google_compute_disk" "sapdascs11" {
     delete = "1h"
     update = "1h"
   }
-
   type = "pd-ssd"
   zone = var.zone1_name
 }
@@ -49,7 +47,6 @@ resource "google_compute_disk" "sapdascs11_usr_sap" {
   lifecycle {
     ignore_changes = [snapshot]
   }
-
   name    = length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}-usr-sap" : "${var.vm_prefix}ascs11-usr-sap"
   project = data.google_project.sap-project.project_id
   size    = var.ascs_disk_usr_sap_size
@@ -58,7 +55,6 @@ resource "google_compute_disk" "sapdascs11_usr_sap" {
     delete = "1h"
     update = "1h"
   }
-
   type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone1_name
 }
@@ -69,14 +65,11 @@ resource "google_compute_instance" "sapdascs11" {
     device_name = google_compute_disk.sapdascs11_usr_sap.name
     source      = google_compute_disk.sapdascs11_usr_sap.self_link
   }
-
-
   boot_disk {
     auto_delete = false
     device_name = "persistent-disk-0"
     source      = google_compute_disk.sapdascs11.self_link
   }
-
   lifecycle {
     ignore_changes = [
       min_cpu_platform,
@@ -84,7 +77,6 @@ resource "google_compute_instance" "sapdascs11" {
       metadata["ssh-keys"]
     ]
   }
-
   machine_type = var.ascs_machine_type
   metadata = {
     VmDnsSetting   = "ZonalPreferred"
@@ -97,28 +89,22 @@ resource "google_compute_instance" "sapdascs11" {
     dynamic "access_config" {
       content {
       }
-
       for_each = var.public_ip ? [1] : []
     }
-
     network    = data.google_compute_network.sap-vpc.self_link
     network_ip = google_compute_address.sapdascs11-1.address
     subnetwork = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
   }
-
-
   project = data.google_project.sap-project.project_id
   scheduling {
     automatic_restart   = true
     on_host_maintenance = "MIGRATE"
     preemptible         = false
   }
-
   service_account {
     email  = google_service_account.service_account_ascs.email
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
-
   tags = ["allow-health-checks", "${var.deployment_name}-s4-comms"]
   zone = var.zone1_name
 }
