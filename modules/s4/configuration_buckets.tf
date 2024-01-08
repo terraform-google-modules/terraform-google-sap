@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "service_group" : "ansible_runner"
                       },
                       "gce_instance_metadata" : {
-                        "active_region" : true,
+                        "active_region" : "true",
                         "configuration_bucket_name" : "${data.google_storage_bucket.configuration.name}",
                         "dns_zone_name" : "${data.google_dns_managed_zone.sap_zone.name}",
                         "is_test" : "${var.is_test}",
@@ -82,7 +82,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                           "service_group" : "s4"
                         },
                         "gce_instance_metadata" : {
-                          "active_region" : true,
+                          "active_region" : "true",
                           "application_secret_name" : "${var.application_secret_name}",
                           "dns_name" : "${data.google_dns_managed_zone.sap_zone.dns_name}",
                           "dns_zone_name" : "${data.google_dns_managed_zone.sap_zone.name}",
@@ -123,7 +123,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "service_group" : "s4"
                       },
                       "gce_instance_metadata" : {
-                        "active_region" : true,
+                        "active_region" : "true",
                         "application_secret_name" : "${var.application_secret_name}",
                         "dns_name" : "${data.google_dns_managed_zone.sap_zone.dns_name}",
                         "dns_zone_name" : "${data.google_dns_managed_zone.sap_zone.name}",
@@ -164,7 +164,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "service_group" : "s4"
                       },
                       "gce_instance_metadata" : {
-                        "active_region" : true,
+                        "active_region" : "true",
                         "application_secret_name" : "${var.application_secret_name}",
                         "dns_name" : "${data.google_dns_managed_zone.sap_zone.dns_name}",
                         "dns_zone_name" : "${data.google_dns_managed_zone.sap_zone.name}",
