@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ resource "google_compute_disk" "sapdansible11" {
   lifecycle {
     ignore_changes = [snapshot, image]
   }
-
   name    = "${var.deployment_name}-ansible-runner"
   project = data.google_project.sap-project.project_id
   size    = 50
@@ -40,7 +39,6 @@ resource "google_compute_disk" "sapdansible11" {
     delete = "1h"
     update = "1h"
   }
-
   type = "pd-ssd"
   zone = var.zone1_name
 }
@@ -52,7 +50,6 @@ resource "google_compute_instance" "sapdansible11" {
     device_name = "persistent-disk-0"
     source      = google_compute_disk.sapdansible11.self_link
   }
-
   depends_on = [
     google_storage_bucket_object.ansible_inventory,
     google_compute_instance.sapdapp11,
@@ -76,14 +73,13 @@ resource "google_compute_instance" "sapdansible11" {
       metadata["ssh-keys"]
     ]
   }
-
   machine_type = "n1-standard-16"
   metadata = {
     active_region             = true
     configuration_bucket_name = "${data.google_storage_bucket.configuration.name}"
     dns_zone_name             = "${data.google_dns_managed_zone.sap_zone.name}"
     is_test                   = "${var.is_test}"
-    media_bucket_name         = "${var.media_bucket_name}"
+    media_bucket_name         = var.media_bucket_name
     ssh-keys                  = ""
     startup-script            = "gsutil cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}"
     template_name             = "s4_ha"
@@ -93,28 +89,22 @@ resource "google_compute_instance" "sapdansible11" {
     dynamic "access_config" {
       content {
       }
-
       for_each = var.public_ansible_runner_ip ? [1] : []
     }
-
     network    = data.google_compute_network.sap-vpc.self_link
     network_ip = google_compute_address.sapdansible11-1.address
     subnetwork = data.google_compute_subnetwork.sap-subnet-ansible-1.self_link
   }
-
-
   project = data.google_project.sap-project.project_id
   scheduling {
     automatic_restart   = true
     on_host_maintenance = "MIGRATE"
     preemptible         = false
   }
-
   service_account {
     email  = google_service_account.service_account_ansible.email
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
-
   tags = ["${var.deployment_name}-s4-comms"]
   zone = var.zone1_name
 }

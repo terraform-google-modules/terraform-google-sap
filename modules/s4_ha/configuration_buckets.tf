@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "service_group" : "ansible_runner"
                       },
                       "gce_instance_metadata" : {
-                        "active_region" : true,
+                        "active_region" : "true",
                         "configuration_bucket_name" : "${data.google_storage_bucket.configuration.name}",
                         "dns_zone_name" : "${data.google_dns_managed_zone.sap_zone.name}",
                         "is_test" : "${var.is_test}",
@@ -82,7 +82,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                           "service_group" : "s4"
                         },
                         "gce_instance_metadata" : {
-                          "active_region" : true,
+                          "active_region" : "true",
                           "application_secret_name" : "${var.application_secret_name}",
                           "dns_name" : "${data.google_dns_managed_zone.sap_zone.dns_name}",
                           "dns_zone_name" : "${data.google_dns_managed_zone.sap_zone.name}",
@@ -111,7 +111,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                           "service_group" : "s4"
                         },
                         "gce_instance_metadata" : {
-                          "active_region" : true,
+                          "active_region" : "true",
                           "application_secret_name" : "${var.application_secret_name}",
                           "dns_name" : "${data.google_dns_managed_zone.sap_zone.dns_name}",
                           "dns_zone_name" : "${data.google_dns_managed_zone.sap_zone.name}",
@@ -153,7 +153,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "service_group" : "s4"
                       },
                       "gce_instance_metadata" : {
-                        "active_region" : true,
+                        "active_region" : "true",
                         "application_secret_name" : "${var.application_secret_name}",
                         "ascs_healthcheck_port" : "${var.ascs_ilb_healthcheck_port}",
                         "dns_name" : "${data.google_dns_managed_zone.sap_zone.dns_name}",
@@ -186,7 +186,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "service_group" : "s4"
                       },
                       "gce_instance_metadata" : {
-                        "active_region" : true,
+                        "active_region" : "true",
                         "application_secret_name" : "${var.application_secret_name}",
                         "ascs_healthcheck_port" : "${var.ascs_ilb_healthcheck_port}",
                         "dns_name" : "${data.google_dns_managed_zone.sap_zone.dns_name}",
@@ -231,7 +231,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "service_group" : "s4"
                       },
                       "gce_instance_metadata" : {
-                        "active_region" : true,
+                        "active_region" : "true",
                         "application_secret_name" : "${var.application_secret_name}",
                         "dns_name" : "${data.google_dns_managed_zone.sap_zone.dns_name}",
                         "dns_zone_name" : "${data.google_dns_managed_zone.sap_zone.name}",
@@ -240,9 +240,9 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "hana_secret_name" : "${var.hana_secret_name}",
                         "hana_sr_failover_type" : "ILB",
                         "hana_sr_ilb_url" : "sapddb-vip11.${data.google_dns_managed_zone.sap_zone.dns_name}",
-                        "hana_sr_is_active_region" : true,
+                        "hana_sr_is_active_region" : "true",
                         "hana_sr_remote_host" : "",
-                        "hana_sr_tier" : 1,
+                        "hana_sr_tier" : "1",
                         "hana_sr_tier1_dns_target" : "sapddb-vip11.${data.google_dns_managed_zone.sap_zone.dns_name}",
                         "hdx_hana_config" : "${local.hdx_hana_config}",
                         "ilb_healthcheck_port" : "${var.db_ilb_healthcheck_port}",
@@ -269,7 +269,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "service_group" : "s4"
                       },
                       "gce_instance_metadata" : {
-                        "active_region" : true,
+                        "active_region" : "true",
                         "application_secret_name" : "${var.application_secret_name}",
                         "dns_name" : "${data.google_dns_managed_zone.sap_zone.dns_name}",
                         "dns_zone_name" : "${data.google_dns_managed_zone.sap_zone.name}",
@@ -278,9 +278,9 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "hana_secret_name" : "${var.hana_secret_name}",
                         "hana_sr_failover_type" : "ILB",
                         "hana_sr_ilb_url" : "sapddb-vip11.${data.google_dns_managed_zone.sap_zone.dns_name}",
-                        "hana_sr_is_active_region" : true,
+                        "hana_sr_is_active_region" : "true",
                         "hana_sr_remote_host" : "${length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}" : "${var.vm_prefix}db11"}",
-                        "hana_sr_tier" : 2,
+                        "hana_sr_tier" : "2",
                         "hana_sr_tier1_dns_target" : "sapddb-vip11.${data.google_dns_managed_zone.sap_zone.dns_name}",
                         "hdx_hana_config" : "${local.hdx_hana_config}",
                         "ilb_healthcheck_port" : "${var.db_ilb_healthcheck_port}",
