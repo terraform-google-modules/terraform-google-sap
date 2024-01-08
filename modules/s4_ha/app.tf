@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,7 +42,6 @@ resource "google_compute_disk" "sapdapp11" {
   lifecycle {
     ignore_changes = [snapshot, image]
   }
-
   name    = "${var.vm_prefix}app1${1 + (count.index * 2)}"
   project = data.google_project.sap-project.project_id
   size    = 50
@@ -51,7 +50,6 @@ resource "google_compute_disk" "sapdapp11" {
     delete = "1h"
     update = "1h"
   }
-
   type = "pd-ssd"
   zone = var.zone1_name
 }
@@ -61,7 +59,6 @@ resource "google_compute_disk" "sapdapp11_export_interfaces" {
   lifecycle {
     ignore_changes = [snapshot]
   }
-
   name    = "${var.vm_prefix}app1${1 + (count.index * 2)}-export-interfaces"
   project = data.google_project.sap-project.project_id
   size    = var.app_disk_export_interfaces_size
@@ -70,7 +67,6 @@ resource "google_compute_disk" "sapdapp11_export_interfaces" {
     delete = "1h"
     update = "1h"
   }
-
   type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone1_name
 }
@@ -80,7 +76,6 @@ resource "google_compute_disk" "sapdapp11_usr_sap" {
   lifecycle {
     ignore_changes = [snapshot]
   }
-
   name    = "${var.vm_prefix}app1${1 + (count.index * 2)}-usr-sap"
   project = data.google_project.sap-project.project_id
   size    = var.app_disk_usr_sap_size
@@ -89,7 +84,6 @@ resource "google_compute_disk" "sapdapp11_usr_sap" {
     delete = "1h"
     update = "1h"
   }
-
   type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone1_name
 }
@@ -100,7 +94,6 @@ resource "google_compute_disk" "sapdapp12" {
   lifecycle {
     ignore_changes = [snapshot, image]
   }
-
   name    = "${var.vm_prefix}app1${2 + (count.index * 2)}"
   project = data.google_project.sap-project.project_id
   size    = 50
@@ -109,7 +102,6 @@ resource "google_compute_disk" "sapdapp12" {
     delete = "1h"
     update = "1h"
   }
-
   type = "pd-ssd"
   zone = var.zone2_name
 }
@@ -119,7 +111,6 @@ resource "google_compute_disk" "sapdapp12_export_interfaces" {
   lifecycle {
     ignore_changes = [snapshot]
   }
-
   name    = "${var.vm_prefix}app1${2 + (count.index * 2)}-export-interfaces"
   project = data.google_project.sap-project.project_id
   size    = var.app_disk_export_interfaces_size
@@ -128,7 +119,6 @@ resource "google_compute_disk" "sapdapp12_export_interfaces" {
     delete = "1h"
     update = "1h"
   }
-
   type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone2_name
 }
@@ -138,7 +128,6 @@ resource "google_compute_disk" "sapdapp12_usr_sap" {
   lifecycle {
     ignore_changes = [snapshot]
   }
-
   name    = "${var.vm_prefix}app1${2 + (count.index * 2)}-usr-sap"
   project = data.google_project.sap-project.project_id
   size    = var.app_disk_usr_sap_size
@@ -147,7 +136,6 @@ resource "google_compute_disk" "sapdapp12_usr_sap" {
     delete = "1h"
     update = "1h"
   }
-
   type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
   zone = var.zone2_name
 }
@@ -158,19 +146,15 @@ resource "google_compute_instance" "sapdapp11" {
     device_name = google_compute_disk.sapdapp11_usr_sap[count.index].name
     source      = google_compute_disk.sapdapp11_usr_sap[count.index].self_link
   }
-
   attached_disk {
     device_name = google_compute_disk.sapdapp11_export_interfaces[count.index].name
     source      = google_compute_disk.sapdapp11_export_interfaces[count.index].self_link
   }
-
-
   boot_disk {
     auto_delete = false
     device_name = "persistent-disk-0"
     source      = google_compute_disk.sapdapp11[count.index].self_link
   }
-
   count = var.app_vms_multiplier
   lifecycle {
     ignore_changes = [
@@ -179,7 +163,6 @@ resource "google_compute_instance" "sapdapp11" {
       metadata["ssh-keys"]
     ]
   }
-
   machine_type = var.app_machine_type
   metadata = {
     VmDnsSetting   = "ZonalPreferred"
@@ -192,28 +175,22 @@ resource "google_compute_instance" "sapdapp11" {
     dynamic "access_config" {
       content {
       }
-
       for_each = var.public_ip ? [1] : []
     }
-
     network    = data.google_compute_network.sap-vpc.self_link
     network_ip = google_compute_address.sapdapp11-1[count.index].address
     subnetwork = data.google_compute_subnetwork.sap-subnet-app-1.self_link
   }
-
-
   project = data.google_project.sap-project.project_id
   scheduling {
     automatic_restart   = true
     on_host_maintenance = "MIGRATE"
     preemptible         = false
   }
-
   service_account {
     email  = google_service_account.service_account_app.email
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
-
   tags = ["${var.deployment_name}-s4-comms"]
   zone = var.zone1_name
 }
@@ -224,19 +201,15 @@ resource "google_compute_instance" "sapdapp12" {
     device_name = google_compute_disk.sapdapp12_usr_sap[count.index].name
     source      = google_compute_disk.sapdapp12_usr_sap[count.index].self_link
   }
-
   attached_disk {
     device_name = google_compute_disk.sapdapp12_export_interfaces[count.index].name
     source      = google_compute_disk.sapdapp12_export_interfaces[count.index].self_link
   }
-
-
   boot_disk {
     auto_delete = false
     device_name = "persistent-disk-0"
     source      = google_compute_disk.sapdapp12[count.index].self_link
   }
-
   count = var.app_vms_multiplier
   lifecycle {
     ignore_changes = [
@@ -245,7 +218,6 @@ resource "google_compute_instance" "sapdapp12" {
       metadata["ssh-keys"]
     ]
   }
-
   machine_type = var.app_machine_type
   metadata = {
     VmDnsSetting   = "ZonalPreferred"
@@ -258,28 +230,22 @@ resource "google_compute_instance" "sapdapp12" {
     dynamic "access_config" {
       content {
       }
-
       for_each = var.public_ip ? [1] : []
     }
-
     network    = data.google_compute_network.sap-vpc.self_link
     network_ip = google_compute_address.sapdapp12-1[count.index].address
     subnetwork = data.google_compute_subnetwork.sap-subnet-app-1.self_link
   }
-
-
   project = data.google_project.sap-project.project_id
   scheduling {
     automatic_restart   = true
     on_host_maintenance = "MIGRATE"
     preemptible         = false
   }
-
   service_account {
     email  = google_service_account.service_account_app.email
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
-
   tags = ["${var.deployment_name}-s4-comms"]
   zone = var.zone2_name
 }
