@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -123,7 +123,6 @@ variable "disk_type" {
     condition     = contains(["pd-ssd", "pd-balanced", "hyperdisk-extreme"], var.disk_type)
     error_message = "disk_type must be one of [\"pd-ssd\", \"pd-balanced\", \"hyperdisk-extreme\"]"
   }
-
 }
 
 variable "dns_zone_name_suffix" {
