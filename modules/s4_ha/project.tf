@@ -100,4 +100,9 @@ resource "google_filestore_instance" "sap_fstore_1" {
   }
   project = data.google_compute_network.sap-vpc.project
   tier    = var.filestore_tier
+  timeouts {
+    create = "30m"
+    delete = "30m"
+    update = "30m"
+  }
 }
