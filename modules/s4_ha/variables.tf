@@ -72,9 +72,9 @@ variable "configuration_bucket_name" {
   description = "configuration_bucket_name"
 }
 
-variable "db_disk_export_backup_size" {
+variable "db_disk_backup_size" {
   default     = 128
-  description = "db_disk_export_backup_size"
+  description = "db_disk_backup_size"
 }
 
 variable "db_disk_hana_data_size" {
