@@ -43,23 +43,7 @@ resource "google_compute_disk" "sapddb11" {
     delete = "1h"
     update = "1h"
   }
-  type = "pd-ssd"
-  zone = var.zone1_name
-}
-
-resource "google_compute_disk" "sapddb11_export_backup" {
-  lifecycle {
-    ignore_changes = [snapshot]
-  }
-  name    = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}-export-backup" : "${var.vm_prefix}db11-export-backup"
-  project = data.google_project.sap-project.project_id
-  size    = var.db_disk_export_backup_size
-  timeouts {
-    create = "1h"
-    delete = "1h"
-    update = "1h"
-  }
-  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
+  type = "pd-balanced"
   zone = var.zone1_name
 }
 
@@ -97,13 +81,13 @@ resource "google_compute_disk" "sapddb11_hana_log" {
   zone = var.zone1_name
 }
 
-resource "google_compute_disk" "sapddb11_hana_restore" {
+resource "google_compute_disk" "sapddb11_hana_shared" {
   lifecycle {
     ignore_changes = [snapshot]
   }
-  name    = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}-hana-restore" : "${var.vm_prefix}db11-hana-restore"
+  name    = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}-hana-shared" : "${var.vm_prefix}db11-hana-shared"
   project = data.google_project.sap-project.project_id
-  size    = var.db_disk_hana_restore_size
+  size    = var.db_disk_hana_shared_size
   timeouts {
     create = "1h"
     delete = "1h"
@@ -113,13 +97,13 @@ resource "google_compute_disk" "sapddb11_hana_restore" {
   zone = var.zone1_name
 }
 
-resource "google_compute_disk" "sapddb11_hana_shared" {
+resource "google_compute_disk" "sapddb11_hanabackup" {
   lifecycle {
     ignore_changes = [snapshot]
   }
-  name    = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}-hana-shared" : "${var.vm_prefix}db11-hana-shared"
+  name    = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}-hanabackup" : "${var.vm_prefix}db11-hanabackup"
   project = data.google_project.sap-project.project_id
-  size    = var.db_disk_hana_shared_size
+  size    = var.db_disk_backup_size
   timeouts {
     create = "1h"
     delete = "1h"
@@ -164,12 +148,8 @@ resource "google_compute_instance" "sapddb11" {
     source      = google_compute_disk.sapddb11_hana_shared.self_link
   }
   attached_disk {
-    device_name = google_compute_disk.sapddb11_export_backup.name
-    source      = google_compute_disk.sapddb11_export_backup.self_link
-  }
-  attached_disk {
-    device_name = google_compute_disk.sapddb11_hana_restore.name
-    source      = google_compute_disk.sapddb11_hana_restore.self_link
+    device_name = google_compute_disk.sapddb11_hanabackup.name
+    source      = google_compute_disk.sapddb11_hanabackup.self_link
   }
   boot_disk {
     auto_delete = false
