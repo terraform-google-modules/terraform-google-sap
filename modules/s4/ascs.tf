@@ -39,7 +39,7 @@ resource "google_compute_disk" "sapdascs11" {
     delete = "1h"
     update = "1h"
   }
-  type = "pd-ssd"
+  type = "pd-balanced"
   zone = var.zone1_name
 }
 
