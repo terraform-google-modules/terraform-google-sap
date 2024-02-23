@@ -23,7 +23,7 @@ spec:
   source:
     repo: https://github.com/terraform-google-modules/terraform-google-sap.git
     sourceType: git
-  version: 1.1.0
+  version: 1.1.2
   actuationTool:
     type: Terraform
     version: '>=0.12.6'
