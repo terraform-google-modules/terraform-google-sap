@@ -13,13 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-terraform {
-  required_version = ">=0.12.6"
-  required_providers {
-    google = {}
-    assert = {
-      source = "bwoznicki/assert"
-      version = "0.0.1"
-    }
-  }
+output "sap_nw_self_link" {
+  description = "SAP NW self-link for instance created"
+  value       = google_compute_instance.sap_nw_instance.self_link
 }
