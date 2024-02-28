@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 output "sap_hana_primary_self_link" {
   description = "SAP HANA self-link for the primary instance created"
   value       = google_compute_instance.sap_hana_primary_instance.self_link
