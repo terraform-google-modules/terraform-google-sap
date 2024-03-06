@@ -165,7 +165,6 @@ resource "google_compute_instance" "sapddb11" {
   }
   machine_type = var.db_machine_type
   metadata = {
-    VmDnsSetting   = "ZonalPreferred"
     enable-oslogin = "FALSE"
     ssh-keys       = ""
   }

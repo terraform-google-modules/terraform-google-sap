@@ -79,7 +79,6 @@ resource "google_compute_instance" "sapdascs11" {
   }
   machine_type = var.ascs_machine_type
   metadata = {
-    VmDnsSetting   = "ZonalPreferred"
     enable-oslogin = "FALSE"
     ssh-keys       = ""
   }
