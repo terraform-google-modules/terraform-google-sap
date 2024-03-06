@@ -104,7 +104,6 @@ resource "google_compute_instance" "sapdapp11" {
   }
   machine_type = var.app_machine_type
   metadata = {
-    VmDnsSetting   = "ZonalPreferred"
     enable-oslogin = "FALSE"
     ssh-keys       = ""
   }
