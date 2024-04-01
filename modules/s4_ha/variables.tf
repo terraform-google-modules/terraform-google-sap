@@ -261,6 +261,11 @@ variable "subnet_name" {
   description = "subnet_name"
 }
 
+variable "virtualize_disks" {
+  default     = true
+  description = "virtualize_disks"
+}
+
 variable "vm_prefix" {
   default     = "sapha"
   description = "vm_prefix"
