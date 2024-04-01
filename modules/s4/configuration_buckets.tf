@@ -95,7 +95,8 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                           "sap_version" : "${var.sap_version}",
                           "sid_app" : "${var.app_sid}",
                           "sid_hana" : "${var.db_sid}",
-                          "template_name" : "s4"
+                          "template_name" : "s4",
+                          "virtualize_disks" : "${var.virtualize_disks}"
                         },
                         "gce_instance_name" : "${var.vm_prefix}app1${1 + (count.index * 2)}",
                         "gce_instance_project" : "${data.google_project.sap-project.project_id}",
@@ -137,7 +138,8 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "sap_version" : "${var.sap_version}",
                         "sid_app" : "${var.app_sid}",
                         "sid_hana" : "${var.db_sid}",
-                        "template_name" : "s4"
+                        "template_name" : "s4",
+                        "virtualize_disks" : "${var.virtualize_disks}"
                       },
                       "gce_instance_name" : "${length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}" : "${var.vm_prefix}ascs11"}",
                       "gce_instance_project" : "${data.google_project.sap-project.project_id}",
@@ -178,7 +180,8 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "sap_version" : "${var.sap_version}",
                         "sid_app" : "${var.app_sid}",
                         "sid_hana" : "${var.db_sid}",
-                        "template_name" : "s4"
+                        "template_name" : "s4",
+                        "virtualize_disks" : "${var.virtualize_disks}"
                       },
                       "gce_instance_name" : "${length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}" : "${var.vm_prefix}db11"}",
                       "gce_instance_project" : "${data.google_project.sap-project.project_id}",
