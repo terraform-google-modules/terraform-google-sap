@@ -70,10 +70,10 @@ variable "sap_hana_deployment_bucket" {
   type        = string
   description = "The Cloud Storage path that contains the SAP HANA media, do not include gs://. If this is not defined, the GCE instance will be provisioned without SAP HANA installed."
   validation {
-    condition = (! (length(regexall( "gs:", var.sap_hana_deployment_bucket)) > 0))
+    condition     = (!(length(regexall("gs:", var.sap_hana_deployment_bucket)) > 0))
     error_message = "The sap_hana_deployment_bucket must only contain the Cloud Storage path, which includes the bucket name and the names of any folders. Do not include gs://."
   }
-  default     = ""
+  default = ""
 }
 
 variable "sap_hana_sid" {
@@ -263,11 +263,11 @@ variable "nic_type" {
     condition     = contains(["VIRTIO_NET", "GVNIC", ""], var.nic_type)
     error_message = "The nic_type must be either GVNIC or VIRTIO_NET."
   }
-  default     = ""
+  default = ""
 }
 
 variable "disk_type" {
-  type = string
+  type        = string
   description = "Optional - The default disk type to use on all disks deployed. Extreme disks are not supported on all machine types. See https://cloud.google.com/compute/docs/disks/ for details."
   validation {
     condition     = contains(["pd-ssd", "pd-balanced", "pd-extreme", "hyperdisk-balanced", "hyperdisk-extreme"], var.disk_type)
@@ -277,9 +277,9 @@ variable "disk_type" {
 }
 
 variable "use_single_shared_data_log_disk" {
-  type = bool
+  type        = bool
   description = "Optional - By default three separate disk for data, logs, and shared will be made. If set to true, one disk will be used instead."
-  default = false
+  default     = false
 }
 
 variable "include_backup_disk" {
@@ -289,27 +289,27 @@ variable "include_backup_disk" {
 }
 
 variable "sap_hana_scaleout_nodes" {
-  type = number
+  type        = number
   description = "Optional - Specify to add scaleout nodes to both HA instances."
-  default = 0
+  default     = 0
 }
 
 variable "majority_maker_instance_name" {
-  type = string
+  type        = string
   description = "Optional - Name to use for the Majority Maker instance. Must be provided if scaleout_nodes > 0."
-  default = ""
+  default     = ""
 }
 
 variable "majority_maker_machine_type" {
-  type = string
+  type        = string
   description = "Optional - The machine type to use for the Majority Maker instance. Must be provided if scaleout_nodes > 0."
-  default = ""
+  default     = ""
 }
 
 variable "majority_maker_zone" {
-  type = string
+  type        = string
   description = "Optional - The zone in which the Majority Maker instance will be deployed. Must be provided if scaleout_nodes > 0. It is recommended for this to be different from the zones the primary and secondary instance are deployed in."
-  default = ""
+  default     = ""
 }
 
 variable "primary_static_ip" {
@@ -319,7 +319,7 @@ variable "primary_static_ip" {
     condition     = var.primary_static_ip == "" || can(regex("^(\\b25[0-5]|\\b2[0-4][0-9]|\\b[01]?[0-9][0-9]?)(\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$", var.primary_static_ip))
     error_message = "The primary_static_ip must be a valid IP address."
   }
-  default     = ""
+  default = ""
 }
 
 variable "secondary_static_ip" {
@@ -329,7 +329,7 @@ variable "secondary_static_ip" {
     condition     = var.secondary_static_ip == "" || can(regex("^(\\b25[0-5]|\\b2[0-4][0-9]|\\b[01]?[0-9][0-9]?)(\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$", var.secondary_static_ip))
     error_message = "The secondary_static_ip must be a valid IP address."
   }
-  default     = ""
+  default = ""
 }
 
 variable "primary_worker_static_ips" {
@@ -341,7 +341,7 @@ variable "primary_worker_static_ips" {
     ])
     error_message = "All primary_worker_static_ips must be valid IP addresses."
   }
-  default     = []
+  default = []
 }
 
 variable "secondary_worker_static_ips" {
@@ -353,7 +353,7 @@ variable "secondary_worker_static_ips" {
     ])
     error_message = "All secondary_worker_static_ips must be valid IP addresses."
   }
-  default     = []
+  default = []
 }
 
 
@@ -368,15 +368,15 @@ variable "backup_disk_type" {
 }
 
 variable "hyperdisk_balanced_iops_default" {
-  type = number
+  type        = number
   description = "Optional - default is 3000. Number of IOPS that is set for each disk of type Hyperdisk-balanced (except for boot/usrsap/shared disks)."
-  default = 3000
+  default     = 3000
 }
 
 variable "hyperdisk_balanced_throughput_default" {
-  type = number
+  type        = number
   description = "Optional - default is 750. Throughput in MB/s that is set for each disk of type Hyperdisk-balanced (except for boot/usrsap/shared disks)."
-  default = 750
+  default     = 750
 }
 
 variable "enable_fast_restart" {
@@ -390,7 +390,7 @@ variable "enable_fast_restart" {
 #
 
 variable "data_disk_type_override" {
-  type = string
+  type        = string
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Override the 'default_disk_type' for the data disk."
   validation {
     condition     = contains(["pd-ssd", "pd-balanced", "pd-extreme", "hyperdisk-balanced", "hyperdisk-extreme", ""], var.data_disk_type_override)
@@ -399,7 +399,7 @@ variable "data_disk_type_override" {
   default = ""
 }
 variable "log_disk_type_override" {
-  type = string
+  type        = string
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Override the 'default_disk_type' for the log disk."
   validation {
     condition     = contains(["pd-ssd", "pd-balanced", "pd-extreme", "hyperdisk-balanced", "hyperdisk-extreme", ""], var.log_disk_type_override)
@@ -408,7 +408,7 @@ variable "log_disk_type_override" {
   default = ""
 }
 variable "shared_disk_type_override" {
-  type = string
+  type        = string
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Override the 'default_disk_type' for the shared disk."
   validation {
     condition     = contains(["pd-ssd", "pd-balanced", "pd-extreme", "hyperdisk-balanced", "hyperdisk-extreme", ""], var.shared_disk_type_override)
@@ -417,7 +417,7 @@ variable "shared_disk_type_override" {
   default = ""
 }
 variable "usrsap_disk_type_override" {
-  type = string
+  type        = string
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Override the 'default_disk_type' for the /usr/sap disk."
   validation {
     condition     = contains(["pd-ssd", "pd-balanced", "pd-extreme", "hyperdisk-balanced", "hyperdisk-extreme", ""], var.usrsap_disk_type_override)
@@ -426,90 +426,90 @@ variable "usrsap_disk_type_override" {
   default = ""
 }
 variable "unified_disk_size_override" {
-  type = number
+  type        = number
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Overrides the default size for the primary disk(s), that is based off of the machine_type."
-  default = null
+  default     = null
 }
 variable "data_disk_size_override" {
-  type = number
+  type        = number
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Overrides the default size for the data disk(s), that is based off of the machine_type."
-  default = null
+  default     = null
 }
 variable "log_disk_size_override" {
-  type = number
+  type        = number
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Overrides the default size for the log disk(s), that is based off of the machine_type."
-  default = null
+  default     = null
 }
 variable "shared_disk_size_override" {
-  type = number
+  type        = number
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Overrides the default size for the shared disk, that is based off of the machine_type."
-  default = null
+  default     = null
 }
 variable "usrsap_disk_size_override" {
-  type = number
+  type        = number
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Overrides the default size for the /usr/sap disk(s), that is based off of the machine_type."
-  default = null
+  default     = null
 }
 variable "unified_disk_iops_override" {
-  type = number
+  type        = number
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the number of IOPS that the primary's unified disk will use. Has no effect if not using a disk type that supports it."
-  default = null
+  default     = null
 }
 variable "data_disk_iops_override" {
-  type = number
+  type        = number
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the number of IOPS that the data disk(s) will use. Has no effect if not using a disk type that supports it."
-  default = null
+  default     = null
 }
 variable "log_disk_iops_override" {
-  type = number
+  type        = number
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the number of IOPS that the log disk(s) will use. Has no effect if not using a disk type that supports it."
-  default = null
+  default     = null
 }
 variable "shared_disk_iops_override" {
-  type = number
+  type        = number
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the number of IOPS that the shared disk will use. Has no effect if not using a disk type that supports it."
-  default = null
+  default     = null
 }
 variable "usrsap_disk_iops_override" {
-  type = number
+  type        = number
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the number of IOPS that the /usr/sap disk(s) will use. Has no effect if not using a disk type that supports it."
-  default = null
+  default     = null
 }
 variable "backup_disk_iops_override" {
-  type = number
+  type        = number
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the number of IOPS that the backup disk(s) will use. Has no effect if not using a disk type that supports it."
-  default = null
+  default     = null
 }
 
 variable "unified_disk_throughput_override" {
-  type = number
+  type        = number
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the throughput in MB/s that the primary's unified disk will use. Has no effect if not using a disk type that supports it."
-  default = null
+  default     = null
 }
 variable "data_disk_throughput_override" {
-  type = number
+  type        = number
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the throughput in MB/s that the data disk(s) will use. Has no effect if not using a disk type that supports it."
-  default = null
+  default     = null
 }
 variable "log_disk_throughput_override" {
-  type = number
+  type        = number
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the throughput in MB/s that the log disk(s) will use. Has no effect if not using a disk type that supports it."
-  default = null
+  default     = null
 }
 variable "shared_disk_throughput_override" {
-  type = number
+  type        = number
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the throughput in MB/s that the shared disk will use. Has no effect if not using a disk type that supports it."
-  default = null
+  default     = null
 }
 variable "usrsap_disk_throughput_override" {
-  type = number
+  type        = number
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the throughput in MB/s that the /usr/sap disk(s) will use. Has no effect if not using a disk type that supports it."
-  default = null
+  default     = null
 }
 variable "backup_disk_throughput_override" {
-  type = number
+  type        = number
   description = "Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the throughput in MB/s that the backup disk(s) will use. Has no effect if not using a disk type that supports it."
-  default = null
+  default     = null
 }
 
 variable "wlm_deployment_name" {

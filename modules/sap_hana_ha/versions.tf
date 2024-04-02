@@ -18,11 +18,11 @@ terraform {
   required_providers {
     google = {}
     assert = {
-      source = "bwoznicki/assert"
+      source  = "bwoznicki/assert"
       version = "0.0.1"
     }
     validation = {
-      source = "tlkamp/validation"
+      source  = "tlkamp/validation"
       version = "1.0.0"
     }
   }

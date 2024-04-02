@@ -18,7 +18,7 @@ terraform {
   required_providers {
     google = {}
     assert = {
-      source = "bwoznicki/assert"
+      source  = "bwoznicki/assert"
       version = "0.0.1"
     }
   }
