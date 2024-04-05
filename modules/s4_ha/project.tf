@@ -67,7 +67,7 @@ resource "google_dns_managed_zone" "sap_zone" {
   description   = "${var.deployment_name} SAP DNS zone"
   dns_name      = "${var.deployment_name}.${var.dns_zone_name_suffix}"
   force_destroy = true
-  name          = "${var.deployment_name}"
+  name          = var.deployment_name
   private_visibility_config {
     networks {
       network_url = data.google_compute_network.sap-vpc.self_link
