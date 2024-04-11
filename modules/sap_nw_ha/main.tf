@@ -16,8 +16,8 @@
 #
 # Terraform SAP NW HA for Google Cloud
 #
-# Version:    2.0.202402230649
-# Build Hash: c745a89b214d491fa9b641e2fff78abfe9965016
+# Version:    2.0.202404101403
+# Build Hash: 4d5e66e2ca20a6d498491377677dcc2f3579ebd7
 #
 
 ################################################################################
@@ -35,7 +35,7 @@ locals {
   sid = lower(var.sap_sid)
 
   hc_firewall_rule_name = var.hc_firewall_rule_name == "" ? "${local.sid}-hc-allow" : var.hc_firewall_rule_name
-  hc_network_tag        = length(var.hc_network_tag) == 0 ? ["${local.hc_firewall_rule_name}"] : var.hc_network_tag
+  hc_network_tag        = length(var.hc_network_tag) == 0 ? [local.hc_firewall_rule_name] : var.hc_network_tag
 
   sap_scs_instance_number = var.sap_scs_instance_number == "" ? "00" : var.sap_scs_instance_number
   scs_inst_group_name     = var.scs_inst_group_name == "" ? "${local.sid}-scs-ig" : var.scs_inst_group_name
@@ -158,7 +158,7 @@ resource "google_compute_instance" "scs_instance" {
   can_ip_forward = var.can_ip_forward
   network_interface {
     subnetwork = local.subnetwork_uri
-    network_ip = google_compute_address.sap_nw_vm_ip.0.address
+    network_ip = google_compute_address.sap_nw_vm_ip[0].address
     # we only include access_config if public_ip is true, an empty access_config
     # will create an ephemeral public ip
     dynamic "access_config" {
@@ -192,14 +192,14 @@ resource "google_compute_instance" "scs_instance" {
     sap_primary_instance = var.sap_primary_instance
     sap_primary_zone     = var.sap_primary_zone
     scs_hc_port          = local.scs_hc_port
-    scs_vip_address      = google_compute_address.nw_vips.0.address
+    scs_vip_address      = google_compute_address.nw_vips[0].address
     scs_vip_name         = local.scs_vip_name
 
     # ERS settings
     sap_secondary_instance = var.sap_secondary_instance
     sap_secondary_zone     = var.sap_secondary_zone
     ers_hc_port            = local.ers_hc_port
-    ers_vip_address        = google_compute_address.nw_vips.1.address
+    ers_vip_address        = google_compute_address.nw_vips[1].address
     ers_vip_name           = local.ers_vip_name
 
     # File system settings
@@ -257,7 +257,7 @@ resource "google_compute_instance" "ers_instance" {
   can_ip_forward = var.can_ip_forward
   network_interface {
     subnetwork = local.subnetwork_uri
-    network_ip = google_compute_address.sap_nw_vm_ip.1.address
+    network_ip = google_compute_address.sap_nw_vm_ip[1].address
     # we only include access_config if public_ip is true, an empty access_config
     # will create an ephemeral public ip
     dynamic "access_config" {
@@ -291,14 +291,14 @@ resource "google_compute_instance" "ers_instance" {
     sap_primary_instance = var.sap_primary_instance
     sap_primary_zone     = var.sap_primary_zone
     scs_hc_port          = local.scs_hc_port
-    scs_vip_address      = google_compute_address.nw_vips.0.address
+    scs_vip_address      = google_compute_address.nw_vips[0].address
     scs_vip_name         = local.scs_vip_name
 
     # ERS settings
     sap_secondary_instance = var.sap_secondary_instance
     sap_secondary_zone     = var.sap_secondary_zone
     ers_hc_port            = local.ers_hc_port
-    ers_vip_address        = google_compute_address.nw_vips.1.address
+    ers_vip_address        = google_compute_address.nw_vips[1].address
     ers_vip_name           = local.ers_vip_name
 
     # File system settings
@@ -343,7 +343,7 @@ resource "google_compute_address" "nw_vips" {
 resource "google_compute_instance_group" "nw_instance_groups" {
   count     = 2
   name      = count.index == 0 ? local.scs_inst_group_name : local.ers_inst_group_name
-  instances = count.index == 0 ? google_compute_instance.scs_instance.*.self_link : google_compute_instance.ers_instance.*.self_link
+  instances = count.index == 0 ? google_compute_instance.scs_instance[*].self_link : google_compute_instance.ers_instance[*].self_link
   zone      = count.index == 0 ? var.sap_primary_zone : var.sap_secondary_zone
   project   = var.project_id
 }
@@ -391,7 +391,7 @@ resource "google_compute_region_backend_service" "nw_regional_backend_services" 
   name                  = count.index == 0 ? local.scs_backend_svc_name : local.ers_backend_svc_name
   region                = local.region
   load_balancing_scheme = "INTERNAL"
-  health_checks         = [element(google_compute_health_check.nw_hc.*.id, count.index)]
+  health_checks         = [element(google_compute_health_check.nw_hc[*].id, count.index)]
   project               = var.project_id
 
   failover_policy {
@@ -400,11 +400,11 @@ resource "google_compute_region_backend_service" "nw_regional_backend_services" 
     failover_ratio                       = 1
   }
   backend {
-    group    = element(google_compute_instance_group.nw_instance_groups.*.id, count.index)
+    group    = element(google_compute_instance_group.nw_instance_groups[*].id, count.index)
     failover = false
   }
   backend {
-    group    = element(google_compute_instance_group.nw_instance_groups.*.id, 1 - count.index)
+    group    = element(google_compute_instance_group.nw_instance_groups[*].id, 1 - count.index)
     failover = true
   }
 }
@@ -415,10 +415,10 @@ resource "google_compute_region_backend_service" "nw_regional_backend_services" 
 resource "google_compute_forwarding_rule" "nw_forwarding_rules" {
   count                 = 2
   name                  = count.index == 0 ? local.scs_forw_rule_name : local.ers_forw_rule_name
-  ip_address            = element(google_compute_address.nw_vips.*.address, count.index)
+  ip_address            = element(google_compute_address.nw_vips[*].address, count.index)
   region                = local.region
   load_balancing_scheme = "INTERNAL"
-  backend_service       = element(google_compute_region_backend_service.nw_regional_backend_services.*.id, count.index)
+  backend_service       = element(google_compute_region_backend_service.nw_regional_backend_services[*].id, count.index)
   all_ports             = true
   subnetwork            = local.subnetwork_uri
   project               = var.project_id

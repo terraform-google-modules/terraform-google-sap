@@ -322,12 +322,12 @@ variable "secondary_reservation_name" {
 #
 variable "primary_startup_url" {
   type        = string
-  default     = "curl -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202402230649/terraform/sap_nw_ha/startup_scs.sh | bash -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202402230649/terraform"
+  default     = "curl -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202404101403/terraform/sap_nw_ha/startup_scs.sh | bash -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202404101403/terraform"
   description = "DO NOT USE"
 }
 variable "secondary_startup_url" {
   type        = string
-  default     = "curl -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202402230649/terraform/sap_nw_ha/startup_ers.sh | bash -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202402230649/terraform"
+  default     = "curl -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202404101403/terraform/sap_nw_ha/startup_ers.sh | bash -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202404101403/terraform"
   description = "DO NOT USE"
 }
 variable "post_deployment_script" {

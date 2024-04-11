@@ -16,13 +16,16 @@
 terraform {
   required_version = ">=0.12.6"
   required_providers {
-    google = {}
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 4.0.0, < 6"
+    }
     assert = {
-      source = "bwoznicki/assert"
+      source  = "bwoznicki/assert"
       version = "0.0.1"
     }
     validation = {
-      source = "tlkamp/validation"
+      source  = "tlkamp/validation"
       version = "1.0.0"
     }
   }

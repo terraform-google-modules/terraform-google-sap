@@ -16,8 +16,8 @@
 #
 # Terraform SAP NW for Google Cloud
 #
-# Version:    2.0.202402230649
-# Build Hash: c745a89b214d491fa9b641e2fff78abfe9965016
+# Version:    2.0.202404101403
+# Build Hash: 4d5e66e2ca20a6d498491377677dcc2f3579ebd7
 #
 
 ################################################################################

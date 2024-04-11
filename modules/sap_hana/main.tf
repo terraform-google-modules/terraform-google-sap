@@ -16,8 +16,8 @@
 #
 # Terraform SAP HANA for Google Cloud
 #
-# Version:    2.0.202402230649
-# Build Hash: c745a89b214d491fa9b641e2fff78abfe9965016
+# Version:    2.0.202404101403
+# Build Hash: 4d5e66e2ca20a6d498491377677dcc2f3579ebd7
 #
 
 ################################################################################
@@ -25,82 +25,96 @@
 ################################################################################
 locals {
   mem_size_map = {
-    "n1-highmem-32"   = 208
-    "n1-highmem-64"   = 416
-    "n1-highmem-96"   = 624
-    "n1-megamem-96"   = 1433
-    "n2-highmem-32"   = 256
-    "n2-highmem-48"   = 384
-    "n2-highmem-64"   = 512
-    "n2-highmem-80"   = 640
-    "n2-highmem-96"   = 768
-    "n2-highmem-128"  = 864
-    "n1-ultramem-40"  = 961
-    "n1-ultramem-80"  = 1922
-    "n1-ultramem-160" = 3844
-    "m1-megamem-96"   = 1433
-    "m1-ultramem-40"  = 961
-    "m1-ultramem-80"  = 1922
-    "m1-ultramem-160" = 3844
-    "m2-ultramem-208" = 5888
-    "m2-megamem-416"  = 5888
-    "m2-hypermem-416" = 8832
-    "m2-ultramem-416" = 11744
-    "m3-megamem-64"   = 976
-    "m3-megamem-128"  = 1952
-    "m3-ultramem-32"  = 976
-    "m3-ultramem-64"  = 1952
-    "m3-ultramem-128" = 3904
-    "c3-standard-44"  = 176
-    "c3-highmem-44"   = 352
-    "c3-highmem-88"   = 704
-    "c3-highmem-176"  = 1408
+    "n1-highmem-32"         = 208
+    "n1-highmem-64"         = 416
+    "n1-highmem-96"         = 624
+    "n1-megamem-96"         = 1433
+    "n2-highmem-32"         = 256
+    "n2-highmem-48"         = 384
+    "n2-highmem-64"         = 512
+    "n2-highmem-80"         = 640
+    "n2-highmem-96"         = 768
+    "n2-highmem-128"        = 864
+    "n1-ultramem-40"        = 961
+    "n1-ultramem-80"        = 1922
+    "n1-ultramem-160"       = 3844
+    "m1-megamem-96"         = 1433
+    "m1-ultramem-40"        = 961
+    "m1-ultramem-80"        = 1922
+    "m1-ultramem-160"       = 3844
+    "m2-ultramem-208"       = 5888
+    "m2-megamem-416"        = 5888
+    "m2-hypermem-416"       = 8832
+    "m2-ultramem-416"       = 11744
+    "m3-megamem-64"         = 976
+    "m3-megamem-128"        = 1952
+    "m3-ultramem-32"        = 976
+    "m3-ultramem-64"        = 1952
+    "m3-ultramem-128"       = 3904
+    "c3-standard-44"        = 176
+    "c3-highmem-44"         = 352
+    "c3-highmem-88"         = 704
+    "c3-highmem-176"        = 1408
+    "c3-standard-192-metal" = 768
+    "c3-highcpu-192-metal"  = 512
+    "c3-highmem-192-metal"  = 1536
+    "x4-megamem-960-metal"  = 16384
+    "x4-megamem-1440-metal" = 24576
+    "x4-megamem-1920-metal" = 32768
   }
 
   cpu_platform_map = {
-    "n1-highmem-32"   = "Intel Broadwell"
-    "n1-highmem-64"   = "Intel Broadwell"
-    "n1-highmem-96"   = "Intel Skylake"
-    "n1-megamem-96"   = "Intel Skylake"
-    "n2-highmem-32"   = "Automatic"
-    "n2-highmem-48"   = "Automatic"
-    "n2-highmem-64"   = "Automatic"
-    "n2-highmem-80"   = "Automatic"
-    "n2-highmem-96"   = "Automatic"
-    "n2-highmem-128"  = "Automatic"
-    "n1-ultramem-40"  = "Automatic"
-    "n1-ultramem-80"  = "Automatic"
-    "n1-ultramem-160" = "Automatic"
-    "m1-megamem-96"   = "Intel Skylake"
-    "m1-ultramem-40"  = "Automatic"
-    "m1-ultramem-80"  = "Automatic"
-    "m1-ultramem-160" = "Automatic"
-    "m2-ultramem-208" = "Automatic"
-    "m2-megamem-416"  = "Automatic"
-    "m2-hypermem-416" = "Automatic"
-    "m2-ultramem-416" = "Automatic"
-    "m3-megamem-64"   = "Automatic"
-    "m3-megamem-128"  = "Automatic"
-    "m3-ultramem-32"  = "Automatic"
-    "m3-ultramem-64"  = "Automatic"
-    "m3-ultramem-128" = "Automatic"
-    "c3-standard-44"  = "Automatic"
-    "c3-highmem-44"   = "Automatic"
-    "c3-highmem-88"   = "Automatic"
-    "c3-highmem-176"  = "Automatic"
+    "n1-highmem-32"         = "Intel Broadwell"
+    "n1-highmem-64"         = "Intel Broadwell"
+    "n1-highmem-96"         = "Intel Skylake"
+    "n1-megamem-96"         = "Intel Skylake"
+    "n2-highmem-32"         = "Automatic"
+    "n2-highmem-48"         = "Automatic"
+    "n2-highmem-64"         = "Automatic"
+    "n2-highmem-80"         = "Automatic"
+    "n2-highmem-96"         = "Automatic"
+    "n2-highmem-128"        = "Automatic"
+    "n1-ultramem-40"        = "Automatic"
+    "n1-ultramem-80"        = "Automatic"
+    "n1-ultramem-160"       = "Automatic"
+    "m1-megamem-96"         = "Intel Skylake"
+    "m1-ultramem-40"        = "Automatic"
+    "m1-ultramem-80"        = "Automatic"
+    "m1-ultramem-160"       = "Automatic"
+    "m2-ultramem-208"       = "Automatic"
+    "m2-megamem-416"        = "Automatic"
+    "m2-hypermem-416"       = "Automatic"
+    "m2-ultramem-416"       = "Automatic"
+    "m3-megamem-64"         = "Automatic"
+    "m3-megamem-128"        = "Automatic"
+    "m3-ultramem-32"        = "Automatic"
+    "m3-ultramem-64"        = "Automatic"
+    "m3-ultramem-128"       = "Automatic"
+    "c3-standard-44"        = "Automatic"
+    "c3-highmem-44"         = "Automatic"
+    "c3-highmem-88"         = "Automatic"
+    "c3-highmem-176"        = "Automatic"
+    "c3-standard-192-metal" = "Automatic"
+    "c3-highcpu-192-metal"  = "Automatic"
+    "c3-highmem-192-metal"  = "Automatic"
+    "x4-megamem-960-metal"  = "Automatic"
+    "x4-megamem-1440-metal" = "Automatic"
+    "x4-megamem-1920-metal" = "Automatic"
   }
 
+  native_bm = length(regexall("metal", var.machine_type)) > 0
 
   # Minimum disk sizes are used to ensure throughput. Extreme disks don't need this.
   # All 'over provisioned' capacity is to go onto the data disk.
+  final_disk_type = var.disk_type == "" ? (local.native_bm ? "hyperdisk-extreme" : "pd-ssd") : var.disk_type
   min_total_disk_map = {
-    "pd-ssd" = 550
-    "pd-balanced" = 943
-    "pd-extreme" = 0
+    "pd-ssd"             = 550
+    "pd-balanced"        = 943
+    "pd-extreme"         = 0
     "hyperdisk-balanced" = 0
-    "hyperdisk-extreme" = 0
+    "hyperdisk-extreme"  = 0
   }
-  min_total_disk = local.min_total_disk_map[var.disk_type]
+  min_total_disk = local.min_total_disk_map[local.final_disk_type]
 
   mem_size             = lookup(local.mem_size_map, var.machine_type, 320)
   hana_log_size        = ceil(min(512, max(64, local.mem_size / 2)))
@@ -108,11 +122,11 @@ locals {
   hana_shared_size_min = min(1024, local.mem_size)
   hana_usrsap_size     = 32
 
-  hana_data_size = max(local.hana_data_size_min, local.min_total_disk - local.hana_usrsap_size - local.hana_log_size - local.hana_shared_size_min )
+  hana_data_size = max(local.hana_data_size_min, local.min_total_disk - local.hana_usrsap_size - local.hana_log_size - local.hana_shared_size_min)
 
   # scaleout_nodes > 0 then hana_shared_size and backup is changed; assumes that sap_hana_scaleout_nodes is an integer
-  hana_shared_size   = var.sap_hana_scaleout_nodes > 0 ? local.hana_shared_size_min * ceil(var.sap_hana_scaleout_nodes / 4): local.hana_shared_size_min
-  backup_size = var.sap_hana_backup_size > 0 ? var.sap_hana_backup_size : 2 * local.mem_size * (var.sap_hana_scaleout_nodes + 1)
+  hana_shared_size = var.sap_hana_scaleout_nodes > 0 ? local.hana_shared_size_min * ceil(var.sap_hana_scaleout_nodes / 4) : local.hana_shared_size_min
+  backup_size      = var.sap_hana_backup_size > 0 ? var.sap_hana_backup_size : 2 * local.mem_size * (var.sap_hana_scaleout_nodes + 1)
 
   # ensure the combined disk meets minimum size/performance ;
   pd_size = ceil(max(local.min_total_disk, local.hana_log_size + local.hana_data_size_min + local.hana_shared_size + local.hana_usrsap_size + 1))
@@ -120,100 +134,100 @@ locals {
   # ensure pd-hdd for backup is smaller than the maximum pd size
   pd_size_worker = ceil(max(local.min_total_disk, local.hana_log_size + local.hana_data_size_min + local.hana_usrsap_size + 1))
 
-  final_data_disk_type = var.data_disk_type_override == "" ? var.disk_type : var.data_disk_type_override
-  final_log_disk_type = var.log_disk_type_override == "" ? var.disk_type : var.log_disk_type_override
+  unified_pd_size        = var.unified_disk_size_override == null ? local.pd_size : var.unified_disk_size_override
+  unified_worker_pd_size = var.unified_worker_disk_size_override == null ? local.pd_size_worker : var.unified_worker_disk_size_override
+  data_pd_size           = var.data_disk_size_override == null ? local.hana_data_size : var.data_disk_size_override
+  log_pd_size            = var.log_disk_size_override == null ? local.hana_log_size : var.log_disk_size_override
+  shared_pd_size         = var.shared_disk_size_override == null ? local.hana_shared_size : var.shared_disk_size_override
+  usrsap_pd_size         = var.usrsap_disk_size_override == null ? local.hana_usrsap_size : var.usrsap_disk_size_override
 
-  temp_shared_disk_type = contains(["hyperdisk-extreme", "hyperdisk-balanced", "pd-extreme"], var.disk_type) ? "pd-balanced" : var.disk_type
-  temp_usrsap_disk_type = contains(["hyperdisk-extreme", "hyperdisk-balanced", "pd-extreme"], var.disk_type) ? "pd-balanced" : var.disk_type
-
+  # Disk types
+  final_data_disk_type   = var.data_disk_type_override == "" ? local.final_disk_type : var.data_disk_type_override
+  final_log_disk_type    = var.log_disk_type_override == "" ? local.final_disk_type : var.log_disk_type_override
+  temp_shared_disk_type  = local.native_bm ? "hyperdisk-balanced" : (contains(["hyperdisk-extreme", "hyperdisk-balanced", "pd-extreme"], local.final_disk_type) ? "pd-balanced" : local.final_disk_type)
+  temp_usrsap_disk_type  = local.native_bm ? "hyperdisk-balanced" : (contains(["hyperdisk-extreme", "hyperdisk-balanced", "pd-extreme"], local.final_disk_type) ? "pd-balanced" : local.final_disk_type)
   final_shared_disk_type = var.shared_disk_type_override == "" ? local.temp_shared_disk_type : var.shared_disk_type_override
   final_usrsap_disk_type = var.usrsap_disk_type_override == "" ? local.temp_usrsap_disk_type : var.usrsap_disk_type_override
+  final_backup_disk_type = var.backup_disk_type == "" ? (local.native_bm ? "hyperdisk-balanced" : "pd-balanced") : var.backup_disk_type
 
-  unified_pd_size = var.unified_disk_size_override == null ? local.pd_size : var.unified_disk_size_override
-  unified_worker_pd_size = var.unified_worker_disk_size_override == null ? local.pd_size_worker : var.unified_worker_disk_size_override
-  data_pd_size = var.data_disk_size_override == null ? local.hana_data_size : var.data_disk_size_override
-  log_pd_size = var.log_disk_size_override == null ? local.hana_log_size : var.log_disk_size_override
-  shared_pd_size = var.shared_disk_size_override == null ? local.hana_shared_size : var.shared_disk_size_override
-  usrsap_pd_size = var.usrsap_disk_size_override == null ? local.hana_usrsap_size : var.usrsap_disk_size_override
-
-  # IOPS
+  # Disk IOPS
   hdx_iops_map = {
-    "data" = max(10000, local.data_pd_size*2)
-    "log" = max(10000, local.log_pd_size*2)
-    "shared" = null
-    "usrsap" = null
-    "unified" = max(10000, local.data_pd_size*2) + max(10000, local.log_pd_size*2)
-    "worker" = max(10000, local.data_pd_size*2) + max(10000, local.log_pd_size*2)
-    "backup" = max(10000, 2 * local.backup_size)
+    "data"    = max(10000, local.data_pd_size * 2)
+    "log"     = max(10000, local.log_pd_size * 2)
+    "shared"  = null
+    "usrsap"  = null
+    "unified" = max(10000, local.data_pd_size * 2) + max(10000, local.log_pd_size * 2)
+    "worker"  = max(10000, local.data_pd_size * 2) + max(10000, local.log_pd_size * 2)
+    "backup"  = max(10000, 2 * local.backup_size)
   }
   hdb_iops_map = {
-    "data" = var.hyperdisk_balanced_iops_default
-    "log" = var.hyperdisk_balanced_iops_default
-    "shared" = null
-    "usrsap" = null
+    "data"    = var.hyperdisk_balanced_iops_default
+    "log"     = var.hyperdisk_balanced_iops_default
+    "shared"  = null
+    "usrsap"  = null
     "unified" = var.hyperdisk_balanced_iops_default
-    "worker" = var.hyperdisk_balanced_iops_default
-    "backup" = var.hyperdisk_balanced_iops_default
+    "worker"  = var.hyperdisk_balanced_iops_default
+    "backup"  = var.hyperdisk_balanced_iops_default
   }
   null_iops_map = {
-    "data" = null
-    "log" = null
-    "shared" = null
-    "usrsap" = null
+    "data"    = null
+    "log"     = null
+    "shared"  = null
+    "usrsap"  = null
     "unified" = null
-    "worker" = null
-    "backup" = null
+    "worker"  = null
+    "backup"  = null
   }
   iops_map = {
-    "pd-ssd" = local.null_iops_map
-    "pd-balanced" = local.null_iops_map
-    "pd-extreme" = local.hdx_iops_map
+    "pd-ssd"             = local.null_iops_map
+    "pd-balanced"        = local.null_iops_map
+    "pd-extreme"         = local.hdx_iops_map
     "hyperdisk-balanced" = local.hdb_iops_map
-    "hyperdisk-extreme" = local.hdx_iops_map
+    "hyperdisk-extreme"  = local.hdx_iops_map
   }
 
-  final_data_iops = var.data_disk_iops_override == null ? local.iops_map[local.final_data_disk_type]["data"] : var.data_disk_iops_override
-  final_log_iops = var.log_disk_iops_override == null ? local.iops_map[local.final_log_disk_type]["log"] : var.log_disk_iops_override
-  final_shared_iops = var.shared_disk_iops_override == null ? local.iops_map[local.final_shared_disk_type]["shared"] : var.shared_disk_iops_override
-  final_usrsap_iops = var.usrsap_disk_iops_override == null ? local.iops_map[local.final_usrsap_disk_type]["usrsap"] : var.usrsap_disk_iops_override
-  final_unified_iops = var.unified_disk_iops_override == null ? local.iops_map[var.disk_type]["unified"] : var.unified_disk_iops_override
-  final_unified_worker_iops = var.unified_worker_disk_iops_override == null ? local.iops_map[var.disk_type]["worker"] : var.unified_worker_disk_iops_override
-  final_backup_iops = var.backup_disk_iops_override == null ? local.iops_map[var.backup_disk_type]["backup"] : var.backup_disk_iops_override
+  final_data_iops           = var.data_disk_iops_override == null ? local.iops_map[local.final_data_disk_type]["data"] : var.data_disk_iops_override
+  final_log_iops            = var.log_disk_iops_override == null ? local.iops_map[local.final_log_disk_type]["log"] : var.log_disk_iops_override
+  final_shared_iops         = var.shared_disk_iops_override == null ? local.iops_map[local.final_shared_disk_type]["shared"] : var.shared_disk_iops_override
+  final_usrsap_iops         = var.usrsap_disk_iops_override == null ? local.iops_map[local.final_usrsap_disk_type]["usrsap"] : var.usrsap_disk_iops_override
+  final_unified_iops        = var.unified_disk_iops_override == null ? local.iops_map[local.final_disk_type]["unified"] : var.unified_disk_iops_override
+  final_unified_worker_iops = var.unified_worker_disk_iops_override == null ? local.iops_map[local.final_disk_type]["worker"] : var.unified_worker_disk_iops_override
+  final_backup_iops         = var.backup_disk_iops_override == null ? local.iops_map[local.final_backup_disk_type]["backup"] : var.backup_disk_iops_override
 
-  # THROUGHPUT
+  # Disk throughput MB/s
   hdb_throughput_map = {
-    "data" = var.hyperdisk_balanced_throughput_default
-    "log" = var.hyperdisk_balanced_throughput_default
-    "shared" = null
-    "usrsap" = null
+    "data"    = var.hyperdisk_balanced_throughput_default
+    "log"     = var.hyperdisk_balanced_throughput_default
+    "shared"  = null
+    "usrsap"  = null
     "unified" = var.hyperdisk_balanced_throughput_default
-    "worker" = var.hyperdisk_balanced_throughput_default
-    "backup" = var.hyperdisk_balanced_throughput_default
+    "worker"  = var.hyperdisk_balanced_throughput_default
+    "backup"  = var.hyperdisk_balanced_throughput_default
   }
   null_throughput_map = {
-    "data" = null
-    "log" = null
-    "shared" = null
-    "usrsap" = null
+    "data"    = null
+    "log"     = null
+    "shared"  = null
+    "usrsap"  = null
     "unified" = null
-    "worker" = null
-    "backup" = null
+    "worker"  = null
+    "backup"  = null
   }
   throughput_map = {
-    "pd-ssd" = local.null_throughput_map
-    "pd-balanced" = local.null_throughput_map
-    "pd-extreme" = local.null_throughput_map
+    "pd-ssd"             = local.null_throughput_map
+    "pd-balanced"        = local.null_throughput_map
+    "pd-extreme"         = local.null_throughput_map
     "hyperdisk-balanced" = local.hdb_throughput_map
-    "hyperdisk-extreme" = local.null_throughput_map
+    "hyperdisk-extreme"  = local.null_throughput_map
   }
 
-  final_data_throughput = var.data_disk_throughput_override == null ? local.throughput_map[local.final_data_disk_type]["data"] : var.data_disk_throughput_override
-  final_log_throughput = var.log_disk_throughput_override == null ? local.throughput_map[local.final_log_disk_type]["log"] : var.log_disk_throughput_override
-  final_shared_throughput = var.shared_disk_throughput_override == null ? local.throughput_map[local.final_shared_disk_type]["shared"] : var.shared_disk_throughput_override
-  final_usrsap_throughput = var.usrsap_disk_throughput_override == null ? local.throughput_map[local.final_usrsap_disk_type]["usrsap"] : var.usrsap_disk_throughput_override
-  final_unified_throughput = var.unified_disk_throughput_override == null ? local.throughput_map[var.disk_type]["unified"] : var.unified_disk_throughput_override
-  final_unified_worker_throughput = var.unified_worker_disk_throughput_override == null ? local.throughput_map[var.disk_type]["worker"] : var.unified_worker_disk_throughput_override
-  final_backup_throughput = var.backup_disk_throughput_override == null ? local.throughput_map[var.backup_disk_type]["backup"] : var.backup_disk_throughput_override
+  final_data_throughput           = var.data_disk_throughput_override == null ? local.throughput_map[local.final_data_disk_type]["data"] : var.data_disk_throughput_override
+  final_log_throughput            = var.log_disk_throughput_override == null ? local.throughput_map[local.final_log_disk_type]["log"] : var.log_disk_throughput_override
+  final_shared_throughput         = var.shared_disk_throughput_override == null ? local.throughput_map[local.final_shared_disk_type]["shared"] : var.shared_disk_throughput_override
+  final_usrsap_throughput         = var.usrsap_disk_throughput_override == null ? local.throughput_map[local.final_usrsap_disk_type]["usrsap"] : var.usrsap_disk_throughput_override
+  final_unified_throughput        = var.unified_disk_throughput_override == null ? local.throughput_map[local.final_disk_type]["unified"] : var.unified_disk_throughput_override
+  final_unified_worker_throughput = var.unified_worker_disk_throughput_override == null ? local.throughput_map[local.final_disk_type]["worker"] : var.unified_worker_disk_throughput_override
+  final_backup_throughput         = var.backup_disk_throughput_override == null ? local.throughput_map[local.final_backup_disk_type]["backup"] : var.backup_disk_throughput_override
 
   # network config variables
   zone_split       = split("-", var.zone)
@@ -225,7 +239,7 @@ locals {
   primary_startup_url   = var.sap_deployment_debug ? replace(var.primary_startup_url, "bash -s", "bash -x -s") : var.primary_startup_url
   secondary_startup_url = var.sap_deployment_debug ? replace(var.secondary_startup_url, "bash -s", "bash -x -s") : var.secondary_startup_url
 
-  has_shared_nfs = !( var.sap_hana_shared_nfs == "" && var.sap_hana_shared_nfs_resource == null)
+  has_shared_nfs   = !(var.sap_hana_shared_nfs == "" && var.sap_hana_shared_nfs_resource == null)
   make_shared_disk = !var.use_single_shared_data_log_disk && !local.has_shared_nfs
 
   use_backup_disk = (var.include_backup_disk && var.sap_hana_backup_nfs == "" && var.sap_hana_backup_nfs_resource == null)
@@ -238,17 +252,30 @@ locals {
 
 }
 
+# tflint-ignore: terraform_unused_declarations
 data "assert_test" "one_backup" {
-  test = local.use_backup_disk || !local.both_backup_nfs_defined
+  test  = local.use_backup_disk || !local.both_backup_nfs_defined
   throw = "Either use a disk for /backup (include_backup_disk) or use NFS. If using an NFS as /backup then only either sap_hana_backup_nfs or sap_hana_backup_nfs_resource may be defined."
 }
+# tflint-ignore: terraform_unused_declarations
 data "assert_test" "one_shared" {
-  test = !local.both_shared_nfs_defined
+  test  = !local.both_shared_nfs_defined
   throw = "If using an NFS as /shared then only either sap_hana_shared_nfs or sap_hana_shared_nfs_resource may be defined."
 }
+# tflint-ignore: terraform_unused_declarations
 data "assert_test" "both_or_neither_nfs" {
-  test = (local.backup_nfs_endpoint == "") == (local.shared_nfs_endpoint == "")
+  test  = (local.backup_nfs_endpoint == "") == (local.shared_nfs_endpoint == "")
   throw = "If either NFS is defined, then both /shared and /backup must be defined."
+}
+# tflint-ignore: terraform_unused_declarations
+data "assert_test" "hyperdisk_with_native_bm" {
+  test  = local.native_bm ? length(regexall("hyperdisk", local.final_disk_type)) > 0 : true
+  throw = "Native bare metal machines only work with hyperdisks. Set 'disk_type' accordingly, e.g. 'disk_type = hyperdisk-balanced'"
+}
+# tflint-ignore: terraform_unused_declarations
+data "assert_test" "backup_hyperdisk_with_native_bm" {
+  test  = local.native_bm && local.use_backup_disk ? (length(regexall("hyperdisk", local.final_backup_disk_type)) > 0) : true
+  throw = "Native bare metal machines only work with hyperdisks. Set 'backup_disk_type' accordingly, e.g. 'backup_disk_type = hyperdisk-balanced'"
 }
 
 ################################################################################
@@ -258,7 +285,7 @@ data "assert_test" "both_or_neither_nfs" {
 resource "google_compute_disk" "sap_hana_boot_disks" {
   count   = var.sap_hana_scaleout_nodes + 1
   name    = format("${var.instance_name}-boot%05d", count.index + 1)
-  type    = "pd-balanced"
+  type    = local.native_bm ? "hyperdisk-balanced" : "pd-balanced"
   zone    = var.zone
   size    = 30 # GB
   project = var.project_id
@@ -273,78 +300,78 @@ resource "google_compute_disk" "sap_hana_boot_disks" {
 }
 
 resource "google_compute_disk" "sap_hana_unified_disks" {
-  count   = var.use_single_shared_data_log_disk ?  1 : 0
-  name    = format("${var.instance_name}-hana")
-  type    = var.disk_type
-  zone    = var.zone
-  size    = local.unified_pd_size
-  project = var.project_id
-  provisioned_iops = local.final_unified_iops
+  count                  = var.use_single_shared_data_log_disk ? 1 : 0
+  name                   = format("${var.instance_name}-hana")
+  type                   = local.final_disk_type
+  zone                   = var.zone
+  size                   = local.unified_pd_size
+  project                = var.project_id
+  provisioned_iops       = local.final_unified_iops
   provisioned_throughput = local.final_unified_throughput
 }
 resource "google_compute_disk" "sap_hana_unified_worker_disks" {
-  count   = var.use_single_shared_data_log_disk ? var.sap_hana_scaleout_nodes : 0
-  name    = format("${var.instance_name}-hana%05d", count.index + 1)
-  type    = var.disk_type
-  zone    = var.zone
-  size    = local.unified_worker_pd_size
-  project = var.project_id
-  provisioned_iops = local.final_unified_worker_iops
-  provisioned_throughput = local.final_unified_throughput
+  count                  = var.use_single_shared_data_log_disk ? var.sap_hana_scaleout_nodes : 0
+  name                   = format("${var.instance_name}-hana%05d", count.index + 1)
+  type                   = local.final_disk_type
+  zone                   = var.zone
+  size                   = local.unified_worker_pd_size
+  project                = var.project_id
+  provisioned_iops       = local.final_unified_worker_iops
+  provisioned_throughput = local.final_unified_worker_throughput
 }
 
 # Split data/log/sap disks
 resource "google_compute_disk" "sap_hana_data_disks" {
-  count   = var.use_single_shared_data_log_disk ? 0 : var.sap_hana_scaleout_nodes + 1
-  name    = format("${var.instance_name}-data%05d", count.index + 1)
-  type    = local.final_data_disk_type
-  zone    = var.zone
-  size    = local.data_pd_size
-  project = var.project_id
-  provisioned_iops = local.final_data_iops
+  count                  = var.use_single_shared_data_log_disk ? 0 : var.sap_hana_scaleout_nodes + 1
+  name                   = format("${var.instance_name}-data%05d", count.index + 1)
+  type                   = local.final_data_disk_type
+  zone                   = var.zone
+  size                   = local.data_pd_size
+  project                = var.project_id
+  provisioned_iops       = local.final_data_iops
   provisioned_throughput = local.final_data_throughput
 }
 
 resource "google_compute_disk" "sap_hana_log_disks" {
-  count   = var.use_single_shared_data_log_disk ? 0 : var.sap_hana_scaleout_nodes + 1
-  name    = format("${var.instance_name}-log%05d", count.index + 1)
-  type    = local.final_log_disk_type
-  zone    = var.zone
-  size    = local.log_pd_size
-  project = var.project_id
-  provisioned_iops = local.final_log_iops
+  count                  = var.use_single_shared_data_log_disk ? 0 : var.sap_hana_scaleout_nodes + 1
+  name                   = format("${var.instance_name}-log%05d", count.index + 1)
+  type                   = local.final_log_disk_type
+  zone                   = var.zone
+  size                   = local.log_pd_size
+  project                = var.project_id
+  provisioned_iops       = local.final_log_iops
   provisioned_throughput = local.final_log_throughput
 }
 resource "google_compute_disk" "sap_hana_shared_disk" {
-  count   = local.make_shared_disk ? 1 : 0
-  name    = format("${var.instance_name}-shared%05d", count.index + 1)
-  type    = local.final_shared_disk_type
-  zone    = var.zone
-  size    = local.shared_pd_size
-  project = var.project_id
-  provisioned_iops = local.final_shared_iops
+  count                  = local.make_shared_disk ? 1 : 0
+  name                   = format("${var.instance_name}-shared%05d", count.index + 1)
+  type                   = local.final_shared_disk_type
+  zone                   = var.zone
+  size                   = local.shared_pd_size
+  project                = var.project_id
+  provisioned_iops       = local.final_shared_iops
   provisioned_throughput = local.final_shared_throughput
 }
 resource "google_compute_disk" "sap_hana_usrsap_disks" {
-  count   = var.use_single_shared_data_log_disk ? 0 : var.sap_hana_scaleout_nodes + 1
-  name    = format("${var.instance_name}-usrsap%05d", count.index + 1)
-  type    = local.final_usrsap_disk_type
-  zone    = var.zone
-  size    = local.usrsap_pd_size
-  project = var.project_id
-  provisioned_iops = local.final_usrsap_iops
+  count                  = var.use_single_shared_data_log_disk ? 0 : var.sap_hana_scaleout_nodes + 1
+  name                   = format("${var.instance_name}-usrsap%05d", count.index + 1)
+  type                   = local.final_usrsap_disk_type
+  zone                   = var.zone
+  size                   = local.usrsap_pd_size
+  project                = var.project_id
+  provisioned_iops       = local.final_usrsap_iops
   provisioned_throughput = local.final_usrsap_throughput
 }
 
 
 resource "google_compute_disk" "sap_hana_backup_disk" {
-  count = local.use_backup_disk ? 1 : 0
-  name    = "${var.instance_name}-backup"
-  type    = var.backup_disk_type
-  zone    = var.zone
-  size    = local.backup_size
-  project = var.project_id
-  provisioned_iops = local.final_backup_iops
+  count                  = local.use_backup_disk ? 1 : 0
+  name                   = "${var.instance_name}-backup"
+  type                   = local.final_backup_disk_type
+  zone                   = var.zone
+  size                   = local.backup_size
+  project                = var.project_id
+  provisioned_iops       = local.final_backup_iops
   provisioned_throughput = local.final_backup_throughput
 }
 
@@ -387,8 +414,14 @@ resource "google_compute_instance" "sap_hana_primary_instance" {
     source      = google_compute_disk.sap_hana_boot_disks[0].self_link
   }
 
+  dynamic "scheduling" {
+    for_each = local.native_bm ? [1] : []
+    content {
+      on_host_maintenance = "TERMINATE"
+    }
+  }
 
-  dynamic attached_disk {
+  dynamic "attached_disk" {
     for_each = var.use_single_shared_data_log_disk ? [1] : []
     content {
       device_name = google_compute_disk.sap_hana_unified_disks[0].name
@@ -396,35 +429,35 @@ resource "google_compute_instance" "sap_hana_primary_instance" {
     }
   }
 
-  dynamic attached_disk {
+  dynamic "attached_disk" {
     for_each = var.use_single_shared_data_log_disk ? [] : [1]
     content {
       device_name = google_compute_disk.sap_hana_data_disks[0].name
       source      = google_compute_disk.sap_hana_data_disks[0].self_link
     }
   }
-  dynamic attached_disk {
+  dynamic "attached_disk" {
     for_each = var.use_single_shared_data_log_disk ? [] : [1]
     content {
       device_name = google_compute_disk.sap_hana_log_disks[0].name
       source      = google_compute_disk.sap_hana_log_disks[0].self_link
     }
   }
-  dynamic attached_disk {
+  dynamic "attached_disk" {
     for_each = length(google_compute_disk.sap_hana_shared_disk) > 0 ? [1] : []
     content {
       device_name = google_compute_disk.sap_hana_shared_disk[0].name
       source      = google_compute_disk.sap_hana_shared_disk[0].self_link
     }
   }
-  dynamic attached_disk {
+  dynamic "attached_disk" {
     for_each = var.use_single_shared_data_log_disk ? [] : [1]
     content {
       device_name = google_compute_disk.sap_hana_usrsap_disks[0].name
       source      = google_compute_disk.sap_hana_usrsap_disks[0].self_link
     }
   }
-  dynamic attached_disk {
+  dynamic "attached_disk" {
     for_each = length(google_compute_disk.sap_hana_backup_disk) > 0 ? [1] : []
     content {
       device_name = google_compute_disk.sap_hana_backup_disk[0].name
@@ -437,7 +470,7 @@ resource "google_compute_instance" "sap_hana_primary_instance" {
   network_interface {
     subnetwork = local.subnetwork_uri
     network_ip = google_compute_address.sap_hana_vm_ip.address
-    nic_type = var.nic_type == "" ? null : var.nic_type
+    nic_type   = var.nic_type == "" ? null : var.nic_type
     # we only include access_config if public_ip is true, an empty access_config
     # will create an ephemeral public ip
     dynamic "access_config" {
@@ -490,6 +523,7 @@ resource "google_compute_instance" "sap_hana_primary_instance" {
     sap_hana_shared_disk            = local.make_shared_disk
     sap_hana_data_disk_type         = local.final_data_disk_type
     enable_fast_restart             = var.enable_fast_restart
+    native_bm                       = local.native_bm
     template-type                   = "TERRAFORM"
   }
 
@@ -514,7 +548,14 @@ resource "google_compute_instance" "sap_hana_worker_instances" {
     source      = google_compute_disk.sap_hana_boot_disks[count.index + 1].self_link
   }
 
-  dynamic attached_disk {
+  dynamic "scheduling" {
+    for_each = local.native_bm ? [1] : []
+    content {
+      on_host_maintenance = "TERMINATE"
+    }
+  }
+
+  dynamic "attached_disk" {
     for_each = var.use_single_shared_data_log_disk ? [1] : []
     content {
       device_name = google_compute_disk.sap_hana_unified_worker_disks[count.index].name
@@ -522,21 +563,21 @@ resource "google_compute_instance" "sap_hana_worker_instances" {
     }
   }
 
-  dynamic attached_disk {
+  dynamic "attached_disk" {
     for_each = var.use_single_shared_data_log_disk ? [] : [1]
     content {
       device_name = google_compute_disk.sap_hana_data_disks[count.index + 1].name
       source      = google_compute_disk.sap_hana_data_disks[count.index + 1].self_link
     }
   }
-  dynamic attached_disk {
+  dynamic "attached_disk" {
     for_each = var.use_single_shared_data_log_disk ? [] : [1]
     content {
       device_name = google_compute_disk.sap_hana_log_disks[count.index + 1].name
       source      = google_compute_disk.sap_hana_log_disks[count.index + 1].self_link
     }
   }
-  dynamic attached_disk {
+  dynamic "attached_disk" {
     for_each = var.use_single_shared_data_log_disk ? [] : [1]
     content {
       device_name = google_compute_disk.sap_hana_usrsap_disks[count.index + 1].name
@@ -549,7 +590,7 @@ resource "google_compute_instance" "sap_hana_worker_instances" {
   network_interface {
     subnetwork = local.subnetwork_uri
     network_ip = google_compute_address.sap_hana_worker_ip[count.index].address
-    nic_type = var.nic_type == "" ? null : var.nic_type
+    nic_type   = var.nic_type == "" ? null : var.nic_type
     # we only include access_config if public_ip is true, an empty access_config
     # will create an ephemeral public ip
     dynamic "access_config" {
@@ -600,6 +641,7 @@ resource "google_compute_instance" "sap_hana_worker_instances" {
     sap_hana_backup_disk            = false
     sap_hana_shared_disk            = false
     enable_fast_restart             = var.enable_fast_restart
+    native_bm                       = local.native_bm
     template-type                   = "TERRAFORM"
   }
 
