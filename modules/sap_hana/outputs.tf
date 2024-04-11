@@ -21,5 +21,5 @@ output "sap_hana_primary_self_link" {
 
 output "sap_hana_worker_self_links" {
   description = "SAP HANA self-links for the secondary instances created"
-  value       = google_compute_instance.sap_hana_worker_instances.*.self_link
+  value       = google_compute_instance.sap_hana_worker_instances[*].self_link
 }
