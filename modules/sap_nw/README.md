@@ -24,7 +24,6 @@ Install Terraform on the machine you would like to use to deploy from by followi
 
 For additional information see https://www.terraform.io/docs/index.html and https://cloud.google.com/docs/terraform
 
-
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
@@ -56,3 +55,28 @@ For additional information see https://www.terraform.io/docs/index.html and http
 | sap\_nw\_self\_link | SAP NW self-link for instance created |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+## Requirements
+
+These sections describe requirements for using this module.
+
+### Software
+
+The following dependencies must be available:
+
+- [Terraform][terraform] v0.13
+- [Terraform Provider for GCP][terraform-provider-gcp] plugin v4.0
+
+## Contributing
+
+Refer to the [contribution guidelines](./CONTRIBUTING.md) for
+information on contributing to this module.
+
+[iam-module]: https://registry.terraform.io/modules/terraform-google-modules/iam/google
+[project-factory-module]: https://registry.terraform.io/modules/terraform-google-modules/project-factory/google
+[terraform-provider-gcp]: https://www.terraform.io/docs/providers/google/index.html
+[terraform]: https://www.terraform.io/downloads.html
+
+## Security Disclosures
+
+Please see our [security disclosure process](./SECURITY.md).
