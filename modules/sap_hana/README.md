@@ -1,4 +1,4 @@
-# Terraform for SAP NW HA for Google Cloud
+# Terraform for SAP HANA for Google Cloud
 
 This template follows the documented steps
 https://cloud.google.com/solutions/sap/docs/certifications-sap-hana and deploys
@@ -13,8 +13,8 @@ https://learn.hashicorp.com/tutorials/terraform/install-cli?in=terraform/gcp-get
 ## How to deploy
 
 1.  Download .tf file into an empty directory `curl
-    https://storage.googleapis.com/cloudsapdeploy/deploymentmanager/latest/dm-templates/sap_nw_ha/terraform/sap_nw_ha.tf
-    -o sap_nw_ha.tf`
+    https://storage.googleapis.com/cloudsapdeploy/terraform/latest/terraform/sap_hana/terraform/sap_hana.tf
+    -o sap_hana.tf`
 
 2.  Fill in mandatory variables and if the desired optional variable in the .tf
     file.
@@ -29,7 +29,7 @@ https://learn.hashicorp.com/tutorials/terraform/install-cli?in=terraform/gcp-get
 
 4.  Continue installation of SAP software and setup of remaining cluster
     resources as per documentation at
-    https://cloud.google.com/solutions/sap/docs/sap-hana-deployment-guide
+    https://cloud.google.com/solutions/sap/docs/sap-hana-deployment-guide-tf
 
 ## Additional information
 
@@ -115,3 +115,28 @@ https://cloud.google.com/docs/terraform
 | sap\_hana\_worker\_self\_links | SAP HANA self-links for the secondary instances created |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+## Requirements
+
+These sections describe requirements for using this module.
+
+### Software
+
+The following dependencies must be available:
+
+- [Terraform][terraform] v0.13
+- [Terraform Provider for GCP][terraform-provider-gcp] plugin v4.0
+
+## Contributing
+
+Refer to the [contribution guidelines](./CONTRIBUTING.md) for
+information on contributing to this module.
+
+[iam-module]: https://registry.terraform.io/modules/terraform-google-modules/iam/google
+[project-factory-module]: https://registry.terraform.io/modules/terraform-google-modules/project-factory/google
+[terraform-provider-gcp]: https://www.terraform.io/docs/providers/google/index.html
+[terraform]: https://www.terraform.io/downloads.html
+
+## Security Disclosures
+
+Please see our [security disclosure process](./SECURITY.md).

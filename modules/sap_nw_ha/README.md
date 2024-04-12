@@ -1,5 +1,5 @@
 # Terraform for SAP NW HA for Google Cloud
-This template follows the documented steps https://cloud.google.com/solutions/sap/docs/netweaver-ha-config-sles and deploys GCP and Pacemaker resources up to the installation of SAP's central services.
+This template follows the documented steps https://cloud.google.com/solutions/sap/docs/netweaver-ha-config-sles and https://cloud.google.com/solutions/sap/docs/netweaver-ha-config-rhel and deploys GCP and Pacemaker resources up to the installation of SAP's central services.
 
 ## Set up Terraform
 
@@ -18,11 +18,12 @@ Install Terraform on the machine you would like to use to deploy from by followi
   3. Run `terrafom apply` to deploy the resources
   4. Run `terrafom destroy` to remove the resources
 
-4. Continue installation of SAP software and setup of remaining cluster resources as per documentation at https://cloud.google.com/solutions/sap/docs/netweaver-ha-config-sles#install_scs_and_ers
+4. Continue installation of SAP software and setup of remaining cluster resources as per documentation at https://cloud.google.com/solutions/sap/docs/netweaver-ha-config-sles or https://cloud.google.com/solutions/sap/docs/netweaver-ha-config-rhel
 
 ## Additional information
 
 For additional information see https://www.terraform.io/docs/index.html and https://cloud.google.com/docs/terraform
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
@@ -88,3 +89,28 @@ For additional information see https://www.terraform.io/docs/index.html and http
 | scs\_instance | SCS instance |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+## Requirements
+
+These sections describe requirements for using this module.
+
+### Software
+
+The following dependencies must be available:
+
+- [Terraform][terraform] v0.13
+- [Terraform Provider for GCP][terraform-provider-gcp] plugin v4.0
+
+## Contributing
+
+Refer to the [contribution guidelines](./CONTRIBUTING.md) for
+information on contributing to this module.
+
+[iam-module]: https://registry.terraform.io/modules/terraform-google-modules/iam/google
+[project-factory-module]: https://registry.terraform.io/modules/terraform-google-modules/project-factory/google
+[terraform-provider-gcp]: https://www.terraform.io/docs/providers/google/index.html
+[terraform]: https://www.terraform.io/downloads.html
+
+## Security Disclosures
+
+Please see our [security disclosure process](./SECURITY.md).
