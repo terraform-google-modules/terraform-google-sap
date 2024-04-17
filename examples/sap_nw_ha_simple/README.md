@@ -4,6 +4,19 @@ This example illustrates how to use the latest release of the terraform module f
 for provisioning SAP HANA with HA
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| project\_id | Project id where the instances will be created. | `string` | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| sap\_nw\_ha\_ers\_instance\_self\_link | Self-link for the primary SAP NW instance created. |
+| sap\_nw\_ha\_scs\_instance\_self\_link | Self-link for the primary SAP NW instance created. |
+
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 To provision this example, run the following from within this directory:
