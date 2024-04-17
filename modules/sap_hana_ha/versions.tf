@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 terraform {
   required_version = ">=0.12.6"
   required_providers {
@@ -21,9 +20,13 @@ terraform {
       source  = "hashicorp/google"
       version = ">= 4.0.0, < 6"
     }
-  }
-
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-sap:sap_hana_ha/v1.1.2"
+    assert = {
+      source  = "bwoznicki/assert"
+      version = "0.0.1"
+    }
+    validation = {
+      source  = "tlkamp/validation"
+      version = "1.0.0"
+    }
   }
 }
