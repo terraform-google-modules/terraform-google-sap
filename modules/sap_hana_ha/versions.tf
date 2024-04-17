@@ -29,4 +29,8 @@ terraform {
       version = "1.0.0"
     }
   }
+
+  provider_meta "google" {
+    module_name = "blueprints/terraform/terraform-google-sap:sap_hana_ha/v1.1.2"
+  }
 }
