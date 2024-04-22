@@ -106,3 +106,13 @@ resource "google_filestore_instance" "sap_fstore_1" {
     update = "30m"
   }
 }
+
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 4.0.0, < 6"
+    }
+  }
+  required_version = ">=0.12.6"
+}
