@@ -49,23 +49,23 @@ Functional example is included in the
 | db\_machine\_type | db\_machine\_type | `string` | `"n1-highmem-32"` | no |
 | db\_sid | db\_sid | `string` | `"HD1"` | no |
 | db\_vm\_names | db\_vm\_names | `list` | `[]` | no |
-| deployment\_name | deployment\_name | `any` | n/a | yes |
+| deployment\_name | deployment\_name | `string` | n/a | yes |
 | disk\_type | disk\_type | `string` | `"pd-balanced"` | no |
 | dns\_zone\_name\_suffix | dns\_zone\_name\_suffix | `string` | `"gcp.sapcloud.goog."` | no |
 | existing\_dns\_zone\_name | existing\_dns\_zone\_name | `string` | `""` | no |
 | filestore\_gb | filestore\_gb | `number` | `1024` | no |
-| filestore\_location | filestore\_location | `any` | n/a | yes |
+| filestore\_location | filestore\_location | `string` | n/a | yes |
 | filestore\_tier | filestore\_tier | `string` | `"ENTERPRISE"` | no |
-| gcp\_project\_id | gcp\_project\_id | `any` | n/a | yes |
+| gcp\_project\_id | gcp\_project\_id | `string` | n/a | yes |
 | hana\_secret\_name | hana\_secret\_name | `string` | `"default"` | no |
 | is\_test | is\_test | `string` | `"false"` | no |
-| media\_bucket\_name | media\_bucket\_name | `any` | n/a | yes |
+| media\_bucket\_name | media\_bucket\_name | `string` | n/a | yes |
 | network\_project | network\_project | `string` | `""` | no |
 | package\_location | package\_location | `string` | `"gs://cloudsapdeploy/deployments/latest"` | no |
 | primary\_startup\_url | primary\_startup\_url | `string` | `"gs://cloudsapdeploy/deployments/latest/startup/ansible_runner_startup.sh"` | no |
 | public\_ansible\_runner\_ip | public\_ansible\_runner\_ip | `bool` | `true` | no |
-| public\_ip | public\_ip | `bool` | `false` | no |
-| region\_name | region\_name | `any` | n/a | yes |
+| public\_ip | bool | `string` | `false` | no |
+| region\_name | region\_name | `string` | n/a | yes |
 | sap\_boot\_disk\_image | sap\_boot\_disk\_image | `string` | `"projects/rhel-sap-cloud/global/images/rhel-8-4-sap-v20220719"` | no |
 | sap\_boot\_disk\_image\_app | sap\_boot\_disk\_image\_app | `string` | `""` | no |
 | sap\_boot\_disk\_image\_ascs | sap\_boot\_disk\_image\_ascs | `string` | `""` | no |
@@ -78,8 +78,8 @@ Functional example is included in the
 | virtualize\_disks | virtualize\_disks | `bool` | `true` | no |
 | vm\_prefix | vm\_prefix | `string` | `"sap"` | no |
 | vpc\_name | vpc\_name | `string` | `"default"` | no |
-| zone1\_name | zone1\_name | `any` | n/a | yes |
-| zone2\_name | zone2\_name | `any` | n/a | yes |
+| zone1\_name | zone1\_name | `string` | n/a | yes |
+| zone2\_name | zone2\_name | `string` | n/a | yes |
 
 ## Outputs
 
