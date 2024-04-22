@@ -43,7 +43,7 @@ resource "google_compute_disk" "sapddb11" {
   lifecycle {
     ignore_changes = [snapshot, image]
   }
-  name    = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}" : "${var.vm_prefix}db11"
+  name    = length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11"
   project = data.google_project.sap-project.project_id
   size    = 50
   timeouts {
@@ -142,7 +142,7 @@ resource "google_compute_disk" "sapddb12" {
   lifecycle {
     ignore_changes = [snapshot, image]
   }
-  name    = length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}" : "${var.vm_prefix}db12"
+  name    = length(var.db_vm_names) > 1 ? var.db_vm_names[1] : "${var.vm_prefix}db12"
   project = data.google_project.sap-project.project_id
   size    = 50
   timeouts {
@@ -312,7 +312,7 @@ resource "google_compute_instance" "sapddb11" {
     ssh-keys       = ""
   }
   min_cpu_platform = lookup(local.cpu_platform_map, var.db_machine_type, "Automatic")
-  name             = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}" : "${var.vm_prefix}db11"
+  name             = length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11"
   network_interface {
     dynamic "access_config" {
       content {
@@ -377,7 +377,7 @@ resource "google_compute_instance" "sapddb12" {
     ssh-keys       = ""
   }
   min_cpu_platform = lookup(local.cpu_platform_map, var.db_machine_type, "Automatic")
-  name             = length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}" : "${var.vm_prefix}db12"
+  name             = length(var.db_vm_names) > 1 ? var.db_vm_names[1] : "${var.vm_prefix}db12"
   network_interface {
     dynamic "access_config" {
       content {
@@ -466,7 +466,7 @@ resource "google_dns_record_set" "to_vm_sapddb11" {
   managed_zone = data.google_dns_managed_zone.sap_zone.name
   name         = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}.${data.google_dns_managed_zone.sap_zone.dns_name}" : "${var.vm_prefix}db11.${data.google_dns_managed_zone.sap_zone.dns_name}"
   project      = data.google_project.sap-project.project_id
-  rrdatas      = [google_compute_instance.sapddb11.network_interface.0.network_ip]
+  rrdatas      = [google_compute_instance.sapddb11.network_interface[0].network_ip]
   ttl          = 300
   type         = "A"
 }
@@ -475,7 +475,7 @@ resource "google_dns_record_set" "to_vm_sapddb12" {
   managed_zone = data.google_dns_managed_zone.sap_zone.name
   name         = length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}.${data.google_dns_managed_zone.sap_zone.dns_name}" : "${var.vm_prefix}db12.${data.google_dns_managed_zone.sap_zone.dns_name}"
   project      = data.google_project.sap-project.project_id
-  rrdatas      = [google_compute_instance.sapddb12.network_interface.0.network_ip]
+  rrdatas      = [google_compute_instance.sapddb12.network_interface[0].network_ip]
   ttl          = 300
   type         = "A"
 }
@@ -514,6 +514,12 @@ resource "google_project_iam_member" "db_sa_role_6" {
   member  = "serviceAccount:${google_service_account.service_account_db.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/compute.viewer"
+}
+
+resource "google_project_iam_member" "db_sa_role_7" {
+  member  = "serviceAccount:${google_service_account.service_account_db.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/workloadmanager.insightWriter"
 }
 
 resource "google_service_account" "service_account_db" {

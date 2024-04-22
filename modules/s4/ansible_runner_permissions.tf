@@ -14,7 +14,7 @@
 
 # This will give the ansible runner service account required gcs permissions
 resource "google_storage_bucket_iam_member" "ansible_sa_test_role_1" {
-  bucket = split("/", "${var.package_location}")[2]
+  bucket = split("/", var.package_location)[2]
   role   = "roles/storage.admin"
   member = "serviceAccount:${google_service_account.service_account_ansible.email}"
 }
