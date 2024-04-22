@@ -254,7 +254,7 @@ resource "google_dns_record_set" "to_vm_sapdapp11" {
   name         = "${var.vm_prefix}app1${1 + (count.index * 2)}.${data.google_dns_managed_zone.sap_zone.dns_name}"
   project      = data.google_project.sap-project.project_id
   rrdatas = [
-    google_compute_instance.sapdapp11[count.index].network_interface.0.network_ip
+    google_compute_instance.sapdapp11[count.index].network_interface[0].network_ip
   ]
   ttl  = 300
   type = "A"
@@ -266,7 +266,7 @@ resource "google_dns_record_set" "to_vm_sapdapp12" {
   name         = "${var.vm_prefix}app1${2 + (count.index * 2)}.${data.google_dns_managed_zone.sap_zone.dns_name}"
   project      = data.google_project.sap-project.project_id
   rrdatas = [
-    google_compute_instance.sapdapp12[count.index].network_interface.0.network_ip
+    google_compute_instance.sapdapp12[count.index].network_interface[0].network_ip
   ]
   ttl  = 300
   type = "A"
@@ -300,6 +300,12 @@ resource "google_project_iam_member" "app_sa_role_5" {
   member  = "serviceAccount:${google_service_account.service_account_app.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/compute.viewer"
+}
+
+resource "google_project_iam_member" "app_sa_role_6" {
+  member  = "serviceAccount:${google_service_account.service_account_app.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/workloadmanager.insightWriter"
 }
 
 resource "google_service_account" "service_account_app" {

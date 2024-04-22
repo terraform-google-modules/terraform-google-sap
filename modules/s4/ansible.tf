@@ -60,7 +60,7 @@ resource "google_compute_instance" "sapdansible11" {
     active_region  = true
     component      = "ansible"
     component_type = "generic"
-    environment    = "${var.deployment_name}"
+    environment    = var.deployment_name
     service_group  = "ansible_runner"
   }
   lifecycle {
@@ -73,9 +73,9 @@ resource "google_compute_instance" "sapdansible11" {
   machine_type = "n1-standard-16"
   metadata = {
     active_region             = true
-    configuration_bucket_name = "${data.google_storage_bucket.configuration.name}"
-    dns_zone_name             = "${data.google_dns_managed_zone.sap_zone.name}"
-    is_test                   = "${var.is_test}"
+    configuration_bucket_name = data.google_storage_bucket.configuration.name
+    dns_zone_name             = data.google_dns_managed_zone.sap_zone.name
+    is_test                   = var.is_test
     media_bucket_name         = var.media_bucket_name
     ssh-keys                  = ""
     startup-script            = "gsutil cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}"
@@ -116,6 +116,12 @@ resource "google_project_iam_member" "ansible_sa_role_10" {
   member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/iam.roleViewer"
+}
+
+resource "google_project_iam_member" "ansible_sa_role_11" {
+  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  project = data.google_project.sap-project.project_id
+  role    = "roles/workloadmanager.insightWriter"
 }
 
 resource "google_project_iam_member" "ansible_sa_role_2" {
