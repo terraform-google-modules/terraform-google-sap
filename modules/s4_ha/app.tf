@@ -18,6 +18,10 @@ data "google_compute_subnetwork" "sap-subnet-app-1" {
   region  = var.region_name
 }
 
+data "google_service_account" "service_account_app" {
+  account_id = var.app_sa_email == "" ? google_service_account.service_account_app[0].email : var.app_sa_email
+}
+
 resource "google_compute_address" "sapdapp11-1" {
   address_type = "INTERNAL"
   count        = var.app_vms_multiplier
@@ -187,7 +191,7 @@ resource "google_compute_instance" "sapdapp11" {
     preemptible         = false
   }
   service_account {
-    email  = google_service_account.service_account_app.email
+    email  = data.google_service_account.service_account_app.email
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
   tags = ["${var.deployment_name}-s4-comms"]
@@ -241,7 +245,7 @@ resource "google_compute_instance" "sapdapp12" {
     preemptible         = false
   }
   service_account {
-    email  = google_service_account.service_account_app.email
+    email  = data.google_service_account.service_account_app.email
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
   tags = ["${var.deployment_name}-s4-comms"]
@@ -273,42 +277,49 @@ resource "google_dns_record_set" "to_vm_sapdapp12" {
 }
 
 resource "google_project_iam_member" "app_sa_role_1" {
-  member  = "serviceAccount:${google_service_account.service_account_app.email}"
+  count   = var.app_sa_email == "" ? 1 : 0
+  member  = "serviceAccount:${data.google_service_account.service_account_app.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/storage.objectViewer"
 }
 
 resource "google_project_iam_member" "app_sa_role_2" {
-  member  = "serviceAccount:${google_service_account.service_account_app.email}"
+  count   = var.app_sa_email == "" ? 1 : 0
+  member  = "serviceAccount:${data.google_service_account.service_account_app.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/monitoring.metricWriter"
 }
 
 resource "google_project_iam_member" "app_sa_role_3" {
-  member  = "serviceAccount:${google_service_account.service_account_app.email}"
+  count   = var.app_sa_email == "" ? 1 : 0
+  member  = "serviceAccount:${data.google_service_account.service_account_app.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/logging.admin"
 }
 
 resource "google_project_iam_member" "app_sa_role_4" {
-  member  = "serviceAccount:${google_service_account.service_account_app.email}"
+  count   = var.app_sa_email == "" ? 1 : 0
+  member  = "serviceAccount:${data.google_service_account.service_account_app.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/monitoring.admin"
 }
 
 resource "google_project_iam_member" "app_sa_role_5" {
-  member  = "serviceAccount:${google_service_account.service_account_app.email}"
+  count   = var.app_sa_email == "" ? 1 : 0
+  member  = "serviceAccount:${data.google_service_account.service_account_app.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/compute.viewer"
 }
 
 resource "google_project_iam_member" "app_sa_role_6" {
-  member  = "serviceAccount:${google_service_account.service_account_app.email}"
+  count   = var.app_sa_email == "" ? 1 : 0
+  member  = "serviceAccount:${data.google_service_account.service_account_app.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/workloadmanager.insightWriter"
 }
 
 resource "google_service_account" "service_account_app" {
   account_id = "${var.deployment_name}-app"
+  count      = var.app_sa_email == "" ? 1 : 0
   project    = data.google_project.sap-project.project_id
 }

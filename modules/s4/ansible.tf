@@ -18,6 +18,10 @@ data "google_compute_subnetwork" "sap-subnet-ansible-1" {
   region  = var.region_name
 }
 
+data "google_service_account" "service_account_ansible" {
+  account_id = var.ansible_sa_email == "" ? google_service_account.service_account_ansible[0].email : var.ansible_sa_email
+}
+
 resource "google_compute_address" "sapdansible11-1" {
   address_type = "INTERNAL"
   name         = "${var.deployment_name}-ansible-runner-internal"
@@ -99,7 +103,7 @@ resource "google_compute_instance" "sapdansible11" {
     preemptible         = false
   }
   service_account {
-    email  = google_service_account.service_account_ansible.email
+    email  = data.google_service_account.service_account_ansible.email
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
   tags = ["${var.deployment_name}-s4-comms"]
@@ -107,90 +111,105 @@ resource "google_compute_instance" "sapdansible11" {
 }
 
 resource "google_project_iam_member" "ansible_sa_role_1" {
-  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  count   = var.ansible_sa_email == "" ? 1 : 0
+  member  = "serviceAccount:${data.google_service_account.service_account_ansible.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/compute.instanceAdmin.v1"
 }
 
 resource "google_project_iam_member" "ansible_sa_role_10" {
-  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  count   = var.ansible_sa_email == "" ? 1 : 0
+  member  = "serviceAccount:${data.google_service_account.service_account_ansible.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/iam.roleViewer"
 }
 
 resource "google_project_iam_member" "ansible_sa_role_11" {
-  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  count   = var.ansible_sa_email == "" ? 1 : 0
+  member  = "serviceAccount:${data.google_service_account.service_account_ansible.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/workloadmanager.insightWriter"
 }
 
 resource "google_project_iam_member" "ansible_sa_role_2" {
-  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  count   = var.ansible_sa_email == "" ? 1 : 0
+  member  = "serviceAccount:${data.google_service_account.service_account_ansible.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/storage.objectViewer"
 }
 
 resource "google_project_iam_member" "ansible_sa_role_3" {
-  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  count   = var.ansible_sa_email == "" ? 1 : 0
+  member  = "serviceAccount:${data.google_service_account.service_account_ansible.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/dns.admin"
 }
 
 resource "google_project_iam_member" "ansible_sa_role_4" {
-  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  count   = var.ansible_sa_email == "" ? 1 : 0
+  member  = "serviceAccount:${data.google_service_account.service_account_ansible.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/logging.admin"
 }
 
 resource "google_project_iam_member" "ansible_sa_role_5" {
-  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  count   = var.ansible_sa_email == "" ? 1 : 0
+  member  = "serviceAccount:${data.google_service_account.service_account_ansible.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/iam.serviceAccountUser"
 }
 
 resource "google_project_iam_member" "ansible_sa_role_6" {
-  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  count   = var.ansible_sa_email == "" ? 1 : 0
+  member  = "serviceAccount:${data.google_service_account.service_account_ansible.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/secretmanager.viewer"
 }
 
 resource "google_project_iam_member" "ansible_sa_role_7" {
-  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  count   = var.ansible_sa_email == "" ? 1 : 0
+  member  = "serviceAccount:${data.google_service_account.service_account_ansible.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/secretmanager.secretAccessor"
 }
 
 resource "google_project_iam_member" "ansible_sa_role_8" {
-  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  count   = var.ansible_sa_email == "" ? 1 : 0
+  member  = "serviceAccount:${data.google_service_account.service_account_ansible.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/monitoring.admin"
 }
 
 resource "google_project_iam_member" "ansible_sa_role_9" {
-  member  = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  count   = var.ansible_sa_email == "" ? 1 : 0
+  member  = "serviceAccount:${data.google_service_account.service_account_ansible.email}"
   project = data.google_project.sap-project.project_id
   role    = "roles/compute.viewer"
 }
 
 resource "google_service_account" "service_account_ansible" {
   account_id = "${var.deployment_name}-ansible"
+  count      = var.ansible_sa_email == "" ? 1 : 0
   project    = data.google_project.sap-project.project_id
 }
 
 resource "google_service_account_iam_member" "ansible_sa_user_of_app" {
-  member             = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  count              = var.ansible_sa_email == "" ? 1 : 0
+  member             = "serviceAccount:${data.google_service_account.service_account_ansible.email}"
   role               = "roles/iam.serviceAccountUser"
-  service_account_id = google_service_account.service_account_app.name
+  service_account_id = data.google_service_account.service_account_app.name
 }
 
 resource "google_service_account_iam_member" "ansible_sa_user_of_ascs" {
-  member             = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  count              = var.ansible_sa_email == "" ? 1 : 0
+  member             = "serviceAccount:${data.google_service_account.service_account_ansible.email}"
   role               = "roles/iam.serviceAccountUser"
-  service_account_id = google_service_account.service_account_ascs.name
+  service_account_id = data.google_service_account.service_account_ascs.name
 }
 
 resource "google_service_account_iam_member" "ansible_sa_user_of_db" {
-  member             = "serviceAccount:${google_service_account.service_account_ansible.email}"
+  count              = var.ansible_sa_email == "" ? 1 : 0
+  member             = "serviceAccount:${data.google_service_account.service_account_ansible.email}"
   role               = "roles/iam.serviceAccountUser"
-  service_account_id = google_service_account.service_account_db.name
+  service_account_id = data.google_service_account.service_account_db.name
 }

@@ -30,16 +30,20 @@ Functional example is included in the
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | allow\_stopping\_for\_update | allow\_stopping\_for\_update | `bool` | `true` | no |
+| ansible\_sa\_email | ansible\_sa\_email | `string` | `""` | no |
 | app\_disk\_export\_interfaces\_size | app\_disk\_export\_interfaces\_size | `number` | `128` | no |
 | app\_disk\_usr\_sap\_size | app\_disk\_usr\_sap\_size | `number` | `128` | no |
 | app\_machine\_type | app\_machine\_type | `string` | `"n1-highem-32"` | no |
+| app\_sa\_email | app\_sa\_email | `string` | `""` | no |
 | app\_sid | app\_sid | `string` | `"ED1"` | no |
 | app\_vms\_multiplier | Multiplies app VMs. E.g. if there is 2 VMs then with value 3 each VM will be multiplied by 3 (so there will be 6 total VMs) | `number` | `1` | no |
 | application\_secret\_name | application\_secret\_name | `string` | `"default"` | no |
 | ascs\_disk\_usr\_sap\_size | ascs\_disk\_usr\_sap\_size | `number` | `128` | no |
 | ascs\_machine\_type | ascs\_machine\_type | `string` | `"n1-standard-8"` | no |
+| ascs\_sa\_email | ascs\_sa\_email | `string` | `""` | no |
 | ascs\_vm\_names | ascs\_vm\_names | `list` | `[]` | no |
 | configuration\_bucket\_name | configuration\_bucket\_name | `string` | `""` | no |
+| create\_comms\_firewall | create\_comms\_firewall | `bool` | `true` | no |
 | db\_disk\_backup\_size | db\_disk\_backup\_size | `number` | `128` | no |
 | db\_disk\_hana\_data\_size | db\_disk\_hana\_data\_size | `number` | `249` | no |
 | db\_disk\_hana\_log\_size | db\_disk\_hana\_log\_size | `number` | `104` | no |
@@ -47,6 +51,7 @@ Functional example is included in the
 | db\_disk\_hana\_shared\_size | db\_disk\_hana\_shared\_size | `number` | `208` | no |
 | db\_disk\_usr\_sap\_size | db\_disk\_usr\_sap\_size | `number` | `32` | no |
 | db\_machine\_type | db\_machine\_type | `string` | `"n1-highmem-32"` | no |
+| db\_sa\_email | db\_sa\_email | `string` | `""` | no |
 | db\_sid | db\_sid | `string` | `"HD1"` | no |
 | db\_vm\_names | db\_vm\_names | `list` | `[]` | no |
 | deployment\_name | deployment\_name | `string` | n/a | yes |
@@ -64,7 +69,7 @@ Functional example is included in the
 | package\_location | package\_location | `string` | `"gs://cloudsapdeploy/deployments/latest"` | no |
 | primary\_startup\_url | primary\_startup\_url | `string` | `"gs://cloudsapdeploy/deployments/latest/startup/ansible_runner_startup.sh"` | no |
 | public\_ansible\_runner\_ip | public\_ansible\_runner\_ip | `bool` | `true` | no |
-| public\_ip | bool | `string` | `false` | no |
+| public\_ip | public\_ip | `bool` | `false` | no |
 | region\_name | region\_name | `string` | n/a | yes |
 | sap\_boot\_disk\_image | sap\_boot\_disk\_image | `string` | `"projects/rhel-sap-cloud/global/images/rhel-8-4-sap-v20220719"` | no |
 | sap\_boot\_disk\_image\_app | sap\_boot\_disk\_image\_app | `string` | `""` | no |
@@ -79,7 +84,6 @@ Functional example is included in the
 | vm\_prefix | vm\_prefix | `string` | `"sap"` | no |
 | vpc\_name | vpc\_name | `string` | `"default"` | no |
 | zone1\_name | zone1\_name | `string` | n/a | yes |
-| zone2\_name | zone2\_name | `string` | n/a | yes |
 
 ## Outputs
 

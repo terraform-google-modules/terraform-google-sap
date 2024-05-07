@@ -53,6 +53,7 @@ resource "google_compute_firewall" "intra_vm_communication" {
   allow {
     protocol = "udp"
   }
+  count       = var.create_comms_firewall ? 1 : 0
   description = "Enables intra VM communications"
   name        = "${var.deployment_name}-communication-firewall"
   network     = data.google_compute_network.sap-vpc.self_link
