@@ -18,6 +18,12 @@ variable "allow_stopping_for_update" {
   type        = bool
 }
 
+variable "ansible_sa_email" {
+  default     = ""
+  description = "ansible_sa_email"
+  type        = string
+}
+
 variable "app_disk_export_interfaces_size" {
   default     = 128
   description = "app_disk_export_interfaces_size"
@@ -33,6 +39,12 @@ variable "app_disk_usr_sap_size" {
 variable "app_machine_type" {
   default     = "n1-highem-32"
   description = "app_machine_type"
+  type        = string
+}
+
+variable "app_sa_email" {
+  default     = ""
+  description = "app_sa_email"
   type        = string
 }
 
@@ -66,6 +78,12 @@ variable "ascs_machine_type" {
   type        = string
 }
 
+variable "ascs_sa_email" {
+  default     = ""
+  description = "ascs_sa_email"
+  type        = string
+}
+
 variable "ascs_vm_names" {
   default     = []
   description = "ascs_vm_names"
@@ -76,6 +94,12 @@ variable "configuration_bucket_name" {
   default     = ""
   description = "configuration_bucket_name"
   type        = string
+}
+
+variable "create_comms_firewall" {
+  default     = true
+  description = "create_comms_firewall"
+  type        = bool
 }
 
 variable "db_disk_backup_size" {
@@ -111,6 +135,12 @@ variable "db_disk_usr_sap_size" {
 variable "db_machine_type" {
   default     = "n1-highmem-32"
   description = "db_machine_type"
+  type        = string
+}
+
+variable "db_sa_email" {
+  default     = ""
+  description = "db_sa_email"
   type        = string
 }
 
@@ -218,8 +248,8 @@ variable "public_ansible_runner_ip" {
 
 variable "public_ip" {
   default     = false
-  description = "bool"
-  type        = string
+  description = "public_ip"
+  type        = bool
 }
 
 variable "region_name" {
@@ -303,4 +333,3 @@ variable "zone1_name" {
   description = "zone1_name"
   type        = string
 }
-
