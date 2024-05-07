@@ -19,7 +19,7 @@ data "google_storage_bucket" "configuration" {
 resource "google_storage_bucket_iam_binding" "objectviewer_configuration" {
   bucket = data.google_storage_bucket.configuration.name
   members = [
-    "serviceAccount:${google_service_account.service_account_ansible.email}"
+    "serviceAccount:${data.google_service_account.service_account_ansible.email}"
   ]
   role = "roles/storage.objectViewer"
 }
