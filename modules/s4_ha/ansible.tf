@@ -87,6 +87,10 @@ resource "google_compute_instance" "sapdansible11" {
     ssh-keys                  = ""
     startup-script            = "gsutil cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}"
     template_name             = "s4_ha"
+    ansible_sa_email          = data.google_service_account.service_account_ansible.email
+    app_sa_email              = data.google_service_account.service_account_app.email
+    ascs_sa_email             = data.google_service_account.service_account_ascs.email
+    db_sa_email               = data.google_service_account.service_account_db.email
   }
   name = "${var.deployment_name}-ansible-runner"
   network_interface {
