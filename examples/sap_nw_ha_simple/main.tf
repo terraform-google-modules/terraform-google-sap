@@ -29,7 +29,7 @@ module "sap_nw_ha" {
   sap_primary_zone        = "us-east1-b"
   sap_secondary_zone      = "us-east1-c"
   sap_sid                 = "XYZ"
-  nfs_path                = "${google_filestore_instance.example.networks[0].ip_addresses[0]}:/${google_filestore_instance.example.file_shares[0].name}".
+  nfs_path                = "${google_filestore_instance.example.networks[0].ip_addresses[0]}:/${google_filestore_instance.example.file_shares[0].name}"
 }
 
 resource "google_filestore_instance" "example" {
