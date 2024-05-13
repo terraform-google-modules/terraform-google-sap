@@ -14,38 +14,7 @@
  * limitations under the License.
  */
 
-variable "gcp_project_id" {
+variable "project_id" {
   type        = string
   description = "Project id where the instances will be created"
-}
-variable "deployment_name" {
-  type        = string
-  description = "deployment_name"
-  default     = "my_s4"
-}
-variable "filestore_location" {
-  type        = string
-  description = "filestore_location"
-  default     = "us-east1-b"
-}
-variable "region_name" {
-  type        = string
-  description = "region_name"
-  default     = "us-east1"
-}
-variable "media_bucket_name" {
-  type        = string
-  description = "Project bucket with installation media available. This must be handled for HANA to be installed"
-  default     = "custom-bucket"
-}
-
-variable "zone1_name" {
-  type        = string
-  description = "zone1_name"
-  default     = "us-east1-c"
-}
-variable "zone2_name" {
-  type        = string
-  description = "zone1_name"
-  default     = "us-east1-b"
 }

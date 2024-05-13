@@ -13,8 +13,8 @@ This example illustrates how to use the latest release of the terraform module f
 
 | Name | Description |
 |------|-------------|
-| sap\_nw\_scs\_primary\_self\_link | SAP NW self-link for the SCS instance created |
-| sap\_nw\_ers\_primary\_self\_link | SAP NW self-link for the ERS instance created |
+| sap\_nw\_ers\_worker\_self\_links | SAP NW ERS self-links for the instance created |
+| sap\_nw\_scs\_primary\_self\_link | SAP NW SCS self-link for the instance created |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

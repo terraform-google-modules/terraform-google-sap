@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-module "sap_hana" {
+module "sap_s4_ha" {
   source  = "terraform-google-modules/sap/google//modules/s4_ha"
   version = "~> 1.0"
 
-  project_id          = var.project_id
-  machine_type        = "n1-standard-16"
-  subnetwork          = "default"
-  linux_image         = "rhel-8-4-sap-ha"
-  linux_image_project = "rhel-sap-cloud"
-  instance_name       = "hana-instance"
-  zone                = "us-east1-b"
-  sap_hana_sid        = "XYZ"
+  deployment_name     = "my_s4"
+  gcp_project_id      = var.project_id
+  filestore_location  = "us-east1-b"
+  region_name         = "us-east1"
+  media_bucket_name   = "private-bucket"
+  zone1_name          = "us-east1-b"
+  zone2_name          = "us-east1-c"
 }
