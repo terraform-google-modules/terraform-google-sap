@@ -18,7 +18,7 @@ module "sap_s4_ha" {
   source  = "terraform-google-modules/sap/google//modules/s4_ha"
   version = "~> 1.0"
 
-  deployment_name     = "my_s4"
+  deployment_name     = "my_s4_ha"
   gcp_project_id      = var.project_id
   filestore_location  = "us-east1-b"
   region_name         = "us-east1"
@@ -26,3 +26,4 @@ module "sap_s4_ha" {
   zone1_name          = "us-east1-b"
   zone2_name          = "us-east1-c"
 }
+
