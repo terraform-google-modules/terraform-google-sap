@@ -1,6 +1,6 @@
-# SAP S4 HANA example
+# SAP S4 HANA HA example
 
-This example illustrates how to use the latest release of the terraform module for SAP on Google Cloud for provisioning SAP S4 HANA
+This example illustrates how to use the latest release of the terraform module for SAP on Google Cloud for provisioning SAP S4 HANA HA
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
