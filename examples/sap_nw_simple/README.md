@@ -1,4 +1,4 @@
-# SAP HANA example
+# SAP Netweaver example
 
 This example illustrates how to use the latest release of the terraform module for SAP on Google Cloud for provisioning SAP NW
 
