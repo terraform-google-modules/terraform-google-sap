@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 output "sap_hana_ha_primary_instance_self_link" {
   description = "Self-link for the primary SAP HANA HA instance created."
   value       = google_compute_instance.sap_hana_ha_primary_instance.self_link
 }
+output "sap_hana_ha_primary_worker_self_links" {
+  description = "Self-link for the worker nodes in the primary SAP HANA HA instance."
+  value       = google_compute_instance.sap_hana_ha_primary_workers[*].self_link
+}
 output "sap_hana_ha_secondary_instance_self_link" {
   description = "Self-link for the secondary SAP HANA HA instance created."
   value       = google_compute_instance.sap_hana_ha_secondary_instance.self_link
+}
+output "sap_hana_ha_secondary_worker_self_links" {
+  description = "Self-link for the worker nodes in the secondary SAP HANA HA instance."
+  value       = google_compute_instance.sap_hana_ha_secondary_workers[*].self_link
 }
 output "sap_hana_ha_loadbalander_link" {
   description = "Link to the optional load balancer"

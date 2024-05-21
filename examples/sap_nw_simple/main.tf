@@ -1,5 +1,5 @@
 /**
- * Copyright 2024 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-output "sap_hana_primary_self_link" {
-  description = "SAP HANA self-link for the primary instance created"
-  value       = google_compute_instance.sap_hana_primary_instance.self_link
-}
 
-output "sap_hana_worker_self_links" {
-  description = "SAP HANA self-links for the secondary instances created"
-  value       = google_compute_instance.sap_hana_worker_instances[*].self_link
+module "sap_nw" {
+  source  = "terraform-google-modules/sap/google//modules/sap_nw"
+  version = "~> 1.0"
+
+  project_id          = var.project_id
+  machine_type        = "n1-standard-16"
+  subnetwork          = "default"
+  linux_image         = "rhel-8-4-sap-ha"
+  linux_image_project = "rhel-sap-cloud"
+  instance_name       = "nwvm"
+  zone                = "us-east1-b"
 }
