@@ -6,6 +6,10 @@ Below is the list of available submodules:
 - [SAP HANA](./modules/sap_hana/README.md)
 - [SAP HANA HA](./modules/sap_hana_ha/README.md)
 - [SAP HANA Scaleout](./modules/sap_hana_scaleout/README.md)
+- [SAP NW](./modules/sap_nw/README.md)
+- [SAP NW HA](./modules/sap_nw_ha/README.md)
+- [SAP S4](./modules/s4/README.md)
+- [SAP S4 HA](./modules/s4_ha/README.md)
 
 ## Usage
 
