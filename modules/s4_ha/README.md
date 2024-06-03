@@ -46,6 +46,7 @@ Functional example is included in the
 | ascs\_vm\_names | ascs\_vm\_names | `list(any)` | `[]` | no |
 | configuration\_bucket\_name | configuration\_bucket\_name | `string` | `""` | no |
 | create\_comms\_firewall | create\_comms\_firewall | `bool` | `true` | no |
+| data\_stripe\_size | data\_stripe\_size | `string` | `"256k"` | no |
 | db\_disk\_backup\_size | db\_disk\_backup\_size | `number` | `128` | no |
 | db\_disk\_hana\_data\_size | db\_disk\_hana\_data\_size | `number` | `249` | no |
 | db\_disk\_hana\_log\_size | db\_disk\_hana\_log\_size | `number` | `104` | no |
@@ -67,8 +68,11 @@ Functional example is included in the
 | gcp\_project\_id | gcp\_project\_id | `string` | n/a | yes |
 | hana\_secret\_name | hana\_secret\_name | `string` | `"default"` | no |
 | is\_test | is\_test | `string` | `"false"` | no |
+| log\_stripe\_size | log\_stripe\_size | `string` | `"64k"` | no |
 | media\_bucket\_name | media\_bucket\_name | `string` | n/a | yes |
 | network\_project | network\_project | `string` | `""` | no |
+| number\_data\_disks | Optional - default is 1. Number of disks to use for data volume striping (if larger than 1). | `number` | `1` | no |
+| number\_log\_disks | Optional - default is 1. Number of disks to use for log volume striping (if larger than 1). | `number` | `1` | no |
 | package\_location | package\_location | `string` | `"gs://cloudsapdeploy/deployments/latest"` | no |
 | primary\_startup\_url | primary\_startup\_url | `string` | `"gs://cloudsapdeploy/deployments/latest/startup/ansible_runner_startup.sh"` | no |
 | public\_ansible\_runner\_ip | public\_ansible\_runner\_ip | `bool` | `true` | no |

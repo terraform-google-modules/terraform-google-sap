@@ -237,6 +237,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                       "gce_instance_metadata" : {
                         "active_region" : "true",
                         "application_secret_name" : var.application_secret_name,
+                        "data_stripe_size" : var.data_stripe_size,
                         "dns_name" : data.google_dns_managed_zone.sap_zone.dns_name,
                         "dns_zone_name" : data.google_dns_managed_zone.sap_zone.name,
                         "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
@@ -250,6 +251,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "hana_sr_tier1_dns_target" : "sapddb-vip11.${data.google_dns_managed_zone.sap_zone.dns_name}",
                         "hdx_hana_config" : local.hdx_hana_config,
                         "ilb_healthcheck_port" : var.db_ilb_healthcheck_port,
+                        "log_stripe_size" : var.log_stripe_size,
                         "media_bucket_name" : var.media_bucket_name,
                         "sap_instance_id_app" : var.sap_instance_id_app,
                         "sap_instance_id_ascs" : var.sap_instance_id_ascs,
@@ -276,6 +278,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                       "gce_instance_metadata" : {
                         "active_region" : "true",
                         "application_secret_name" : var.application_secret_name,
+                        "data_stripe_size" : var.data_stripe_size,
                         "dns_name" : data.google_dns_managed_zone.sap_zone.dns_name,
                         "dns_zone_name" : data.google_dns_managed_zone.sap_zone.name,
                         "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
@@ -289,6 +292,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "hana_sr_tier1_dns_target" : "sapddb-vip11.${data.google_dns_managed_zone.sap_zone.dns_name}",
                         "hdx_hana_config" : local.hdx_hana_config,
                         "ilb_healthcheck_port" : var.db_ilb_healthcheck_port,
+                        "log_stripe_size" : var.log_stripe_size,
                         "media_bucket_name" : var.media_bucket_name,
                         "sap_instance_id_app" : var.sap_instance_id_app,
                         "sap_instance_id_ascs" : var.sap_instance_id_ascs,
