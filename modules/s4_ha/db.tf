@@ -60,13 +60,14 @@ resource "google_compute_disk" "sapddb11" {
 }
 
 resource "google_compute_disk" "sapddb11_hana_data" {
+  count = var.number_data_disks
   lifecycle {
     ignore_changes = [snapshot]
   }
-  name             = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}-hana-data" : "${var.vm_prefix}db11-hana-data"
+  name             = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}-hana-data-${count.index}" : "${var.vm_prefix}db11-hana-data-${count.index}"
   project          = data.google_project.sap-project.project_id
-  provisioned_iops = var.disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.db_disk_hana_data_size) : null
-  size             = var.db_disk_hana_data_size
+  provisioned_iops = var.disk_type == "hyperdisk-extreme" ? ceil(10000, 2 * var.db_disk_hana_data_size) / var.number_data_disks : null
+  size             = var.db_disk_hana_data_size / var.number_data_disks
   timeouts {
     create = "1h"
     delete = "1h"
@@ -77,13 +78,14 @@ resource "google_compute_disk" "sapddb11_hana_data" {
 }
 
 resource "google_compute_disk" "sapddb11_hana_log" {
+  count = var.number_log_disks
   lifecycle {
     ignore_changes = [snapshot]
   }
-  name             = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}-hana-log" : "${var.vm_prefix}db11-hana-log"
+  name             = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}-hana-log-${count.index}" : "${var.vm_prefix}db11-hana-log-${count.index}"
   project          = data.google_project.sap-project.project_id
-  provisioned_iops = var.disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.db_disk_hana_log_size) : null
-  size             = var.db_disk_hana_log_size
+  provisioned_iops = var.disk_type == "hyperdisk-extreme" ? ceil(10000, 2 * var.db_disk_hana_log_size) / var.number_log_disks : null
+  size             = var.db_disk_hana_log_size / var.number_log_disks
   timeouts {
     create = "1h"
     delete = "1h"
@@ -159,13 +161,14 @@ resource "google_compute_disk" "sapddb12" {
 }
 
 resource "google_compute_disk" "sapddb12_hana_data" {
+  count = var.number_data_disks
   lifecycle {
     ignore_changes = [snapshot]
   }
-  name             = length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}-hana-data" : "${var.vm_prefix}db12-hana-data"
+  name             = length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}-hana-data-${count.index}" : "${var.vm_prefix}db12-hana-data-${count.index}"
   project          = data.google_project.sap-project.project_id
-  provisioned_iops = var.disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.db_disk_hana_data_size) : null
-  size             = var.db_disk_hana_data_size
+  provisioned_iops = var.disk_type == "hyperdisk-extreme" ? ceil(10000, 2 * var.db_disk_hana_data_size) / var.number_data_disks : null
+  size             = var.db_disk_hana_data_size / var.number_data_disks
   timeouts {
     create = "1h"
     delete = "1h"
@@ -176,13 +179,14 @@ resource "google_compute_disk" "sapddb12_hana_data" {
 }
 
 resource "google_compute_disk" "sapddb12_hana_log" {
+  count = var.number_log_disks
   lifecycle {
     ignore_changes = [snapshot]
   }
-  name             = length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}-hana-log" : "${var.vm_prefix}db12-hana-log"
+  name             = length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}-hana-log-${count.index}" : "${var.vm_prefix}db12-hana-log-${count.index}"
   project          = data.google_project.sap-project.project_id
-  provisioned_iops = var.disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.db_disk_hana_log_size) : null
-  size             = var.db_disk_hana_log_size
+  provisioned_iops = var.disk_type == "hyperdisk-extreme" ? ceil(10000, 2 * var.db_disk_hana_log_size) / var.number_log_disks : null
+  size             = var.db_disk_hana_log_size / var.number_log_disks
   timeouts {
     create = "1h"
     delete = "1h"
@@ -282,13 +286,19 @@ resource "google_compute_instance" "sapddb11" {
     device_name = google_compute_disk.sapddb11_usr_sap.name
     source      = google_compute_disk.sapddb11_usr_sap.self_link
   }
-  attached_disk {
-    device_name = google_compute_disk.sapddb11_hana_data.name
-    source      = google_compute_disk.sapddb11_hana_data.self_link
+  dynamic "attached_disk" {
+    content {
+      device_name = attached_disk.value.name
+      source      = attached_disk.value.self_link
+    }
+    for_each = google_compute_disk.sapddb11_hana_data[*]
   }
-  attached_disk {
-    device_name = google_compute_disk.sapddb11_hana_log.name
-    source      = google_compute_disk.sapddb11_hana_log.self_link
+  dynamic "attached_disk" {
+    content {
+      device_name = attached_disk.value.name
+      source      = attached_disk.value.self_link
+    }
+    for_each = google_compute_disk.sapddb11_hana_log[*]
   }
   attached_disk {
     device_name = google_compute_disk.sapddb11_hana_shared.name
@@ -347,13 +357,19 @@ resource "google_compute_instance" "sapddb12" {
     device_name = google_compute_disk.sapddb12_usr_sap.name
     source      = google_compute_disk.sapddb12_usr_sap.self_link
   }
-  attached_disk {
-    device_name = google_compute_disk.sapddb12_hana_data.name
-    source      = google_compute_disk.sapddb12_hana_data.self_link
+  dynamic "attached_disk" {
+    content {
+      device_name = attached_disk.value.name
+      source      = attached_disk.value.self_link
+    }
+    for_each = google_compute_disk.sapddb12_hana_data[*]
   }
-  attached_disk {
-    device_name = google_compute_disk.sapddb12_hana_log.name
-    source      = google_compute_disk.sapddb12_hana_log.self_link
+  dynamic "attached_disk" {
+    content {
+      device_name = attached_disk.value.name
+      source      = attached_disk.value.self_link
+    }
+    for_each = google_compute_disk.sapddb12_hana_log[*]
   }
   attached_disk {
     device_name = google_compute_disk.sapddb12_hana_shared.name

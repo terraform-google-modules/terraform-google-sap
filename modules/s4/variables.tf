@@ -102,6 +102,12 @@ variable "create_comms_firewall" {
   type        = bool
 }
 
+variable "data_stripe_size" {
+  default     = "256k"
+  description = "data_stripe_size"
+  type        = string
+}
+
 variable "db_disk_backup_size" {
   default     = 128
   description = "db_disk_backup_size"
@@ -217,6 +223,12 @@ variable "is_test" {
   type        = string
 }
 
+variable "log_stripe_size" {
+  default     = "64k"
+  description = "log_stripe_size"
+  type        = string
+}
+
 variable "media_bucket_name" {
   description = "media_bucket_name"
   type        = string
@@ -226,6 +238,18 @@ variable "network_project" {
   default     = ""
   description = "network_project"
   type        = string
+}
+
+variable "number_data_disks" {
+  default     = 1
+  description = "Optional - default is 1. Number of disks to use for data volume striping (if larger than 1)."
+  type        = number
+}
+
+variable "number_log_disks" {
+  default     = 1
+  description = "Optional - default is 1. Number of disks to use for log volume striping (if larger than 1)."
+  type        = number
 }
 
 variable "package_location" {

@@ -77,17 +77,17 @@ resource "google_compute_instance" "sapdansible11" {
   machine_type = "n1-standard-16"
   metadata = {
     active_region             = true
+    ansible_sa_email          = data.google_service_account.service_account_ansible.email
+    app_sa_email              = data.google_service_account.service_account_app.email
+    ascs_sa_email             = data.google_service_account.service_account_ascs.email
     configuration_bucket_name = data.google_storage_bucket.configuration.name
+    db_sa_email               = data.google_service_account.service_account_db.email
     dns_zone_name             = data.google_dns_managed_zone.sap_zone.name
     is_test                   = var.is_test
     media_bucket_name         = var.media_bucket_name
     ssh-keys                  = ""
     startup-script            = "gsutil cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}"
     template_name             = "s4"
-    ansible_sa_email          = data.google_service_account.service_account_ansible.email
-    app_sa_email              = data.google_service_account.service_account_app.email
-    ascs_sa_email             = data.google_service_account.service_account_ascs.email
-    db_sa_email               = data.google_service_account.service_account_db.email
   }
   name = "${var.deployment_name}-ansible-runner"
   network_interface {
