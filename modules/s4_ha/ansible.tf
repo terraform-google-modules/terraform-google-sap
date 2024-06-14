@@ -113,7 +113,7 @@ resource "google_compute_instance" "sapdansible11" {
     email  = data.google_service_account.service_account_ansible.email
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
-  tags = ["${var.deployment_name}-s4-comms"]
+  tags = compact(concat(["${var.deployment_name}-s4-comms"], var.custom_tags))
   zone = var.zone1_name
 }
 
