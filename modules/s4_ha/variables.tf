@@ -30,6 +30,16 @@ variable "app_disk_export_interfaces_size" {
   type        = number
 }
 
+variable "app_disk_type" {
+  default     = "pd-balanced"
+  description = "app_disk_type"
+  type        = string
+  validation {
+    condition     = contains(["pd-ssd", "pd-balanced", "hyperdisk-extreme"], var.app_disk_type)
+    error_message = "app_disk_type must be one of [\"pd-ssd\", \"pd-balanced\", \"hyperdisk-extreme\"]"
+  }
+}
+
 variable "app_disk_usr_sap_size" {
   default     = 128
   description = "app_disk_usr_sap_size"
@@ -64,6 +74,16 @@ variable "application_secret_name" {
   default     = "default"
   description = "application_secret_name"
   type        = string
+}
+
+variable "ascs_disk_type" {
+  default     = "pd-balanced"
+  description = "ascs_disk_type"
+  type        = string
+  validation {
+    condition     = contains(["pd-ssd", "pd-balanced", "hyperdisk-extreme"], var.ascs_disk_type)
+    error_message = "ascs_disk_type must be one of [\"pd-ssd\", \"pd-balanced\", \"hyperdisk-extreme\"]"
+  }
 }
 
 variable "ascs_disk_usr_sap_size" {
@@ -108,10 +128,26 @@ variable "create_comms_firewall" {
   type        = bool
 }
 
+variable "custom_tags" {
+  default     = []
+  description = "custom_tags"
+  type        = list(any)
+}
+
 variable "data_stripe_size" {
   default     = "256k"
   description = "data_stripe_size"
   type        = string
+}
+
+variable "db_data_disk_type" {
+  default     = "pd-balanced"
+  description = "db_data_disk_type"
+  type        = string
+  validation {
+    condition     = contains(["pd-ssd", "pd-balanced", "hyperdisk-extreme"], var.db_data_disk_type)
+    error_message = "db_data_disk_type must be one of [\"pd-ssd\", \"pd-balanced\", \"hyperdisk-extreme\"]"
+  }
 }
 
 variable "db_disk_backup_size" {
@@ -138,6 +174,16 @@ variable "db_disk_hana_shared_size" {
   type        = number
 }
 
+variable "db_disk_type" {
+  default     = "pd-balanced"
+  description = "Disk type for the non log/data disks."
+  type        = string
+  validation {
+    condition     = contains(["pd-ssd", "pd-balanced", "hyperdisk-extreme"], var.db_disk_type)
+    error_message = "db_disk_type must be one of [\"pd-ssd\", \"pd-balanced\", \"hyperdisk-extreme\"]"
+  }
+}
+
 variable "db_disk_usr_sap_size" {
   default     = 32
   description = "db_disk_usr_sap_size"
@@ -148,6 +194,16 @@ variable "db_ilb_healthcheck_port" {
   default     = 60000
   description = "db_ilb_healthcheck_port"
   type        = number
+}
+
+variable "db_log_disk_type" {
+  default     = "pd-balanced"
+  description = "db_log_disk_type"
+  type        = string
+  validation {
+    condition     = contains(["pd-ssd", "pd-balanced", "hyperdisk-extreme"], var.db_log_disk_type)
+    error_message = "db_log_disk_type must be one of [\"pd-ssd\", \"pd-balanced\", \"hyperdisk-extreme\"]"
+  }
 }
 
 variable "db_machine_type" {
@@ -177,16 +233,6 @@ variable "db_vm_names" {
 variable "deployment_name" {
   description = "deployment_name"
   type        = string
-}
-
-variable "disk_type" {
-  default     = "pd-balanced"
-  description = "disk_type"
-  type        = string
-  validation {
-    condition     = contains(["pd-ssd", "pd-balanced", "hyperdisk-extreme"], var.disk_type)
-    error_message = "disk_type must be one of [\"pd-ssd\", \"pd-balanced\", \"hyperdisk-extreme\"]"
-  }
 }
 
 variable "dns_zone_name_suffix" {
@@ -261,12 +307,6 @@ variable "network_project" {
 variable "number_data_disks" {
   default     = 1
   description = "Optional - default is 1. Number of disks to use for data volume striping (if larger than 1)."
-  type        = number
-}
-
-variable "number_log_disks" {
-  default     = 1
-  description = "Optional - default is 1. Number of disks to use for log volume striping (if larger than 1)."
   type        = number
 }
 

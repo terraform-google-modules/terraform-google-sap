@@ -33,12 +33,14 @@ Functional example is included in the
 | allow\_stopping\_for\_update | allow\_stopping\_for\_update | `bool` | `true` | no |
 | ansible\_sa\_email | ansible\_sa\_email | `string` | `""` | no |
 | app\_disk\_export\_interfaces\_size | app\_disk\_export\_interfaces\_size | `number` | `128` | no |
+| app\_disk\_type | app\_disk\_type | `string` | `"pd-balanced"` | no |
 | app\_disk\_usr\_sap\_size | app\_disk\_usr\_sap\_size | `number` | `128` | no |
 | app\_machine\_type | app\_machine\_type | `string` | `"n1-highem-32"` | no |
 | app\_sa\_email | app\_sa\_email | `string` | `""` | no |
 | app\_sid | app\_sid | `string` | `"ED1"` | no |
 | app\_vms\_multiplier | Multiplies app VMs. E.g. if there is 2 VMs then with value 3 each VM will be multiplied by 3 (so there will be 6 total VMs) | `string` | `1` | no |
 | application\_secret\_name | application\_secret\_name | `string` | `"default"` | no |
+| ascs\_disk\_type | ascs\_disk\_type | `string` | `"pd-balanced"` | no |
 | ascs\_disk\_usr\_sap\_size | ascs\_disk\_usr\_sap\_size | `number` | `128` | no |
 | ascs\_ilb\_healthcheck\_port | ascs\_ilb\_healthcheck\_port | `number` | `60001` | no |
 | ascs\_machine\_type | ascs\_machine\_type | `string` | `"n1-standard-8"` | no |
@@ -46,19 +48,22 @@ Functional example is included in the
 | ascs\_vm\_names | ascs\_vm\_names | `list(any)` | `[]` | no |
 | configuration\_bucket\_name | configuration\_bucket\_name | `string` | `""` | no |
 | create\_comms\_firewall | create\_comms\_firewall | `bool` | `true` | no |
+| custom\_tags | custom\_tags | `list(any)` | `[]` | no |
 | data\_stripe\_size | data\_stripe\_size | `string` | `"256k"` | no |
+| db\_data\_disk\_type | db\_data\_disk\_type | `string` | `"pd-balanced"` | no |
 | db\_disk\_backup\_size | db\_disk\_backup\_size | `number` | `128` | no |
 | db\_disk\_hana\_data\_size | db\_disk\_hana\_data\_size | `number` | `249` | no |
 | db\_disk\_hana\_log\_size | db\_disk\_hana\_log\_size | `number` | `104` | no |
 | db\_disk\_hana\_shared\_size | db\_disk\_hana\_shared\_size | `number` | `208` | no |
+| db\_disk\_type | Disk type for the non log/data disks. | `string` | `"pd-balanced"` | no |
 | db\_disk\_usr\_sap\_size | db\_disk\_usr\_sap\_size | `number` | `32` | no |
 | db\_ilb\_healthcheck\_port | db\_ilb\_healthcheck\_port | `number` | `60000` | no |
+| db\_log\_disk\_type | db\_log\_disk\_type | `string` | `"pd-balanced"` | no |
 | db\_machine\_type | db\_machine\_type | `string` | `"n1-highmem-32"` | no |
 | db\_sa\_email | db\_sa\_email | `string` | `""` | no |
 | db\_sid | db\_sid | `string` | `"HD1"` | no |
 | db\_vm\_names | db\_vm\_names | `list(any)` | `[]` | no |
 | deployment\_name | deployment\_name | `string` | n/a | yes |
-| disk\_type | disk\_type | `string` | `"pd-balanced"` | no |
 | dns\_zone\_name\_suffix | dns\_zone\_name\_suffix | `string` | `"gcp.sapcloud.goog."` | no |
 | ers\_ilb\_healthcheck\_port | ers\_ilb\_healthcheck\_port | `number` | `60002` | no |
 | existing\_dns\_zone\_name | existing\_dns\_zone\_name | `string` | `""` | no |
@@ -72,7 +77,6 @@ Functional example is included in the
 | media\_bucket\_name | media\_bucket\_name | `string` | n/a | yes |
 | network\_project | network\_project | `string` | `""` | no |
 | number\_data\_disks | Optional - default is 1. Number of disks to use for data volume striping (if larger than 1). | `number` | `1` | no |
-| number\_log\_disks | Optional - default is 1. Number of disks to use for log volume striping (if larger than 1). | `number` | `1` | no |
 | package\_location | package\_location | `string` | `"gs://cloudsapdeploy/deployments/latest"` | no |
 | primary\_startup\_url | primary\_startup\_url | `string` | `"gs://cloudsapdeploy/deployments/latest/startup/ansible_runner_startup.sh"` | no |
 | public\_ansible\_runner\_ip | public\_ansible\_runner\_ip | `bool` | `true` | no |
