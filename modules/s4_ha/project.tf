@@ -38,6 +38,10 @@ locals {
   }
 }
 
+locals {
+  fstore_url1 = var.fstore_mount_point == "" ? "${google_dns_record_set.sap_fstore_1[0].name}:/${google_filestore_instance.sap_fstore_1[0].file_shares[0].name}" : var.fstore_mount_point
+}
+
 provider "google" {
   project = "!!! Terraform resource is using default project name !!!"
   region  = "!!! Terraform resource is using default region !!!"
@@ -79,15 +83,19 @@ resource "google_dns_managed_zone" "sap_zone" {
 }
 
 resource "google_dns_record_set" "sap_fstore_1" {
+  count        = var.fstore_mount_point == "" ? 1 : 0
   managed_zone = data.google_dns_managed_zone.sap_zone.name
   name         = "fstore-${var.deployment_name}-1.${data.google_dns_managed_zone.sap_zone.dns_name}"
   project      = data.google_project.sap-project.project_id
-  rrdatas      = [google_filestore_instance.sap_fstore_1.networks[0].ip_addresses[0]]
-  ttl          = 60
-  type         = "A"
+  rrdatas = [
+    google_filestore_instance.sap_fstore_1[count.index].networks[0].ip_addresses[0]
+  ]
+  ttl  = 60
+  type = "A"
 }
 
 resource "google_filestore_instance" "sap_fstore_1" {
+  count      = var.fstore_mount_point == "" ? 1 : 0
   depends_on = [google_project_service.service_file_googleapis_com]
   file_shares {
     capacity_gb = var.filestore_gb

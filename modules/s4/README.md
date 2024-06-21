@@ -37,6 +37,7 @@ Functional example is included in the
 | app\_machine\_type | app\_machine\_type | `string` | `"n1-highem-32"` | no |
 | app\_sa\_email | app\_sa\_email | `string` | `""` | no |
 | app\_sid | app\_sid | `string` | `"ED1"` | no |
+| app\_vm\_names | app\_vm\_names | `list(any)` | `[]` | no |
 | app\_vms\_multiplier | Multiplies app VMs. E.g. if there is 2 VMs then with value 3 each VM will be multiplied by 3 (so there will be 6 total VMs) | `number` | `1` | no |
 | application\_secret\_name | application\_secret\_name | `string` | `"default"` | no |
 | ascs\_disk\_type | ascs\_disk\_type | `string` | `"pd-balanced"` | no |
@@ -66,12 +67,15 @@ Functional example is included in the
 | filestore\_gb | filestore\_gb | `number` | `1024` | no |
 | filestore\_location | filestore\_location | `string` | n/a | yes |
 | filestore\_tier | filestore\_tier | `string` | `"ENTERPRISE"` | no |
+| fstore\_mount\_point | Optional - default is empty. NFS mount point of the nfs to use. If none is provided one will be created. | `string` | `""` | no |
 | gcp\_project\_id | gcp\_project\_id | `string` | n/a | yes |
 | hana\_secret\_name | hana\_secret\_name | `string` | `"default"` | no |
 | is\_test | is\_test | `string` | `"false"` | no |
 | log\_stripe\_size | log\_stripe\_size | `string` | `"64k"` | no |
 | media\_bucket\_name | media\_bucket\_name | `string` | n/a | yes |
 | network\_project | network\_project | `string` | `""` | no |
+| number\_data\_disks | Optional - default is 1. Number of disks to use for data volume striping (if larger than 1). | `number` | `1` | no |
+| number\_log\_disks | Optional - default is 1. Number of disks to use for log volume striping (if larger than 1). | `number` | `1` | no |
 | package\_location | package\_location | `string` | `"gs://cloudsapdeploy/deployments/latest"` | no |
 | primary\_startup\_url | primary\_startup\_url | `string` | `"gs://cloudsapdeploy/deployments/latest/startup/ansible_runner_startup.sh"` | no |
 | public\_ansible\_runner\_ip | public\_ansible\_runner\_ip | `bool` | `true` | no |

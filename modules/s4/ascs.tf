@@ -24,7 +24,7 @@ data "google_service_account" "service_account_ascs" {
 
 resource "google_compute_address" "sapdascs11-1" {
   address_type = "INTERNAL"
-  name         = length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}-internal" : "${var.vm_prefix}ascs11-internal"
+  name         = "${length(var.ascs_vm_names) > 0 ? var.ascs_vm_names[0] : "${var.vm_prefix}ascs11"}-internal"
   project      = data.google_project.sap-project.project_id
   region       = var.region_name
   subnetwork   = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
@@ -51,7 +51,7 @@ resource "google_compute_disk" "sapdascs11_usr_sap" {
   lifecycle {
     ignore_changes = [snapshot]
   }
-  name             = length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}-usr-sap" : "${var.vm_prefix}ascs11-usr-sap"
+  name             = "${length(var.ascs_vm_names) > 0 ? var.ascs_vm_names[0] : "${var.vm_prefix}ascs11"}-usr-sap"
   project          = data.google_project.sap-project.project_id
   provisioned_iops = var.ascs_disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.ascs_disk_usr_sap_size) : null
   size             = var.ascs_disk_usr_sap_size
@@ -124,7 +124,7 @@ resource "google_dns_record_set" "ascs_alidascs11" {
 
 resource "google_dns_record_set" "to_vm_sapdascs11" {
   managed_zone = data.google_dns_managed_zone.sap_zone.name
-  name         = length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}.${data.google_dns_managed_zone.sap_zone.dns_name}" : "${var.vm_prefix}ascs11.${data.google_dns_managed_zone.sap_zone.dns_name}"
+  name         = "${length(var.ascs_vm_names) > 0 ? var.ascs_vm_names[0] : "${var.vm_prefix}ascs11"}.${data.google_dns_managed_zone.sap_zone.dns_name}"
   project      = data.google_project.sap-project.project_id
   rrdatas      = [google_compute_instance.sapdascs11.network_interface[0].network_ip]
   ttl          = 300

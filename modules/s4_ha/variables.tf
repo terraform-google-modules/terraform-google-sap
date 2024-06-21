@@ -64,6 +64,12 @@ variable "app_sid" {
   type        = string
 }
 
+variable "app_vm_names" {
+  default     = []
+  description = "app_vm_names"
+  type        = list(any)
+}
+
 variable "app_vms_multiplier" {
   default     = 1
   description = "Multiplies app VMs. E.g. if there is 2 VMs then with value 3 each VM will be multiplied by 3 (so there will be 6 total VMs)"
@@ -270,6 +276,12 @@ variable "filestore_tier" {
   type        = string
 }
 
+variable "fstore_mount_point" {
+  default     = ""
+  description = "Optional - default is empty. NFS mount point of the nfs to use. If none is provided one will be created."
+  type        = string
+}
+
 variable "gcp_project_id" {
   description = "gcp_project_id"
   type        = string
@@ -307,6 +319,12 @@ variable "network_project" {
 variable "number_data_disks" {
   default     = 1
   description = "Optional - default is 1. Number of disks to use for data volume striping (if larger than 1)."
+  type        = number
+}
+
+variable "number_log_disks" {
+  default     = 1
+  description = "Optional - default is 1. Number of disks to use for log volume striping (if larger than 1)."
   type        = number
 }
 

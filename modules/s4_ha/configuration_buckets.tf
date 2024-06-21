@@ -73,7 +73,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                 "app" : {
                   "hosts" : merge([for count in [for i in range(var.app_vms_multiplier) : { index : i }] :
                     {
-                      "${var.vm_prefix}app1${1 + (count.index * 2)}" : {
+                      length(var.app_vm_names) > (0 + (count.index * 2)) ? var.app_vm_names[0 + (count.index * 2)] : "${var.vm_prefix}app1${1 + (0 + count.index * 2)}" : {
                         "gce_instance_labels" : {
                           "active_region" : true,
                           "component" : "app",
@@ -86,7 +86,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                           "application_secret_name" : var.application_secret_name,
                           "dns_name" : data.google_dns_managed_zone.sap_zone.dns_name,
                           "dns_zone_name" : data.google_dns_managed_zone.sap_zone.name,
-                          "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
+                          "fstore_url" : local.fstore_url1,
                           "hana_secret_name" : var.hana_secret_name,
                           "hdx_hana_config" : var.app_disk_type == "hyperdisk-extreme" ? true : false,
                           "media_bucket_name" : var.media_bucket_name,
@@ -100,11 +100,11 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                           "template_name" : "s4_ha",
                           "virtualize_disks" : var.virtualize_disks
                         },
-                        "gce_instance_name" : "${var.vm_prefix}app1${1 + (count.index * 2)}",
+                        "gce_instance_name" : length(var.app_vm_names) > (0 + (count.index * 2)) ? var.app_vm_names[0 + (count.index * 2)] : "${var.vm_prefix}app1${1 + (0 + count.index * 2)}",
                         "gce_instance_project" : data.google_project.sap-project.project_id,
                         "gce_instance_zone" : var.zone1_name
                       },
-                      "${var.vm_prefix}app1${2 + (count.index * 2)}" : {
+                      length(var.app_vm_names) > (1 + (count.index * 2)) ? var.app_vm_names[1 + (count.index * 2)] : "${var.vm_prefix}app1${2 + (1 + count.index * 2)}" : {
                         "gce_instance_labels" : {
                           "active_region" : true,
                           "component" : "app",
@@ -117,7 +117,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                           "application_secret_name" : var.application_secret_name,
                           "dns_name" : data.google_dns_managed_zone.sap_zone.dns_name,
                           "dns_zone_name" : data.google_dns_managed_zone.sap_zone.name,
-                          "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
+                          "fstore_url" : local.fstore_url1,
                           "hana_secret_name" : var.hana_secret_name,
                           "hdx_hana_config" : var.app_disk_type == "hyperdisk-extreme" ? true : false,
                           "media_bucket_name" : var.media_bucket_name,
@@ -131,7 +131,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                           "template_name" : "s4_ha",
                           "virtualize_disks" : var.virtualize_disks
                         },
-                        "gce_instance_name" : "${var.vm_prefix}app1${2 + (count.index * 2)}",
+                        "gce_instance_name" : length(var.app_vm_names) > (1 + (count.index * 2)) ? var.app_vm_names[1 + (count.index * 2)] : "${var.vm_prefix}app1${2 + (1 + count.index * 2)}",
                         "gce_instance_project" : data.google_project.sap-project.project_id,
                         "gce_instance_zone" : var.zone2_name
                       }
@@ -164,7 +164,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "dns_zone_name" : data.google_dns_managed_zone.sap_zone.name,
                         "ers_healthcheck_port" : var.ers_ilb_healthcheck_port,
                         "failover_type" : "ILB",
-                        "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
+                        "fstore_url" : local.fstore_url1,
                         "hana_secret_name" : var.hana_secret_name,
                         "hdx_hana_config" : var.ascs_disk_type == "hyperdisk-extreme" ? true : false,
                         "media_bucket_name" : var.media_bucket_name,
@@ -199,7 +199,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "dns_zone_name" : data.google_dns_managed_zone.sap_zone.name,
                         "ers_healthcheck_port" : var.ers_ilb_healthcheck_port,
                         "failover_type" : "ILB",
-                        "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
+                        "fstore_url" : local.fstore_url1,
                         "hana_secret_name" : var.hana_secret_name,
                         "hdx_hana_config" : var.ascs_disk_type == "hyperdisk-extreme" ? true : false,
                         "media_bucket_name" : var.media_bucket_name,
@@ -244,7 +244,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "data_stripe_size" : var.data_stripe_size,
                         "dns_name" : data.google_dns_managed_zone.sap_zone.dns_name,
                         "dns_zone_name" : data.google_dns_managed_zone.sap_zone.name,
-                        "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
+                        "fstore_url" : local.fstore_url1,
                         "ha_sr_pcs_scenario" : "ON",
                         "hana_secret_name" : var.hana_secret_name,
                         "hana_sr_failover_type" : "ILB",
@@ -285,7 +285,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "data_stripe_size" : var.data_stripe_size,
                         "dns_name" : data.google_dns_managed_zone.sap_zone.dns_name,
                         "dns_zone_name" : data.google_dns_managed_zone.sap_zone.name,
-                        "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
+                        "fstore_url" : local.fstore_url1,
                         "ha_sr_pcs_scenario" : "ON",
                         "hana_secret_name" : var.hana_secret_name,
                         "hana_sr_failover_type" : "ILB",
