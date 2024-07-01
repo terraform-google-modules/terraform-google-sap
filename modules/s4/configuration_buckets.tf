@@ -73,7 +73,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                 "app" : {
                   "hosts" : merge([for count in [for i in range(var.app_vms_multiplier) : { index : i }] :
                     {
-                      length(var.app_vm_names) > (0 + (count.index * 2)) ? var.app_vm_names[0 + (count.index * 2)] : "${var.vm_prefix}app1${1 + (0 + count.index * 2)}" : {
+                      length(var.app_vm_names) > (0 + (count.index * 2)) ? var.app_vm_names[0 + (count.index * 2)] : "${var.vm_prefix}app1${1 + (count.index * 2)}" : {
                         "gce_instance_labels" : {
                           "active_region" : true,
                           "component" : "app",
@@ -99,7 +99,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                           "template_name" : "s4",
                           "virtualize_disks" : var.virtualize_disks
                         },
-                        "gce_instance_name" : length(var.app_vm_names) > (0 + (count.index * 2)) ? var.app_vm_names[0 + (count.index * 2)] : "${var.vm_prefix}app1${1 + (0 + count.index * 2)}",
+                        "gce_instance_name" : length(var.app_vm_names) > (0 + (count.index * 2)) ? var.app_vm_names[0 + (count.index * 2)] : "${var.vm_prefix}app1${1 + (count.index * 2)}",
                         "gce_instance_project" : data.google_project.sap-project.project_id,
                         "gce_instance_zone" : var.zone1_name
                       }
