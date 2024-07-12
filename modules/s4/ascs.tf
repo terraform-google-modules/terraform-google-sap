@@ -114,17 +114,19 @@ resource "google_compute_instance" "sapdascs11" {
 }
 
 resource "google_dns_record_set" "ascs_alidascs11" {
-  managed_zone = data.google_dns_managed_zone.sap_zone.name
-  name         = "alidascs11.${data.google_dns_managed_zone.sap_zone.dns_name}"
+  count        = var.deployment_has_dns ? 1 : 0
+  managed_zone = data.google_dns_managed_zone.sap_zone[0].name
+  name         = "alidascs11.${data.google_dns_managed_zone.sap_zone[0].dns_name}"
   project      = data.google_project.sap-project.project_id
-  rrdatas      = [google_dns_record_set.to_vm_sapdascs11.name]
+  rrdatas      = [google_dns_record_set.to_vm_sapdascs11[0].name]
   ttl          = 300
   type         = "CNAME"
 }
 
 resource "google_dns_record_set" "to_vm_sapdascs11" {
-  managed_zone = data.google_dns_managed_zone.sap_zone.name
-  name         = "${length(var.ascs_vm_names) > 0 ? var.ascs_vm_names[0] : "${var.vm_prefix}ascs11"}.${data.google_dns_managed_zone.sap_zone.dns_name}"
+  count        = var.deployment_has_dns ? 1 : 0
+  managed_zone = data.google_dns_managed_zone.sap_zone[0].name
+  name         = "${length(var.ascs_vm_names) > 0 ? var.ascs_vm_names[0] : "${var.vm_prefix}ascs11"}.${data.google_dns_managed_zone.sap_zone[0].dns_name}"
   project      = data.google_project.sap-project.project_id
   rrdatas      = [google_compute_instance.sapdascs11.network_interface[0].network_ip]
   ttl          = 300

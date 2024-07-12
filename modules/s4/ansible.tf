@@ -82,7 +82,7 @@ resource "google_compute_instance" "sapdansible11" {
     ascs_sa_email             = data.google_service_account.service_account_ascs.email
     configuration_bucket_name = data.google_storage_bucket.configuration.name
     db_sa_email               = data.google_service_account.service_account_db.email
-    dns_zone_name             = data.google_dns_managed_zone.sap_zone.name
+    dns_zone_name             = var.deployment_has_dns ? data.google_dns_managed_zone.sap_zone[0].name : ""
     is_test                   = var.is_test
     media_bucket_name         = var.media_bucket_name
     ssh-keys                  = ""
