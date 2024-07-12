@@ -259,6 +259,12 @@ variable "existing_dns_zone_name" {
   type        = string
 }
 
+variable "deployment_has_dns" {
+  default     = true
+  description = "Set to false to deploy without a DNS zone"
+  type        = bool
+}
+
 variable "filestore_gb" {
   default     = 1024
   description = "filestore_gb"
@@ -444,3 +450,4 @@ variable "zone2_name" {
   description = "zone2_name"
   type        = string
 }
+

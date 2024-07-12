@@ -61,6 +61,7 @@ Functional example is included in the
 | db\_sa\_email | db\_sa\_email | `string` | `""` | no |
 | db\_sid | db\_sid | `string` | `"HD1"` | no |
 | db\_vm\_names | db\_vm\_names | `list(any)` | `[]` | no |
+| deployment\_has\_dns | Set to false to deploy without a DNS zone | `bool` | `true` | no |
 | deployment\_name | deployment\_name | `string` | n/a | yes |
 | dns\_zone\_name\_suffix | dns\_zone\_name\_suffix | `string` | `"gcp.sapcloud.goog."` | no |
 | existing\_dns\_zone\_name | existing\_dns\_zone\_name | `string` | `""` | no |

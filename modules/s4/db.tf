@@ -209,19 +209,21 @@ resource "google_compute_instance" "sapddb11" {
 }
 
 resource "google_dns_record_set" "global_master_db" {
-  managed_zone = data.google_dns_managed_zone.sap_zone.name
-  name         = "db.${data.google_dns_managed_zone.sap_zone.dns_name}"
+  count        = var.deployment_has_dns ? 1 : 0
+  managed_zone = data.google_dns_managed_zone.sap_zone[0].name
+  name         = "db.${data.google_dns_managed_zone.sap_zone[0].dns_name}"
   project      = data.google_project.sap-project.project_id
   rrdatas = [
-    "${length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11"}.${data.google_dns_managed_zone.sap_zone.dns_name}"
+    "${length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11"}.${data.google_dns_managed_zone.sap_zone[0].dns_name}"
   ]
   ttl  = 60
   type = "CNAME"
 }
 
 resource "google_dns_record_set" "to_vm_sapddb11" {
-  managed_zone = data.google_dns_managed_zone.sap_zone.name
-  name         = "${length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11"}.${data.google_dns_managed_zone.sap_zone.dns_name}"
+  count        = var.deployment_has_dns ? 1 : 0
+  managed_zone = data.google_dns_managed_zone.sap_zone[0].name
+  name         = "${length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11"}.${data.google_dns_managed_zone.sap_zone[0].dns_name}"
   project      = data.google_project.sap-project.project_id
   rrdatas      = [google_compute_instance.sapddb11.network_interface[0].network_ip]
   ttl          = 300
