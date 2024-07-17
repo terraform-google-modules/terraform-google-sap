@@ -1,5 +1,5 @@
 /**
- * Copyright 2024 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -322,12 +322,12 @@ variable "secondary_reservation_name" {
 #
 variable "primary_startup_url" {
   type        = string
-  default     = "curl -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202404101403/terraform/sap_nw_ha/startup_scs.sh | bash -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202404101403/terraform"
+  default     = "curl -s BUILD.TERRA_SH_URL/sap_nw_ha/startup_scs.sh | bash -s BUILD.TERRA_SH_URL"
   description = "DO NOT USE"
 }
 variable "secondary_startup_url" {
   type        = string
-  default     = "curl -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202404101403/terraform/sap_nw_ha/startup_ers.sh | bash -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202404101403/terraform"
+  default     = "curl -s BUILD.TERRA_SH_URL/sap_nw_ha/startup_ers.sh | bash -s BUILD.TERRA_SH_URL"
   description = "DO NOT USE"
 }
 variable "post_deployment_script" {

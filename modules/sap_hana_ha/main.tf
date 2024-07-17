@@ -1,5 +1,5 @@
 /**
- * Copyright 2024 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 #
 # Terraform SAP HANA HA for Google Cloud
 #
-# Version:    2.0.202404101403
-# Build Hash: eb079d47f21e747ddd0162c68068237a36e3e841
+# Version:    BUILD.VERSION
+# Build Hash: BUILD.HASH
 #
 
 ################################################################################
@@ -55,6 +55,10 @@ locals {
     "c3-highmem-44"         = 352
     "c3-highmem-88"         = 704
     "c3-highmem-176"        = 1408
+    "c4-highmem- 32"        = 248
+    "c4-highmem-48"         = 372
+    "c4-highmem-96"         = 744
+    "c4-highmem-192"        = 1488
     "c3-standard-192-metal" = 768
     "c3-highcpu-192-metal"  = 512
     "c3-highmem-192-metal"  = 1536
@@ -62,50 +66,25 @@ locals {
     "x4-megamem-1440-metal" = 24576
     "x4-megamem-1920-metal" = 32768
   }
+
+  # Default of "Automatic" will be used during instance creation for machine types not listed
   cpu_platform_map = {
-    "n1-highmem-32"         = "Intel Broadwell"
-    "n1-highmem-64"         = "Intel Broadwell"
-    "n1-highmem-96"         = "Intel Skylake"
-    "n1-megamem-96"         = "Intel Skylake"
-    "n2-highmem-32"         = "Automatic"
-    "n2-highmem-48"         = "Automatic"
-    "n2-highmem-64"         = "Automatic"
-    "n2-highmem-80"         = "Automatic"
-    "n2-highmem-96"         = "Automatic"
-    "n2-highmem-128"        = "Automatic"
-    "n1-ultramem-40"        = "Automatic"
-    "n1-ultramem-80"        = "Automatic"
-    "n1-ultramem-160"       = "Automatic"
-    "m1-megamem-96"         = "Intel Skylake"
-    "m1-ultramem-40"        = "Automatic"
-    "m1-ultramem-80"        = "Automatic"
-    "m1-ultramem-160"       = "Automatic"
-    "m2-ultramem-208"       = "Automatic"
-    "m2-megamem-416"        = "Automatic"
-    "m2-hypermem-416"       = "Automatic"
-    "m2-ultramem-416"       = "Automatic"
-    "m3-megamem-64"         = "Automatic"
-    "m3-megamem-128"        = "Automatic"
-    "m3-ultramem-32"        = "Automatic"
-    "m3-ultramem-64"        = "Automatic"
-    "m3-ultramem-128"       = "Automatic"
-    "c3-standard-44"        = "Automatic"
-    "c3-highmem-44"         = "Automatic"
-    "c3-highmem-88"         = "Automatic"
-    "c3-highmem-176"        = "Automatic"
-    "c3-standard-192-metal" = "Automatic"
-    "c3-highcpu-192-metal"  = "Automatic"
-    "c3-highmem-192-metal"  = "Automatic"
-    "x4-megamem-960-metal"  = "Automatic"
-    "x4-megamem-1440-metal" = "Automatic"
-    "x4-megamem-1920-metal" = "Automatic"
+    "n1-highmem-32" = "Intel Broadwell"
+    "n1-highmem-64" = "Intel Broadwell"
+    "n1-highmem-96" = "Intel Skylake"
+    "n1-megamem-96" = "Intel Skylake"
+    "m1-megamem-96" = "Intel Skylake"
   }
 
   native_bm = length(regexall("metal", var.machine_type)) > 0
+  # Some machine types only support hyperdisks (C4, X4, C3/metal). Depending on the machine type, we default to hyperdisk-extreme or hyperdisk-balanced
+  default_hyperdisk_extreme  = (length(regexall("^x4-", var.machine_type)) > 0)
+  default_hyperdisk_balanced = (length(regexall("^c4-|^c3-.*-metal", var.machine_type)) > 0)
+  only_hyperdisks_supported  = local.default_hyperdisk_extreme || local.default_hyperdisk_balanced
 
   # Minimum disk sizes are used to ensure throughput. Extreme disks don't need this.
   # All 'over provisioned' capacity is to go onto the data disk.
-  final_disk_type = var.disk_type == "" ? (local.native_bm ? "hyperdisk-extreme" : "pd-ssd") : var.disk_type
+  final_disk_type = var.disk_type == "" ? (local.default_hyperdisk_extreme ? "hyperdisk-extreme" : (local.default_hyperdisk_balanced ? "hyperdisk-balanced" : "pd-ssd")) : var.disk_type
   min_total_disk_map = {
     "pd-ssd"             = 550
     "pd-balanced"        = 943
@@ -142,11 +121,11 @@ locals {
   # Disk types
   final_data_disk_type   = var.data_disk_type_override == "" ? local.final_disk_type : var.data_disk_type_override
   final_log_disk_type    = var.log_disk_type_override == "" ? local.final_disk_type : var.log_disk_type_override
-  temp_shared_disk_type  = local.native_bm ? "hyperdisk-balanced" : (contains(["hyperdisk-extreme", "hyperdisk-balanced", "pd-extreme"], local.final_disk_type) ? "pd-balanced" : local.final_disk_type)
-  temp_usrsap_disk_type  = local.native_bm ? "hyperdisk-balanced" : (contains(["hyperdisk-extreme", "hyperdisk-balanced", "pd-extreme"], local.final_disk_type) ? "pd-balanced" : local.final_disk_type)
+  temp_shared_disk_type  = local.only_hyperdisks_supported ? "hyperdisk-balanced" : (contains(["hyperdisk-extreme", "hyperdisk-balanced", "pd-extreme"], local.final_disk_type) ? "pd-balanced" : local.final_disk_type)
+  temp_usrsap_disk_type  = local.only_hyperdisks_supported ? "hyperdisk-balanced" : (contains(["hyperdisk-extreme", "hyperdisk-balanced", "pd-extreme"], local.final_disk_type) ? "pd-balanced" : local.final_disk_type)
   final_shared_disk_type = var.shared_disk_type_override == "" ? local.temp_shared_disk_type : var.shared_disk_type_override
   final_usrsap_disk_type = var.usrsap_disk_type_override == "" ? local.temp_usrsap_disk_type : var.usrsap_disk_type_override
-  final_backup_disk_type = var.backup_disk_type == "" ? (local.native_bm ? "hyperdisk-balanced" : "pd-balanced") : var.backup_disk_type
+  final_backup_disk_type = var.backup_disk_type == "" ? (local.only_hyperdisks_supported ? "hyperdisk-balanced" : "pd-balanced") : var.backup_disk_type
 
   # Disk IOPS
   hdx_iops_map = {
@@ -290,17 +269,17 @@ locals {
 
 # tflint-ignore: terraform_unused_declarations
 data "assert_test" "scaleout_needs_mm" {
-  test  = (local.mm_partially_defined && var.sap_hana_scaleout_nodes > 0) || (!local.mm_partially_defined && var.sap_hana_scaleout_nodes == 0)
+  test  = (local.mm_partially_defined && var.sap_hana_scaleout_nodes > 0) || (! local.mm_partially_defined && var.sap_hana_scaleout_nodes == 0)
   throw = "sap_hana_scaleout_nodes and all majority_maker variables must be specified together: majority_maker_instance_name, majority_maker_machine_type, majority_maker_zone"
 }
 # tflint-ignore: terraform_unused_declarations
 data "assert_test" "fully_specify_mm" {
-  test  = !local.mm_partially_defined || local.mm_fully_defined
+  test  = ! local.mm_partially_defined || local.mm_fully_defined
   throw = "majority_maker_instance_name, majority_maker_machine_type, and majority_maker_zone must all be specified together"
 }
 # tflint-ignore: terraform_unused_declarations
 data "assert_test" "mm_region_check" {
-  test  = !local.mm_fully_defined || local.mm_region == local.region
+  test  = ! local.mm_fully_defined || local.mm_region == local.region
   throw = "Majority maker must be in the same region as the primary and secondary instances"
 }
 # tflint-ignore: terraform_unused_declarations
@@ -310,18 +289,18 @@ resource "validation_warning" "mm_zone_warning" {
 }
 # tflint-ignore: terraform_unused_declarations
 data "assert_test" "no_rhel_with_scaleout" {
-  test  = var.sap_hana_scaleout_nodes == 0 || !can(regex("rhel", var.linux_image_project))
+  test  = var.sap_hana_scaleout_nodes == 0 || ! can(regex("rhel", var.linux_image_project))
   throw = "HANA HA Scaleout deployment is currently only supported on SLES operating systems."
 }
 # tflint-ignore: terraform_unused_declarations
-data "assert_test" "hyperdisk_with_native_bm" {
-  test  = local.native_bm ? length(regexall("hyperdisk", local.final_disk_type)) > 0 : true
-  throw = "Native bare metal machines only work with hyperdisks. Set 'disk_type' accordingly, e.g. 'disk_type = hyperdisk-balanced'"
+data "assert_test" "verify_hyperdisk_usage" {
+  test  = local.only_hyperdisks_supported ? length(regexall("hyperdisk", local.final_disk_type)) > 0 : true
+  throw = "The selected a machine type only works with hyperdisks. Set 'disk_type' accordingly, e.g. 'disk_type = hyperdisk-balanced'"
 }
 # tflint-ignore: terraform_unused_declarations
-data "assert_test" "backup_hyperdisk_with_native_bm" {
-  test  = local.native_bm && var.include_backup_disk ? (length(regexall("hyperdisk", local.final_backup_disk_type)) > 0) : true
-  throw = "Native bare metal machines only work with hyperdisks. Set 'backup_disk_type' accordingly, e.g. 'backup_disk_type = hyperdisk-balanced'"
+data "assert_test" "verify_hyperdisk_usage_for_backup_disk" {
+  test  = local.only_hyperdisks_supported && var.include_backup_disk ? (length(regexall("hyperdisk", local.final_backup_disk_type)) > 0) : true
+  throw = "The selected a machine type only works with hyperdisks. Set 'backup_disk_type' accordingly, e.g. 'backup_disk_type = hyperdisk-balanced'"
 }
 
 ################################################################################
@@ -360,7 +339,7 @@ resource "google_compute_address" "sap_hana_ha_worker_vm_ip" {
 resource "google_compute_disk" "sap_hana_ha_primary_boot_disks" {
   count   = var.sap_hana_scaleout_nodes + 1
   name    = count.index == 0 ? "${var.primary_instance_name}-boot" : "${var.primary_instance_name}w${count.index}-boot"
-  type    = local.native_bm ? "hyperdisk-balanced" : "pd-balanced"
+  type    = local.only_hyperdisks_supported ? "hyperdisk-balanced" : "pd-balanced"
   zone    = var.primary_zone
   size    = local.default_boot_size
   project = var.project_id
@@ -568,9 +547,10 @@ resource "google_compute_instance" "sap_hana_ha_primary_instance" {
       sap_secondary_zone              = var.secondary_zone
       use_single_shared_data_log_disk = var.use_single_shared_data_log_disk
       sap_hana_backup_disk            = var.include_backup_disk
-      sap_hana_shared_disk            = !var.use_single_shared_data_log_disk
+      sap_hana_shared_disk            = ! var.use_single_shared_data_log_disk
       sap_hana_scaleout_nodes         = var.sap_hana_scaleout_nodes
       majority_maker_instance_name    = local.mm_fully_defined ? var.majority_maker_instance_name : ""
+      majority_maker_zone             = local.mm_fully_defined ? var.majority_maker_zone : ""
       sap_hana_data_disk_type         = local.final_data_disk_type
       enable_fast_restart             = var.enable_fast_restart
       native_bm                       = local.native_bm
@@ -699,9 +679,10 @@ resource "google_compute_instance" "sap_hana_ha_primary_workers" {
       sap_secondary_zone              = var.secondary_zone
       use_single_shared_data_log_disk = var.use_single_shared_data_log_disk
       sap_hana_backup_disk            = var.include_backup_disk
-      sap_hana_shared_disk            = !var.use_single_shared_data_log_disk
+      sap_hana_shared_disk            = ! var.use_single_shared_data_log_disk
       sap_hana_scaleout_nodes         = var.sap_hana_scaleout_nodes
       majority_maker_instance_name    = local.mm_fully_defined ? var.majority_maker_instance_name : ""
+      majority_maker_zone             = local.mm_fully_defined ? var.majority_maker_zone : ""
       enable_fast_restart             = var.enable_fast_restart
       native_bm                       = local.native_bm
       template-type                   = "TERRAFORM"
@@ -725,7 +706,7 @@ resource "google_compute_instance" "sap_hana_ha_primary_workers" {
 resource "google_compute_disk" "sap_hana_ha_secondary_boot_disks" {
   count   = var.sap_hana_scaleout_nodes + 1
   name    = count.index == 0 ? "${var.secondary_instance_name}-boot" : "${var.secondary_instance_name}w${count.index}-boot"
-  type    = local.native_bm ? "hyperdisk-balanced" : "pd-balanced"
+  type    = local.only_hyperdisks_supported ? "hyperdisk-balanced" : "pd-balanced"
   zone    = var.secondary_zone
   size    = local.default_boot_size
   project = var.project_id
@@ -932,9 +913,10 @@ resource "google_compute_instance" "sap_hana_ha_secondary_instance" {
       sap_secondary_zone              = var.secondary_zone
       use_single_shared_data_log_disk = var.use_single_shared_data_log_disk
       sap_hana_backup_disk            = var.include_backup_disk
-      sap_hana_shared_disk            = !var.use_single_shared_data_log_disk
+      sap_hana_shared_disk            = ! var.use_single_shared_data_log_disk
       sap_hana_scaleout_nodes         = var.sap_hana_scaleout_nodes
       majority_maker_instance_name    = local.mm_fully_defined ? var.majority_maker_instance_name : ""
+      majority_maker_zone             = local.mm_fully_defined ? var.majority_maker_zone : ""
       enable_fast_restart             = var.enable_fast_restart
       native_bm                       = local.native_bm
       template-type                   = "TERRAFORM"
@@ -1062,9 +1044,10 @@ resource "google_compute_instance" "sap_hana_ha_secondary_workers" {
       sap_secondary_zone              = var.secondary_zone
       use_single_shared_data_log_disk = var.use_single_shared_data_log_disk
       sap_hana_backup_disk            = var.include_backup_disk
-      sap_hana_shared_disk            = !var.use_single_shared_data_log_disk
+      sap_hana_shared_disk            = ! var.use_single_shared_data_log_disk
       sap_hana_scaleout_nodes         = var.sap_hana_scaleout_nodes
       majority_maker_instance_name    = local.mm_fully_defined ? var.majority_maker_instance_name : ""
+      majority_maker_zone             = local.mm_fully_defined ? var.majority_maker_zone : ""
       enable_fast_restart             = var.enable_fast_restart
       native_bm                       = local.native_bm
       template-type                   = "TERRAFORM"
@@ -1258,9 +1241,10 @@ resource "google_compute_instance" "sap_majority_maker_instance" {
       sap_secondary_zone              = var.secondary_zone
       use_single_shared_data_log_disk = var.use_single_shared_data_log_disk
       sap_hana_backup_disk            = var.include_backup_disk
-      sap_hana_shared_disk            = !var.use_single_shared_data_log_disk
+      sap_hana_shared_disk            = ! var.use_single_shared_data_log_disk
       sap_hana_scaleout_nodes         = var.sap_hana_scaleout_nodes
       majority_maker_instance_name    = local.mm_fully_defined ? var.majority_maker_instance_name : ""
+      majority_maker_zone             = local.mm_fully_defined ? var.majority_maker_zone : ""
       template-type                   = "TERRAFORM"
     },
     local.wlm_metadata

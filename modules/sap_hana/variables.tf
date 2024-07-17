@@ -1,5 +1,5 @@
 /**
- * Copyright 2024 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ variable "sap_hana_deployment_bucket" {
   type        = string
   description = "The Cloud Storage path that contains the SAP HANA media, do not include gs://. If this is not defined, the GCE instance will be provisioned without SAP HANA installed."
   validation {
-    condition     = (!(length(regexall("gs:", var.sap_hana_deployment_bucket)) > 0))
+    condition     = (! (length(regexall("gs:", var.sap_hana_deployment_bucket)) > 0))
     error_message = "The sap_hana_deployment_bucket must only contain the Cloud Storage path, which includes the bucket name and the names of any folders. Do not include gs://."
   }
   default = ""
@@ -268,7 +268,7 @@ variable "nic_type" {
 
 variable "disk_type" {
   type        = string
-  description = "Optional - The default disk type to use for disk(s) containing log and data volumes. The default is hyperdisk-extreme for native bare metal machines and pd-ssd otherwise. Not all disk are supported on all machine types - see https://cloud.google.com/compute/docs/disks/ for details."
+  description = "Optional - The default disk type to use for disk(s) containing log and data volumes. The default is pd-ssd, except for machines that do not support PD, in which case the default is hyperdisk-extreme. Not all disk are supported on all machine types - see https://cloud.google.com/compute/docs/disks/ for details."
   validation {
     condition     = contains(["", "pd-ssd", "pd-balanced", "pd-extreme", "hyperdisk-balanced", "hyperdisk-extreme"], var.disk_type)
     error_message = "The disk_type must be either pd-ssd, pd-balanced, pd-extreme, hyperdisk-balanced, or hyperdisk-extreme."
@@ -290,7 +290,7 @@ variable "include_backup_disk" {
 
 variable "backup_disk_type" {
   type        = string
-  description = "Optional - The default is hyperdisk-balanced for native bare metal machines and pd-balanced otherwise, only used if a backup disk is needed."
+  description = "Optional - The default is pd-ssd, except for machines that do not support PD, in which case the default is hyperdisk-extreme. Only used if a backup disk is needed."
   validation {
     condition     = contains(["", "pd-ssd", "pd-balanced", "pd-standard", "pd-extreme", "hyperdisk-balanced", "hyperdisk-extreme"], var.backup_disk_type)
     error_message = "The disk_type must be either pd-ssd, pd-balanced, pd-standard, pd-extreme, hyperdisk-balanced, or hyperdisk-extreme."
@@ -483,12 +483,12 @@ variable "backup_disk_throughput_override" {
 variable "primary_startup_url" {
   type        = string
   description = "Startup script to be executed when the VM boots, should not be overridden."
-  default     = "curl -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202404101403/terraform/sap_hana/startup.sh | bash -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202404101403/terraform"
+  default     = "curl -s BUILD.TERRA_SH_URL/sap_hana/startup.sh | bash -s BUILD.TERRA_SH_URL"
 }
 
 variable "secondary_startup_url" {
   type        = string
-  default     = "curl -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202404101403/terraform/sap_hana/startup_secondary.sh | bash -s https://www.googleapis.com/storage/v1/core-connect-dm-templates/202404101403/terraform"
+  default     = "curl -s BUILD.TERRA_SH_URL/sap_hana/startup_secondary.sh | bash -s BUILD.TERRA_SH_URL"
   description = "DO NOT USE"
 }
 
