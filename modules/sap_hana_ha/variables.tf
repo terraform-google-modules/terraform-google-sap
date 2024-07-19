@@ -526,24 +526,24 @@ variable "is_work_load_management_deployment" {
 variable "primary_startup_url" {
   type        = string
   description = "Startup script to be executed when the VM boots, should not be overridden."
-  default     = "curl -s BUILD.TERRA_SH_URL/sap_hana_ha/startup.sh | bash -s BUILD.TERRA_SH_URL"
+  default     = "curl -s BUILD.TERRA_SH_URL/sap_hana_ha/hana_ha_startup.sh | bash -s BUILD.TERRA_SH_URL"
 }
 
 variable "worker_startup_url" {
   type        = string
   description = "Startup script to be executed when the worker VM boots, should not be overridden."
-  default     = "curl -s BUILD.TERRA_SH_URL/sap_hana_ha/startup_worker.sh | bash -s BUILD.TERRA_SH_URL"
+  default     = "curl -s BUILD.TERRA_SH_URL/sap_hana_ha/hana_ha_startup_worker.sh | bash -s BUILD.TERRA_SH_URL"
 }
 
 variable "secondary_startup_url" {
   type        = string
-  default     = "curl -s BUILD.TERRA_SH_URL/sap_hana_ha/startup_secondary.sh | bash -s BUILD.TERRA_SH_URL"
+  default     = "curl -s BUILD.TERRA_SH_URL/sap_hana_ha/hana_ha_startup_secondary.sh | bash -s BUILD.TERRA_SH_URL"
   description = "DO NOT USE"
 }
 
 variable "majority_maker_startup_url" {
   type        = string
-  default     = "curl -s BUILD.TERRA_SH_URL/sap_hana_ha/startup_majority_maker.sh | bash -s BUILD.TERRA_SH_URL"
+  default     = "curl -s BUILD.TERRA_SH_URL/sap_hana_ha/hana_ha_startup_majority_maker.sh | bash -s BUILD.TERRA_SH_URL"
   description = "DO NOT USE"
 }
 variable "can_ip_forward" {
