@@ -364,12 +364,12 @@ variable "log_disk_throughput_override" {
 variable "primary_startup_url" {
   type        = string
   description = "Startup script to be executed when the VM boots, should not be overridden."
-  default     = "curl -s BUILD.TERRA_SH_URL/sap_hana_scaleout/startup.sh | bash -s BUILD.TERRA_SH_URL"
+  default     = "curl -s BUILD.TERRA_SH_URL/sap_hana_scaleout/hana_scaleout_startup.sh | bash -s BUILD.TERRA_SH_URL"
 }
 
 variable "secondary_startup_url" {
   type        = string
-  default     = "curl -s BUILD.TERRA_SH_URL/sap_hana_scaleout/startup_secondary.sh | bash -s BUILD.TERRA_SH_URL"
+  default     = "curl -s BUILD.TERRA_SH_URL/sap_hana_scaleout/hana_scaleout_startup_secondary.sh | bash -s BUILD.TERRA_SH_URL"
   description = "DO NOT USE"
 }
 
