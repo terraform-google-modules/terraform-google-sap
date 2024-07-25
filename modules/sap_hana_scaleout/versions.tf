@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 terraform {
   required_version = ">=0.12.6"
   required_providers {
@@ -21,9 +20,9 @@ terraform {
       source  = "hashicorp/google"
       version = ">= 4.0.0, < 6"
     }
-  }
-
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-sap:sap_hana_scaleout/v1.1.2"
+    assert = {
+      source  = "bwoznicki/assert"
+      version = "0.0.1"
+    }
   }
 }
