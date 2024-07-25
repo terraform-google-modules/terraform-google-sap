@@ -268,17 +268,17 @@ locals {
 
 # tflint-ignore: terraform_unused_declarations
 data "assert_test" "scaleout_needs_mm" {
-  test  = (local.mm_partially_defined && var.sap_hana_scaleout_nodes > 0) || (! local.mm_partially_defined && var.sap_hana_scaleout_nodes == 0)
+  test  = (local.mm_partially_defined && var.sap_hana_scaleout_nodes > 0) || (!local.mm_partially_defined && var.sap_hana_scaleout_nodes == 0)
   throw = "sap_hana_scaleout_nodes and all majority_maker variables must be specified together: majority_maker_instance_name, majority_maker_machine_type, majority_maker_zone"
 }
 # tflint-ignore: terraform_unused_declarations
 data "assert_test" "fully_specify_mm" {
-  test  = ! local.mm_partially_defined || local.mm_fully_defined
+  test  = !local.mm_partially_defined || local.mm_fully_defined
   throw = "majority_maker_instance_name, majority_maker_machine_type, and majority_maker_zone must all be specified together"
 }
 # tflint-ignore: terraform_unused_declarations
 data "assert_test" "mm_region_check" {
-  test  = ! local.mm_fully_defined || local.mm_region == local.region
+  test  = !local.mm_fully_defined || local.mm_region == local.region
   throw = "Majority maker must be in the same region as the primary and secondary instances"
 }
 # tflint-ignore: terraform_unused_declarations
@@ -288,7 +288,7 @@ resource "validation_warning" "mm_zone_warning" {
 }
 # tflint-ignore: terraform_unused_declarations
 data "assert_test" "no_rhel_with_scaleout" {
-  test  = var.sap_hana_scaleout_nodes == 0 || ! can(regex("rhel", var.linux_image_project))
+  test  = var.sap_hana_scaleout_nodes == 0 || !can(regex("rhel", var.linux_image_project))
   throw = "HANA HA Scaleout deployment is currently only supported on SLES operating systems."
 }
 # tflint-ignore: terraform_unused_declarations
@@ -546,7 +546,7 @@ resource "google_compute_instance" "sap_hana_ha_primary_instance" {
       sap_secondary_zone              = var.secondary_zone
       use_single_shared_data_log_disk = var.use_single_shared_data_log_disk
       sap_hana_backup_disk            = var.include_backup_disk
-      sap_hana_shared_disk            = ! var.use_single_shared_data_log_disk
+      sap_hana_shared_disk            = !var.use_single_shared_data_log_disk
       sap_hana_scaleout_nodes         = var.sap_hana_scaleout_nodes
       majority_maker_instance_name    = local.mm_fully_defined ? var.majority_maker_instance_name : ""
       majority_maker_zone             = local.mm_fully_defined ? var.majority_maker_zone : ""
@@ -678,7 +678,7 @@ resource "google_compute_instance" "sap_hana_ha_primary_workers" {
       sap_secondary_zone              = var.secondary_zone
       use_single_shared_data_log_disk = var.use_single_shared_data_log_disk
       sap_hana_backup_disk            = var.include_backup_disk
-      sap_hana_shared_disk            = ! var.use_single_shared_data_log_disk
+      sap_hana_shared_disk            = !var.use_single_shared_data_log_disk
       sap_hana_scaleout_nodes         = var.sap_hana_scaleout_nodes
       majority_maker_instance_name    = local.mm_fully_defined ? var.majority_maker_instance_name : ""
       majority_maker_zone             = local.mm_fully_defined ? var.majority_maker_zone : ""
@@ -912,7 +912,7 @@ resource "google_compute_instance" "sap_hana_ha_secondary_instance" {
       sap_secondary_zone              = var.secondary_zone
       use_single_shared_data_log_disk = var.use_single_shared_data_log_disk
       sap_hana_backup_disk            = var.include_backup_disk
-      sap_hana_shared_disk            = ! var.use_single_shared_data_log_disk
+      sap_hana_shared_disk            = !var.use_single_shared_data_log_disk
       sap_hana_scaleout_nodes         = var.sap_hana_scaleout_nodes
       majority_maker_instance_name    = local.mm_fully_defined ? var.majority_maker_instance_name : ""
       majority_maker_zone             = local.mm_fully_defined ? var.majority_maker_zone : ""
@@ -1043,7 +1043,7 @@ resource "google_compute_instance" "sap_hana_ha_secondary_workers" {
       sap_secondary_zone              = var.secondary_zone
       use_single_shared_data_log_disk = var.use_single_shared_data_log_disk
       sap_hana_backup_disk            = var.include_backup_disk
-      sap_hana_shared_disk            = ! var.use_single_shared_data_log_disk
+      sap_hana_shared_disk            = !var.use_single_shared_data_log_disk
       sap_hana_scaleout_nodes         = var.sap_hana_scaleout_nodes
       majority_maker_instance_name    = local.mm_fully_defined ? var.majority_maker_instance_name : ""
       majority_maker_zone             = local.mm_fully_defined ? var.majority_maker_zone : ""
@@ -1240,7 +1240,7 @@ resource "google_compute_instance" "sap_majority_maker_instance" {
       sap_secondary_zone              = var.secondary_zone
       use_single_shared_data_log_disk = var.use_single_shared_data_log_disk
       sap_hana_backup_disk            = var.include_backup_disk
-      sap_hana_shared_disk            = ! var.use_single_shared_data_log_disk
+      sap_hana_shared_disk            = !var.use_single_shared_data_log_disk
       sap_hana_scaleout_nodes         = var.sap_hana_scaleout_nodes
       majority_maker_instance_name    = local.mm_fully_defined ? var.majority_maker_instance_name : ""
       majority_maker_zone             = local.mm_fully_defined ? var.majority_maker_zone : ""

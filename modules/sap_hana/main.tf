@@ -216,8 +216,8 @@ locals {
   primary_startup_url   = var.sap_deployment_debug ? replace(var.primary_startup_url, "bash -s", "bash -x -s") : var.primary_startup_url
   secondary_startup_url = var.sap_deployment_debug ? replace(var.secondary_startup_url, "bash -s", "bash -x -s") : var.secondary_startup_url
 
-  has_shared_nfs   = ! (var.sap_hana_shared_nfs == "" && var.sap_hana_shared_nfs_resource == null)
-  make_shared_disk = ! var.use_single_shared_data_log_disk && ! local.has_shared_nfs
+  has_shared_nfs   = !(var.sap_hana_shared_nfs == "" && var.sap_hana_shared_nfs_resource == null)
+  make_shared_disk = !var.use_single_shared_data_log_disk && !local.has_shared_nfs
 
   use_backup_disk = (var.include_backup_disk && var.sap_hana_backup_nfs == "" && var.sap_hana_backup_nfs_resource == null)
 
@@ -231,12 +231,12 @@ locals {
 
 # tflint-ignore: terraform_unused_declarations
 data "assert_test" "one_backup" {
-  test  = local.use_backup_disk || ! local.both_backup_nfs_defined
+  test  = local.use_backup_disk || !local.both_backup_nfs_defined
   throw = "Either use a disk for /backup (include_backup_disk) or use NFS. If using an NFS as /backup then only either sap_hana_backup_nfs or sap_hana_backup_nfs_resource may be defined."
 }
 # tflint-ignore: terraform_unused_declarations
 data "assert_test" "one_shared" {
-  test  = ! local.both_shared_nfs_defined
+  test  = !local.both_shared_nfs_defined
   throw = "If using an NFS as /shared then only either sap_hana_shared_nfs or sap_hana_shared_nfs_resource may be defined."
 }
 # tflint-ignore: terraform_unused_declarations
