@@ -16,8 +16,7 @@
 #
 # Terraform SAP NW for Google Cloud
 #
-# Version:    BUILD.VERSION
-# Build Hash: BUILD.HASH
+# Version:    PACKAGE_VERSION
 #
 
 ################################################################################

@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 #
-# Version:    BUILD.VERSION
-# Build Hash: BUILD.HASH
+# Version:    PACKAGE_VERSION
 #
 module "hana_scaleout" {
-  source = "TERRAFORM_PREFIXTERRAFORM_URL_LATEST/terraform/sap_hana_scaleout/sap_hana_scaleout_module.zip"
+  source = "https://storage.googleapis.com/cloudsapdeploy/terraform/latest/terraform/sap_hana_scaleout/sap_hana_scaleout_module.zip"
   #
   # By default, this source file uses the latest release of the terraform module
   # for SAP on Google Cloud.  To fix your deployments to a specific release
   # of the module, comment out the source property above and uncomment the source property below.
   #
-  # source = "TERRAFORM_PREFIXTERRAFORM_URL/terraform/sap_hana_scaleout/sap_hana_scaleout_module.zip"
+  # source = "https://storage.googleapis.com/cloudsapdeploy/terraform/PACKAGE_VERSION/terraform/sap_hana_scaleout/sap_hana_scaleout_module.zip"
   #
   # Fill in the information below
   #
