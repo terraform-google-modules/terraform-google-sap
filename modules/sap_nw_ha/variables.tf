@@ -322,12 +322,12 @@ variable "secondary_reservation_name" {
 #
 variable "primary_startup_url" {
   type        = string
-  default     = "curl -s BUILD.TERRA_SH_URL/sap_nw_ha/nw_ha_startup_scs.sh | bash -s BUILD.TERRA_SH_URL"
+  default     = "curl -s https://storage.googleapis.com/cloudsapdeploy/terraform/latest/terraform/sap_nw_ha/nw_ha_startup_scs.sh | bash -s https://storage.googleapis.com/cloudsapdeploy/terraform/latest/terraform"
   description = "DO NOT USE"
 }
 variable "secondary_startup_url" {
   type        = string
-  default     = "curl -s BUILD.TERRA_SH_URL/sap_nw_ha/nw_ha_startup_ers.sh | bash -s BUILD.TERRA_SH_URL"
+  default     = "curl -s https://storage.googleapis.com/cloudsapdeploy/terraform/latest/terraform/sap_nw_ha/nw_ha_startup_ers.sh | bash -s https://storage.googleapis.com/cloudsapdeploy/terraform/latest/terraform"
   description = "DO NOT USE"
 }
 variable "post_deployment_script" {

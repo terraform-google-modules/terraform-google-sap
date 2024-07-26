@@ -137,7 +137,7 @@ variable "post_deployment_script" {
 variable "primary_startup_url" {
   type        = string
   description = "Startup script to be executed when the VM boots, should not be overridden."
-  default     = "curl -s BUILD.TERRA_SH_URL/sap_nw/nw_startup.sh | bash -s BUILD.TERRA_SH_URL"
+  default     = "curl -s https://storage.googleapis.com/cloudsapdeploy/terraform/latest/terraform/sap_nw/nw_startup.sh | bash -s https://storage.googleapis.com/cloudsapdeploy/terraform/latest/terraform"
 }
 
 variable "can_ip_forward" {
