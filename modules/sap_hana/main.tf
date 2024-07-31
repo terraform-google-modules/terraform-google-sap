@@ -16,7 +16,7 @@
 #
 # Terraform SAP HANA for Google Cloud
 #
-# Version:    PACKAGE_VERSION
+# Version:    DATETIME_OF_BUILD
 #
 
 ################################################################################
