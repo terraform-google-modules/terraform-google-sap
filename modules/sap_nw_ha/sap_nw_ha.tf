@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 #
-# Version:    PACKAGE_VERSION
+# Version:    DATETIME_OF_BUILD
 #
 module "sap_nw_ha" {
   source = "https://storage.googleapis.com/cloudsapdeploy/terraform/latest/terraform/sap_nw_ha/sap_nw_ha_module.zip"
@@ -23,7 +23,7 @@ module "sap_nw_ha" {
   # for SAP on Google Cloud.  To fix your deployments to a specific release
   # of the module, comment out the source property above and uncomment the source property below.
   #cloudsapdeploytesting/terraform/202407211540/terraform/sap_ase/terraform/sap_ase.tf
-  # source = "https://storage.googleapis.com/cloudsapdeploy/terraform/PACKAGE_VERSION/terraform/sap_nw_ha/sap_nw_ha_module.zip"
+  # source = "https://storage.googleapis.com/cloudsapdeploy/terraform/DATETIME_OF_BUILD/terraform/sap_nw_ha/sap_nw_ha_module.zip"
   #
   # Fill in the information below
   #

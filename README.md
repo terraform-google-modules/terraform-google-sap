@@ -17,7 +17,9 @@ Each submodules have their own usage documented in the [modules](./modules) fold
 For example, see the [SAP HANA Usage Section](./modules/sap_hana/README.md#Usage).
 
 Functional examples are included in the
-[examples](./examples/) directory.
+[examples](./examples/) directory. 
+
+To use the static version functionality in the NW or HA templates, use our templates hosted on GCS as documented here: https://cloud.google.com/solutions/sap/docs/tf-for-sap.
 
 [^]: (autogen_docs_start)
 
