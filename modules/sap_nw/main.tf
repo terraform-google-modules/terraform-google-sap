@@ -1,5 +1,5 @@
 /**
- * Copyright 2024 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
 #
 # Terraform SAP NW for Google Cloud
 #
-# Version:    2.0.202404101403
-# Build Hash: eb079d47f21e747ddd0162c68068237a36e3e841
+# Version:    DATETIME_OF_BUILD
 #
 
 ################################################################################
@@ -37,6 +36,8 @@ locals {
     "n1-megamem-96" : "Intel Skylake",
   }
   primary_startup_url = var.sap_deployment_debug ? replace(var.primary_startup_url, "bash -s", "bash -x -s") : var.primary_startup_url
+
+  only_hyperdisks_supported = length(regexall("c4-", var.machine_type)) > 0
 }
 
 ################################################################################
@@ -44,7 +45,7 @@ locals {
 ################################################################################
 resource "google_compute_disk" "sap_nw_boot_disk" {
   name    = "${var.instance_name}-boot"
-  type    = "pd-balanced"
+  type    = local.only_hyperdisks_supported ? "hyperdisk-balanced" : "pd-balanced"
   zone    = var.zone
   size    = 30 # GB
   project = var.project_id
@@ -61,7 +62,7 @@ resource "google_compute_disk" "sap_nw_boot_disk" {
 resource "google_compute_disk" "sap_nw_usrsap_disk" {
   count   = var.usr_sap_size > 0 ? 1 : 0
   name    = "${var.instance_name}-usrsap"
-  type    = "pd-balanced"
+  type    = local.only_hyperdisks_supported ? "hyperdisk-balanced" : "pd-balanced"
   zone    = var.zone
   size    = var.usr_sap_size
   project = var.project_id
@@ -70,7 +71,7 @@ resource "google_compute_disk" "sap_nw_usrsap_disk" {
 resource "google_compute_disk" "sap_nw_swap_disk" {
   count   = var.swap_size > 0 ? 1 : 0
   name    = "${var.instance_name}-swap"
-  type    = "pd-balanced"
+  type    = local.only_hyperdisks_supported ? "hyperdisk-balanced" : "pd-balanced"
   zone    = var.zone
   size    = var.swap_size
   project = var.project_id
@@ -79,7 +80,7 @@ resource "google_compute_disk" "sap_nw_swap_disk" {
 resource "google_compute_disk" "sap_nw_sapmnt_disk" {
   count   = var.sap_mnt_size > 0 ? 1 : 0
   name    = "${var.instance_name}-sapmnt"
-  type    = "pd-balanced"
+  type    = local.only_hyperdisks_supported ? "hyperdisk-balanced" : "pd-balanced"
   size    = var.sap_mnt_size
   zone    = var.zone
   project = var.project_id

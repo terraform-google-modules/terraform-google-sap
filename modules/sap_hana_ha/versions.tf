@@ -1,5 +1,5 @@
 /**
- * Copyright 2024 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ terraform {
     }
     validation = {
       source  = "tlkamp/validation"
-      version = "1.1.1"
+      version = "1.0.0"
     }
   }
 }

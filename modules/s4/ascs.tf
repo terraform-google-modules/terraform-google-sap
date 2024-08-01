@@ -24,7 +24,7 @@ data "google_service_account" "service_account_ascs" {
 
 resource "google_compute_address" "sapdascs11-1" {
   address_type = "INTERNAL"
-  name         = length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}-internal" : "${var.vm_prefix}ascs11-internal"
+  name         = "${length(var.ascs_vm_names) > 0 ? var.ascs_vm_names[0] : "${var.vm_prefix}ascs11"}-internal"
   project      = data.google_project.sap-project.project_id
   region       = var.region_name
   subnetwork   = data.google_compute_subnetwork.sap-subnet-ascs-1.self_link
@@ -37,13 +37,13 @@ resource "google_compute_disk" "sapdascs11" {
   }
   name    = length(var.ascs_vm_names) > 0 ? var.ascs_vm_names[0] : "${var.vm_prefix}ascs11"
   project = data.google_project.sap-project.project_id
-  size    = 50
+  size    = length(regexall("metal|c4-", var.ascs_machine_type)) > 0 ? 64 : 50
   timeouts {
     create = "1h"
     delete = "1h"
     update = "1h"
   }
-  type = "pd-balanced"
+  type = length(regexall("metal|c4-", var.ascs_machine_type)) > 0 ? "hyperdisk-balanced" : "pd-ssd"
   zone = var.zone1_name
 }
 
@@ -51,15 +51,16 @@ resource "google_compute_disk" "sapdascs11_usr_sap" {
   lifecycle {
     ignore_changes = [snapshot]
   }
-  name    = length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}-usr-sap" : "${var.vm_prefix}ascs11-usr-sap"
-  project = data.google_project.sap-project.project_id
-  size    = var.ascs_disk_usr_sap_size
+  name             = "${length(var.ascs_vm_names) > 0 ? var.ascs_vm_names[0] : "${var.vm_prefix}ascs11"}-usr-sap"
+  project          = data.google_project.sap-project.project_id
+  provisioned_iops = var.ascs_disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.ascs_disk_usr_sap_size) : null
+  size             = var.ascs_disk_usr_sap_size
   timeouts {
     create = "1h"
     delete = "1h"
     update = "1h"
   }
-  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
+  type = var.ascs_disk_type
   zone = var.zone1_name
 }
 
@@ -101,29 +102,31 @@ resource "google_compute_instance" "sapdascs11" {
   project = data.google_project.sap-project.project_id
   scheduling {
     automatic_restart   = true
-    on_host_maintenance = "MIGRATE"
+    on_host_maintenance = length(regexall("metal", var.ascs_machine_type)) > 0 ? "TERMINATE" : "MIGRATE"
     preemptible         = false
   }
   service_account {
     email  = data.google_service_account.service_account_ascs.email
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
-  tags = ["allow-health-checks", "${var.deployment_name}-s4-comms"]
+  tags = compact(concat(["${var.deployment_name}-s4-comms"], var.custom_tags))
   zone = var.zone1_name
 }
 
 resource "google_dns_record_set" "ascs_alidascs11" {
-  managed_zone = data.google_dns_managed_zone.sap_zone.name
-  name         = "alidascs11.${data.google_dns_managed_zone.sap_zone.dns_name}"
+  count        = var.deployment_has_dns ? 1 : 0
+  managed_zone = data.google_dns_managed_zone.sap_zone[0].name
+  name         = "alidascs11.${data.google_dns_managed_zone.sap_zone[0].dns_name}"
   project      = data.google_project.sap-project.project_id
-  rrdatas      = [google_dns_record_set.to_vm_sapdascs11.name]
+  rrdatas      = [google_dns_record_set.to_vm_sapdascs11[0].name]
   ttl          = 300
   type         = "CNAME"
 }
 
 resource "google_dns_record_set" "to_vm_sapdascs11" {
-  managed_zone = data.google_dns_managed_zone.sap_zone.name
-  name         = length(var.ascs_vm_names) > 0 ? "${var.ascs_vm_names[0]}.${data.google_dns_managed_zone.sap_zone.dns_name}" : "${var.vm_prefix}ascs11.${data.google_dns_managed_zone.sap_zone.dns_name}"
+  count        = var.deployment_has_dns ? 1 : 0
+  managed_zone = data.google_dns_managed_zone.sap_zone[0].name
+  name         = "${length(var.ascs_vm_names) > 0 ? var.ascs_vm_names[0] : "${var.vm_prefix}ascs11"}.${data.google_dns_managed_zone.sap_zone[0].dns_name}"
   project      = data.google_project.sap-project.project_id
   rrdatas      = [google_compute_instance.sapdascs11.network_interface[0].network_ip]
   ttl          = 300

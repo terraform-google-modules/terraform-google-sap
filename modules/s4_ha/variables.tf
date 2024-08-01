@@ -30,6 +30,16 @@ variable "app_disk_export_interfaces_size" {
   type        = number
 }
 
+variable "app_disk_type" {
+  default     = "pd-balanced"
+  description = "app_disk_type"
+  type        = string
+  validation {
+    condition     = contains(["pd-ssd", "pd-balanced", "hyperdisk-extreme"], var.app_disk_type)
+    error_message = "app_disk_type must be one of [\"pd-ssd\", \"pd-balanced\", \"hyperdisk-extreme\"]"
+  }
+}
+
 variable "app_disk_usr_sap_size" {
   default     = 128
   description = "app_disk_usr_sap_size"
@@ -54,6 +64,12 @@ variable "app_sid" {
   type        = string
 }
 
+variable "app_vm_names" {
+  default     = []
+  description = "app_vm_names"
+  type        = list(any)
+}
+
 variable "app_vms_multiplier" {
   default     = 1
   description = "Multiplies app VMs. E.g. if there is 2 VMs then with value 3 each VM will be multiplied by 3 (so there will be 6 total VMs)"
@@ -64,6 +80,16 @@ variable "application_secret_name" {
   default     = "default"
   description = "application_secret_name"
   type        = string
+}
+
+variable "ascs_disk_type" {
+  default     = "pd-balanced"
+  description = "ascs_disk_type"
+  type        = string
+  validation {
+    condition     = contains(["pd-ssd", "pd-balanced", "hyperdisk-extreme"], var.ascs_disk_type)
+    error_message = "ascs_disk_type must be one of [\"pd-ssd\", \"pd-balanced\", \"hyperdisk-extreme\"]"
+  }
 }
 
 variable "ascs_disk_usr_sap_size" {
@@ -108,6 +134,28 @@ variable "create_comms_firewall" {
   type        = bool
 }
 
+variable "custom_tags" {
+  default     = []
+  description = "custom_tags"
+  type        = list(any)
+}
+
+variable "data_stripe_size" {
+  default     = "256k"
+  description = "data_stripe_size"
+  type        = string
+}
+
+variable "db_data_disk_type" {
+  default     = "pd-balanced"
+  description = "db_data_disk_type"
+  type        = string
+  validation {
+    condition     = contains(["pd-ssd", "pd-balanced", "hyperdisk-extreme"], var.db_data_disk_type)
+    error_message = "db_data_disk_type must be one of [\"pd-ssd\", \"pd-balanced\", \"hyperdisk-extreme\"]"
+  }
+}
+
 variable "db_disk_backup_size" {
   default     = 128
   description = "db_disk_backup_size"
@@ -132,6 +180,16 @@ variable "db_disk_hana_shared_size" {
   type        = number
 }
 
+variable "db_disk_type" {
+  default     = "pd-balanced"
+  description = "Disk type for the non log/data disks."
+  type        = string
+  validation {
+    condition     = contains(["pd-ssd", "pd-balanced", "hyperdisk-extreme"], var.db_disk_type)
+    error_message = "db_disk_type must be one of [\"pd-ssd\", \"pd-balanced\", \"hyperdisk-extreme\"]"
+  }
+}
+
 variable "db_disk_usr_sap_size" {
   default     = 32
   description = "db_disk_usr_sap_size"
@@ -142,6 +200,16 @@ variable "db_ilb_healthcheck_port" {
   default     = 60000
   description = "db_ilb_healthcheck_port"
   type        = number
+}
+
+variable "db_log_disk_type" {
+  default     = "pd-balanced"
+  description = "db_log_disk_type"
+  type        = string
+  validation {
+    condition     = contains(["pd-ssd", "pd-balanced", "hyperdisk-extreme"], var.db_log_disk_type)
+    error_message = "db_log_disk_type must be one of [\"pd-ssd\", \"pd-balanced\", \"hyperdisk-extreme\"]"
+  }
 }
 
 variable "db_machine_type" {
@@ -173,16 +241,6 @@ variable "deployment_name" {
   type        = string
 }
 
-variable "disk_type" {
-  default     = "pd-balanced"
-  description = "disk_type"
-  type        = string
-  validation {
-    condition     = contains(["pd-ssd", "pd-balanced", "hyperdisk-extreme"], var.disk_type)
-    error_message = "disk_type must be one of [\"pd-ssd\", \"pd-balanced\", \"hyperdisk-extreme\"]"
-  }
-}
-
 variable "dns_zone_name_suffix" {
   default     = "gcp.sapcloud.goog."
   description = "dns_zone_name_suffix"
@@ -201,6 +259,12 @@ variable "existing_dns_zone_name" {
   type        = string
 }
 
+variable "deployment_has_dns" {
+  default     = true
+  description = "Set to false to deploy without a DNS zone"
+  type        = bool
+}
+
 variable "filestore_gb" {
   default     = 1024
   description = "filestore_gb"
@@ -215,6 +279,12 @@ variable "filestore_location" {
 variable "filestore_tier" {
   default     = "ENTERPRISE"
   description = "filestore_tier"
+  type        = string
+}
+
+variable "fstore_mount_point" {
+  default     = ""
+  description = "Optional - default is empty. NFS mount point of the nfs to use. If none is provided one will be created."
   type        = string
 }
 
@@ -235,6 +305,12 @@ variable "is_test" {
   type        = string
 }
 
+variable "log_stripe_size" {
+  default     = "64k"
+  description = "log_stripe_size"
+  type        = string
+}
+
 variable "media_bucket_name" {
   description = "media_bucket_name"
   type        = string
@@ -244,6 +320,18 @@ variable "network_project" {
   default     = ""
   description = "network_project"
   type        = string
+}
+
+variable "number_data_disks" {
+  default     = 1
+  description = "Optional - default is 1. Number of disks to use for data volume striping (if larger than 1)."
+  type        = number
+}
+
+variable "number_log_disks" {
+  default     = 1
+  description = "Optional - default is 1. Number of disks to use for log volume striping (if larger than 1)."
+  type        = number
 }
 
 variable "package_location" {
@@ -362,3 +450,4 @@ variable "zone2_name" {
   description = "zone2_name"
   type        = string
 }
+

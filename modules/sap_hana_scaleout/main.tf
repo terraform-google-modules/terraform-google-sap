@@ -1,5 +1,5 @@
 /**
- * Copyright 2024 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,7 @@
 # Terraform SAP HANA Scaleout for Google Cloud
 #
 #
-# Version:    2.0.202404101403
-# Build Hash: eb079d47f21e747ddd0162c68068237a36e3e841
+# Version:    DATETIME_OF_BUILD
 #
 
 ################################################################################
@@ -63,50 +62,25 @@ locals {
     "x4-megamem-1440-metal" = 24576
     "x4-megamem-1920-metal" = 32768
   }
+
+  # Default of "Automatic" will be used during instance creation for machine types not listed
   cpu_platform_map = {
-    "n1-highmem-32"         = "Intel Broadwell"
-    "n1-highmem-64"         = "Intel Broadwell"
-    "n1-highmem-96"         = "Intel Skylake"
-    "n1-megamem-96"         = "Intel Skylake"
-    "n2-highmem-32"         = "Automatic"
-    "n2-highmem-48"         = "Automatic"
-    "n2-highmem-64"         = "Automatic"
-    "n2-highmem-80"         = "Automatic"
-    "n2-highmem-96"         = "Automatic"
-    "n2-highmem-128"        = "Automatic"
-    "n1-ultramem-40"        = "Automatic"
-    "n1-ultramem-80"        = "Automatic"
-    "n1-ultramem-160"       = "Automatic"
-    "m1-megamem-96"         = "Intel Skylake"
-    "m1-ultramem-40"        = "Automatic"
-    "m1-ultramem-80"        = "Automatic"
-    "m1-ultramem-160"       = "Automatic"
-    "m2-ultramem-208"       = "Automatic"
-    "m2-megamem-416"        = "Automatic"
-    "m2-hypermem-416"       = "Automatic"
-    "m2-ultramem-416"       = "Automatic"
-    "m3-megamem-64"         = "Automatic"
-    "m3-megamem-128"        = "Automatic"
-    "m3-ultramem-32"        = "Automatic"
-    "m3-ultramem-64"        = "Automatic"
-    "m3-ultramem-128"       = "Automatic"
-    "c3-standard-44"        = "Automatic"
-    "c3-highmem-44"         = "Automatic"
-    "c3-highmem-88"         = "Automatic"
-    "c3-highmem-176"        = "Automatic"
-    "c3-standard-192-metal" = "Automatic"
-    "c3-highcpu-192-metal"  = "Automatic"
-    "c3-highmem-192-metal"  = "Automatic"
-    "x4-megamem-960-metal"  = "Automatic"
-    "x4-megamem-1440-metal" = "Automatic"
-    "x4-megamem-1920-metal" = "Automatic"
+    "n1-highmem-32" = "Intel Broadwell"
+    "n1-highmem-64" = "Intel Broadwell"
+    "n1-highmem-96" = "Intel Skylake"
+    "n1-megamem-96" = "Intel Skylake"
+    "m1-megamem-96" = "Intel Skylake"
   }
 
   native_bm = length(regexall("metal", var.machine_type)) > 0
+  # Some machine types only support hyperdisks (C4, X4, C3/metal). Depending on the machine type, we default to hyperdisk-extreme or hyperdisk-balanced
+  default_hyperdisk_extreme  = (length(regexall("^x4-", var.machine_type)) > 0)
+  default_hyperdisk_balanced = (length(regexall("^c4-|^c3-.*-metal", var.machine_type)) > 0)
+  only_hyperdisks_supported  = local.default_hyperdisk_extreme || local.default_hyperdisk_balanced
 
   # Minimum disk sizes are used to ensure throughput. Extreme disks don't need this.
   # All 'over provisioned' capacity is to go onto the data disk.
-  final_disk_type = var.disk_type == "" ? (local.native_bm ? "hyperdisk-extreme" : "pd-ssd") : var.disk_type
+  final_disk_type = var.disk_type == "" ? (local.default_hyperdisk_extreme ? "hyperdisk-extreme" : (local.default_hyperdisk_balanced ? "hyperdisk-balanced" : "pd-ssd")) : var.disk_type
   min_total_disk_map = {
     "pd-ssd"             = 550
     "pd-balanced"        = 943
@@ -204,9 +178,9 @@ locals {
 }
 
 # tflint-ignore: terraform_unused_declarations
-data "assert_test" "hyperdisk_with_native_bm" {
-  test  = local.native_bm ? length(regexall("hyperdisk", local.final_disk_type)) > 0 : true
-  throw = "Native bare metal machines only work with hyperdisks. Set 'disk_type' accordingly, e.g. 'disk_type = hyperdisk-balanced'"
+data "assert_test" "verify_hyperdisk_usage" {
+  test  = local.only_hyperdisks_supported ? length(regexall("hyperdisk", local.final_disk_type)) > 0 : true
+  throw = "The selected a machine type only works with hyperdisks. Set 'disk_type' accordingly, e.g. 'disk_type = hyperdisk-balanced'"
 }
 
 
@@ -217,7 +191,7 @@ resource "google_compute_disk" "sap_hana_scaleout_boot_disks" {
   # Need a disk for primary, worker nodes, standby nodes
   count   = var.sap_hana_worker_nodes + var.sap_hana_standby_nodes + 1
   name    = count.index == 0 ? "${var.instance_name}-boot" : "${var.instance_name}w${count.index}-boot"
-  type    = local.native_bm ? "hyperdisk-balanced" : "pd-balanced"
+  type    = local.only_hyperdisks_supported ? "hyperdisk-balanced" : "pd-balanced"
   zone    = var.zone
   size    = 45
   project = var.project_id

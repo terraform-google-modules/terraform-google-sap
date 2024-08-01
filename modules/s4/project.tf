@@ -13,6 +13,7 @@
 # limitations under the License.
 
 data "google_dns_managed_zone" "sap_zone" {
+  count   = var.deployment_has_dns ? 1 : 0
   name    = var.existing_dns_zone_name == "" ? resource.google_dns_managed_zone.sap_zone[0].name : var.existing_dns_zone_name
   project = data.google_project.sap-project.project_id
 }
@@ -36,6 +37,10 @@ locals {
     n1-standard-8  = "Intel Broadwell"
     n1-standard-96 = "Intel Skylake"
   }
+}
+
+locals {
+  fstore_url1 = var.fstore_mount_point == "" ? "${google_filestore_instance.sap_fstore_1[0].networks[0].ip_addresses[0]}:/${google_filestore_instance.sap_fstore_1[0].file_shares[0].name}" : var.fstore_mount_point
 }
 
 provider "google" {
@@ -63,7 +68,7 @@ resource "google_compute_firewall" "intra_vm_communication" {
 }
 
 resource "google_dns_managed_zone" "sap_zone" {
-  count         = var.existing_dns_zone_name == "" ? 1 : 0
+  count         = (var.deployment_has_dns && var.existing_dns_zone_name == "") ? 1 : 0
   depends_on    = [google_project_service.service_dns_googleapis_com]
   description   = "${var.deployment_name} SAP DNS zone"
   dns_name      = "${var.deployment_name}.${var.dns_zone_name_suffix}"
@@ -79,15 +84,19 @@ resource "google_dns_managed_zone" "sap_zone" {
 }
 
 resource "google_dns_record_set" "sap_fstore_1" {
-  managed_zone = data.google_dns_managed_zone.sap_zone.name
-  name         = "fstore-${var.deployment_name}-1.${data.google_dns_managed_zone.sap_zone.dns_name}"
+  count        = ((var.fstore_mount_point == "") && var.deployment_has_dns) ? 1 : 0
+  managed_zone = data.google_dns_managed_zone.sap_zone[0].name
+  name         = "fstore-${var.deployment_name}-1.${data.google_dns_managed_zone.sap_zone[0].dns_name}"
   project      = data.google_project.sap-project.project_id
-  rrdatas      = [google_filestore_instance.sap_fstore_1.networks[0].ip_addresses[0]]
-  ttl          = 60
-  type         = "A"
+  rrdatas = [
+    google_filestore_instance.sap_fstore_1[count.index].networks[0].ip_addresses[0]
+  ]
+  ttl  = 60
+  type = "A"
 }
 
 resource "google_filestore_instance" "sap_fstore_1" {
+  count      = var.fstore_mount_point == "" ? 1 : 0
   depends_on = [google_project_service.service_file_googleapis_com]
   file_shares {
     capacity_gb = var.filestore_gb

@@ -23,12 +23,12 @@ data "google_service_account" "service_account_db" {
 }
 
 locals {
-  hdx_hana_config = var.disk_type == "hyperdisk-extreme" ? true : false
+  hdx_hana_config = var.db_log_disk_type == "hyperdisk-extreme" ? true : false
 }
 
 resource "google_compute_address" "sapddb11-1" {
   address_type = "INTERNAL"
-  name         = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}-internal" : "${var.vm_prefix}db11-internal"
+  name         = "${length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11"}-internal"
   project      = data.google_project.sap-project.project_id
   region       = var.region_name
   subnetwork   = data.google_compute_subnetwork.sap-subnet-db-1.self_link
@@ -36,7 +36,7 @@ resource "google_compute_address" "sapddb11-1" {
 
 resource "google_compute_address" "sapddb12-1" {
   address_type = "INTERNAL"
-  name         = length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}-internal" : "${var.vm_prefix}db12-internal"
+  name         = "${length(var.db_vm_names) > 1 ? var.db_vm_names[1] : "${var.vm_prefix}db12"}-internal"
   project      = data.google_project.sap-project.project_id
   region       = var.region_name
   subnetwork   = data.google_compute_subnetwork.sap-subnet-db-1.self_link
@@ -49,47 +49,49 @@ resource "google_compute_disk" "sapddb11" {
   }
   name    = length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11"
   project = data.google_project.sap-project.project_id
-  size    = 50
+  size    = length(regexall("metal|c4-", var.db_machine_type)) > 0 ? 64 : 50
   timeouts {
     create = "1h"
     delete = "1h"
     update = "1h"
   }
-  type = "pd-balanced"
+  type = length(regexall("metal|c4-", var.db_machine_type)) > 0 ? "hyperdisk-balanced" : "pd-ssd"
   zone = var.zone1_name
 }
 
 resource "google_compute_disk" "sapddb11_hana_data" {
+  count = var.number_data_disks
   lifecycle {
     ignore_changes = [snapshot]
   }
-  name             = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}-hana-data" : "${var.vm_prefix}db11-hana-data"
+  name             = "${length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11"}-hana-data-${count.index}"
   project          = data.google_project.sap-project.project_id
-  provisioned_iops = var.disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.db_disk_hana_data_size) : null
-  size             = var.db_disk_hana_data_size
+  provisioned_iops = var.db_data_disk_type == "hyperdisk-extreme" ? ceil(10000, 2 * var.db_disk_hana_data_size) / var.number_data_disks : null
+  size             = var.db_disk_hana_data_size / var.number_data_disks
   timeouts {
     create = "1h"
     delete = "1h"
     update = "1h"
   }
-  type = var.disk_type
+  type = var.db_data_disk_type
   zone = var.zone1_name
 }
 
 resource "google_compute_disk" "sapddb11_hana_log" {
+  count = var.number_log_disks
   lifecycle {
     ignore_changes = [snapshot]
   }
-  name             = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}-hana-log" : "${var.vm_prefix}db11-hana-log"
+  name             = "${length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11"}-hana-log-${count.index}"
   project          = data.google_project.sap-project.project_id
-  provisioned_iops = var.disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.db_disk_hana_log_size) : null
-  size             = var.db_disk_hana_log_size
+  provisioned_iops = var.db_log_disk_type == "hyperdisk-extreme" ? ceil(10000, 2 * var.db_disk_hana_log_size) / var.number_log_disks : null
+  size             = var.db_disk_hana_log_size / var.number_log_disks
   timeouts {
     create = "1h"
     delete = "1h"
     update = "1h"
   }
-  type = var.disk_type
+  type = var.db_log_disk_type
   zone = var.zone1_name
 }
 
@@ -97,15 +99,16 @@ resource "google_compute_disk" "sapddb11_hana_shared" {
   lifecycle {
     ignore_changes = [snapshot]
   }
-  name    = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}-hana-shared" : "${var.vm_prefix}db11-hana-shared"
-  project = data.google_project.sap-project.project_id
-  size    = var.db_disk_hana_shared_size
+  name             = "${length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11"}-hana-shared"
+  project          = data.google_project.sap-project.project_id
+  provisioned_iops = var.db_disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.db_disk_hana_shared_size) : null
+  size             = var.db_disk_hana_shared_size
   timeouts {
     create = "1h"
     delete = "1h"
     update = "1h"
   }
-  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
+  type = var.db_disk_type
   zone = var.zone1_name
 }
 
@@ -113,15 +116,16 @@ resource "google_compute_disk" "sapddb11_hanabackup" {
   lifecycle {
     ignore_changes = [snapshot]
   }
-  name    = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}-hanabackup" : "${var.vm_prefix}db11-hanabackup"
-  project = data.google_project.sap-project.project_id
-  size    = var.db_disk_backup_size
+  name             = "${length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11"}-hanabackup"
+  project          = data.google_project.sap-project.project_id
+  provisioned_iops = var.db_disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.db_disk_backup_size) : null
+  size             = var.db_disk_backup_size
   timeouts {
     create = "1h"
     delete = "1h"
     update = "1h"
   }
-  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
+  type = var.db_disk_type
   zone = var.zone1_name
 }
 
@@ -129,15 +133,16 @@ resource "google_compute_disk" "sapddb11_usr_sap" {
   lifecycle {
     ignore_changes = [snapshot]
   }
-  name    = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}-usr-sap" : "${var.vm_prefix}db11-usr-sap"
-  project = data.google_project.sap-project.project_id
-  size    = var.db_disk_usr_sap_size
+  name             = "${length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11"}-usr-sap"
+  project          = data.google_project.sap-project.project_id
+  provisioned_iops = var.db_disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.db_disk_usr_sap_size) : null
+  size             = var.db_disk_usr_sap_size
   timeouts {
     create = "1h"
     delete = "1h"
     update = "1h"
   }
-  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
+  type = var.db_disk_type
   zone = var.zone1_name
 }
 
@@ -148,47 +153,49 @@ resource "google_compute_disk" "sapddb12" {
   }
   name    = length(var.db_vm_names) > 1 ? var.db_vm_names[1] : "${var.vm_prefix}db12"
   project = data.google_project.sap-project.project_id
-  size    = 50
+  size    = length(regexall("metal|c4-", var.db_machine_type)) > 0 ? 64 : 50
   timeouts {
     create = "1h"
     delete = "1h"
     update = "1h"
   }
-  type = "pd-balanced"
+  type = length(regexall("metal|c4-", var.db_machine_type)) > 0 ? "hyperdisk-balanced" : "pd-ssd"
   zone = var.zone2_name
 }
 
 resource "google_compute_disk" "sapddb12_hana_data" {
+  count = var.number_data_disks
   lifecycle {
     ignore_changes = [snapshot]
   }
-  name             = length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}-hana-data" : "${var.vm_prefix}db12-hana-data"
+  name             = "${length(var.db_vm_names) > 1 ? var.db_vm_names[1] : "${var.vm_prefix}db12"}-hana-data-${count.index}"
   project          = data.google_project.sap-project.project_id
-  provisioned_iops = var.disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.db_disk_hana_data_size) : null
-  size             = var.db_disk_hana_data_size
+  provisioned_iops = var.db_data_disk_type == "hyperdisk-extreme" ? ceil(10000, 2 * var.db_disk_hana_data_size) / var.number_data_disks : null
+  size             = var.db_disk_hana_data_size / var.number_data_disks
   timeouts {
     create = "1h"
     delete = "1h"
     update = "1h"
   }
-  type = var.disk_type
+  type = var.db_data_disk_type
   zone = var.zone2_name
 }
 
 resource "google_compute_disk" "sapddb12_hana_log" {
+  count = var.number_log_disks
   lifecycle {
     ignore_changes = [snapshot]
   }
-  name             = length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}-hana-log" : "${var.vm_prefix}db12-hana-log"
+  name             = "${length(var.db_vm_names) > 1 ? var.db_vm_names[1] : "${var.vm_prefix}db12"}-hana-log-${count.index}"
   project          = data.google_project.sap-project.project_id
-  provisioned_iops = var.disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.db_disk_hana_log_size) : null
-  size             = var.db_disk_hana_log_size
+  provisioned_iops = var.db_log_disk_type == "hyperdisk-extreme" ? ceil(10000, 2 * var.db_disk_hana_log_size) / var.number_log_disks : null
+  size             = var.db_disk_hana_log_size / var.number_log_disks
   timeouts {
     create = "1h"
     delete = "1h"
     update = "1h"
   }
-  type = var.disk_type
+  type = var.db_log_disk_type
   zone = var.zone2_name
 }
 
@@ -196,15 +203,16 @@ resource "google_compute_disk" "sapddb12_hana_shared" {
   lifecycle {
     ignore_changes = [snapshot]
   }
-  name    = length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}-hana-shared" : "${var.vm_prefix}db12-hana-shared"
-  project = data.google_project.sap-project.project_id
-  size    = var.db_disk_hana_shared_size
+  name             = "${length(var.db_vm_names) > 1 ? var.db_vm_names[1] : "${var.vm_prefix}db12"}-hana-shared"
+  project          = data.google_project.sap-project.project_id
+  provisioned_iops = var.db_disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.db_disk_hana_shared_size) : null
+  size             = var.db_disk_hana_shared_size
   timeouts {
     create = "1h"
     delete = "1h"
     update = "1h"
   }
-  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
+  type = var.db_disk_type
   zone = var.zone2_name
 }
 
@@ -212,15 +220,16 @@ resource "google_compute_disk" "sapddb12_hanabackup" {
   lifecycle {
     ignore_changes = [snapshot]
   }
-  name    = length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}-hanabackup" : "${var.vm_prefix}db12-hanabackup"
-  project = data.google_project.sap-project.project_id
-  size    = var.db_disk_backup_size
+  name             = "${length(var.db_vm_names) > 1 ? var.db_vm_names[1] : "${var.vm_prefix}db12"}-hanabackup"
+  project          = data.google_project.sap-project.project_id
+  provisioned_iops = var.db_disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.db_disk_backup_size) : null
+  size             = var.db_disk_backup_size
   timeouts {
     create = "1h"
     delete = "1h"
     update = "1h"
   }
-  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
+  type = var.db_disk_type
   zone = var.zone2_name
 }
 
@@ -228,15 +237,16 @@ resource "google_compute_disk" "sapddb12_usr_sap" {
   lifecycle {
     ignore_changes = [snapshot]
   }
-  name    = length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}-usr-sap" : "${var.vm_prefix}db12-usr-sap"
-  project = data.google_project.sap-project.project_id
-  size    = var.db_disk_usr_sap_size
+  name             = "${length(var.db_vm_names) > 1 ? var.db_vm_names[1] : "${var.vm_prefix}db12"}-usr-sap"
+  project          = data.google_project.sap-project.project_id
+  provisioned_iops = var.db_disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.db_disk_usr_sap_size) : null
+  size             = var.db_disk_usr_sap_size
   timeouts {
     create = "1h"
     delete = "1h"
     update = "1h"
   }
-  type = var.disk_type == "hyperdisk-extreme" ? "pd-ssd" : var.disk_type
+  type = var.db_disk_type
   zone = var.zone2_name
 }
 
@@ -250,7 +260,7 @@ resource "google_compute_firewall" "ilb_firewall_db" {
   network       = data.google_compute_network.sap-vpc.self_link
   project       = data.google_compute_network.sap-vpc.project
   source_ranges = ["35.191.0.0/16", "130.211.0.0/22"]
-  target_tags   = ["allow-health-checks-range"]
+  target_tags   = google_compute_instance.sapddb11.tags
 }
 
 resource "google_compute_forwarding_rule" "db_forwarding_rule" {
@@ -282,13 +292,19 @@ resource "google_compute_instance" "sapddb11" {
     device_name = google_compute_disk.sapddb11_usr_sap.name
     source      = google_compute_disk.sapddb11_usr_sap.self_link
   }
-  attached_disk {
-    device_name = google_compute_disk.sapddb11_hana_data.name
-    source      = google_compute_disk.sapddb11_hana_data.self_link
+  dynamic "attached_disk" {
+    content {
+      device_name = attached_disk.value.name
+      source      = attached_disk.value.self_link
+    }
+    for_each = google_compute_disk.sapddb11_hana_data[*]
   }
-  attached_disk {
-    device_name = google_compute_disk.sapddb11_hana_log.name
-    source      = google_compute_disk.sapddb11_hana_log.self_link
+  dynamic "attached_disk" {
+    content {
+      device_name = attached_disk.value.name
+      source      = attached_disk.value.self_link
+    }
+    for_each = google_compute_disk.sapddb11_hana_log[*]
   }
   attached_disk {
     device_name = google_compute_disk.sapddb11_hana_shared.name
@@ -330,14 +346,14 @@ resource "google_compute_instance" "sapddb11" {
   project = data.google_project.sap-project.project_id
   scheduling {
     automatic_restart   = true
-    on_host_maintenance = "MIGRATE"
+    on_host_maintenance = length(regexall("metal", var.db_machine_type)) > 0 ? "TERMINATE" : "MIGRATE"
     preemptible         = false
   }
   service_account {
     email  = data.google_service_account.service_account_db.email
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
-  tags = ["allow-health-checks-range", "${var.deployment_name}-s4-comms"]
+  tags = compact(concat(["${var.deployment_name}-s4-comms"], var.custom_tags))
   zone = var.zone1_name
 }
 
@@ -347,13 +363,19 @@ resource "google_compute_instance" "sapddb12" {
     device_name = google_compute_disk.sapddb12_usr_sap.name
     source      = google_compute_disk.sapddb12_usr_sap.self_link
   }
-  attached_disk {
-    device_name = google_compute_disk.sapddb12_hana_data.name
-    source      = google_compute_disk.sapddb12_hana_data.self_link
+  dynamic "attached_disk" {
+    content {
+      device_name = attached_disk.value.name
+      source      = attached_disk.value.self_link
+    }
+    for_each = google_compute_disk.sapddb12_hana_data[*]
   }
-  attached_disk {
-    device_name = google_compute_disk.sapddb12_hana_log.name
-    source      = google_compute_disk.sapddb12_hana_log.self_link
+  dynamic "attached_disk" {
+    content {
+      device_name = attached_disk.value.name
+      source      = attached_disk.value.self_link
+    }
+    for_each = google_compute_disk.sapddb12_hana_log[*]
   }
   attached_disk {
     device_name = google_compute_disk.sapddb12_hana_shared.name
@@ -395,29 +417,29 @@ resource "google_compute_instance" "sapddb12" {
   project = data.google_project.sap-project.project_id
   scheduling {
     automatic_restart   = true
-    on_host_maintenance = "MIGRATE"
+    on_host_maintenance = length(regexall("metal", var.db_machine_type)) > 0 ? "TERMINATE" : "MIGRATE"
     preemptible         = false
   }
   service_account {
     email  = data.google_service_account.service_account_db.email
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
-  tags = ["allow-health-checks-range", "${var.deployment_name}-s4-comms"]
+  tags = compact(concat(["${var.deployment_name}-s4-comms"], var.custom_tags))
   zone = var.zone2_name
 }
 
 resource "google_compute_instance_group" "sapddb11_group" {
-  description = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}-group" : "${var.vm_prefix}db11-group"
+  description = "${length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11"}-group"
   instances   = [google_compute_instance.sapddb11.self_link]
-  name        = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}-group" : "${var.vm_prefix}db11-group"
+  name        = "${length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11"}-group"
   project     = data.google_project.sap-project.project_id
   zone        = var.zone1_name
 }
 
 resource "google_compute_instance_group" "sapddb12_group" {
-  description = length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}-group" : "${var.vm_prefix}db12-group"
+  description = "${length(var.db_vm_names) > 1 ? var.db_vm_names[1] : "${var.vm_prefix}db12"}-group"
   instances   = [google_compute_instance.sapddb12.self_link]
-  name        = length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}-group" : "${var.vm_prefix}db12-group"
+  name        = "${length(var.db_vm_names) > 1 ? var.db_vm_names[1] : "${var.vm_prefix}db12"}-group"
   project     = data.google_project.sap-project.project_id
   zone        = var.zone2_name
 }
@@ -446,20 +468,22 @@ resource "google_compute_region_backend_service" "db_service" {
 }
 
 resource "google_dns_record_set" "global_master_db" {
+  count = var.deployment_has_dns ? 1 : 0
   lifecycle {
     ignore_changes = [rrdatas]
   }
-  managed_zone = data.google_dns_managed_zone.sap_zone.name
-  name         = "db.${data.google_dns_managed_zone.sap_zone.dns_name}"
+  managed_zone = data.google_dns_managed_zone.sap_zone[0].name
+  name         = "db.${data.google_dns_managed_zone.sap_zone[0].dns_name}"
   project      = data.google_project.sap-project.project_id
-  rrdatas      = ["sapddb-vip11.${data.google_dns_managed_zone.sap_zone.dns_name}"]
+  rrdatas      = ["sapddb-vip11.${data.google_dns_managed_zone.sap_zone[0].dns_name}"]
   ttl          = 60
   type         = "CNAME"
 }
 
 resource "google_dns_record_set" "ilb_db_1" {
-  managed_zone = data.google_dns_managed_zone.sap_zone.name
-  name         = "sapddb-vip11.${data.google_dns_managed_zone.sap_zone.dns_name}"
+  count        = var.deployment_has_dns ? 1 : 0
+  managed_zone = data.google_dns_managed_zone.sap_zone[0].name
+  name         = "sapddb-vip11.${data.google_dns_managed_zone.sap_zone[0].dns_name}"
   project      = data.google_project.sap-project.project_id
   rrdatas      = [google_compute_forwarding_rule.db_forwarding_rule.ip_address]
   ttl          = 300
@@ -467,8 +491,9 @@ resource "google_dns_record_set" "ilb_db_1" {
 }
 
 resource "google_dns_record_set" "to_vm_sapddb11" {
-  managed_zone = data.google_dns_managed_zone.sap_zone.name
-  name         = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}.${data.google_dns_managed_zone.sap_zone.dns_name}" : "${var.vm_prefix}db11.${data.google_dns_managed_zone.sap_zone.dns_name}"
+  count        = var.deployment_has_dns ? 1 : 0
+  managed_zone = data.google_dns_managed_zone.sap_zone[0].name
+  name         = length(var.db_vm_names) > 0 ? "${var.db_vm_names[0]}.${data.google_dns_managed_zone.sap_zone[0].dns_name}" : "${var.vm_prefix}db11.${data.google_dns_managed_zone.sap_zone[0].dns_name}"
   project      = data.google_project.sap-project.project_id
   rrdatas      = [google_compute_instance.sapddb11.network_interface[0].network_ip]
   ttl          = 300
@@ -476,8 +501,9 @@ resource "google_dns_record_set" "to_vm_sapddb11" {
 }
 
 resource "google_dns_record_set" "to_vm_sapddb12" {
-  managed_zone = data.google_dns_managed_zone.sap_zone.name
-  name         = length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}.${data.google_dns_managed_zone.sap_zone.dns_name}" : "${var.vm_prefix}db12.${data.google_dns_managed_zone.sap_zone.dns_name}"
+  count        = var.deployment_has_dns ? 1 : 0
+  managed_zone = data.google_dns_managed_zone.sap_zone[0].name
+  name         = length(var.db_vm_names) > 1 ? "${var.db_vm_names[1]}.${data.google_dns_managed_zone.sap_zone[0].dns_name}" : "${var.vm_prefix}db12.${data.google_dns_managed_zone.sap_zone[0].dns_name}"
   project      = data.google_project.sap-project.project_id
   rrdatas      = [google_compute_instance.sapddb12.network_interface[0].network_ip]
   ttl          = 300

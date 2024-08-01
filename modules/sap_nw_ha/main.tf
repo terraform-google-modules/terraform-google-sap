@@ -1,5 +1,5 @@
 /**
- * Copyright 2024 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
 #
 # Terraform SAP NW HA for Google Cloud
 #
-# Version:    2.0.202404101403
-# Build Hash: eb079d47f21e747ddd0162c68068237a36e3e841
+# Version:    DATETIME_OF_BUILD
 #
 
 ################################################################################
@@ -62,6 +61,8 @@ locals {
 
   primary_startup_url   = var.sap_deployment_debug ? replace(var.primary_startup_url, "bash -s", "bash -x -s") : var.primary_startup_url
   secondary_startup_url = var.sap_deployment_debug ? replace(var.secondary_startup_url, "bash -s", "bash -x -s") : var.secondary_startup_url
+
+  only_hyperdisks_supported = length(regexall("c4-", var.machine_type)) > 0
 }
 
 ################################################################################
@@ -70,7 +71,7 @@ locals {
 resource "google_compute_disk" "nw_boot_disks" {
   count   = 2
   name    = count.index == 0 ? "${var.sap_primary_instance}-boot" : "${var.sap_secondary_instance}-boot"
-  type    = "pd-balanced"
+  type    = local.only_hyperdisks_supported ? "hyperdisk-balanced" : "pd-balanced"
   zone    = count.index == 0 ? var.sap_primary_zone : var.sap_secondary_zone
   size    = 30
   image   = "${var.linux_image_project}/${var.linux_image}"
@@ -87,7 +88,7 @@ resource "google_compute_disk" "nw_boot_disks" {
 resource "google_compute_disk" "nw_usr_sap_disks" {
   count   = 2
   name    = count.index == 0 ? "${var.sap_primary_instance}-usrsap" : "${var.sap_secondary_instance}-usrsap"
-  type    = "pd-balanced"
+  type    = local.only_hyperdisks_supported ? "hyperdisk-balanced" : "pd-balanced"
   zone    = count.index == 0 ? var.sap_primary_zone : var.sap_secondary_zone
   size    = var.usr_sap_size
   project = var.project_id
@@ -96,7 +97,7 @@ resource "google_compute_disk" "nw_usr_sap_disks" {
 resource "google_compute_disk" "nw_sapmnt_disks" {
   count   = 2
   name    = count.index == 0 ? "${var.sap_primary_instance}-sapmnt" : "${var.sap_secondary_instance}-sapmnt"
-  type    = "pd-balanced"
+  type    = local.only_hyperdisks_supported ? "hyperdisk-balanced" : "pd-balanced"
   zone    = count.index == 0 ? var.sap_primary_zone : var.sap_secondary_zone
   size    = var.sap_mnt_size
   project = var.project_id
@@ -105,7 +106,7 @@ resource "google_compute_disk" "nw_sapmnt_disks" {
 resource "google_compute_disk" "nw_swap_disks" {
   count   = var.swap_size > 0 ? 2 : 0
   name    = count.index == 0 ? "${var.sap_primary_instance}-swap" : "${var.sap_secondary_instance}-swap"
-  type    = "pd-balanced"
+  type    = local.only_hyperdisks_supported ? "hyperdisk-balanced" : "pd-balanced"
   zone    = count.index == 0 ? var.sap_primary_zone : var.sap_secondary_zone
   size    = var.swap_size
   project = var.project_id

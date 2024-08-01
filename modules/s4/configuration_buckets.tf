@@ -24,6 +24,10 @@ resource "google_storage_bucket_iam_binding" "objectviewer_configuration" {
   role = "roles/storage.objectViewer"
 }
 
+locals {
+  hana_endpoint = var.deployment_has_dns ? "sapddb-vip11.${data.google_dns_managed_zone.sap_zone[0].dns_name}" : "sapddb-vip11"
+}
+
 resource "google_storage_bucket_object" "ansible_inventory" {
   bucket = data.google_storage_bucket.configuration.name
   content = jsonencode({
@@ -46,7 +50,11 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                       "gce_instance_metadata" : {
                         "active_region" : "true",
                         "configuration_bucket_name" : data.google_storage_bucket.configuration.name,
-                        "dns_zone_name" : data.google_dns_managed_zone.sap_zone.name,
+                        "dns_zone_name" : var.deployment_has_dns ? data.google_dns_managed_zone.sap_zone[0].name : "",
+                        "deployment_has_dns" : var.deployment_has_dns,
+                        "ascs_forwarding_ip" : google_compute_instance.sapdascs11.network_interface[0].network_ip,
+                        "db_forwarding_ip" : google_compute_instance.sapddb11.network_interface[0].network_ip,
+                        "hana_sr_ilb_url" : local.hana_endpoint,
                         "is_test" : var.is_test,
                         "media_bucket_name" : var.media_bucket_name,
                         "startup-script" : "gsutil cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}",
@@ -73,7 +81,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                 "app" : {
                   "hosts" : merge([for count in [for i in range(var.app_vms_multiplier) : { index : i }] :
                     {
-                      "${var.vm_prefix}app1${1 + (count.index * 2)}" : {
+                      (length(var.app_vm_names) > (0 + (count.index * 2)) ? var.app_vm_names[0 + (count.index * 2)] : "${var.vm_prefix}app1${1 + (count.index * 2)}") : {
                         "gce_instance_labels" : {
                           "active_region" : true,
                           "component" : "app",
@@ -84,10 +92,12 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "gce_instance_metadata" : {
                           "active_region" : "true",
                           "application_secret_name" : var.application_secret_name,
-                          "dns_name" : data.google_dns_managed_zone.sap_zone.dns_name,
-                          "dns_zone_name" : data.google_dns_managed_zone.sap_zone.name,
-                          "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
+                          "dns_name" : var.deployment_has_dns ? data.google_dns_managed_zone.sap_zone[0].dns_name : "",
+                          "dns_zone_name" : var.deployment_has_dns ? data.google_dns_managed_zone.sap_zone[0].name : "",
+                          "deployment_has_dns" : var.deployment_has_dns,
+                          "fstore_url" : local.fstore_url1,
                           "hana_secret_name" : var.hana_secret_name,
+                          "hdx_hana_config" : var.app_disk_type == "hyperdisk-extreme" ? true : false,
                           "media_bucket_name" : var.media_bucket_name,
                           "sap_instance_id_app" : var.sap_instance_id_app,
                           "sap_instance_id_ascs" : var.sap_instance_id_ascs,
@@ -96,11 +106,16 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                           "sid_app" : var.app_sid,
                           "sid_hana" : var.db_sid,
                           "template_name" : "s4",
+                          "ascs_forwarding_ip" : google_compute_instance.sapdascs11.network_interface[0].network_ip,
+                          "db_forwarding_ip" : google_compute_instance.sapddb11.network_interface[0].network_ip,
+                          "hana_sr_ilb_url" : local.hana_endpoint,
                           "virtualize_disks" : var.virtualize_disks
                         },
-                        "gce_instance_name" : "${var.vm_prefix}app1${1 + (count.index * 2)}",
+                        "gce_instance_name" : length(var.app_vm_names) > (0 + (count.index * 2)) ? var.app_vm_names[0 + (count.index * 2)] : "${var.vm_prefix}app1${1 + (count.index * 2)}",
                         "gce_instance_project" : data.google_project.sap-project.project_id,
-                        "gce_instance_zone" : var.zone1_name
+                        "gce_instance_zone" : var.zone1_name,
+                        "ip_address" : google_compute_instance.sapdapp11[count.index].network_interface[0].network_ip
+
                       }
                     }
                   ]...)
@@ -115,7 +130,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
               "children" : {
                 "ascs" : {
                   "hosts" : {
-                    length(var.ascs_vm_names) > 0 ? var.ascs_vm_names[0] : "${var.vm_prefix}ascs11" : {
+                    (length(var.ascs_vm_names) > 0 ? var.ascs_vm_names[0] : "${var.vm_prefix}ascs11") : {
                       "gce_instance_labels" : {
                         "active_region" : true,
                         "component" : "ascs",
@@ -126,11 +141,13 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                       "gce_instance_metadata" : {
                         "active_region" : "true",
                         "application_secret_name" : var.application_secret_name,
-                        "dns_name" : data.google_dns_managed_zone.sap_zone.dns_name,
-                        "dns_zone_name" : data.google_dns_managed_zone.sap_zone.name,
+                        "dns_name" : var.deployment_has_dns ? data.google_dns_managed_zone.sap_zone[0].dns_name : "",
+                        "dns_zone_name" : var.deployment_has_dns ? data.google_dns_managed_zone.sap_zone[0].name : "",
+                        "deployment_has_dns" : var.deployment_has_dns,
                         "failover_type" : "NONE",
-                        "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
+                        "fstore_url" : local.fstore_url1,
                         "hana_secret_name" : var.hana_secret_name,
+                        "hdx_hana_config" : var.ascs_disk_type == "hyperdisk-extreme" ? true : false,
                         "media_bucket_name" : var.media_bucket_name,
                         "sap_instance_id_app" : var.sap_instance_id_app,
                         "sap_instance_id_ascs" : var.sap_instance_id_ascs,
@@ -139,11 +156,15 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "sid_app" : var.app_sid,
                         "sid_hana" : var.db_sid,
                         "template_name" : "s4",
+                        "ascs_forwarding_ip" : google_compute_instance.sapdascs11.network_interface[0].network_ip,
+                        "db_forwarding_ip" : google_compute_instance.sapddb11.network_interface[0].network_ip,
+                        "hana_sr_ilb_url" : local.hana_endpoint,
                         "virtualize_disks" : var.virtualize_disks
                       },
                       "gce_instance_name" : length(var.ascs_vm_names) > 0 ? var.ascs_vm_names[0] : "${var.vm_prefix}ascs11",
                       "gce_instance_project" : data.google_project.sap-project.project_id,
-                      "gce_instance_zone" : var.zone1_name
+                      "gce_instance_zone" : var.zone1_name,
+                      "ip_address" : google_compute_instance.sapdascs11.network_interface[0].network_ip
                     }
                   }
                 }
@@ -157,7 +178,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
               "children" : {
                 "db" : {
                   "hosts" : {
-                    length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11" : {
+                    (length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11") : {
                       "gce_instance_labels" : {
                         "active_region" : true,
                         "component" : "db",
@@ -168,11 +189,14 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                       "gce_instance_metadata" : {
                         "active_region" : "true",
                         "application_secret_name" : var.application_secret_name,
-                        "dns_name" : data.google_dns_managed_zone.sap_zone.dns_name,
-                        "dns_zone_name" : data.google_dns_managed_zone.sap_zone.name,
-                        "fstore_url" : "${google_dns_record_set.sap_fstore_1.name}:/${google_filestore_instance.sap_fstore_1.file_shares[0].name}",
+                        "data_stripe_size" : var.data_stripe_size,
+                        "dns_name" : var.deployment_has_dns ? data.google_dns_managed_zone.sap_zone[0].dns_name : "",
+                        "dns_zone_name" : var.deployment_has_dns ? data.google_dns_managed_zone.sap_zone[0].name : "",
+                        "deployment_has_dns" : var.deployment_has_dns,
+                        "fstore_url" : local.fstore_url1,
                         "hana_secret_name" : var.hana_secret_name,
-                        "hdx_hana_config" : local.hdx_hana_config,
+                        "hdx_hana_config" : var.db_disk_type == "hyperdisk-extreme" ? true : false,
+                        "log_stripe_size" : var.log_stripe_size,
                         "media_bucket_name" : var.media_bucket_name,
                         "sap_instance_id_app" : var.sap_instance_id_app,
                         "sap_instance_id_ascs" : var.sap_instance_id_ascs,
@@ -181,11 +205,15 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "sid_app" : var.app_sid,
                         "sid_hana" : var.db_sid,
                         "template_name" : "s4",
+                        "ascs_forwarding_ip" : google_compute_instance.sapdascs11.network_interface[0].network_ip,
+                        "db_forwarding_ip" : google_compute_instance.sapddb11.network_interface[0].network_ip,
+                        "hana_sr_ilb_url" : local.hana_endpoint,
                         "virtualize_disks" : var.virtualize_disks
                       },
                       "gce_instance_name" : length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11",
                       "gce_instance_project" : data.google_project.sap-project.project_id,
-                      "gce_instance_zone" : var.zone1_name
+                      "gce_instance_zone" : var.zone1_name,
+                      "ip_address" : google_compute_instance.sapddb11.network_interface[0].network_ip
                     }
                   }
                 }
