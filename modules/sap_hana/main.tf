@@ -80,6 +80,8 @@ locals {
   default_hyperdisk_extreme  = (length(regexall("^x4-", var.machine_type)) > 0)
   default_hyperdisk_balanced = (length(regexall("^c4-|^c3-.*-metal", var.machine_type)) > 0)
   only_hyperdisks_supported  = local.default_hyperdisk_extreme || local.default_hyperdisk_balanced
+  num_data_disks             = var.enable_data_striping ? var.number_data_disks : 1
+  num_log_disks              = var.enable_log_striping ? var.number_log_disks : 1
 
   # Minimum disk sizes are used to ensure throughput. Extreme disks don't need this.
   # All 'over provisioned' capacity is to go onto the data disk.
@@ -113,10 +115,11 @@ locals {
 
   unified_pd_size        = var.unified_disk_size_override == null ? local.pd_size : var.unified_disk_size_override
   unified_worker_pd_size = var.unified_worker_disk_size_override == null ? local.pd_size_worker : var.unified_worker_disk_size_override
-  data_pd_size           = var.data_disk_size_override == null ? local.hana_data_size : var.data_disk_size_override
-  log_pd_size            = var.log_disk_size_override == null ? local.hana_log_size : var.log_disk_size_override
-  shared_pd_size         = var.shared_disk_size_override == null ? local.hana_shared_size : var.shared_disk_size_override
-  usrsap_pd_size         = var.usrsap_disk_size_override == null ? local.hana_usrsap_size : var.usrsap_disk_size_override
+  # for striping: divide data/log size by number of disks
+  data_pd_size   = var.data_disk_size_override == null ? ceil(local.hana_data_size / local.num_data_disks) : ceil(var.data_disk_size_override / local.num_data_disks)
+  log_pd_size    = var.log_disk_size_override == null ? ceil(local.hana_log_size / local.num_log_disks) : ceil(var.log_disk_size_override / local.num_log_disks)
+  shared_pd_size = var.shared_disk_size_override == null ? local.hana_shared_size : var.shared_disk_size_override
+  usrsap_pd_size = var.usrsap_disk_size_override == null ? local.hana_usrsap_size : var.usrsap_disk_size_override
 
   # Disk types
   final_data_disk_type   = var.data_disk_type_override == "" ? local.final_disk_type : var.data_disk_type_override
@@ -129,12 +132,12 @@ locals {
 
   # Disk IOPS
   hdx_iops_map = {
-    "data"    = max(10000, local.data_pd_size * 2)
-    "log"     = max(10000, local.log_pd_size * 2)
+    "data"    = max(10000, local.data_pd_size * 2 * local.num_data_disks)
+    "log"     = max(10000, local.log_pd_size * 2 * local.num_log_disks)
     "shared"  = null
     "usrsap"  = null
-    "unified" = max(10000, local.data_pd_size * 2) + max(10000, local.log_pd_size * 2)
-    "worker"  = max(10000, local.data_pd_size * 2) + max(10000, local.log_pd_size * 2)
+    "unified" = max(10000, local.data_pd_size * 2 * local.num_data_disks) + max(10000, local.log_pd_size * 2 * local.num_log_disks)
+    "worker"  = max(10000, local.data_pd_size * 2 * local.num_data_disks) + max(10000, local.log_pd_size * 2 * local.num_log_disks)
     "backup"  = max(10000, 2 * local.backup_size)
   }
   hdb_iops_map = {
@@ -163,8 +166,13 @@ locals {
     "hyperdisk-extreme"  = local.hdx_iops_map
   }
 
-  final_data_iops           = var.data_disk_iops_override == null ? local.iops_map[local.final_data_disk_type]["data"] : var.data_disk_iops_override
-  final_log_iops            = var.log_disk_iops_override == null ? local.iops_map[local.final_log_disk_type]["log"] : var.log_disk_iops_override
+  # for striping: divide data/log IOPS by number of disks
+  final_data_iops = (var.data_disk_iops_override == null ?
+    (local.iops_map[local.final_data_disk_type]["data"] == null ? null : ceil(local.iops_map[local.final_data_disk_type]["data"] / local.num_data_disks)
+  ) : ceil(var.data_disk_iops_override / local.num_data_disks))
+  final_log_iops = (var.log_disk_iops_override == null ?
+    (local.iops_map[local.final_log_disk_type]["log"] == null ? null : ceil(local.iops_map[local.final_log_disk_type]["log"] / local.num_log_disks)
+  ) : ceil(var.log_disk_iops_override / local.num_log_disks))
   final_shared_iops         = var.shared_disk_iops_override == null ? local.iops_map[local.final_shared_disk_type]["shared"] : var.shared_disk_iops_override
   final_usrsap_iops         = var.usrsap_disk_iops_override == null ? local.iops_map[local.final_usrsap_disk_type]["usrsap"] : var.usrsap_disk_iops_override
   final_unified_iops        = var.unified_disk_iops_override == null ? local.iops_map[local.final_disk_type]["unified"] : var.unified_disk_iops_override
@@ -198,8 +206,13 @@ locals {
     "hyperdisk-extreme"  = local.null_throughput_map
   }
 
-  final_data_throughput           = var.data_disk_throughput_override == null ? local.throughput_map[local.final_data_disk_type]["data"] : var.data_disk_throughput_override
-  final_log_throughput            = var.log_disk_throughput_override == null ? local.throughput_map[local.final_log_disk_type]["log"] : var.log_disk_throughput_override
+  # for striping: divide throughput by number of disks
+  final_data_throughput = (var.data_disk_throughput_override == null ?
+    (local.throughput_map[local.final_data_disk_type]["data"] == null ? null : ceil(local.throughput_map[local.final_data_disk_type]["data"] / local.num_data_disks)
+  ) : ceil(var.data_disk_throughput_override / local.num_data_disks))
+  final_log_throughput = (var.log_disk_throughput_override == null ?
+    (local.throughput_map[local.final_log_disk_type]["log"] == null ? null : ceil(local.throughput_map[local.final_log_disk_type]["log"] / local.num_log_disks)
+  ) : ceil(var.log_disk_throughput_override / local.num_log_disks))
   final_shared_throughput         = var.shared_disk_throughput_override == null ? local.throughput_map[local.final_shared_disk_type]["shared"] : var.shared_disk_throughput_override
   final_usrsap_throughput         = var.usrsap_disk_throughput_override == null ? local.throughput_map[local.final_usrsap_disk_type]["usrsap"] : var.usrsap_disk_throughput_override
   final_unified_throughput        = var.unified_disk_throughput_override == null ? local.throughput_map[local.final_disk_type]["unified"] : var.unified_disk_throughput_override
@@ -254,6 +267,21 @@ data "assert_test" "verify_hyperdisk_usage_for_backup_disk" {
   test  = local.only_hyperdisks_supported && local.use_backup_disk ? (length(regexall("hyperdisk", local.final_backup_disk_type)) > 0) : true
   throw = "The selected a machine type only works with hyperdisks. Set 'backup_disk_type' accordingly, e.g. 'backup_disk_type = hyperdisk-balanced'"
 }
+# tflint-ignore: terraform_unused_declarations
+data "assert_test" "striping_with_split_disk" {
+  test  = ((var.enable_data_striping || var.enable_log_striping) && !var.use_single_shared_data_log_disk) || !(var.enable_data_striping || var.enable_log_striping)
+  throw = "Striping not supported if log and data are on the same disk(s). To use striping set 'use_single_shared_data_log_disk=false'"
+}
+# tflint-ignore: terraform_unused_declarations
+data "validation_warning" "warn_data_striping" {
+  condition = var.enable_data_striping
+  summary   = "Data striping is only intended for cases where the machine level limits are higher than the hyperdisk disk level limits. Refer to https://cloud.google.com/compute/docs/disks/hyperdisks#hd-performance-limits"
+}
+# tflint-ignore: terraform_unused_declarations
+data "validation_warning" "warn_log_striping" {
+  condition = var.enable_log_striping
+  summary   = "Log striping is not a recommended deployment option."
+}
 
 ################################################################################
 # disks
@@ -298,9 +326,13 @@ resource "google_compute_disk" "sap_hana_unified_worker_disks" {
 }
 
 # Split data/log/sap disks
+#  name without striping:  00001, 00002, ...
+#  name with striping: 00001-01, 00001-02, 00001-03, 00002-01, 00002-02, 00002-03, ...
 resource "google_compute_disk" "sap_hana_data_disks" {
-  count                  = var.use_single_shared_data_log_disk ? 0 : var.sap_hana_scaleout_nodes + 1
-  name                   = format("${var.instance_name}-data%05d", count.index + 1)
+  count = var.use_single_shared_data_log_disk ? 0 : (var.sap_hana_scaleout_nodes + 1) * local.num_data_disks
+  name = (var.enable_data_striping ?
+    format("${var.instance_name}-data%05d-%02d", floor(count.index / local.num_data_disks) + 1, (count.index % local.num_data_disks) + 1) :
+  format("${var.instance_name}-data%05d", count.index + 1))
   type                   = local.final_data_disk_type
   zone                   = var.zone
   size                   = local.data_pd_size
@@ -308,10 +340,11 @@ resource "google_compute_disk" "sap_hana_data_disks" {
   provisioned_iops       = local.final_data_iops
   provisioned_throughput = local.final_data_throughput
 }
-
 resource "google_compute_disk" "sap_hana_log_disks" {
-  count                  = var.use_single_shared_data_log_disk ? 0 : var.sap_hana_scaleout_nodes + 1
-  name                   = format("${var.instance_name}-log%05d", count.index + 1)
+  count = var.use_single_shared_data_log_disk ? 0 : (var.sap_hana_scaleout_nodes + 1) * local.num_log_disks
+  name = (var.enable_log_striping ?
+    format("${var.instance_name}-log%05d-%02d", floor(count.index / local.num_log_disks) + 1, (count.index % local.num_log_disks) + 1) :
+  format("${var.instance_name}-log%05d", count.index + 1))
   type                   = local.final_log_disk_type
   zone                   = var.zone
   size                   = local.log_pd_size
@@ -405,19 +438,22 @@ resource "google_compute_instance" "sap_hana_primary_instance" {
       source      = google_compute_disk.sap_hana_unified_disks[0].self_link
     }
   }
-
   dynamic "attached_disk" {
-    for_each = var.use_single_shared_data_log_disk ? [] : [1]
+    for_each = var.use_single_shared_data_log_disk ? [] : [for i in range(local.num_data_disks) : {
+      final_disk_index = i
+    }]
     content {
-      device_name = google_compute_disk.sap_hana_data_disks[0].name
-      source      = google_compute_disk.sap_hana_data_disks[0].self_link
+      device_name = google_compute_disk.sap_hana_data_disks[attached_disk.value.final_disk_index].name
+      source      = google_compute_disk.sap_hana_data_disks[attached_disk.value.final_disk_index].self_link
     }
   }
   dynamic "attached_disk" {
-    for_each = var.use_single_shared_data_log_disk ? [] : [1]
+    for_each = var.use_single_shared_data_log_disk ? [] : [for i in range(local.num_log_disks) : {
+      final_disk_index = i
+    }]
     content {
-      device_name = google_compute_disk.sap_hana_log_disks[0].name
-      source      = google_compute_disk.sap_hana_log_disks[0].self_link
+      device_name = google_compute_disk.sap_hana_log_disks[attached_disk.value.final_disk_index].name
+      source      = google_compute_disk.sap_hana_log_disks[attached_disk.value.final_disk_index].self_link
     }
   }
   dynamic "attached_disk" {
@@ -501,6 +537,8 @@ resource "google_compute_instance" "sap_hana_primary_instance" {
     sap_hana_data_disk_type         = local.final_data_disk_type
     enable_fast_restart             = var.enable_fast_restart
     native_bm                       = local.native_bm
+    data_stripe_size                = var.data_stripe_size
+    log_stripe_size                 = var.log_stripe_size
     template-type                   = "TERRAFORM"
   }
 
@@ -539,19 +577,22 @@ resource "google_compute_instance" "sap_hana_worker_instances" {
       source      = google_compute_disk.sap_hana_unified_worker_disks[count.index].self_link
     }
   }
-
   dynamic "attached_disk" {
-    for_each = var.use_single_shared_data_log_disk ? [] : [1]
+    for_each = var.use_single_shared_data_log_disk ? [] : [for i in range(local.num_data_disks) : {
+      final_disk_index = i + (count.index + 1) * local.num_data_disks
+    }]
     content {
-      device_name = google_compute_disk.sap_hana_data_disks[count.index + 1].name
-      source      = google_compute_disk.sap_hana_data_disks[count.index + 1].self_link
+      device_name = google_compute_disk.sap_hana_data_disks[attached_disk.value.final_disk_index].name
+      source      = google_compute_disk.sap_hana_data_disks[attached_disk.value.final_disk_index].self_link
     }
   }
   dynamic "attached_disk" {
-    for_each = var.use_single_shared_data_log_disk ? [] : [1]
+    for_each = var.use_single_shared_data_log_disk ? [] : [for i in range(local.num_log_disks) : {
+      final_disk_index = i + (count.index + 1) * local.num_log_disks
+    }]
     content {
-      device_name = google_compute_disk.sap_hana_log_disks[count.index + 1].name
-      source      = google_compute_disk.sap_hana_log_disks[count.index + 1].self_link
+      device_name = google_compute_disk.sap_hana_log_disks[attached_disk.value.final_disk_index].name
+      source      = google_compute_disk.sap_hana_log_disks[attached_disk.value.final_disk_index].self_link
     }
   }
   dynamic "attached_disk" {
@@ -619,6 +660,8 @@ resource "google_compute_instance" "sap_hana_worker_instances" {
     sap_hana_shared_disk            = false
     enable_fast_restart             = var.enable_fast_restart
     native_bm                       = local.native_bm
+    data_stripe_size                = var.data_stripe_size
+    log_stripe_size                 = var.log_stripe_size
     template-type                   = "TERRAFORM"
   }
 

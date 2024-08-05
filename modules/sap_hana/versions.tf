@@ -24,5 +24,9 @@ terraform {
       source  = "bwoznicki/assert"
       version = "0.0.1"
     }
+    validation = {
+      source  = "tlkamp/validation"
+      version = "1.1.1"
+    }
   }
 }

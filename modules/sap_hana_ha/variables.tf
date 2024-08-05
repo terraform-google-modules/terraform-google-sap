@@ -384,6 +384,12 @@ variable "enable_fast_restart" {
   default     = true
 }
 
+variable "enable_data_striping" {
+  type        = bool
+  description = "Optional - default is false. Enable LVM striping of data volume across multiple disks."
+  default     = false
+}
+
 #
 # DO NOT MODIFY unless instructed or aware of the implications of using those settings
 #
@@ -546,9 +552,39 @@ variable "majority_maker_startup_url" {
   default     = "curl -s https://storage.googleapis.com/cloudsapdeploy/terraform/latest/terraform/sap_hana_ha/hana_ha_startup_majority_maker.sh | bash -s https://storage.googleapis.com/cloudsapdeploy/terraform/latest/terraform"
   description = "DO NOT USE"
 }
+
 variable "can_ip_forward" {
   type        = bool
   description = "Whether sending and receiving of packets with non-matching source or destination IPs is allowed."
   default     = true
 }
 
+variable "enable_log_striping" {
+  type        = bool
+  description = "Optional - default is false. Enable LVM striping of log volume across multiple disks."
+  default     = false
+}
+
+variable "number_data_disks" {
+  type        = number
+  description = "Optional - default is 2. Number of disks to use for data volume striping (if enable_data_striping = true)."
+  default     = 2
+}
+
+variable "number_log_disks" {
+  type        = number
+  description = "Optional - default is 2. Number of disks to use for log volume striping (if enable_log_striping = true)."
+  default     = 2
+}
+
+variable "data_stripe_size" {
+  type        = string
+  description = "Optional - default is 256k. Stripe size for data volume striping (if enable_data_striping = true)."
+  default     = "256k"
+}
+
+variable "log_stripe_size" {
+  type        = string
+  description = "Optional - default is 64k. Stripe size for log volume striping (if enable_log_striping = true)."
+  default     = "64k"
+}

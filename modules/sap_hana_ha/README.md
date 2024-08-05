@@ -49,8 +49,11 @@ https://cloud.google.com/docs/terraform
 | data\_disk\_size\_override | Warning, do not use unless instructed or aware of the implications of using this setting. Overrides the default size for the data disk(s), that is based off of the machine\_type. | `number` | `null` | no |
 | data\_disk\_throughput\_override | Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the throughput in MB/s that the data disk(s) will use. Has no effect if not using a disk type that supports it. | `number` | `null` | no |
 | data\_disk\_type\_override | Warning, do not use unless instructed or aware of the implications of using this setting. Override the 'default\_disk\_type' for the data disk. | `string` | `""` | no |
+| data\_stripe\_size | Optional - default is 256k. Stripe size for data volume striping (if enable\_data\_striping = true). | `string` | `"256k"` | no |
 | disk\_type | Optional - The default disk type to use for disk(s) containing log and data volumes. The default is pd-ssd, except for machines that do not support PD, in which case the default is hyperdisk-extreme. Not all disk are supported on all machine types - see https://cloud.google.com/compute/docs/disks/ for details. | `string` | `""` | no |
+| enable\_data\_striping | Optional - default is false. Enable LVM striping of data volume across multiple disks. | `bool` | `false` | no |
 | enable\_fast\_restart | Optional - The default is true. If set enables HANA Fast Restart. | `bool` | `true` | no |
+| enable\_log\_striping | Optional - default is false. Enable LVM striping of log volume across multiple disks. | `bool` | `false` | no |
 | hyperdisk\_balanced\_iops\_default | Optional - default is 3000. Number of IOPS that is set for each disk of type Hyperdisk-balanced (except for boot/usrsap/shared disks). | `number` | `3000` | no |
 | hyperdisk\_balanced\_throughput\_default | Optional - default is 750. Throughput in MB/s that is set for each disk of type Hyperdisk-balanced (except for boot/usrsap/shared disks). | `number` | `750` | no |
 | include\_backup\_disk | Optional - The default is true. If set creates a disk for backups. | `bool` | `true` | no |
@@ -62,6 +65,7 @@ https://cloud.google.com/docs/terraform
 | log\_disk\_size\_override | Warning, do not use unless instructed or aware of the implications of using this setting. Overrides the default size for the log disk(s), that is based off of the machine\_type. | `number` | `null` | no |
 | log\_disk\_throughput\_override | Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the throughput in MB/s that the log disk(s) will use. Has no effect if not using a disk type that supports it. | `number` | `null` | no |
 | log\_disk\_type\_override | Warning, do not use unless instructed or aware of the implications of using this setting. Override the 'default\_disk\_type' for the log disk. | `string` | `""` | no |
+| log\_stripe\_size | Optional - default is 64k. Stripe size for log volume striping (if enable\_log\_striping = true). | `string` | `"64k"` | no |
 | machine\_type | Machine type for the instances. | `string` | n/a | yes |
 | majority\_maker\_instance\_name | Optional - Name to use for the Majority Maker instance. Must be provided if scaleout\_nodes > 0. | `string` | `""` | no |
 | majority\_maker\_machine\_type | Optional - The machine type to use for the Majority Maker instance. Must be provided if scaleout\_nodes > 0. | `string` | `""` | no |
@@ -70,6 +74,8 @@ https://cloud.google.com/docs/terraform
 | network | Network in which the ILB resides including resources like firewall rules. | `string` | n/a | yes |
 | network\_tags | OPTIONAL - Network tags can be associated to your instance on deployment. This can be used for firewalling or routing purposes. | `list(string)` | `[]` | no |
 | nic\_type | Optional - This value determines the type of NIC to use, valid options are GVNIC and VIRTIO\_NET. If choosing GVNIC make sure that it is supported by your OS choice here https://cloud.google.com/compute/docs/images/os-details#networking. | `string` | `""` | no |
+| number\_data\_disks | Optional - default is 2. Number of disks to use for data volume striping (if enable\_data\_striping = true). | `number` | `2` | no |
+| number\_log\_disks | Optional - default is 2. Number of disks to use for log volume striping (if enable\_log\_striping = true). | `number` | `2` | no |
 | post\_deployment\_script | OPTIONAL - gs:// or https:// location of a script to execute on the created VM's post deployment. | `string` | `""` | no |
 | primary\_instance\_group\_name | OPTIONAL - Unmanaged instance group to be created for the primary node. If blank, will use ig-VM\_NAME | `string` | `""` | no |
 | primary\_instance\_name | Hostname of the primary GCE instance. | `string` | n/a | yes |
