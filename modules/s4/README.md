@@ -10,7 +10,7 @@ Basic usage of this module is as follows:
 ```hcl
 module "sap_s4" {
   source  = "terraform-google-modules/sap/google//modules/s4"
-  version = "~> 1.2"
+  version = "~> 2.0"
 
   gcp_project_id      = "PROJECT_ID"       # example: my-project-x
   deployment_name     = "DEPLOYMENT_NAME"  # example: my-deployment
