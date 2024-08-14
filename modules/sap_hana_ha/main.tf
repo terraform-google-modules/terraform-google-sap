@@ -307,12 +307,12 @@ data "assert_test" "no_rhel_with_scaleout" {
 # tflint-ignore: terraform_unused_declarations
 data "assert_test" "verify_hyperdisk_usage" {
   test  = local.only_hyperdisks_supported ? length(regexall("hyperdisk", local.final_disk_type)) > 0 : true
-  throw = "The selected a machine type only works with hyperdisks. Set 'disk_type' accordingly, e.g. 'disk_type = hyperdisk-balanced'"
+  throw = "The selected machine type only works with hyperdisks. Set 'disk_type' accordingly, e.g. 'disk_type = hyperdisk-balanced'"
 }
 # tflint-ignore: terraform_unused_declarations
 data "assert_test" "verify_hyperdisk_usage_for_backup_disk" {
   test  = local.only_hyperdisks_supported && var.include_backup_disk ? (length(regexall("hyperdisk", local.final_backup_disk_type)) > 0) : true
-  throw = "The selected a machine type only works with hyperdisks. Set 'backup_disk_type' accordingly, e.g. 'backup_disk_type = hyperdisk-balanced'"
+  throw = "The selected machine type only works with hyperdisks. Set 'backup_disk_type' accordingly, e.g. 'backup_disk_type = hyperdisk-balanced'"
 }
 # tflint-ignore: terraform_unused_declarations
 data "assert_test" "striping_with_split_disk" {

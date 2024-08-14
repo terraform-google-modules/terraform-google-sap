@@ -180,7 +180,7 @@ locals {
 # tflint-ignore: terraform_unused_declarations
 data "assert_test" "verify_hyperdisk_usage" {
   test  = local.only_hyperdisks_supported ? length(regexall("hyperdisk", local.final_disk_type)) > 0 : true
-  throw = "The selected a machine type only works with hyperdisks. Set 'disk_type' accordingly, e.g. 'disk_type = hyperdisk-balanced'"
+  throw = "The selected machine type only works with hyperdisks. Set 'disk_type' accordingly, e.g. 'disk_type = hyperdisk-balanced'"
 }
 
 
