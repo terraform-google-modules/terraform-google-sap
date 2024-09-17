@@ -54,7 +54,7 @@ locals {
     "c3-highmem-44"         = 352
     "c3-highmem-88"         = 704
     "c3-highmem-176"        = 1408
-    "c4-highmem- 32"        = 248
+    "c4-highmem-32"         = 248
     "c4-highmem-48"         = 372
     "c4-highmem-96"         = 744
     "c4-highmem-192"        = 1488
