@@ -65,8 +65,8 @@ resource "google_compute_disk" "sapdapp11_export_interfaces" {
   }
   name             = "${length(var.app_vm_names) > (0 + (count.index * 2)) ? var.app_vm_names[0 + (count.index * 2)] : "${var.vm_prefix}app1${1 + (count.index * 2)}"}-export-interfaces"
   project          = data.google_project.sap-project.project_id
-  provisioned_iops = var.app_disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.app_disk_export_interfaces_size) : null
-  size             = var.app_disk_export_interfaces_size
+  provisioned_iops = var.app_disk_type == "hyperdisk-extreme" ? max(10000, 2 * (var.disk_size_map["app_disk_export_interfaces_size"] != 0 ? var.disk_size_map["app_disk_export_interfaces_size"] :  var.app_disk_export_interfaces_size)) : null
+  size             = var.disk_size_map["app_disk_export_interfaces_size"] != 0 ? var.disk_size_map["app_disk_export_interfaces_size"] : var.app_disk_export_interfaces_size
   timeouts {
     create = "1h"
     delete = "1h"
@@ -83,8 +83,8 @@ resource "google_compute_disk" "sapdapp11_usr_sap" {
   }
   name             = "${length(var.app_vm_names) > (0 + (count.index * 2)) ? var.app_vm_names[0 + (count.index * 2)] : "${var.vm_prefix}app1${1 + (count.index * 2)}"}-usr-sap"
   project          = data.google_project.sap-project.project_id
-  provisioned_iops = var.app_disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.app_disk_usr_sap_size) : null
-  size             = var.app_disk_usr_sap_size
+  provisioned_iops = var.app_disk_type == "hyperdisk-extreme" ? max(10000, 2 * (var.disk_size_map["app_disk_usr_sap_size"] != 0 ? var.disk_size_map["app_disk_usr_sap_size"] :  var.app_disk_usr_sap_size)) : null
+  size             = (var.disk_size_map["app_disk_usr_sap_size"] != 0 ? var.disk_size_map["app_disk_usr_sap_size"] :  var.app_disk_usr_sap_size)
   timeouts {
     create = "1h"
     delete = "1h"
@@ -119,8 +119,8 @@ resource "google_compute_disk" "sapdapp12_export_interfaces" {
   }
   name             = "${length(var.app_vm_names) > (1 + (count.index * 2)) ? var.app_vm_names[1 + (count.index * 2)] : "${var.vm_prefix}app1${2 + (count.index * 2)}"}-export-interfaces"
   project          = data.google_project.sap-project.project_id
-  provisioned_iops = var.app_disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.app_disk_export_interfaces_size) : null
-  size             = var.app_disk_export_interfaces_size
+  provisioned_iops = var.app_disk_type == "hyperdisk-extreme" ? max(10000, 2 * (var.disk_size_map["app_disk_export_interfaces_size"] != 0 ? var.disk_size_map["app_disk_export_interfaces_size"] :  var.app_disk_export_interfaces_size)) : null
+  size             = (var.disk_size_map["app_disk_export_interfaces_size"] != 0 ? var.disk_size_map["app_disk_export_interfaces_size"] :  var.app_disk_export_interfaces_size)
   timeouts {
     create = "1h"
     delete = "1h"
@@ -137,8 +137,8 @@ resource "google_compute_disk" "sapdapp12_usr_sap" {
   }
   name             = "${length(var.app_vm_names) > (1 + (count.index * 2)) ? var.app_vm_names[1 + (count.index * 2)] : "${var.vm_prefix}app1${2 + (count.index * 2)}"}-usr-sap"
   project          = data.google_project.sap-project.project_id
-  provisioned_iops = var.app_disk_type == "hyperdisk-extreme" ? max(10000, 2 * var.app_disk_usr_sap_size) : null
-  size             = var.app_disk_usr_sap_size
+  provisioned_iops = var.app_disk_type == "hyperdisk-extreme" ? max(10000, 2 * (var.disk_size_map["app_disk_usr_sap_size"] != 0 ? var.disk_size_map["app_disk_usr_sap_size"] :  var.app_disk_usr_sap_size)) : null
+  size             = (var.disk_size_map["app_disk_usr_sap_size"] != 0 ? var.disk_size_map["app_disk_usr_sap_size"] :  var.app_disk_usr_sap_size)
   timeouts {
     create = "1h"
     delete = "1h"
