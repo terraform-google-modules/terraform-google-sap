@@ -390,6 +390,24 @@ variable "enable_data_striping" {
   default     = false
 }
 
+variable "sole_tenant_deployment" {
+  type        = bool
+  description = "Optional - default is false. Deploy on Sole Tenant Nodes."
+  default     = false
+}
+
+variable "sole_tenant_node_type" {
+  type        = string
+  description = "Optional - default is null. Sole Tenant Node Type to use. See https://cloud.google.com/compute/docs/nodes/sole-tenant-nodes#node_types"
+  default     = null
+}
+
+variable "sole_tenant_name_prefix" {
+  type        = string
+  description = "Optional - name of the prefix to use for the Sole Tenant objects (Node Templates, Node Groups). If left blank with sole_tenant_deployment=true, st-<sap_hana_sid> will be used."
+  default     = ""
+}
+
 #
 # DO NOT MODIFY unless instructed or aware of the implications of using those settings
 #

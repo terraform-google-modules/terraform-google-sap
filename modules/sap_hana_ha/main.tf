@@ -83,6 +83,8 @@ locals {
   num_data_disks             = var.enable_data_striping ? var.number_data_disks : 1
   num_log_disks              = var.enable_log_striping ? var.number_log_disks : 1
 
+  sole_tenant_name_prefix = var.sole_tenant_name_prefix != "" ? var.sole_tenant_name_prefix : "st-${lower(var.sap_hana_sid)}"
+
   # Minimum disk sizes are used to ensure throughput. Extreme disks don't need this.
   # All 'over provisioned' capacity is to go onto the data disk.
   final_disk_type = var.disk_type == "" ? (local.default_hyperdisk_extreme ? "hyperdisk-extreme" : (local.default_hyperdisk_balanced ? "hyperdisk-balanced" : "pd-ssd")) : var.disk_type
@@ -358,6 +360,44 @@ resource "google_compute_address" "sap_hana_ha_worker_vm_ip" {
 }
 
 ################################################################################
+# Sole tenant items
+################################################################################
+resource "google_compute_node_template" "sole_tenant_node_template" {
+  count                = var.sole_tenant_deployment ? 1 : 0
+  name                 = "${local.sole_tenant_name_prefix}-node-template"
+  node_type            = var.sole_tenant_node_type
+  region               = local.region
+  project              = var.project_id
+}
+
+resource "google_compute_node_group" "sole_tenant_primary_node_group" {
+  count         = var.sole_tenant_deployment ? 1 : 0
+  name          = "${local.sole_tenant_name_prefix}-primary-node-group"
+  node_template = google_compute_node_template.sole_tenant_node_template[0].name
+  zone          = var.primary_zone
+  project       = var.project_id
+  initial_size  = 1
+  autoscaling_policy {
+    mode      = "ON"
+    min_nodes = 1
+    max_nodes = var.sap_hana_scaleout_nodes + 1
+  }
+}
+
+resource "google_compute_node_group" "sole_tenant_secondary_node_group" {
+  count         = var.sole_tenant_deployment ? 1 : 0
+  name          = "${local.sole_tenant_name_prefix}-secondary-node-group"
+  node_template = google_compute_node_template.sole_tenant_node_template[0].name
+  zone          = var.secondary_zone
+  project       = var.project_id
+  initial_size  = 1
+  autoscaling_policy {
+    mode      = "ON"
+    min_nodes = 1
+    max_nodes = var.sap_hana_scaleout_nodes + 1
+  }
+}
+################################################################################
 # Primary Instance
 ################################################################################
 ################################################################################
@@ -472,9 +512,17 @@ resource "google_compute_instance" "sap_hana_ha_primary_instance" {
   }
 
   dynamic "scheduling" {
-    for_each = local.native_bm ? [1] : []
+    for_each = (local.native_bm || var.sole_tenant_deployment) ? [1] : []
     content {
-      on_host_maintenance = "TERMINATE"
+      on_host_maintenance = local.native_bm ? "TERMINATE" : null
+      dynamic "node_affinities"  {
+        for_each = resource.google_compute_node_group.sole_tenant_primary_node_group != null ? [1] : []
+        content {
+          key = "compute.googleapis.com/node-group-name"
+          operator = "IN"
+          values = ["${local.sole_tenant_name_prefix}-primary-node-group"]
+        }
+      }
     }
   }
 
@@ -624,9 +672,17 @@ resource "google_compute_instance" "sap_hana_ha_primary_workers" {
   }
 
   dynamic "scheduling" {
-    for_each = local.native_bm ? [1] : []
+    for_each = (local.native_bm || var.sole_tenant_deployment) ? [1] : []
     content {
-      on_host_maintenance = "TERMINATE"
+      on_host_maintenance = local.native_bm ? "TERMINATE" : null
+      dynamic "node_affinities"  {
+        for_each = resource.google_compute_node_group.sole_tenant_primary_node_group != null ? [1] : []
+        content {
+          key = "compute.googleapis.com/node-group-name"
+          operator = "IN"
+          values = ["${local.sole_tenant_name_prefix}-primary-node-group"]
+        }
+      }
     }
   }
 
@@ -857,9 +913,17 @@ resource "google_compute_instance" "sap_hana_ha_secondary_instance" {
   }
 
   dynamic "scheduling" {
-    for_each = local.native_bm ? [1] : []
+    for_each = (local.native_bm || var.sole_tenant_deployment) ? [1] : []
     content {
-      on_host_maintenance = "TERMINATE"
+      on_host_maintenance = local.native_bm ? "TERMINATE" : null
+      dynamic "node_affinities"  {
+        for_each = resource.google_compute_node_group.sole_tenant_secondary_node_group != null ? [1] : []
+        content {
+          key = "compute.googleapis.com/node-group-name"
+          operator = "IN"
+          values = ["${local.sole_tenant_name_prefix}-secondary-node-group"]
+        }
+      }
     }
   }
 
@@ -1008,9 +1072,17 @@ resource "google_compute_instance" "sap_hana_ha_secondary_workers" {
   }
 
   dynamic "scheduling" {
-    for_each = local.native_bm ? [1] : []
+    for_each = (local.native_bm || var.sole_tenant_deployment) ? [1] : []
     content {
-      on_host_maintenance = "TERMINATE"
+      on_host_maintenance = local.native_bm ? "TERMINATE" : null
+      dynamic "node_affinities"  {
+        for_each = resource.google_compute_node_group.sole_tenant_secondary_node_group != null ? [1] : []
+        content {
+          key = "compute.googleapis.com/node-group-name"
+          operator = "IN"
+          values = ["${local.sole_tenant_name_prefix}-secondary-node-group"]
+        }
+      }
     }
   }
 

@@ -77,4 +77,8 @@ module "sap_hana" {
   # backup_disk_type                = "DISK_TYPE"           # default is pd-ssd, except for machines that do not support PD, in which case the default is hyperdisk-extreme. Valid types are "pd-ssd", "pd-balanced", "pd-standard", "pd-extreme", "hyperdisk-balanced", "hyperdisk-extreme".
   # enable_fast_restart             = true_or_false         # default is true, whether to enable HANA Fast Restart
   # enable_data_striping            = true_or_false         # default is false. Enable LVM striping of data volume across multiple disks. Data striping is only intended for cases where the machine level limits are higher than the hyperdisk disk level limits. Refer to https://cloud.google.com/compute/docs/disks/hyperdisks#hd-performance-limits
+
+  # sole_tenant_deployment          = true_or_false         # default is false. Whether to deploy on Sole Tenant Nodes.
+  # sole_tenant_node_type           = "NODE_TYPE"           # Sole Tenant Node Type to use. See https://cloud.google.com/compute/docs/nodes/sole-tenant-nodes#node_types"
+  # sole_tenant_name_prefix         = "PREFIX"              # name of the prefix to use for the Sole Tenant objects (Node Templates, Node Groups). If left blank with sole_tenant_deployment=true, st-<sap_hana_sid> will be used.
 }
