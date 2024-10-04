@@ -94,15 +94,6 @@ resource "google_compute_disk" "nw_usr_sap_disks" {
   project = var.project_id
 }
 
-resource "google_compute_disk" "nw_sapmnt_disks" {
-  count   = 2
-  name    = count.index == 0 ? "${var.sap_primary_instance}-sapmnt" : "${var.sap_secondary_instance}-sapmnt"
-  type    = local.only_hyperdisks_supported ? "hyperdisk-balanced" : "pd-balanced"
-  zone    = count.index == 0 ? var.sap_primary_zone : var.sap_secondary_zone
-  size    = var.sap_mnt_size
-  project = var.project_id
-}
-
 resource "google_compute_disk" "nw_swap_disks" {
   count   = var.swap_size > 0 ? 2 : 0
   name    = count.index == 0 ? "${var.sap_primary_instance}-swap" : "${var.sap_secondary_instance}-swap"
@@ -143,10 +134,6 @@ resource "google_compute_instance" "scs_instance" {
   attached_disk {
     device_name = google_compute_disk.nw_usr_sap_disks[0].name
     source      = google_compute_disk.nw_usr_sap_disks[0].self_link
-  }
-  attached_disk {
-    device_name = google_compute_disk.nw_sapmnt_disks[0].name
-    source      = google_compute_disk.nw_sapmnt_disks[0].self_link
   }
   dynamic "attached_disk" {
     for_each = var.swap_size > 0 ? [1] : []
@@ -242,10 +229,6 @@ resource "google_compute_instance" "ers_instance" {
   attached_disk {
     device_name = google_compute_disk.nw_usr_sap_disks[1].name
     source      = google_compute_disk.nw_usr_sap_disks[1].self_link
-  }
-  attached_disk {
-    device_name = google_compute_disk.nw_sapmnt_disks[1].name
-    source      = google_compute_disk.nw_sapmnt_disks[1].self_link
   }
   dynamic "attached_disk" {
     for_each = var.swap_size > 0 ? [1] : []

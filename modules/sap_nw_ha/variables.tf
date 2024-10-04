@@ -200,16 +200,6 @@ variable "usr_sap_size" {
     error_message = "Size of /usr/sap must be larger than 8 GB."
   }
 }
-variable "sap_mnt_size" {
-  type        = number
-  default     = 8
-  description = "Size of /sapmnt in GB"
-
-  validation {
-    condition     = var.sap_mnt_size >= 8
-    error_message = "Size of /sapmnt must be larger than 8 GB."
-  }
-}
 variable "swap_size" {
   type        = number
   default     = 8

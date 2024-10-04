@@ -53,7 +53,6 @@ For additional information see https://www.terraform.io/docs/index.html and http
 | public\_ip | Create an ephemeral public ip for the instances | `bool` | `false` | no |
 | sap\_deployment\_debug | Debug log level for deployment | `bool` | `false` | no |
 | sap\_ers\_instance\_number | ERS instance number | `string` | `"10"` | no |
-| sap\_mnt\_size | Size of /sapmnt in GB | `number` | `8` | no |
 | sap\_nw\_abap | Is this a Netweaver ABAP installation. Set 'false' for NW Java. Dual stack is not supported by this script. | `bool` | `true` | no |
 | sap\_primary\_instance | Name of first instance (initial SCS location) | `string` | n/a | yes |
 | sap\_primary\_zone | Zone where the first instance will be created | `string` | n/a | yes |
