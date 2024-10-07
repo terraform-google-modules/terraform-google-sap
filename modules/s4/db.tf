@@ -57,7 +57,7 @@ resource "google_compute_disk" "sapddb11_hana_data" {
   }
   name             = "${length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11"}-hana-data-${count.index}"
   project          = data.google_project.sap-project.project_id
-  provisioned_iops = var.db_data_disk_type == "hyperdisk-extreme" ? ceil(10000, 2 * (var.disk_size_map["db_disk_hana_data_size"] != 0 ? var.disk_size_map["db_disk_hana_data_size"] :  var.db_disk_hana_data_size)) / var.number_data_disks : null
+  provisioned_iops = var.db_data_disk_type == "hyperdisk-extreme" ? max(10000, 2 * (var.disk_size_map["db_disk_hana_data_size"] != 0 ? var.disk_size_map["db_disk_hana_data_size"] :  var.db_disk_hana_data_size)) / var.number_data_disks : null
   size             = (var.disk_size_map["db_disk_hana_data_size"] != 0 ? var.disk_size_map["db_disk_hana_data_size"] :  var.db_disk_hana_data_size) / var.number_data_disks
   timeouts {
     create = "1h"
@@ -75,7 +75,7 @@ resource "google_compute_disk" "sapddb11_hana_log" {
   }
   name             = "${length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11"}-hana-log-${count.index}"
   project          = data.google_project.sap-project.project_id
-  provisioned_iops = var.db_log_disk_type == "hyperdisk-extreme" ? ceil(10000, 2 * (var.disk_size_map["db_disk_hana_log_size"] != 0 ? var.disk_size_map["db_disk_hana_log_size"] :  var.db_disk_hana_log_size)) / var.number_log_disks : null
+  provisioned_iops = var.db_log_disk_type == "hyperdisk-extreme" ? max(10000, 2 * (var.disk_size_map["db_disk_hana_log_size"] != 0 ? var.disk_size_map["db_disk_hana_log_size"] :  var.db_disk_hana_log_size)) / var.number_log_disks : null
   size             = (var.disk_size_map["db_disk_hana_log_size"] != 0 ? var.disk_size_map["db_disk_hana_log_size"] :  var.db_disk_hana_log_size) / var.number_log_disks
   timeouts {
     create = "1h"
