@@ -456,7 +456,7 @@ resource "google_compute_instance" "sap_hana_primary_instance" {
     content {
       on_host_maintenance = local.native_bm ? "TERMINATE" : null
       dynamic "node_affinities"  {
-        for_each = resource.google_compute_node_group.sole_tenant_node_group != null ? [1] : []
+        for_each = length(resource.google_compute_node_group.sole_tenant_node_group) > 0 ? [1] : []
         content {
           key = "compute.googleapis.com/node-group-name"
           operator = "IN"
@@ -602,7 +602,7 @@ resource "google_compute_instance" "sap_hana_worker_instances" {
     content {
       on_host_maintenance = local.native_bm ? "TERMINATE" : null
       dynamic "node_affinities"  {
-        for_each = resource.google_compute_node_group.sole_tenant_node_group != null ? [1] : []
+        for_each = length(resource.google_compute_node_group.sole_tenant_node_group) > 0 ? [1] : []
         content {
           key = "compute.googleapis.com/node-group-name"
           operator = "IN"
