@@ -423,16 +423,7 @@ variable "zone1_name" {
 }
 
 variable "disk_size_map" {
-  default     = {
-    app_disk_export_interfaces_size = 0
-    app_disk_usr_sap_size = 0
-    ascs_disk_usr_sap_size = 0
-    db_disk_backup_size = 0
-    db_disk_hana_data_size = 0
-    db_disk_hana_log_size = 0
-    db_disk_hana_shared_size = 0
-    db_disk_usr_sap_size = 0
-  }
+  default     = {}
   description = "disk_size_map"
   type        = map(number)
 }
