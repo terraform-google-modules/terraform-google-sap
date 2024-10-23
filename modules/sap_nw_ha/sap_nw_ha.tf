@@ -72,7 +72,6 @@ module "sap_nw_ha" {
   # ers_forw_rule_name         = "[SID]-ers-fwd-rule"
 
   # usr_sap_size               = USR_SAP_DISK_SIZE
-  # sap_mnt_size               = SAP_MNT_DISK_SIZE
   # swap_size                  = SWAP_SIZE
 
   # sap_scs_instance_number    = "00"
