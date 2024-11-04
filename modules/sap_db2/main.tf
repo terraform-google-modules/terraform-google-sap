@@ -274,13 +274,13 @@ resource "google_compute_instance" "sap_db2_instance" {
     }
   }
 
-  metadata = {
+  metadata = merge(var.custom_metadata, {
     startup-script         = local.primary_startup_url
     post_deployment_script = var.post_deployment_script
     sap_deployment_debug   = var.sap_deployment_debug
     sap_ibm_db2_sid        = var.db2_sid
     template-type          = "TERRAFORM"
-  }
+  })
 
   lifecycle {
     # Ignore changes in the instance metadata, since it is modified by the SAP startup script.

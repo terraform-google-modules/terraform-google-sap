@@ -549,7 +549,7 @@ resource "google_compute_instance" "sap_hana_primary_instance" {
     }
   }
 
-  metadata = {
+  metadata = merge(var.custom_primary_metadata, {
     startup-script                  = local.primary_startup_url
     post_deployment_script          = var.post_deployment_script
     sap_deployment_debug            = var.sap_deployment_debug
@@ -574,7 +574,7 @@ resource "google_compute_instance" "sap_hana_primary_instance" {
     data_stripe_size                = var.data_stripe_size
     log_stripe_size                 = var.log_stripe_size
     template-type                   = "TERRAFORM"
-  }
+  })
 
   lifecycle {
     # Ignore changes in the instance metadata, since it is modified by the SAP startup script.
@@ -681,7 +681,7 @@ resource "google_compute_instance" "sap_hana_worker_instances" {
     }
   }
 
-  metadata = {
+  metadata = merge(var.custom_secondary_metadata, {
     startup-script                  = local.secondary_startup_url
     post_deployment_script          = var.post_deployment_script
     sap_deployment_debug            = var.sap_deployment_debug
@@ -705,7 +705,7 @@ resource "google_compute_instance" "sap_hana_worker_instances" {
     data_stripe_size                = var.data_stripe_size
     log_stripe_size                 = var.log_stripe_size
     template-type                   = "TERRAFORM"
-  }
+  })
 
   lifecycle {
     # Ignore changes in the instance metadata, since it is modified by the SAP startup script.

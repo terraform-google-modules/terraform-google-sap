@@ -327,10 +327,10 @@ resource "google_compute_instance" "sapddb11" {
     ]
   }
   machine_type = var.db_machine_type
-  metadata = {
+  metadata = merge(var.custom_db_metadata, {
     enable-oslogin = "FALSE"
     ssh-keys       = ""
-  }
+  })
   min_cpu_platform = lookup(local.cpu_platform_map, var.db_machine_type, "Automatic")
   name             = length(var.db_vm_names) > 0 ? var.db_vm_names[0] : "${var.vm_prefix}db11"
   network_interface {
@@ -398,10 +398,10 @@ resource "google_compute_instance" "sapddb12" {
     ]
   }
   machine_type = var.db_machine_type
-  metadata = {
+  metadata = merge(var.custom_db_metadata, {
     enable-oslogin = "FALSE"
     ssh-keys       = ""
-  }
+  })
   min_cpu_platform = lookup(local.cpu_platform_map, var.db_machine_type, "Automatic")
   name             = length(var.db_vm_names) > 1 ? var.db_vm_names[1] : "${var.vm_prefix}db12"
   network_interface {

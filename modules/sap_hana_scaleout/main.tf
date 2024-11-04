@@ -357,7 +357,7 @@ resource "google_compute_instance" "sap_hana_scaleout_primary_instance" {
     }
   }
 
-  metadata = {
+  metadata = merge(var.custom_primary_metadata,{
     startup-script                  = local.primary_startup_url
     post_deployment_script          = var.post_deployment_script
     sap_deployment_debug            = var.sap_deployment_debug
@@ -380,7 +380,7 @@ resource "google_compute_instance" "sap_hana_scaleout_primary_instance" {
     sap_hana_data_disk_type         = local.final_data_disk_type
     native_bm                       = local.native_bm
     template-type                   = "TERRAFORM"
-  }
+  })
 
   lifecycle {
     # Ignore changes in the instance metadata, since it is modified by the SAP startup script.
@@ -468,7 +468,7 @@ resource "google_compute_instance" "sap_hana_scaleout_worker_instances" {
     }
   }
 
-  metadata = {
+  metadata = merge(var.custom_secondary_metadata, {
     startup-script             = local.secondary_startup_url
     post_deployment_script     = var.post_deployment_script
     sap_deployment_debug       = var.sap_deployment_debug
@@ -491,7 +491,7 @@ resource "google_compute_instance" "sap_hana_scaleout_worker_instances" {
     use_single_data_log_disk        = var.use_single_data_log_disk
     native_bm                       = local.native_bm
     template-type                   = "TERRAFORM"
-  }
+  })
 
   lifecycle {
     # Ignore changes in the instance metadata, since it is modified by the SAP startup script.
@@ -562,7 +562,7 @@ resource "google_compute_instance" "sap_hana_scaleout_standby_instances" {
     }
   }
 
-  metadata = {
+  metadata = merge(var.custom_standby_metadata, {
     startup-script             = local.secondary_startup_url
     post_deployment_script     = var.post_deployment_script
     sap_deployment_debug       = var.sap_deployment_debug
@@ -585,7 +585,7 @@ resource "google_compute_instance" "sap_hana_scaleout_standby_instances" {
     sap_hana_standby_nodes          = var.sap_hana_standby_nodes
     native_bm                       = local.native_bm
     template-type                   = "TERRAFORM"
-  }
+  })
 
   lifecycle {
     # Ignore changes in the instance metadata, since it is modified by the SAP startup script.

@@ -551,3 +551,15 @@ variable "log_stripe_size" {
   description = "Optional - default is 64k. Stripe size for log volume striping (if enable_log_striping = true)."
   default     = "64k"
 }
+
+variable "custom_primary_metadata" {
+  type = map<string, string>
+  description = "Optional - default is empty. Custom metadata to be added to the primary VM."
+  default     = {}
+}
+
+variable "custom_secondary_metadata" {
+  type = map<string, string>
+  description = "Optional - default is empty. Custom metadata to be added to the secondary VMs."
+  default     = {}
+}

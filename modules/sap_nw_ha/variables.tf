@@ -340,3 +340,15 @@ variable "can_ip_forward" {
   description = "Whether sending and receiving of packets with non-matching source or destination IPs is allowed."
   default     = true
 }
+
+variable "custom_primary_metadata" {
+  type = map<string, string>
+  description = "Optional - default is empty. Custom metadata to be added to the primary VM."
+  default     = {}
+}
+
+variable "custom_secondary_metadata" {
+  type = map<string, string>
+  description = "Optional - default is empty. Custom metadata to be added to the secondary VM."
+  default     = {}
+}

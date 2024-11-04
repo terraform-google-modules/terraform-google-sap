@@ -173,10 +173,10 @@ resource "google_compute_instance" "sapdapp11" {
     ]
   }
   machine_type = var.app_machine_type
-  metadata = {
+  metadata = merge(var.custom_app_metadata, {
     enable-oslogin = "FALSE"
     ssh-keys       = ""
-  }
+  })
   min_cpu_platform = lookup(local.cpu_platform_map, var.app_machine_type, "Automatic")
   name             = length(var.app_vm_names) > (0 + (count.index * 2)) ? var.app_vm_names[0 + (count.index * 2)] : "${var.vm_prefix}app1${1 + (count.index * 2)}"
   network_interface {

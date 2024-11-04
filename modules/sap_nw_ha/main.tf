@@ -173,7 +173,7 @@ resource "google_compute_instance" "scs_instance" {
       }
     }
   }
-  metadata = {
+  metadata = merge(var.custom_primary_metadata,{
     startup-script = local.primary_startup_url
 
     # SCS settings
@@ -206,7 +206,7 @@ resource "google_compute_instance" "scs_instance" {
     sap_deployment_debug   = var.sap_deployment_debug ? "True" : "False"
     post_deployment_script = var.post_deployment_script
     template-type          = "TERRAFORM"
-  }
+  })
 
   lifecycle {
     # Ignore changes in the instance metadata, since it is modified by the SAP startup script.
@@ -268,7 +268,7 @@ resource "google_compute_instance" "ers_instance" {
       }
     }
   }
-  metadata = {
+  metadata = merge(var.custom_secondary_metadata, {
     startup-script = local.secondary_startup_url
 
     # SCS settings
@@ -301,7 +301,7 @@ resource "google_compute_instance" "ers_instance" {
     sap_deployment_debug   = var.sap_deployment_debug ? "True" : "False"
     post_deployment_script = var.post_deployment_script
     template-type          = "TERRAFORM"
-  }
+  })
 
   lifecycle {
     # Ignore changes in the instance metadata, since it is modified by the SAP startup script.

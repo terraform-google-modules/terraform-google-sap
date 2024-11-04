@@ -647,7 +647,8 @@ resource "google_compute_instance" "sap_hana_ha_primary_instance" {
       log_stripe_size                 = var.log_stripe_size
       template-type                   = "TERRAFORM"
     },
-    local.wlm_metadata
+    local.wlm_metadata,
+    var.custom_primary_metadata
   )
 
   lifecycle {
@@ -792,7 +793,8 @@ resource "google_compute_instance" "sap_hana_ha_primary_workers" {
       log_stripe_size                 = var.log_stripe_size
       template-type                   = "TERRAFORM"
     },
-    local.wlm_metadata
+    local.wlm_metadata,
+    var.custom_primary_metadata
   )
 
   lifecycle {
@@ -1047,7 +1049,8 @@ resource "google_compute_instance" "sap_hana_ha_secondary_instance" {
       log_stripe_size                 = var.log_stripe_size
       template-type                   = "TERRAFORM"
     },
-    local.wlm_metadata
+    local.wlm_metadata,
+    var.custom_secondary_metadata
   )
 
   lifecycle {
@@ -1192,7 +1195,8 @@ resource "google_compute_instance" "sap_hana_ha_secondary_workers" {
       log_stripe_size                 = var.log_stripe_size
       template-type                   = "TERRAFORM"
     },
-    local.wlm_metadata
+    local.wlm_metadata,
+    var.custom_secondary_metadata
   )
 
   lifecycle {
@@ -1387,7 +1391,8 @@ resource "google_compute_instance" "sap_majority_maker_instance" {
       majority_maker_zone             = local.mm_fully_defined ? var.majority_maker_zone : ""
       template-type                   = "TERRAFORM"
     },
-    local.wlm_metadata
+    local.wlm_metadata,
+    var.custom_mm_metadata
   )
 
   lifecycle {
