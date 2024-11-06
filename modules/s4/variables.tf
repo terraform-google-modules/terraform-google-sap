@@ -429,19 +429,19 @@ variable "disk_size_map" {
 }
 
 variable "custom_app_metadata" {
-  type = map<string, string>
+  type = map(string)
   description = "Optional - default is empty. Custom metadata to be added to the app VMs."
   default     = {}
 }
 
 variable "custom_ascs_metadata" {
-  type = map<string, string>
+  type = map(string)
   description = "Optional - default is empty. Custom metadata to be added to the ASCS VMs."
   default     = {}
 }
 
 variable "custom_db_metadata" {
-  type = map<string, string>
+  type = map(string)
   description = "Optional - default is empty. Custom metadata to be added to the DB VMs."
   default     = {}
 }

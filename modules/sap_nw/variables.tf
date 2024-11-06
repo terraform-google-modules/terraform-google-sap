@@ -147,7 +147,7 @@ variable "can_ip_forward" {
 }
 
 variable "custom_metadata" {
-  type = map<string, string>
+  type = map(string)
   description = "Optional - default is empty. Custom metadata to be added to the VM."
   default     = {}
 }

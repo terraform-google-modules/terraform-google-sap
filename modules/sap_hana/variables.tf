@@ -553,13 +553,13 @@ variable "log_stripe_size" {
 }
 
 variable "custom_primary_metadata" {
-  type = map<string, string>
+  type = map(string)
   description = "Optional - default is empty. Custom metadata to be added to the primary VM."
   default     = {}
 }
 
 variable "custom_secondary_metadata" {
-  type = map<string, string>
+  type = map(string)
   description = "Optional - default is empty. Custom metadata to be added to the secondary VMs."
   default     = {}
 }
