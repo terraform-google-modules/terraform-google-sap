@@ -173,7 +173,7 @@ resource "google_compute_instance" "scs_instance" {
       }
     }
   }
-  metadata = merge(var.custom_primary_metadata,{
+  metadata = merge(var.custom_primary_metadata, {
     startup-script = local.primary_startup_url
 
     # SCS settings

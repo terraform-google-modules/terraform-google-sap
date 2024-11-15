@@ -357,7 +357,7 @@ resource "google_compute_instance" "sap_hana_scaleout_primary_instance" {
     }
   }
 
-  metadata = merge(var.custom_primary_metadata,{
+  metadata = merge(var.custom_primary_metadata, {
     startup-script                  = local.primary_startup_url
     post_deployment_script          = var.post_deployment_script
     sap_deployment_debug            = var.sap_deployment_debug

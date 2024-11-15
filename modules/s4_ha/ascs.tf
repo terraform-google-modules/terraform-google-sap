@@ -249,7 +249,7 @@ resource "google_compute_instance" "sapdascs12" {
   metadata = merge(var.custom_ascs_metadata, {
     enable-oslogin = "FALSE"
     ssh-keys       = ""
-  }) 
+  })
   min_cpu_platform = lookup(local.cpu_platform_map, var.ascs_machine_type, "Automatic")
   name             = length(var.ascs_vm_names) > 1 ? var.ascs_vm_names[1] : "${var.vm_prefix}ascs12"
   network_interface {

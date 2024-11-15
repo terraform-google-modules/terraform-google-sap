@@ -363,11 +363,11 @@ resource "google_compute_address" "sap_hana_ha_worker_vm_ip" {
 # Sole tenant items
 ################################################################################
 resource "google_compute_node_template" "sole_tenant_node_template" {
-  count                = var.sole_tenant_deployment ? 1 : 0
-  name                 = "${local.sole_tenant_name_prefix}-node-template"
-  node_type            = var.sole_tenant_node_type
-  region               = local.region
-  project              = var.project_id
+  count     = var.sole_tenant_deployment ? 1 : 0
+  name      = "${local.sole_tenant_name_prefix}-node-template"
+  node_type = var.sole_tenant_node_type
+  region    = local.region
+  project   = var.project_id
 }
 
 resource "google_compute_node_group" "sole_tenant_primary_node_group" {
@@ -515,12 +515,12 @@ resource "google_compute_instance" "sap_hana_ha_primary_instance" {
     for_each = (local.native_bm || var.sole_tenant_deployment) ? [1] : []
     content {
       on_host_maintenance = local.native_bm ? "TERMINATE" : null
-      dynamic "node_affinities"  {
+      dynamic "node_affinities" {
         for_each = length(resource.google_compute_node_group.sole_tenant_primary_node_group) > 0 ? [1] : []
         content {
-          key = "compute.googleapis.com/node-group-name"
+          key      = "compute.googleapis.com/node-group-name"
           operator = "IN"
-          values = ["${local.sole_tenant_name_prefix}-primary-node-group"]
+          values   = ["${local.sole_tenant_name_prefix}-primary-node-group"]
         }
       }
     }
@@ -676,12 +676,12 @@ resource "google_compute_instance" "sap_hana_ha_primary_workers" {
     for_each = (local.native_bm || var.sole_tenant_deployment) ? [1] : []
     content {
       on_host_maintenance = local.native_bm ? "TERMINATE" : null
-      dynamic "node_affinities"  {
+      dynamic "node_affinities" {
         for_each = length(resource.google_compute_node_group.sole_tenant_primary_node_group) > 0 ? [1] : []
         content {
-          key = "compute.googleapis.com/node-group-name"
+          key      = "compute.googleapis.com/node-group-name"
           operator = "IN"
-          values = ["${local.sole_tenant_name_prefix}-primary-node-group"]
+          values   = ["${local.sole_tenant_name_prefix}-primary-node-group"]
         }
       }
     }
@@ -918,12 +918,12 @@ resource "google_compute_instance" "sap_hana_ha_secondary_instance" {
     for_each = (local.native_bm || var.sole_tenant_deployment) ? [1] : []
     content {
       on_host_maintenance = local.native_bm ? "TERMINATE" : null
-      dynamic "node_affinities"  {
+      dynamic "node_affinities" {
         for_each = length(resource.google_compute_node_group.sole_tenant_secondary_node_group) > 0 ? [1] : []
         content {
-          key = "compute.googleapis.com/node-group-name"
+          key      = "compute.googleapis.com/node-group-name"
           operator = "IN"
-          values = ["${local.sole_tenant_name_prefix}-secondary-node-group"]
+          values   = ["${local.sole_tenant_name_prefix}-secondary-node-group"]
         }
       }
     }
@@ -1078,12 +1078,12 @@ resource "google_compute_instance" "sap_hana_ha_secondary_workers" {
     for_each = (local.native_bm || var.sole_tenant_deployment) ? [1] : []
     content {
       on_host_maintenance = local.native_bm ? "TERMINATE" : null
-      dynamic "node_affinities"  {
+      dynamic "node_affinities" {
         for_each = length(resource.google_compute_node_group.sole_tenant_secondary_node_group) > 0 ? [1] : []
         content {
-          key = "compute.googleapis.com/node-group-name"
+          key      = "compute.googleapis.com/node-group-name"
           operator = "IN"
-          values = ["${local.sole_tenant_name_prefix}-secondary-node-group"]
+          values   = ["${local.sole_tenant_name_prefix}-secondary-node-group"]
         }
       }
     }

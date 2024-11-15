@@ -380,19 +380,19 @@ variable "can_ip_forward" {
 }
 
 variable "custom_primary_metadata" {
-  type = map(string)
+  type        = map(string)
   description = "Optional - default is empty. Custom metadata to be added to the primary VM."
   default     = {}
 }
 
 variable "custom_secondary_metadata" {
-  type = map(string)
+  type        = map(string)
   description = "Optional - default is empty. Custom metadata to be added to the secondary VMs."
   default     = {}
 }
 
 variable "custom_standby_metadata" {
-  type = map(string)
+  type        = map(string)
   description = "Optional - default is empty. Custom metadata to be added to the standby VMs."
   default     = {}
 }
