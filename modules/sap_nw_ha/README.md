@@ -30,6 +30,8 @@ For additional information see https://www.terraform.io/docs/index.html and http
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | can\_ip\_forward | Whether sending and receiving of packets with non-matching source or destination IPs is allowed. | `bool` | `true` | no |
+| custom\_primary\_metadata | Optional - default is empty. Custom metadata to be added to the primary VM. | `map(string)` | `{}` | no |
+| custom\_secondary\_metadata | Optional - default is empty. Custom metadata to be added to the secondary VM. | `map(string)` | `{}` | no |
 | ers\_backend\_svc\_name | Name of ERS backend service | `string` | `""` | no |
 | ers\_forw\_rule\_name | Name of ERS forwarding rule | `string` | `""` | no |
 | ers\_hc\_name | Name of ERS health check | `string` | `""` | no |

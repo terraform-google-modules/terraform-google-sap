@@ -45,6 +45,8 @@ https://cloud.google.com/docs/terraform
 | backup\_disk\_throughput\_override | Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the throughput in MB/s that the backup disk(s) will use. Has no effect if not using a disk type that supports it. | `number` | `null` | no |
 | backup\_disk\_type | Optional - The default is pd-ssd, except for machines that do not support PD, in which case the default is hyperdisk-extreme. Only used if a backup disk is needed. | `string` | `""` | no |
 | can\_ip\_forward | Whether sending and receiving of packets with non-matching source or destination IPs is allowed. | `bool` | `true` | no |
+| custom\_primary\_metadata | Optional - default is empty. Custom metadata to be added to the primary VM. | `map(string)` | `{}` | no |
+| custom\_secondary\_metadata | Optional - default is empty. Custom metadata to be added to the secondary VMs. | `map(string)` | `{}` | no |
 | data\_disk\_iops\_override | Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the number of IOPS that the data disk(s) will use. Has no effect if not using a disk type that supports it. | `number` | `null` | no |
 | data\_disk\_size\_override | Warning, do not use unless instructed or aware of the implications of using this setting. Overrides the default size for the data disk(s), that is based off of the machine\_type. | `number` | `null` | no |
 | data\_disk\_throughput\_override | Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the throughput in MB/s that the data disk(s) will use. Has no effect if not using a disk type that supports it. | `number` | `null` | no |
@@ -97,6 +99,9 @@ https://cloud.google.com/docs/terraform
 | shared\_disk\_size\_override | Warning, do not use unless instructed or aware of the implications of using this setting. Overrides the default size for the shared disk, that is based off of the machine\_type. | `number` | `null` | no |
 | shared\_disk\_throughput\_override | Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the throughput in MB/s that the shared disk will use. Has no effect if not using a disk type that supports it. | `number` | `null` | no |
 | shared\_disk\_type\_override | Warning, do not use unless instructed or aware of the implications of using this setting. Override the 'default\_disk\_type' for the shared disk. | `string` | `""` | no |
+| sole\_tenant\_deployment | Optional - default is false. Deploy on Sole Tenant Nodes. | `bool` | `false` | no |
+| sole\_tenant\_name\_prefix | Optional - name of the prefix to use for the Sole Tenant objects (Node Templates, Node Groups). If left blank with sole\_tenant\_deployment=true, st-<sap\_hana\_sid> will be used. | `string` | `""` | no |
+| sole\_tenant\_node\_type | Optional - default is null. Sole Tenant Node Type to use. See https://cloud.google.com/compute/docs/nodes/sole-tenant-nodes#node_types | `string` | `null` | no |
 | subnetwork | The sub network to deploy the instance in. | `string` | n/a | yes |
 | unified\_disk\_iops\_override | Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the number of IOPS that the primary's unified disk will use. Has no effect if not using a disk type that supports it. | `number` | `null` | no |
 | unified\_disk\_size\_override | Warning, do not use unless instructed or aware of the implications of using this setting. Overrides the default size for the primary's unified disk, that is based off of the machine\_type. | `number` | `null` | no |

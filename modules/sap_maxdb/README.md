@@ -5,6 +5,7 @@ TODO add README info
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | can\_ip\_forward | Whether sending and receiving of packets with non-matching source or destination IPs is allowed. | `bool` | `true` | no |
+| custom\_metadata | Optional - default is empty. Custom metadata to be added to the VM. | `map(string)` | `{}` | no |
 | instance\_name | Hostname of the GCE instance | `string` | n/a | yes |
 | linux\_image | Linux image name to use. family/sles-12-sp2-sap or family/sles-12-sp2-sap will use the latest SLES 12 SP2 or SP3 image | `string` | n/a | yes |
 | linux\_image\_project | The project which the Linux image belongs to | `string` | n/a | yes |

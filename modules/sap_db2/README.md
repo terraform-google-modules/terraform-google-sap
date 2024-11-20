@@ -4,6 +4,7 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | can\_ip\_forward | Whether sending and receiving of packets with non-matching source or destination IPs is allowed. | `bool` | `true` | no |
+| custom\_metadata | Optional - default is empty. Custom metadata to be added to the VM. | `map(string)` | `{}` | no |
 | db2\_backup\_size | OPTIONAL - Size in GB of the /db2backup - If set to 0, no disk will be created. | `number` | `0` | no |
 | db2\_dump\_size | Size in GB of /db2/[DBSID]/db2dump - this directory holds dump files from DB2 which may be useful for diagnosing problems. | `number` | `8` | no |
 | db2\_home\_size | Size in GB of /db2/db2[DBSID] - the home directory of the database instance. | `number` | `8` | no |
