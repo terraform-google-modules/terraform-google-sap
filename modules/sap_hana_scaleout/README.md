@@ -42,6 +42,9 @@ https://cloud.google.com/docs/terraform
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | can\_ip\_forward | Whether sending and receiving of packets with non-matching source or destination IPs is allowed. | `bool` | `true` | no |
+| custom\_primary\_metadata | Optional - default is empty. Custom metadata to be added to the primary VM. | `map(string)` | `{}` | no |
+| custom\_secondary\_metadata | Optional - default is empty. Custom metadata to be added to the secondary VMs. | `map(string)` | `{}` | no |
+| custom\_standby\_metadata | Optional - default is empty. Custom metadata to be added to the standby VMs. | `map(string)` | `{}` | no |
 | data\_disk\_iops\_override | Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the number of IOPS that the data disk(s) will use. Has no effect if not using a disk type that supports it. | `number` | `null` | no |
 | data\_disk\_size\_override | Warning, do not use unless instructed or aware of the implications of using this setting. Overrides the default size for the data disk(s), that is based off of the machine\_type. | `number` | `null` | no |
 | data\_disk\_throughput\_override | Warning, do not use unless instructed or aware of the implications of using this setting. Directly sets the throughput in MB/s that the data disk(s) will use. Has no effect if not using a disk type that supports it. | `number` | `null` | no |

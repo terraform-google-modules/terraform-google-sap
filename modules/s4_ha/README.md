@@ -49,6 +49,9 @@ Functional example is included in the
 | ascs\_vm\_names | ascs\_vm\_names | `list(any)` | `[]` | no |
 | configuration\_bucket\_name | configuration\_bucket\_name | `string` | `""` | no |
 | create\_comms\_firewall | create\_comms\_firewall | `bool` | `true` | no |
+| custom\_app\_metadata | Optional - default is empty. Custom metadata to be added to the app VMs. | `map(string)` | `{}` | no |
+| custom\_ascs\_metadata | Optional - default is empty. Custom metadata to be added to the ASCS VMs. | `map(string)` | `{}` | no |
+| custom\_db\_metadata | Optional - default is empty. Custom metadata to be added to the DB VMs. | `map(string)` | `{}` | no |
 | custom\_tags | custom\_tags | `list(any)` | `[]` | no |
 | data\_stripe\_size | data\_stripe\_size | `string` | `"256k"` | no |
 | db\_data\_disk\_type | db\_data\_disk\_type | `string` | `"pd-balanced"` | no |
@@ -66,6 +69,7 @@ Functional example is included in the
 | db\_vm\_names | db\_vm\_names | `list(any)` | `[]` | no |
 | deployment\_has\_dns | Set to false to deploy without a DNS zone | `bool` | `true` | no |
 | deployment\_name | deployment\_name | `string` | n/a | yes |
+| disk\_size\_map | disk\_size\_map | `map(number)` | `{}` | no |
 | dns\_zone\_name\_suffix | dns\_zone\_name\_suffix | `string` | `"gcp.sapcloud.goog."` | no |
 | ers\_ilb\_healthcheck\_port | ers\_ilb\_healthcheck\_port | `number` | `60002` | no |
 | existing\_dns\_zone\_name | existing\_dns\_zone\_name | `string` | `""` | no |

@@ -14,6 +14,7 @@ TODO
 | ase\_sid | The database instance/SID name. | `string` | n/a | yes |
 | ase\_sid\_size | Size in GB of /sybase/[DBSID] - the root directory of the database instance. | `number` | `8` | no |
 | can\_ip\_forward | Whether sending and receiving of packets with non-matching source or destination IPs is allowed. | `bool` | `true` | no |
+| custom\_metadata | Optional - default is empty. Custom metadata to be added to the VM. | `map(string)` | `{}` | no |
 | instance\_name | Hostname of the GCE instance. | `string` | n/a | yes |
 | linux\_image | Linux image name to use. | `string` | n/a | yes |
 | linux\_image\_project | The project which the Linux image belongs to. | `string` | n/a | yes |
