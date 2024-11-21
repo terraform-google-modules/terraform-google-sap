@@ -7,6 +7,24 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0](https://github.com/terraform-google-modules/terraform-google-sap/compare/v1.1.2...v2.0.0) (2024-11-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* Latest SOT sync of NW, HANA, and S4 templates.  ([#140](https://github.com/terraform-google-modules/terraform-google-sap/issues/140))
+
+### Features
+
+* Latest sot ([#147](https://github.com/terraform-google-modules/terraform-google-sap/issues/147)) ([c90e2e2](https://github.com/terraform-google-modules/terraform-google-sap/commit/c90e2e2413e49156a9c32968f4672c385da112b4))
+* Latest SOT sync of NW, HANA, and S4 templates.  ([#140](https://github.com/terraform-google-modules/terraform-google-sap/issues/140)) ([d103087](https://github.com/terraform-google-modules/terraform-google-sap/commit/d103087e138e4d213ebedc9f16042ca028826d01))
+
+
+### Bug Fixes
+
+* **deps:** Update Terraform validation to v1.1.1 ([#143](https://github.com/terraform-google-modules/terraform-google-sap/issues/143)) ([ab274a2](https://github.com/terraform-google-modules/terraform-google-sap/commit/ab274a294136f7e6c29e4ceda5d00ccb86ae95e1))
+* **deps:** Update Terraform validation to v1.1.1 ([#149](https://github.com/terraform-google-modules/terraform-google-sap/issues/149)) ([febc30d](https://github.com/terraform-google-modules/terraform-google-sap/commit/febc30daafeaabbd1a2fa790c30ad61d8136d1c0))
+
 ## [1.1.2](https://github.com/terraform-google-modules/terraform-google-sap/compare/v1.1.1...v1.1.2) (2024-04-11)
 
 
