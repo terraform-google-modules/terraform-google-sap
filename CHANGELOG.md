@@ -10,10 +10,6 @@ and this project adheres to
 ## [2.0.0](https://github.com/terraform-google-modules/terraform-google-sap/compare/v1.1.2...v2.0.0) (2024-11-21)
 
 
-### ⚠ BREAKING CHANGES
-
-* Latest SOT sync of NW, HANA, and S4 templates.  ([#140](https://github.com/terraform-google-modules/terraform-google-sap/issues/140))
-
 ### Features
 
 * Latest sot ([#147](https://github.com/terraform-google-modules/terraform-google-sap/issues/147)) ([c90e2e2](https://github.com/terraform-google-modules/terraform-google-sap/commit/c90e2e2413e49156a9c32968f4672c385da112b4))
