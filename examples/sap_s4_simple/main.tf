@@ -16,7 +16,7 @@
 
 module "sap_s4" {
   source  = "terraform-google-modules/sap/google//modules/s4"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   deployment_name     = "my_s4"
   gcp_project_id      = var.project_id
