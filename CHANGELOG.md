@@ -7,6 +7,13 @@ The format is based on
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1](https://github.com/terraform-google-modules/terraform-google-sap/compare/v2.0.0...v2.0.1) (2024-12-28)
+
+
+### Bug Fixes
+
+* **deps:** Update Terraform validation to v1.1.3 ([#151](https://github.com/terraform-google-modules/terraform-google-sap/issues/151)) ([c8f2b8e](https://github.com/terraform-google-modules/terraform-google-sap/commit/c8f2b8e6cac9a483a47bde4a4452c610a510135d))
+
 ## [2.0.0](https://github.com/terraform-google-modules/terraform-google-sap/compare/v1.1.2...v2.0.0) (2024-11-21)
 
 
