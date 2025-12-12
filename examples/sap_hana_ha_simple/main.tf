@@ -16,7 +16,7 @@
 
 module "sap_hana_ha" {
   source  = "terraform-google-modules/sap/google//modules/sap_hana_ha"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   project_id              = var.project_id
   machine_type            = "n1-standard-16"
