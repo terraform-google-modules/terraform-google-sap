@@ -86,7 +86,7 @@ resource "google_compute_instance" "sapdansible11" {
     is_test                   = var.is_test
     media_bucket_name         = var.media_bucket_name
     ssh-keys                  = ""
-    startup-script            = "gsutil cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}"
+    startup-script            = "gcloud storage cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}"
     template_name             = "s4"
   }
   name = "${var.deployment_name}-ansible-runner"

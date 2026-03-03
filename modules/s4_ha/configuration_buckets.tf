@@ -54,7 +54,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "deployment_has_dns" : var.deployment_has_dns,
                         "is_test" : var.is_test,
                         "media_bucket_name" : var.media_bucket_name,
-                        "startup-script" : "gsutil cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}",
+                        "startup-script" : "gcloud storage cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}",
                         "template_name" : "s4_ha",
                         "ascs_forwarding_ip" : google_compute_forwarding_rule.ascs_forwarding_rule.ip_address,
                         "ers_forwarding_ip" : google_compute_forwarding_rule.ers_forwarding_rule.ip_address,

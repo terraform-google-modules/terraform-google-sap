@@ -57,7 +57,7 @@ resource "google_storage_bucket_object" "ansible_inventory" {
                         "hana_sr_ilb_url" : local.hana_endpoint,
                         "is_test" : var.is_test,
                         "media_bucket_name" : var.media_bucket_name,
-                        "startup-script" : "gsutil cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}",
+                        "startup-script" : "gcloud storage cp ${var.primary_startup_url} ./local_startup.sh; bash local_startup.sh ${var.package_location} ${var.deployment_name}",
                         "template_name" : "s4"
                       },
                       "gce_instance_name" : "${var.deployment_name}-ansible-runner",
