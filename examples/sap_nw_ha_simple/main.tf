@@ -22,7 +22,7 @@ module "sap_nw_ha" {
   machine_type            = "n1-standard-16"
   network                 = "default"
   subnetwork              = "default"
-  linux_image             = "rhel-8-4-sap-ha"
+  linux_image             = "rhel-8-sap-ha"
   linux_image_project     = "rhel-sap-cloud"
   sap_primary_instance    = "hana-instance"
   sap_secondary_instance  = "hana-instance"
