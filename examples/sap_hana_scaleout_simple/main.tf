@@ -22,7 +22,7 @@ module "hana_scaleout" {
   zone                = "us-east1-b"
   machine_type        = "n1-standard-16"
   subnetwork          = "default"
-  linux_image         = "rhel-8-sap-ha"
+  linux_image         = "rhel-8-8-sap-ha"
   linux_image_project = "rhel-sap-cloud"
   instance_name       = "hana-instance-scaleout"
   sap_hana_sid        = "ABC"
