@@ -21,7 +21,7 @@ module "sap_nw" {
   project_id          = var.project_id
   machine_type        = "n1-standard-16"
   subnetwork          = "default"
-  linux_image         = "rhel-8-4-sap-ha"
+  linux_image         = "rhel-8-8-sap-ha"
   linux_image_project = "rhel-sap-cloud"
   instance_name       = "nwvm"
   zone                = "us-east1-b"
