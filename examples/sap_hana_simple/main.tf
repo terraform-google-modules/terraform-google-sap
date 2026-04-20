@@ -19,7 +19,7 @@ module "sap_hana" {
   version = "~> 1.0"
 
   project_id          = var.project_id
-  machine_type        = "n1-standard-16"
+  machine_type        = "n2-standard-16"
   subnetwork          = "default"
   linux_image         = "rhel-8-8-sap-ha"
   linux_image_project = "rhel-sap-cloud"
