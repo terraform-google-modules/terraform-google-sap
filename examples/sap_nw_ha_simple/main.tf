@@ -19,7 +19,7 @@ module "sap_nw_ha" {
   version = "~> 1.0"
 
   project_id              = var.project_id
-  machine_type            = "n1-standard-16"
+  machine_type            = "n2-standard-16"
   network                 = "default"
   subnetwork              = "default"
   linux_image             = "rhel-8-8-sap-ha"
